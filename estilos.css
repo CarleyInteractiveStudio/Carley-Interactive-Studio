@@ -1,0 +1,144 @@
+/* --- Fondo y texto base --- */
+body {
+  background-color: #0a0a0a;
+  color: #f2f2f2;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Encabezado --- */
+header {
+  background-color: #111;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #333;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #ff004f;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Menú de navegación --- */
+nav a {
+  margin: 0 0.7rem;
+  color: #00aaff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* --- Secciones --- */
+section {
+  padding: 2rem;
+  border-bottom: 1px solid #333;
+  text-align: center;
+}
+
+/* --- Tarjeta de juego --- */
+.juego {
+  background-color: #222;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.juego:hover {
+  transform: scale(1.02);
+}
+
+.juego-img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 10px #ff004f88;
+}
+
+/* --- Botones (descarga y soporte) --- */
+.boton-juego,
+.formulario-soporte button {
+  display: inline-block;
+  position: relative;
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(145deg, #ff004f, #c4003a);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 15px #ff004f99;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.boton-juego:hover,
+.formulario-soporte button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 25px #ff004fdd;
+}
+
+/* --- Efecto de brillo --- */
+.boton-juego::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: skewX(-45deg);
+  transition: left 0.5s ease;
+}
+
+.boton-juego:hover::before {
+  left: 100%;
+}
+
+/* --- Formulario de soporte oculto --- */
+.formulario-soporte {
+  display: none;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00aaff55;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.formulario-soporte.mostrar {
+  display: block;
+}
+
+.formulario-soporte input,
+.formulario-soporte textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  background-color: #0f0f0f;
+  border: 1px solid #333;
+  color: #f2f2f2;
+  border-radius: 5px;
+}
+
+/* --- Animación de aparición --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Pie de página --- */
+footer {
+  background-color: #111;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}

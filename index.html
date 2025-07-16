@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carley Interactive Studio</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <script>
+    function toggleForm(id) {
+      const form = document.getElementById(id);
+      form.classList.toggle('mostrar');
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <h1>Carley Interactive Studio</h1>
+    <nav>
+      <a href="#bienvenida">Inicio</a>
+      <a href="#juegos">Juegos</a>
+      <a href="#apoyo">Apóyanos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <section id="bienvenida">
+    <h2>Bienvenido</h2>
+    <p>Sumérgete en mundos llenos de acción, tecnología y creatividad. Explora Fire at Will, The Battle of the Capsurers y otros títulos que desafían los límites del juego.</p>
+  </section>
+
+  <section id="juegos">
+    <h2>Juegos Destacados</h2>
+
+    <!-- 🔫 The Battle of the Capsurers -->
+    <div class="juego">
+      <img src="The Battle Of The Capsurers logo.png" alt="The Battle of the Capsurers" class="juego-img" />
+      <h3>The Battle of the Capsurers</h3>
+      <p>Juego FPS multijugador divertido y emocionante. ¿Estás listo?</p>
+
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center;">
+        <a href="https://play.google.com/store/apps/details?id=TU_ID_JUEGO" class="boton-juego" target="_blank">
+          <span>Descargar</span>
+        </a>
+        <button class="boton-juego" onclick="toggleForm('form-battle')">Soporte</button>
+      </div>
+
+      <div id="form-battle" class="formulario-soporte">
+        <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Gmail | Juego: The Battle of the Capsurers">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://TU_USUARIO.github.io/gracias.html">
+
+          <input type="email" name="email" placeholder="Tu correo" required />
+          <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
+          <button type="submit">Enviar reporte</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 🔥 Fire at Will -->
+    <div class="juego">
+      <img src="para fire at will.png" alt="Fire at Will" class="juego-img" />
+      <h3>Fire at Will</h3>
+      <p>Fire at Will es un juego Battle Royale con modos intensos de batalla. ¿Estás listo?</p>
+
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center;">
+        <a href="https://play.google.com/store/apps/details?id=TU_ID_JUEGO" class="boton-juego" target="_blank">
+          <span>Descargar</span>
+        </a>
+        <button class="boton-juego" onclick="toggleForm('form-fire')">Soporte</button>
+      </div>
+
+      <div id="form-fire" class="formulario-soporte">
+        <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Gmail | Juego: Fire at Will">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://TU_USUARIO.github.io/gracias.html">
+
+          <input type="email" name="email" placeholder="Tu correo" required />
+          <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
+          <button type="submit">Enviar reporte</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="apoyo">
+    <h2>Apóyanos ❤️</h2>
+    <p>Tu apoyo nos impulsa a seguir creando experiencias increíbles.</p>
+    <div id="donate-button-container">
+      <div id="donate-button"></div>
+      <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+      <script>
+        PayPal.Donation.Button({
+          env: 'production',
+          hosted_button_id: 'JZ4KM2VUD6AMQ',
+          image: {
+            src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+            alt: 'Donate with PayPal button',
+            title: 'PayPal - The safer, easier way to pay online!'
+          }
+        }).render('#donate-button');
+      </script>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <h2>Contacto 📧</h2>
+    <p>¿Tienes ideas, preguntas o quieres colaborar? Envíanos un mensaje desde el formulario de soporte técnico.</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Carley Interactive Studio</p>
+  </footer>
+
+</body>
+</html>
