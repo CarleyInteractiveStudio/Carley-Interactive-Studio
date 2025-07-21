@@ -5,113 +5,384 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carley Interactive Studio</title>
   <link rel="stylesheet" href="estilos.css" />
-  <link rel="icon" type="image/png" href="carley_foto_web/logo C.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    function toggleForm(id) {
-      const form = document.getElementById(id);
-      form.classList.toggle('mostrar');
-    }
+    const SUPABASE_URL = 'https://rblftfzbqllnuadqtufb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJibGZ0ZnpicWxsbnVhZHF0dWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5NjQyMzQsImV4cCI6MjA2ODU0MDIzNH0.cH-KJG2k43dKQaVccQDkw7t6m0sf1zIOLWPADdmKLt8';
+    const supabase     = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   </script>
 </head>
 <body>
 
-  <header>
-    <h1>Carley Interactive Studio</h1>
-    <nav>
-      <a href="#bienvenida">Inicio</a>
-      <a href="#juegos">Juegos</a>
-      <a href="#apoyo">Apóyanos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-  </header>
+<header>
+  <h1>Carley Interactive Studio</h1>
+  <nav>
+    <a href="#bienvenida">Inicio</a>
+    <a href="#juegos">Juegos</a>
+    <a href="#apoyo">Apóyanos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <button id="settings-btn" class="gear">⚙️</button>
+  <div id="settings-menu" class="menu-oculto">
+    <button id="back-btn">Atrás</button>
+    <button id="login-btn">Iniciar sesión</button>
+    <button id="register-btn">Crear cuenta</button>
+    <!-- Botón de cerrar sesión se agrega dinámicamente -->
+  </div>
+</header>
 
-  <section id="bienvenida">
-    <h2>Bienvenido</h2>
-    <p>Sumérgete en mundos llenos de acción, tecnología y creatividad. Explora Fire at Will, The Battle of the Capsurers y otros títulos que desafían los límites del juego.</p>
-  </section>
+<section id="bienvenida">
+  <h2>Bienvenido</h2>
+  <p>
+    Bienvenido a Carley Interactive Studio, donde la pasión por los videojuegos y la innovación se unen. Sumérgete en la acción con Fire at Will y The Battle of the Capsurers mientras desarrollamos nuestro propio motor: <strong>Creative Engine</strong>.
+  </p>
+  <p>
+    Creative Engine aún está en desarrollo. ¿Quieres aportar tu talento a su creación y ayudarnos a contratar más programadores para acelerar el proyecto? ¡Únete y colabora con nosotros para revolucionar la industria!
+  </p>
+</section>
 
-  <section id="juegos">
-    <h2>Juegos Destacados</h2>
+<section id="juegos">
+  <h2>Juegos Destacados</h2>
 
-    <!-- 🔫 The Battle of the Capsurers -->
-    <div class="juego">
-      <img src="carley_foto_web/The Battle Of The Capsurers logo.png" alt="The Battle of the Capsurers" class="juego-img" />
-      <h3>The Battle of the Capsurers</h3>
-      <p>Juego FPS multijugador divertido y emocionante. ¿Estás listo?</p>
-
-      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center;">
-        <a href="https://play.google.com/store/apps/details?id=TU_ID_JUEGO" class="boton-juego" target="_blank">
-          <span>Descargar</span>
-        </a>
-        <button class="boton-juego" onclick="toggleForm('form-battle')">Soporte</button>
-      </div>
-
-      <div id="form-battle" class="formulario-soporte">
-        <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="Gmail | Juego: The Battle of the Capsurers">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html">
-          <input type="email" name="email" placeholder="Tu correo" required />
-          <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-          <button type="submit">Enviar reporte</button>
-        </form>
-      </div>
+  <!-- Battle of the Capsurers -->
+  <div class="juego">
+    <img src="carley_foto_web/The Battle Of The Capsurers logo.png" alt="The Battle of the Capsurers" class="juego-img" />
+    <h3>The Battle of the Capsurers</h3>
+    <p>Juego FPS multijugador divertido y emocionante. ¿Estás listo?</p>
+    <div class="flex-center">
+      <a href="#" class="boton-juego descargar" data-app="The Battle of the Capsurers">Descargar</a>
+      <button class="boton-juego" onclick="toggleForm('form-battle')">Soporte</button>
     </div>
-
-    <!-- 🔥 Fire at Will -->
-    <div class="juego">
-      <img src="carley_foto_web/para fire at will.png" alt="Fire at Will" class="juego-img" />
-      <h3>Fire at Will</h3>
-      <p>Fire at Will es un juego Battle Royale con modos intensos de batalla. Descargalo!</p>
-
-      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center;">
-        <a href="https://play.google.com/store/apps/details?id=TU_ID_JUEGO" class="boton-juego" target="_blank">
-          <span>Descargar</span>
-        </a>
-        <button class="boton-juego" onclick="toggleForm('form-fire')">Soporte</button>
-      </div>
-
-      <div id="form-fire" class="formulario-soporte">
-        <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="Gmail | Juego: Fire at Will">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html">
-          <input type="email" name="email" placeholder="Tu correo" required />
-          <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-          <button type="submit">Enviar reporte</button>
-        </form>
-      </div>
+    <div id="form-battle" class="formulario-soporte">
+      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Gmail | Juego: The Battle of the Capsurers" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
+        <input type="email" name="email" placeholder="Tu correo" required />
+        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
+        <button type="submit">Enviar reporte</button>
+      </form>
     </div>
-  </section>
+  </div>
 
-  <section id="apoyo">
-    <h2>Apóyanos ❤️</h2>
-    <p>Tu apoyo nos impulsa a seguir creando experiencias increíbles.</p>
-    <div id="donate-button-container">
-      <div id="donate-button"></div>
-      <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-      <script>
-        PayPal.Donation.Button({
-          env: 'production',
-          hosted_button_id: 'JZ4KM2VUD6AMQ',
-          image: {
-            src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-            alt: 'Donate with PayPal button',
-            title: 'PayPal - The safer, easier way to pay online!'
-          }
-        }).render('#donate-button');
-      </script>
+  <!-- Fire at Will -->
+  <div class="juego">
+    <img src="carley_foto_web/para fire at will.png" alt="Fire at Will" class="juego-img" />
+    <h3>Fire at Will</h3>
+    <p>Battle Royale con modos intensos de combate. ¡Descárgalo ya!</p>
+    <div class="flex-center">
+      <a href="#" class="boton-juego descargar" data-app="Fire at Will">Descargar</a>
+      <button class="boton-juego" onclick="toggleForm('form-fire')">Soporte</button>
     </div>
-  </section>
+    <div id="form-fire" class="formulario-soporte">
+      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Gmail | Juego: Fire at Will" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
+        <input type="email" name="email" placeholder="Tu correo" required />
+        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
+        <button type="submit">Enviar reporte</button>
+      </form>
+    </div>
+  </div>
 
-  <section id="contacto">
-    <h2>Contacto 📧</h2>
-    <p>¿Tienes ideas, preguntas o quieres colaborar? Envíanos un mensaje desde el formulario de soporte técnico.</p>
-  </section>
+  <!-- Creative Engine -->
+  <div class="juego">
+    <img src="imags/Creative Engine.png" alt="Creative Engine" class="juego-img" />
+    <h3>Creative Engine</h3>
+    <p>Motor para crear tus propios videojuegos. ¡Próximamente disponible!</p>
+    <div class="flex-center">
+      <a href="#" class="boton-juego descargar" data-app="Creative Engine">Descargar</a>
+      <button class="boton-juego" onclick="toggleForm('form-creative')">Soporte</button>
+    </div>
+    <div id="form-creative" class="formulario-soporte">
+      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Gmail | Creative Engine" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
+        <input type="email" name="email" placeholder="Tu correo" required />
+        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
+        <button type="submit">Enviar reporte</button>
+      </form>
+    </div>
+  </div>
+</section><section id="apoyo">
+  <h2>Apóyanos ❤️</h2>
+  <p>Tu apoyo nos impulsa a seguir creando experiencias increíbles.</p>
+  <div id="donate-button-container">
+    <div id="donate-button"></div>
+    <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+    <script>
+      PayPal.Donation.Button({
+        env: 'production',
+        hosted_button_id: 'JZ4KM2VUD6AMQ',
+        image: {
+          src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+          alt: 'Donate with PayPal button',
+          title: 'PayPal - The safer, easier way to pay online!'
+        }
+      }).render('#donate-button');
+    </script>
+  </div>
+  <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20"
+     class="boton-juego" target="_blank">
+    Únete a nuestro canal de WhatsApp
+  </a>
+</section>
 
-  <footer>
-    <p>&copy; 2025 Carley Interactive Studio</p>
-  </footer>
+<section id="contacto">
+  <h2>Contacto 📧</h2>
+  <p>¿Tienes ideas, preguntas o quieres colaborar? Envíanos un mensaje desde el formulario de soporte técnico.</p>
+</section>
 
+<footer>
+  <p>&copy; 2025 Carley Interactive Studio</p>
+</footer>
+
+<!-- Modales de autenticación -->
+<div id="modal-backdrop" class="modal-backdrop oculto"></div>
+
+<div id="modal-login" class="modal oculto">
+  <h3>Iniciar sesión</h3>
+  <input id="login-email" type="email" placeholder="Email" required>
+  <input id="login-password" type="password" placeholder="Contraseña" required>
+  <button id="login-submit">Entrar</button>
+  <a id="open-forgot">¿Olvidaste tu contraseña?</a>
+</div>
+
+<div id="modal-register" class="modal oculto">
+  <h3>Crear cuenta</h3>
+  <input id="reg-email"            type="email"    placeholder="Email" required>
+  <input id="reg-password"         type="password" placeholder="Contraseña" required>
+  <input id="reg-confirm-password" type="password" placeholder="Confirmar contraseña" required>
+  <input id="reg-phone"            type="tel"      placeholder="Teléfono (opcional)">
+  <small>Si no agregas teléfono, podrías no recuperar tu cuenta en el futuro.</small>
+  <button id="register-submit">Registrar y entrar</button>
+</div>
+
+<div id="modal-forgot" class="modal oculto">
+  <h3>Recuperar contraseña</h3>
+  <input id="fog-email" type="email" placeholder="Email" required>
+  <input id="fog-phone" type="tel"   placeholder="Teléfono">
+  <button id="fog-request-code">Enviar código</button>
+  <div id="fog-step2" class="oculto">
+    <input id="fog-code" type="text" maxlength="8" placeholder="Código de 8 dígitos">
+    <button id="fog-verify-code">Verificar código</button>
+  </div>
+</div>
+
+<!-- Chat Carley Bot -->
+<div id="chat-widget" class="chat-widget oculto">
+  <div class="chat-header">
+    <img src="imags/Carley Bot.png" alt="Carley Bot" class="bot-avatar">
+    <span class="bot-name">Carley Bot</span>
+    <button id="chat-close-btn" class="chat-close-btn">✖️</button>
+  </div>
+  <div class="chat-body" id="chat-messages"></div>
+  <div class="chat-input">
+    <input id="chat-input-field" type="text" placeholder="Escribe un mensaje..." />
+    <button id="chat-send-btn">Enviar</button>
+  </div>
+</div>
+<button id="chat-open-btn" class="chat-open-btn">💬</button><!-- Scripts finales -->
+<script>
+  // Helpers
+  const settingsBtn  = document.getElementById('settings-btn');
+  const settingsMenu = document.getElementById('settings-menu');
+  const backDrop     = document.getElementById('modal-backdrop');
+  const mLogin       = document.getElementById('modal-login');
+  const mRegister    = document.getElementById('modal-register');
+  const mForgot      = document.getElementById('modal-forgot');
+
+  function toggleModal(modal) {
+    const hidden = modal.classList.contains('oculto');
+    [modal, backDrop].forEach(el =>
+      el.classList.toggle('oculto', !hidden)
+    );
+  }
+
+  // Menú de opciones
+  settingsBtn.onclick = () => {
+    const shown = settingsMenu.style.display === 'flex';
+    settingsMenu.style.display = shown ? 'none' : 'flex';
+  };
+  document.getElementById('back-btn').onclick = () => {
+    settingsMenu.style.display = 'none';
+  };
+  document.getElementById('login-btn').onclick    = () => toggleModal(mLogin);
+  document.getElementById('register-btn').onclick = () => toggleModal(mRegister);
+  backDrop.onclick = () => [mLogin, mRegister, mForgot, backDrop].forEach(el =>
+    el.classList.add('oculto')
+  );
+
+  // Supabase Auth: Registro
+  document.getElementById('register-submit').onclick = async () => {
+    const email    = document.getElementById('reg-email').value;
+    const pass     = document.getElementById('reg-password').value;
+    const confirm  = document.getElementById('reg-confirm-password').value;
+    const phone    = document.getElementById('reg-phone').value || null;
+    if (pass !== confirm) return alert('Las contraseñas no coinciden.');
+
+    const { error } = await supabase.auth.signUp({
+      email, password: pass, options: { data: { phone } }
+    });
+    if (error) return alert(error.message);
+    toggleModal(mRegister);
+    showLogoutOption();
+    alert('Cuenta creada e iniciada con éxito.');
+  };
+
+  // Supabase Auth: Login
+  document.getElementById('login-submit').onclick = async () => {
+    const email = document.getElementById('login-email').value;
+    const pass  = document.getElementById('login-password').value;
+    const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+    if (error) return alert(error.message);
+    toggleModal(mLogin);
+    showLogoutOption();
+    alert('¡Bienvenido de nuevo!');
+  };
+
+  // Supabase Auth: Logout
+  const logoutBtn = document.createElement('button');
+  logoutBtn.textContent = 'Cerrar sesión';
+  logoutBtn.id = 'logout-btn-menu';
+  logoutBtn.style.display = 'none';
+  logoutBtn.classList.add('boton-juego');
+  settingsMenu.appendChild(logoutBtn);
+
+  logoutBtn.onclick = async () => {
+    await supabase.auth.signOut();
+    logoutBtn.style.display = 'none';
+    document.getElementById('login-btn').style.display = 'block';
+    document.getElementById('register-btn').style.display = 'block';
+    alert('Has cerrado sesión.');
+  };
+
+  // Verifica sesión al cargar
+  async function showLogoutOption() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      logoutBtn.style.display = 'inline-block';
+      document.getElementById('login-btn').style.display = 'none';
+      document.getElementById('register-btn').style.display = 'none';
+    }
+  }
+  showLogoutOption();
+
+  // Recuperación de contraseña
+  document.getElementById('open-forgot').onclick = () => {
+    toggleModal(mLogin);
+    toggleModal(mForgot);
+  };
+
+  document.getElementById('fog-request-code').onclick = async () => {
+    const email = document.getElementById('fog-email').value;
+    const phone = document.getElementById('fog-phone').value;
+
+    const { data: user } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('email', email)
+      .eq('phone', phone)
+      .single();
+    if (!user) return alert('Correo o teléfono no coinciden.');
+
+    await fetch('/.netlify/functions/send-reset-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, phone })
+    });
+
+    document.getElementById('fog-step2').classList.remove('oculto');
+    alert('Código enviado. Revisa tu correo/SMS.');
+  };
+
+  document.getElementById('fog-verify-code').onclick = async () => {
+    const email = document.getElementById('fog-email').value;
+    const code  = document.getElementById('fog-code').value;
+
+    const res = await fetch('/.netlify/functions/verify-code', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, code })
+    });
+    const { valid } = await res.json();
+    if (!valid) return alert('Código incorrecto.');
+
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: location.origin + '/reset-password.html'
+    });
+    toggleModal(mForgot);
+    alert('Código verificado. Revisa tu correo para cambiar tu contraseña.');
+  };
+
+  // Descarga con alerta
+  document.querySelectorAll('.descargar').forEach(btn => {
+    btn.onclick = e => {
+      e.preventDefault();
+      alert('Este proyecto aún está en desarrollo.\nPróximamente “Creative Engine” para que tú también crees tu mundo.');
+      window.location.href = 'creative-engine.html';
+    };
+  });
+
+  function toggleForm(id) {
+    document.getElementById(id).classList.toggle('mostrar');
+  }
+
+  // Chat: Carley Bot
+  const chatWidget   = document.getElementById('chat-widget');
+  const openBtn      = document.getElementById('chat-open-btn');
+  const closeBtn     = document.getElementById('chat-close-btn');
+  const sendBtn      = document.getElementById('chat-send-btn');
+  const inputField   = document.getElementById('chat-input-field');
+  const messagesEl   = document.getElementById('chat-messages');
+
+  openBtn.onclick  = () => chatWidget.classList.remove('oculto');
+  closeBtn.onclick = () => chatWidget.classList.add('oculto');
+
+  function appendMessage(text, isBot = false) {
+    const msg = document.createElement('div');
+    msg.className = isBot ? 'msg bot' : 'msg user';
+    msg.textContent = text;
+    messagesEl.appendChild(msg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function getBotResponse(txt) {
+    const msg = txt.toLowerCase();
+
+    if (msg.includes('recuper') && msg.includes('cuenta')) {
+      return 'Puedes recuperar tu cuenta aquí: https://carleyinteractivestudio.github.io/reset-password.html';
+    }
+    if (msg.includes('whatsapp')) {
+      return 'Únete a nuestro canal: https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20';
+    }
+    if (msg.includes('proyecto') || msg.includes('objetivo')) {
+      return 'Desarrollamos juegos como Fire at Will y estamos creando Creative Engine para que tú también diseñes tu propio mundo.';
+    }
+    if (msg.includes('creador') || msg.includes('dueñ')) {
+      return 'Fui creado por John Carley y Copilot.';
+    }
+    if (msg.includes('hola') || msg.includes('buen')) {
+      return '¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte?';
+    }
+    return 'Lo siento, no entendí. Puedo ayudarte con recuperación de cuenta, WhatsApp, proyectos o información general.';
+  }
+
+  sendBtn.onclick = () => {
+    const text = inputField.value.trim();
+    if (!text) return;
+    appendMessage(text, false);
+    inputField.value = '';
+    setTimeout(() => {
+      appendMessage(getBotResponse(text), true);
+    }, 300);
+  };
+
+  inputField.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendBtn.click();
+  });
+</script>
 </body>
 </html>

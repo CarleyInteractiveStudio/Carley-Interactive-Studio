@@ -1,92 +1,197 @@
-/* --- Fondo y texto base --- */
-body {
-  background-color: #0a0a0a;
-  color: #f2f2f2;
-  font-family: 'Segoe UI', sans-serif;
+/* ==============================
+   Variables generales
+============================== */
+:root {
+  --bg: #0a0a0a;
+  --surface: #111;
+  --card: #1a1a1a;
+  --text: #f2f2f2;
+  --primary: #ff004f;
+  --primary-dark: #c4003a;
+  --secondary: #00aaff;
+  --radius: 8px;
+  --transition-fast: 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* --- Encabezado --- */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+/* =============================
+   Encabezado y navegación
+============================= */
 header {
-  background-color: #111;
-  padding: 1rem;
-  text-align: center;
+  position: relative;
+  background: var(--surface);
+  padding: 1rem 2rem;
   border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 header h1 {
-  font-size: 2.5rem;
-  color: #ff004f;
+  font-size: 2rem;
+  color: var(--primary);
   margin-bottom: 0.5rem;
 }
 
-/* --- Menú de navegación --- */
+nav {
+  display: flex;
+  gap: 1rem;
+}
+
 nav a {
-  margin: 0 0.7rem;
-  color: #00aaff;
+  color: var(--secondary);
   text-decoration: none;
   font-weight: bold;
+  transition: color var(--transition-fast);
 }
 
 nav a:hover {
-  text-decoration: underline;
+  color: var(--primary);
 }
 
-/* --- Secciones --- */
+/* =============================
+   Botón ⚙️ y menú de opciones
+============================= */
+.gear {
+  width: 40px;
+  height: 40px;
+  background: var(--card);
+  color: var(--text);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform var(--transition-fast);
+}
+
+.gear:hover {
+  transform: rotate(90deg) scale(1.1);
+}
+
+.menu-oculto {
+  display: none;
+}
+
+#settings-menu {
+  position: absolute;
+  top: 60px;
+  right: 2rem;
+  width: 220px;
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+  flex-direction: column;
+  animation: fadeInDown var(--transition-fast);
+}
+
+#settings-menu button {
+  background: none;
+  border: none;
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+#settings-menu button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================
+   Secciones generales
+============================= */
 section {
   padding: 2rem;
   border-bottom: 1px solid #333;
   text-align: center;
 }
 
-/* --- Tarjeta de juego --- */
+section h2 {
+  font-size: 2rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+section p {
+  max-width: 700px;
+  margin: 0 auto 1rem;
+  color: var(--text);
+}
+
+/* =============================
+   Juegos destacados
+============================= */
 .juego {
-  background-color: #222;
-  padding: 1rem;
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: var(--radius);
   margin-bottom: 2rem;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  transition: transform var(--transition-fast);
 }
 
 .juego:hover {
-  transform: scale(1.02);
+  transform: translateY(-5px);
 }
 
 .juego-img {
   width: 100%;
   max-width: 400px;
-  border-radius: 6px;
+  border-radius: var(--radius);
   margin-bottom: 1rem;
-  box-shadow: 0 0 10px #ff004f88;
+  box-shadow: 0 0 12px rgba(255, 0, 79, 0.4);
 }
 
-/* --- Botones (descarga y soporte) --- */
-.boton-juego,
-.formulario-soporte button {
+/* =============================
+   Botones principales
+============================= */
+.boton-juego {
   display: inline-block;
-  position: relative;
   padding: 0.8rem 1.5rem;
-  background: linear-gradient(145deg, #ff004f, #c4003a);
-  color: white;
-  font-size: 1rem;
+  background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+  color: #fff;
   font-weight: bold;
-  text-decoration: none;
   border-radius: 50px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 15px #ff004f99;
-  margin-top: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(255,0,79,0.5);
   cursor: pointer;
+  margin: 0.3rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+  overflow: hidden;
 }
 
-.boton-juego:hover,
-.formulario-soporte button:hover {
+.boton-juego:hover {
   transform: scale(1.06);
-  box-shadow: 0 0 25px #ff004fdd;
+  box-shadow: 0 10px 24px rgba(255,0,79,0.8);
 }
 
-/* --- Efecto de brillo --- */
 .boton-juego::before {
   content: "";
   position: absolute;
@@ -94,7 +199,7 @@ section {
   left: -100%;
   width: 200%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   transform: skewX(-45deg);
   transition: left 0.5s ease;
 }
@@ -103,42 +208,281 @@ section {
   left: 100%;
 }
 
-/* --- Formulario de soporte oculto --- */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* =============================
+   Formularios de soporte técnico
+============================= */
 .formulario-soporte {
   display: none;
   margin-top: 1rem;
+  background: var(--bg);
+  border-left: 4px solid var(--secondary);
+  border-radius: var(--radius);
   padding: 1rem;
-  background-color: #1a1a1a;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #00aaff55;
-  animation: fadeIn 0.5s ease-in;
+  box-shadow: 0 6px 24px rgba(0,170,255,0.2);
+  animation: fadeInUp var(--transition-fast);
 }
 
 .formulario-soporte.mostrar {
   display: block;
 }
 
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .formulario-soporte input,
 .formulario-soporte textarea {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.75rem;
   margin-bottom: 1rem;
-  background-color: #0f0f0f;
+  background: var(--card);
   border: 1px solid #333;
-  color: #f2f2f2;
-  border-radius: 5px;
+  border-radius: var(--radius);
+  color: var(--text);
 }
 
-/* --- Animación de aparición --- */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* =============================
+   Modales de inicio / registro / recuperar
+============================= */
+.modal-backdrop {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+  z-index: 999;
 }
 
-/* --- Pie de página --- */
+.modal-backdrop:not(.oculto) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 90%;
+  max-width: 400px;
+  background: rgba(20,20,20,0.95);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: transform var(--transition-fast), opacity var(--transition-fast), visibility var(--transition-fast);
+  z-index: 1000;
+}
+
+.modal:not(.oculto) {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal h3 {
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+
+.modal input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background: var(--card);
+  border: 1px solid #333;
+  border-radius: var(--radius);
+  color: var(--text);
+}
+
+.modal a {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--secondary);
+  text-align: center;
+  text-decoration: none;
+}
+
+/* =============================
+   Chat – Carley Bot
+============================= */
+.chat-open-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.chat-widget {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.chat-header {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bot-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.bot-name {
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.chat-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.chat-body {
+  flex-grow: 1;
+  padding: 0.5rem;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.msg {
+  margin: 0.3rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.msg.user {
+  background: var(--primary);
+  color: #fff;
+  align-self: flex-end;
+}
+
+.msg.bot {
+  background: var(--card);
+  color: var(--text);
+  align-self: flex-start;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #333;
+}
+
+#chat-input-field {
+  flex-grow: 1;
+  padding: 0.5rem;
+  background: var(--card);
+  border: none;
+  color: var(--text);
+  border-top-left-radius: var(--radius);
+}
+
+#chat-send-btn {
+  background: var(--secondary);
+  border: none;
+  color: #fff;
+  padding: 0 1rem;
+  cursor: pointer;
+  border-top-right-radius: var(--radius);
+}
+
+#chat-send-btn:hover {
+  background: var(--primary);
+}
+
+/* ======================
+   Pie de página
+====================== */
 footer {
-  background-color: #111;
+  background: var(--surface);
   padding: 1rem;
   text-align: center;
   font-size: 0.9rem;
+}
+
+/* ======================
+   Utilidades
+====================== */
+.oculto {
+  display: none !important;
+}
+
+.mostrar {
+  display: block !important;
+}
+
+/* ======================
+   Responsividad
+====================== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .flex-center {
+    flex-direction: column;
+  }
+
+  section {
+    padding: 1.5rem;
+  }
+
+  .modal {
+    padding: 1.5rem;
+  }
+
+  .chat-widget {
+    right: 10px;
+    bottom: 70px;
+    width: 95%;
+    max-width: 360px;
+  }
 }
