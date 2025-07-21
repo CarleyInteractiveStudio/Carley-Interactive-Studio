@@ -1,0 +1,79 @@
+[
+  {
+    "intents": [
+      "descargar fire at will",
+      "dónde puedo descargar fire at will",
+      "download fire at will"
+    ],
+    "respuesta": "Puedes descargar Fire at Will desde nuestra web en la sección de Juegos. ¡Actualmente solo en Android!"
+  },
+  {
+    "intents": [
+      "descargar the battle of the capsurers",
+      "dónde puedo descargar the battle",
+      "download capsurers"
+    ],
+    "respuesta": "The Battle of the Capsurers estará disponible en Android. Podrás descargarlo en 2025 en nuestra web."
+  },
+  {
+    "intents": [
+      "la república",
+      "republica"
+    ],
+    "respuesta": "La República está en desarrollo y pronto compartiremos más detalles sobre su lanzamiento."
+  },
+  {
+    "intents": [
+      "power force"
+    ],
+    "respuesta": "Power Force aún está en desarrollo. Mantente atento para las noticias de su lanzamiento."
+  },
+  {
+    "intents": [
+      "creative engine",
+      "motor",
+      "engine"
+    ],
+    "respuesta": "Creative Engine es nuestro motor en desarrollo para crear videojuegos con ayuda de IA. ¡Próximamente!"
+  },
+  {
+    "intents": [
+      "cuándo sale",
+      "fecha lanzamiento",
+      "cuándo se lanza",
+      "para qué año"
+    ],
+    "respuesta": "Fire at Will y The Battle of the Capsurers están planeados para lanzarse en 2025."
+  },
+  {
+    "intents": [
+      "iniciar sesión",
+      "login",
+      "entrar"
+    ],
+    "respuesta": "Para iniciar sesión, presiona el icono ⚙️, luego 'Iniciar sesión' e ingresa tu correo y contraseña."
+  },
+  {
+    "intents": [
+      "recuperar cuenta",
+      "recuperar contraseña",
+      "olvidé mi contraseña"
+    ],
+    "respuesta": "Pulsa '¿Olvidaste tu contraseña?' en el formulario de inicio y sigue los pasos para recuperar tu cuenta."
+  },
+  {
+    "intents": [
+      "gracias",
+      "thank you"
+    ],
+    "respuesta": "¡A ti! Estoy para ayudarte en lo que necesites 😊"
+  },
+  {
+    "intents": [
+      "hola",
+      "buenos días",
+      "buenas"
+    ],
+    "respuesta": "¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte hoy?"
+  }
+]
