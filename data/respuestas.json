@@ -63,17 +63,247 @@
   },
   {
     "intents": [
+      "hola",
+      "buenos días",
+      "buenas",
+      "hey"
+    ],
+    "respuesta": "¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte hoy?"
+  },
+  {
+    "intents": [
       "gracias",
-      "thank you"
+      "thank you",
+      "gracias bot"
     ],
     "respuesta": "¡A ti! Estoy para ayudarte en lo que necesites 😊"
   },
   {
     "intents": [
-      "hola",
-      "buenos días",
-      "buenas"
+      "quién eres",
+      "quien eres",
+      "about",
+      "¿qué eres?"
     ],
-    "respuesta": "¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte hoy?"
+    "respuesta": "Soy Carley Bot, tu asistente virtual de Carley Interactive Studio. ¡Estoy aquí para ayudarte!"
+  },
+  {
+    "intents": [
+      "ayuda",
+      "help",
+      "comandos",
+      "qué puedes hacer"
+    ],
+    "respuesta": "Puedo ayudar con descargas, soporte técnico, registro e inicio de sesión, además de responder preguntas sobre nuestros juegos."
+  },
+  {
+    "intents": [
+      "adiós",
+      "bye",
+      "hasta luego",
+      "nos vemos"
+    ],
+    "respuesta": "¡Hasta luego! Si necesitas algo más, aquí estaré. 😊"
+  },
+  {
+    "intents": [
+      "redes sociales",
+      "tienes redes",
+      "social media"
+    ],
+    "respuesta": "Encuéntranos en YouTube, WhatsApp y Facebook. Usa los enlaces en la sección de chat para acceder."
+  },
+  {
+    "intents": [
+      "cómo me registro",
+      "como registro",
+      "sign up",
+      "crear cuenta"
+    ],
+    "respuesta": "Para crear una cuenta, abre el menú ⚙️, haz clic en 'Crear cuenta' y llena todos los campos requeridos."
+  },
+  {
+    "intents": [
+      "por qué usar creative engine",
+      "ventajas creative engine",
+      "features engine"
+    ],
+    "respuesta": "Creative Engine te permite desarrollar juegos que iran mas alla de la imaginacion y puede que salga con IA desde el primer lanzamiento."
+  },
+  {
+    "intents": [
+      "bug",
+      "error",
+      "soporte",
+      "reportar bug",
+      "reportar error",
+      "feedback"
+    ],
+    "respuesta": "Para reportar un error, haz clic en 'Soporte' junto al juego afectado y envía tu descripción."
+  },
+  {
+    "intents": [
+      "política de privacidad",
+      "privacidad",
+      "data policy"
+    ],
+    "respuesta": "Consulta nuestra Política de Privacidad en el pie de página de la web para más información."
+  },
+  {
+    "intents": [
+      "términos",
+      "terms",
+      "condiciones",
+      "license"
+    ],
+    "respuesta": "Lee nuestros Términos de Uso y el Acuerdo de Licencia en la sección 'Legal' del sitio web."
+  },
+  {
+    "intents": [
+      "contacto",
+      "contactar",
+      "support",
+      "soporte general"
+    ],
+    "respuesta": "Puedes contactarnos vía el formulario de soporte en cada juego o escribirnos al correo empresariacarley16@.com."
+  },
+  {
+    "intents": [
+      "cómo estás",
+      "como estas",
+      "cómo te va",
+      "que tal",
+      "qué tal",
+      "cómo va todo"
+    ],
+    "respuesta": "¡Estoy genial, gracias por preguntar! ¿Y tú cómo estás?"
+  },
+  {
+    "intents": [
+      "buenos días",
+      "buenas tardes",
+      "buenas noches",
+      "holaaa",
+      "saludos"
+    ],
+    "respuesta": "¡Saludos! Espero que estés teniendo un día increíble 😊"
+  },
+  {
+    "intents": [
+      "qué haces",
+      "que haces",
+      "a qué te dedicas",
+      "what are you doing"
+    ],
+    "respuesta": "Estoy aquí disponible para ayudarte con lo que necesites, ¡listo para charlar!"
+  },
+  {
+    "intents": [
+      "cuéntame un chiste",
+      "dime un chiste",
+      "hazme reír",
+      "un chiste",
+      "tell me a joke"
+    ],
+    "respuesta": "¿Por qué los programadores confunden Halloween con Navidad? Porque OCT 31 = DEC 25 🎃➡️🎄"
+  },
+  {
+    "intents": [
+      "otro chiste",
+      "más chistes",
+      "otro",
+      "otro por favor"
+    ],
+    "respuesta": "¿Cómo se despiden los químicos? Ácido un placer 😄"
+  },
+  {
+    "intents": [
+      "feliz fin de semana",
+      "buen finde",
+      "feliz finde"
+    ],
+    "respuesta": "¡Feliz fin de semana! Que lo disfrutes al máximo 🌞"
+  },
+  {
+    "intents": [
+      "feliz año nuevo",
+      "próspero año nuevo",
+      "feliz año"
+    ],
+    "respuesta": "¡Feliz Año Nuevo! Te deseo 365 días llenos de éxitos 🎉"
+  },
+  {
+    "intents": [
+      "mil gracias",
+      "muchas gracias de nuevo",
+      "thanks again"
+    ],
+    "respuesta": "¡De nada! Siempre es un placer ayudarte 😊"
+  },
+  {
+    "intents": [
+      "chau",
+      "chao",
+      "nos vemos",
+      "adiós de nuevo"
+    ],
+    "respuesta": "¡Hasta pronto! Aquí estaré cuando me necesites 👋"
+  },
+  {
+    "intents": [
+      "motivacion descargar juego",
+      "ansioso por jugar",
+      "cuando sale para descargar",
+      "listo para descargar"
+    ],
+    "respuesta": "¡Se acerca el gran día! Prepárate para descargar nuestros juegos y sumérgete en una experiencia épica desde el primer segundo."
+  },
+  {
+    "intents": [
+      "descargar fire at will",
+      "cuando sale fire at will",
+      "download fire at will when",
+      "motivacion fire at will"
+    ],
+    "respuesta": "Fire at Will llegará muy pronto. ¡Descárgalo apenas esté disponible y demuestra tu habilidad en cada batalla!"
+  },
+  {
+    "intents": [
+      "descargar the battle of the capsurers",
+      "cuando sale capsurers",
+      "motivacion capsurers",
+      "download capsurers when"
+    ],
+    "respuesta": "The Battle of the Capsurers te está llamando. ¡Sé de los primeros en explorar sus campos de batalla y dominar la acción!"
+  },
+  {
+    "intents": [
+      "cuéntame otro chiste",
+      "dime un chiste divertido",
+      "otro chiste",
+      "chistes de videojuegos"
+    ],
+    "respuesta": "¿Por qué no pelea un fantasma en los videojuegos? Porque tiene miedo de morir… ¡otra vez! 👻🎮"
+  },
+  {
+    "intents": [
+      "grupo de facebook",
+      "facebook",
+      "grupo del juego",
+      "hacer memes",
+      "publicaciones"
+    ],
+    "respuesta": "Únete a nuestro grupo de Facebook de Carley Interactive Studio para compartir memes, hacer publicaciones y conectar con otros jugadores."
+  },
+  {
+    "intents": [
+      "quién te creó",
+      "quien te creó",
+      "fue creado por",
+      "lo creaste",
+      "desarrollador"
+    ],
+    "respuesta": "Fui creado por John Carley, el genio detrás de Carley Interactive Studio. ¡Un placer conocerte!"
   }
 ]
+
