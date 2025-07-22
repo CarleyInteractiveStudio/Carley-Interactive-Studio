@@ -351,9 +351,9 @@
 
   function getBotResponse(txt) {
     const msg = txt.toLowerCase();
-
+    
     if (msg.includes('recuper') && msg.includes('cuenta')) {
-      return 'Puedes recuperar tu cuenta aquí: https://carleyinteractivestudio.github.io/reset-password.html';
+      return 'Para recuperar su contrasena dirigese a comfiguracion, si estas con la sesion inisiada presiona serrar sesion, luego iniciarsesion y por ultimo presiona me olvide de mi contrasena, poner los datos y listo se le mandara un codigo con la cual podras cambiar su contrasena, puedo ayudarte en otra cosea?';
     }
     if (msg.includes('whatsapp')) {
       return 'Únete a nuestro canal: https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20';
@@ -361,13 +361,92 @@
     if (msg.includes('proyecto') || msg.includes('objetivo')) {
       return 'Desarrollamos juegos como Fire at Will y estamos creando Creative Engine para que tú también diseñes tu propio mundo.';
     }
+    if (msg.includes('recuperar') && msg.includes('cuenta')) {
+    return 'Pulsa "¿Olvidaste tu contraseña?" y sigue los pasos para recuperar tu cuenta.';
+  }
+
+  if (msg.includes('descargar') && msg.includes('fire at will')) {
+    return 'Fire at Will estará disponible en Android y se lanzará en 2025. ¡Prepárate para la acción!';
+  }
+
+  if (msg.includes('descargar') && msg.includes('the battle')) {
+    return 'The Battle of the Capsurers estará disponible en Android. ¡Explora su mundo multijugador!';
+  }
+
+  if (msg.includes('la república')) {
+    return 'La República está en desarrollo. Pronto habrá noticias sobre su lanzamiento.';
+  }
+
+  if (msg.includes('power force')) {
+    return 'Power Force está en preparación. ¡Mantente atento para conocer más detalles!';
+  }
+
+  if (msg.includes('creative engine') || msg.includes('motor') || msg.includes('engine')) {
+    return 'Creative Engine es nuestro motor con IA para que diseñes tus propios videojuegos. ¡Muy pronto!';
+  }
+
+  if (msg.includes('cuándo') && msg.includes('sale')) {
+    return 'Nuestros juegos principales están planeados para lanzarse en 2025.';
+  }
+
+  if (msg.includes('iniciar sesión') || msg.includes('login') || msg.includes('entrar')) {
+    return 'Presiona el icono ⚙️, luego "Iniciar sesión" e ingresa tu correo y contraseña.';
+  }
+
+  if (msg.includes('crear cuenta') || msg.includes('registro') || msg.includes('registrarme')) {
+    return 'Haz clic en ⚙️ → "Crear cuenta" y completa los campos para registrarte.';
+  }
+
+  if (msg.includes('hola') || msg.includes('buenas') || msg.includes('saludos')) {
+    return '¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte hoy?';
+  }
+
+  if (msg.includes('gracias') || msg.includes('thank you')) {
+    return '¡Gracias a ti! Estoy para ayudarte cuando quieras 😊';
+  }
+
+  if (msg.includes('quién eres') || msg.includes('como te llamas') || msg.includes('cual es tu nombre')) {
+    return 'Soy Carley Bot, el asistente de Carley Interactive Studio. ¡Un gusto conocerte!';
+  }
+
+  if (msg.includes('ayuda') || msg.includes('comandos') || msg.includes('puedes hacer')) {
+    return 'Puedo ayudarte con descargas, inicio de sesión, soporte y responder dudas sobre nuestros juegos.';
+  }
+
+  if (msg.includes('adiós') || msg.includes('nos vemos') || msg.includes('hasta luego')) {
+    return '¡Hasta pronto! Si me necesitas, estaré por aquí 👋';
+  }
+
+  if (msg.includes('redes sociales') || msg.includes('facebook') || msg.includes('youtube')) {
+    return 'Puedes seguirnos en YouTube, Facebook y WhatsApp. Los enlaces están justo aquí abajo 👇';
+  }
+
+  if (msg.includes('términos') || msg.includes('condiciones') || msg.includes('licencia')) {
+    return 'Puedes consultar nuestros Términos de Uso y política de privacidad al final de la página.';
+  }
+
+  if (msg.includes('contacto') || msg.includes('soporte') || msg.includes('problema')) {
+    return 'Envía un mensaje usando el formulario de soporte debajo de cada juego, o escríbenos directamente.';
+  }
+
+  if (msg.includes('creador') || msg.includes('quién te creó') || msg.includes('john')) {
+    return 'Fui creado por John Carley, fundador de Carley Interactive Studio. 🔥';
+  }
+
+  if (msg.includes('chiste') || msg.includes('hazme reír')) {
+    return '¿Por qué los programadores confunden Halloween con Navidad? Porque OCT 31 = DEC 25 🎃➡️🎄';
+  }
+
+  if (msg.includes('facebook') && msg.includes('grupo')) {
+    return 'Únete a nuestro grupo en Facebook para compartir ideas, memes y conocer a otros jugadores: https://facebook.com/groups/carleyJuego';
+  }
     if (msg.includes('creador') || msg.includes('dueñ')) {
-      return 'Fui creado por John Carley y Copilot.';
+      return 'Fui creado por John Carley, el genio detras de Carley Interactive Studio';
     }
     if (msg.includes('hola') || msg.includes('buen')) {
       return '¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte?';
     }
-    return 'Lo siento, no entendí. Puedo ayudarte con recuperación de cuenta, WhatsApp, proyectos o información general.';
+    return 'Lo siento, su pregunta va mas alla de mi capacidad y conosimiento, puedes contactar a mi creador y hacer su pregunta. Puedo ayudarte con recuperación de cuenta, WhatsApp, proyectos o información general.';
   }
 
   sendBtn.onclick = () => {
