@@ -1,11 +1,12 @@
 // js/main.js
 window.addEventListener('DOMContentLoaded', () => {
-  // Inicializar Supabase
+  // 1) Inicializar Supabase
   const SUPABASE_URL = 'https://rblftfzbqllnuadqtufb.supabase.co';
-  const SUPABASE_KEY = 'TU_PUBLIC_ANON_KEY';
-  const supabase     = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJibGZ0ZnpicWxsbnVhZHF0dWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5NjQyMzQsImV4cCI6MjA2ODU0MDIzNH0.cH-KJG2k43dKQaVccQDkw7t6m0sf1zIOLWPADdmKLt8';
+  const { createClient } = window.supabase;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Panels de feedback
+  // 2) Panels de feedback
   const errorPanel   = document.getElementById('error-panel');
   const successPanel = document.getElementById('success-panel');
   function mostrarError(msg) {
@@ -19,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => successPanel.classList.add('oculto'), 4000);
   }
 
-  // Menú ⚙️
+  // 3) Menú de configuración ⚙️
   const settingsBtn  = document.getElementById('settings-btn');
   const settingsMenu = document.getElementById('settings-menu');
   settingsBtn.onclick = () => {
@@ -30,15 +31,17 @@ window.addEventListener('DOMContentLoaded', () => {
     settingsMenu.style.display = 'none';
   };
 
-  // Modales y backdrop
+  // 4) Modales y backdrop
   const backDrop  = document.getElementById('modal-backdrop');
   const mLogin    = document.getElementById('modal-login');
   const mRegister = document.getElementById('modal-register');
   const mForgot   = document.getElementById('modal-forgot');
   const mChange   = document.getElementById('modal-change');
   function toggleModal(modal) {
-    const hidden = modal.classList.contains('oculto');
-    [modal, backDrop].forEach(el => el.classList.toggle('oculto', !hidden));
+    const show = modal.classList.contains('oculto');
+    [modal, backDrop].forEach(el =>
+      el.classList.toggle('oculto', !show)
+    );
   }
   document.getElementById('login-btn').onclick    = () => toggleModal(mLogin);
   document.getElementById('register-btn').onclick = () => toggleModal(mRegister);
@@ -47,7 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
       el.classList.add('oculto')
     );
 
-  // Botón Cerrar sesión dinámico
+  // 5) Botón “Cerrar sesión” dinámico
   const logoutBtn = document.createElement('button');
   logoutBtn.id          = 'logout-btn-menu';
   logoutBtn.textContent = 'Cerrar sesión';
@@ -62,22 +65,20 @@ window.addEventListener('DOMContentLoaded', () => {
     mostrarExito('Has cerrado sesión.');
   };
 
-  // Verificar sesión al cargar
-    // Verificar sesión al cargar
+  // 6) Verificar sesión al cargar
   async function showLogoutOption() {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
       logoutBtn.style.display = 'inline-block';
       document.getElementById('login-btn').style.display    = 'none';
       document.getElementById('register-btn').style.display = 'none';
-      // Ocultar el campo email en formularios de soporte si ya hay sesión
       document.querySelectorAll('.formulario-soporte input[type="email"]')
         .forEach(el => el.style.display = 'none');
     }
   }
   showLogoutOption();
 
-  // Registro
+  // 7) Registro
   document.getElementById('register-submit').onclick = async () => {
     const username = document.getElementById('reg-username').value.trim();
     const email    = document.getElementById('reg-email').value.trim();
@@ -85,12 +86,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const confirm  = document.getElementById('reg-confirm-password').value;
     const phone    = document.getElementById('reg-phone').value.trim() || null;
 
-    if (!username) 
-      return mostrarError('Nombre de usuario obligatorio.');
-    if (pass !== confirm) 
-      return mostrarError('Las contraseñas no coinciden.');
+    if (!username) return mostrarError('Nombre de usuario obligatorio.');
+    if (pass !== confirm) return mostrarError('Las contraseñas no coinciden.');
 
-    // Verificar si ya existe
     const { data: existing, error: fetchErr } = await supabase
       .from('profiles')
       .select('email')
@@ -101,10 +99,8 @@ window.addEventListener('DOMContentLoaded', () => {
       console.error(fetchErr);
       return mostrarError('Error al comprobar el correo.');
     }
-    if (existing) 
-      return mostrarError('Este correo ya está registrado.');
+    if (existing) return mostrarError('Este correo ya está registrado.');
 
-    // Crear en Auth
     const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
       email,
       password: pass,
@@ -113,13 +109,12 @@ window.addEventListener('DOMContentLoaded', () => {
         emailRedirectTo: `${location.origin}/bienvenida.html`
       }
     });
-    if (signUpErr) 
-      return mostrarError(signUpErr.message);
+    if (signUpErr) return mostrarError(signUpErr.message);
 
-    // Insertar en tabla profiles
     const { error: profileErr } = await supabase
       .from('profiles')
       .insert([{ id: signUpData.user.id, email, username, phone }]);
+
     if (profileErr) {
       console.error(profileErr);
       return mostrarError('Error al crear tu perfil. Contacta soporte.');
@@ -129,20 +124,18 @@ window.addEventListener('DOMContentLoaded', () => {
     mostrarExito('¡Cuenta creada! Revisa tu correo para confirmar.');
   };
 
-  // Inicio de sesión
+  // 8) Inicio de sesión
   document.getElementById('login-submit').onclick = async () => {
     const email = document.getElementById('login-email').value.trim();
     const pass  = document.getElementById('login-password').value;
-
     const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
-    if (error) 
-      return mostrarError('Inicio fallido: ' + error.message);
+    if (error) return mostrarError('Inicio fallido: ' + error.message);
 
     toggleModal(mLogin);
     showLogoutOption();
     mostrarExito('Sesión iniciada.');
 
-    // Enviar notificación de inicio por correo (serverless)
+    // Enviar notificación (serverless)
     fetch('/send-login-notice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -150,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Recuperar contraseña
+  // 9) Recuperar contraseña
   document.getElementById('open-forgot').onclick = () => {
     toggleModal(mLogin);
     toggleModal(mForgot);
@@ -165,8 +158,7 @@ window.addEventListener('DOMContentLoaded', () => {
       .eq('email', email)
       .eq('phone', phone)
       .single();
-    if (!user) 
-      return mostrarError('Email o teléfono no coinciden.');
+    if (!user) return mostrarError('Email o teléfono no coinciden.');
 
     await fetch('/.netlify/functions/send-reset-code', {
       method: 'POST',
@@ -179,15 +171,13 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('fog-verify-code').onclick = async () => {
     const email = document.getElementById('fog-email').value.trim();
     const code  = document.getElementById('fog-code').value.trim();
-
-    const res = await fetch('/.netlify/functions/verify-code', {
+    const res   = await fetch('/.netlify/functions/verify-code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, code })
     });
     const { valid } = await res.json();
-    if (!valid) 
-      return mostrarError('Código incorrecto.');
+    if (!valid) return mostrarError('Código incorrecto.');
 
     await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: location.origin + '/reset-password.html'
@@ -196,7 +186,7 @@ window.addEventListener('DOMContentLoaded', () => {
     mostrarExito('Revisa tu correo para cambiar tu contraseña.');
   };
 
-  // Cambiar contraseña desde perfil
+  // 10) Cambiar contraseña
   document.getElementById('change-password-btn').onclick = async () => {
     const oldPass = document.getElementById('old-password').value;
     const newPass = document.getElementById('new-password').value;
@@ -204,18 +194,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const email = session.user.email;
 
     const res = await supabase.auth.signInWithPassword({ email, password: oldPass });
-    if (res.error) 
-      return mostrarError('Contraseña actual incorrecta.');
+    if (res.error) return mostrarError('Contraseña actual incorrecta.');
 
     const change = await supabase.auth.updateUser({ password: newPass });
-    if (change.error) 
-      return mostrarError('No se pudo cambiar la contraseña.');
+    if (change.error) return mostrarError('No se pudo cambiar la contraseña.');
 
     toggleModal(mChange);
     mostrarExito('Contraseña actualizada con éxito.');
   };
 
-  // Descargas placeholder
+  // 11) Descargas placeholder
   document.querySelectorAll('.descargar').forEach(btn => {
     btn.onclick = e => {
       e.preventDefault();
@@ -223,12 +211,12 @@ window.addEventListener('DOMContentLoaded', () => {
     };
   });
 
-  // Toggle formularios de soporte
+  // 12) Toggle formularios de soporte
   window.toggleForm = id => {
     document.getElementById(id).classList.toggle('mostrar');
   };
 
-  // Chat Carley Bot
+  // 13) Chat Carley Bot — referencias DOM
   const chatWidget = document.getElementById('chat-widget');
   const openBtn    = document.getElementById('chat-open-btn');
   const closeBtn   = document.getElementById('chat-close-btn');
@@ -237,18 +225,26 @@ window.addEventListener('DOMContentLoaded', () => {
   const messagesEl = document.getElementById('chat-messages');
   let respuestas   = [];
 
+  // 14) Abrir / cerrar chat
   openBtn.onclick  = () => chatWidget.classList.remove('oculto');
   closeBtn.onclick = () => chatWidget.classList.add('oculto');
 
+  // 15) Cargar respuestas JSON
   async function cargarRespuestas() {
     const res = await fetch('data/respuestas.json');
     return res.json();
   }
   async function initBot() {
-    respuestas = await cargarRespuestas();
+    try {
+      respuestas = await cargarRespuestas();
+    } catch (err) {
+      console.error('Error cargando respuestas.json', err);
+      appendMessage('No pude cargar mis respuestas. Revisa la ruta.', true);
+    }
   }
   initBot();
 
+  // 16) Funciones de chat
   function appendMessage(text, isBot = false) {
     const msg = document.createElement('div');
     msg.className = isBot ? 'msg bot' : 'msg user';
@@ -256,43 +252,32 @@ window.addEventListener('DOMContentLoaded', () => {
     messagesEl.appendChild(msg);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
-
   function mostrarBotonesRedes() {
     const html = `
       <div class="redes-botones">
-        <a href="https://youtube.com/@carleyinteractivestudio?si=L4xipACppCy4u6-2" target="_blank">📺 YouTube</a>
+        <a href="https://youtube.com/@carleyinteractivestudio" target="_blank">📺 YouTube</a>
         <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20" target="_blank">📱 WhatsApp</a>
-        <a href="https://www.facebook.com/share/19Lb2KuphF/" target="_blank">📘 Facebook</a>
+        <a href="https://www.facebook.com/groups/carleyJuego" target="_blank">📘 Facebook</a>
       </div>`;
-    messagesEl.innerHTML += html;
+    messagesEl.insertAdjacentHTML('beforeend', html);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
-
-  function obtenerRespuesta(txt) {
-    const msg = txt.toLowerCase();
-    for (const r of respuestas) {
-      if (r.intents.some(i => msg.includes(i))) {
-        return r.respuesta;
-      }
-    }
-    return null;
-  }
-
   sendBtn.onclick = () => {
-    const text = inputField.value.trim();
-    if (!text) return;
-    appendMessage(text, false);
+    const txt = inputField.value.trim();
+    if (!txt) return;
+    appendMessage(txt, false);
     inputField.value = '';
     setTimeout(() => {
-      const resp = obtenerRespuesta(text);
-      if (resp) appendMessage(resp, true);
+      const match = respuestas.find(r =>
+        r.intents.some(i => txt.toLowerCase().includes(i))
+      );
+      if (match) appendMessage(match.respuesta, true);
       else {
         appendMessage('Lo siento, no entendí. Te dejo mis redes:', true);
         mostrarBotonesRedes();
       }
     }, 300);
   };
-
   inputField.addEventListener('keypress', e => {
     if (e.key === 'Enter') sendBtn.click();
   });
