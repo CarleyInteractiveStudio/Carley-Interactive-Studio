@@ -10,12 +10,13 @@ Este sitio está alojado públicamente mediante GitHub Pages, como una solución
 
 ## Juegos disponibles
 
-- **The Battle of the Capsurers** – FPS multijugador con acción táctica
-- **Fire at Will** – Battle Royale intenso con diversos modos de combate
+## app Disponibles
+
+** Carl_V1 Ai 
 
 ## Soporte técnico
 
-Cada juego cuenta con su propio formulario de soporte integrado. Al enviar un reporte, el jugador recibirá una confirmación y el equipo de *Carley Interactive Studio* revisará cada solicitud.
+Cada juego y app cuenta con su propio formulario de soporte integrado. Al enviar un reporte, el jugador recibirá una confirmación y el equipo de *Carley Interactive Studio* revisará cada solicitud.
 
 ## Donaciones
 
@@ -28,4 +29,4 @@ Contenido propiedad de *Carley Interactive Studio*. Uso personal permitido. No s
 ---
 
 **© 2025 Carley Interactive Studio**  
-Desarrollando mundos que merecen ser jugados.
+Desarrollando y ayudar que puedan crear mundos que merecen ser jugados.
