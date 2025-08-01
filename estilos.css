@@ -452,6 +452,49 @@ footer {
   display: block !important;
 }
 
+/* =============================
+   Página de Recuperación
+============================= */
+.recovery-container {
+  max-width: 450px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+  text-align: center;
+  border-top: 4px solid var(--primary);
+}
+
+.recovery-container h3 {
+  margin-bottom: 1.5rem;
+  color: var(--secondary);
+  font-size: 1.8rem;
+}
+
+.recovery-container input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background: var(--bg);
+  border: 1px solid #333;
+  border-radius: var(--radius);
+  color: var(--text);
+  text-align: center;
+  font-size: 1rem;
+}
+
+.recovery-container .boton-juego {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.recovery-container #message {
+  margin-top: 1.5rem;
+  font-weight: bold;
+  min-height: 24px; /* Reserve space */
+}
+
 /* ======================
    Responsividad
 ====================== */

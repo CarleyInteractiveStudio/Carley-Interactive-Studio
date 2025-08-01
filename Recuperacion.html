@@ -9,14 +9,26 @@
 </head>
 <body>
 
-  <div class="modal" style="display: block; position: static; margin: 50px auto;">
+  <header>
+    <h1>Carley Interactive Studio</h1>
+    <nav>
+      <a href="index.html#bienvenida">Inicio</a>
+      <a href="index.html#juegos">Juegos</a>
+      <a href="index.html#apoyo">Apóyanos</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <!-- Se oculta el menú de configuración ya que su lógica no está en esta página -->
+    <button id="settings-btn" class="gear" style="display: none;">⚙️</button>
+  </header>
+
+  <div class="recovery-container">
     <h3>Restablecer Contraseña</h3>
     <form id="reset-password-form">
       <input type="password" id="new-password" placeholder="Nueva Contraseña" required>
       <input type="password" id="confirm-password" placeholder="Confirmar Nueva Contraseña" required>
-      <button type="submit">Guardar Contraseña</button>
+      <button type="submit" class="boton-juego">Guardar Contraseña</button>
     </form>
-    <p id="message" style="margin-top: 15px;"></p>
+    <p id="message"></p>
   </div>
 
   <script>
