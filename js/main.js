@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (error) return alert(error.message);
     toggleModal(mRegister);
     showLogoutOption();
-    alert('Cuenta creada e iniciada con éxito.');
+    alert('¡Registro exitoso! Revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.');
   };
 
   // Supabase Auth: Login
@@ -104,7 +104,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return alert('Error al enviar correo de recuperación: ' + error.message);
     }
     document.getElementById('fog-step2').classList.remove('oculto');
-    alert('Correo de recuperación enviado. Revisa tu bandeja de entrada.');
+    alert('Se ha enviado un enlace de recuperación a tu correo. Si no lo ves en tu bandeja de entrada, por favor revisa tu carpeta de spam.');
   };
 
   document.getElementById('fog-verify-code').onclick = async () => {
