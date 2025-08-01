@@ -99,7 +99,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // The original logic here was complex and depended on serverless functions
     // and database queries which are not secure or available.
     // Simplifying to the basic Supabase password reset flow.
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/Recuperacion.html' });
     if (error) {
         return alert('Error al enviar correo de recuperación: ' + error.message);
     }
