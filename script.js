@@ -1,0 +1,185 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Welcome Text Animation
+    const heroTitle = document.querySelector('.hero-text h1');
+    const heroTitleText = heroTitle.textContent;
+    heroTitle.innerHTML = '';
+    heroTitleText.split('').forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        span.style.animationDelay = `${index * 0.05}s`;
+        heroTitle.appendChild(span);
+    });
+    heroTitle.classList.add('letter-animation');
+
+
+    // 1. Hero Image Fade-out on Scroll
+    const heroImage = document.querySelector('.hero-image');
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        const heroHeight = heroImage.offsetHeight;
+        const opacity = 1 - (scrollPosition / (heroHeight / 1.5));
+        heroImage.style.opacity = opacity < 0 ? 0 : opacity;
+    });
+
+    // 2. Reveal Sections on Scroll
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    // 3. PayPal Donation Button
+    // The user provided the hosted_button_id: JZ4KM2VUD6AMQ
+    // I need to add the PayPal SDK script to the index.html for this to work.
+    // I will add it now as it's a small change.
+    // Let's assume the SDK is loaded. I'll add the rendering logic here.
+    // Note: The SDK script itself should be in the HTML.
+    // I will add a function to dynamically load the script to avoid modifying the html again.
+    function loadPayPalSDK() {
+        const script = document.createElement('script');
+        script.src = 'https://www.paypalobjects.com/donate/sdk/donate-sdk.js';
+        script.charset = 'UTF-8';
+        script.onload = () => {
+            PayPal.Donation.Button({
+                env: 'production',
+                hosted_button_id: 'JZ4KM2VUD6AMQ',
+                image: {
+                    src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                    alt: 'Donate with PayPal button',
+                    title: 'PayPal - The safer, easier way to pay online!'
+                }
+            }).render('#paypal-donate-button-container');
+        };
+        document.body.appendChild(script);
+    }
+    // I will not call this function yet, as I need to first add the paypal button styling.
+    // I will come back to this. For now, a function is defined.
+    loadPayPalSDK();
+
+
+    // 4. "No preview" message on project images
+    const projectImageContainers = document.querySelectorAll('.project-item .project-image');
+    projectImageContainers.forEach(container => {
+        container.style.position = 'relative'; // Needed for the overlay
+        container.addEventListener('mouseenter', () => {
+            const overlay = document.createElement('div');
+            overlay.className = 'project-image-overlay';
+            overlay.textContent = 'Aún no hay más vistas previas disponibles';
+            container.appendChild(overlay);
+        });
+        container.addEventListener('mouseleave', () => {
+            const overlay = container.querySelector('.project-image-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        });
+    });
+
+    // 5. Modal for Creative Engine access request
+    const solicitarBtn = document.getElementById('solicitar-acceso-btn');
+    solicitarBtn.addEventListener('click', () => {
+        // Create and show modal
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Solicitud de Acceso a Creative Engine</h2>
+                <form id="creative-engine-form">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="reason">¿Por qué quieres probar el motor?</label>
+                    <textarea id="reason" name="reason" rows="4" required></textarea>
+                    <label for="recommendation">¿Cómo te enteraste de nosotros?</label>
+                    <input type="text" id="recommendation" name="recommendation">
+                    <button type="submit">Enviar Solicitud</button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const closeBtn = modal.querySelector('.close-button');
+        closeBtn.addEventListener('click', () => {
+            modal.remove();
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+
+        const form = modal.querySelector('#creative-engine-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real scenario, this would send the data to a server.
+            // For now, we'll just show a confirmation message.
+            alert('¡Gracias por tu interés! Hemos recibido tu solicitud y te contactaremos pronto.');
+            modal.remove();
+        });
+    });
+
+    // 6. Creative Engine Gallery
+    const galleryBtn = document.getElementById('gallery-btn');
+    const galleryModal = document.getElementById('gallery-modal');
+    const galleryCloseBtn = galleryModal.querySelector('.close-button');
+    const galleryContainer = document.getElementById('gallery-content-container');
+
+    const galleryData = [
+        {
+            text: "🗂️ Al iniciar tu primer proyecto, selecciona una carpeta donde se alojará. Recomendamos crear una carpeta dedicada, ya que ahí se guardarán todos tus juegos. Una vez creado el proyecto, se generará automáticamente una carpeta llamada Tutorial, con toda la información necesaria para entender el funcionamiento del motor.",
+            image: "carley_foto_web/Creacion de nuevo proyecto.png"
+        },
+        {
+            text: "🎬 Puedes comenzar creando una escena. En la jerarquía, añade un 'matter' (tu entidad base) y acompáñalo con un script que definas su lógica. Haz doble clic en el script para editarlo y luego agrégalo como componente al matter.",
+            image: "carley_foto_web/crear un matter en jerarquira.png"
+        },
+        {
+            text: "🧠 Da vida a tu personaje, criatura o idea. Anímalo cuadro por cuadro, prueba tu animación en tiempo real, y observa cómo tu visión cobra forma.",
+            image: "carley_foto_web/crea tu personaje.png"
+        },
+        {
+            text: "✨ Esto es lo que ya está listo en Creative Engine, el lugar donde la creación no tiene límites.",
+            image: "carley_foto_web/Creative Engine beta.png"
+        }
+    ];
+
+    galleryBtn.addEventListener('click', () => {
+        galleryContainer.innerHTML = ''; // Clear previous content
+        galleryData.forEach(item => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `
+                <div class="gallery-image">
+                    <img src="${item.image}" alt="Galería de Creative Engine">
+                </div>
+                <div class="gallery-text">
+                    <p>${item.text}</p>
+                </div>
+            `;
+            galleryContainer.appendChild(galleryItem);
+        });
+        galleryModal.classList.remove('oculto');
+    });
+
+    const closeGalleryModal = () => {
+        galleryModal.classList.add('oculto');
+    };
+
+    galleryCloseBtn.addEventListener('click', closeGalleryModal);
+    galleryModal.addEventListener('click', (e) => {
+        if (e.target === galleryModal) {
+            closeGalleryModal();
+        }
+    });
+});

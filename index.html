@@ -1,193 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carley Interactive Studio</title>
-  <link rel="stylesheet" href="estilos.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const SUPABASE_URL = 'https://rblftfzbqllnuadqtufb.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJibGZ0ZnpicWxsbnVhZHF0dWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5NjQyMzQsImV4cCI6MjA2ODU0MDIzNH0.cH-KJG2k43dKQaVccQDkw7t6m0sf1zIOLWPADdmKLt8';
-    const supabase     = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carley Interactive Studio - Rediseño</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>Carley Interactive Studio</h1>
-  <nav>
-    <a href="#bienvenida">Inicio</a>
-    <a href="#juegos">Juegos</a>
-    <a href="#apoyo">Apóyanos</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
-  <button id="settings-btn" class="gear">⚙️</button>
-  <div id="settings-menu" class="menu-oculto">
-    <button id="back-btn">Atrás</button>
-    <button id="login-btn">Iniciar sesión</button>
-    <button id="register-btn">Crear cuenta</button>
-    <!-- Botón de cerrar sesión se agrega dinámicamente -->
-  </div>
-</header>
+    <header class="main-header">
+        <div class="logo">
+            <img src="carley_foto_web/Logo C.png" alt="Logo Carley Interactive Studio">
+        </div>
+        <nav class="main-nav">
+            <a href="#proyectos">Proyectos</a>
+            <a href="#creative-engine">Creative Engine</a>
+            <a href="#carly-bot">Carly Bot</a>
+            <a href="#donar">Apóyanos</a>
+        </nav>
+    </header>
 
-<section id="bienvenida">
-  <h2>Bienvenido</h2>
-  <p>
-    Bienvenido a Carley Interactive Studio, donde la pasión por los videojuegos y la innovación se unen. Sumérgete en la acción con Fire at Will y The Battle of the Capsurers mientras desarrollamos nuestro propio motor: <strong>Creative Engine</strong>.
-  </p>
-  <p>
-    Creative Engine aún está en desarrollo. ¿Quieres aportar tu talento a su creación y ayudarnos a contratar más programadores para acelerar el proyecto? ¡Únete y colabora con nosotros para revolucionar la industria!
-  </p>
-</section>
-
-<section id="juegos">
-  <h2>Juegos Destacados</h2>
-
-  <!-- Battle of the Capsurers -->
-  <div class="juego">
-    <img src="carley_foto_web/The Battle Of The Capsurers logo.png" alt="The Battle of the Capsurers" class="juego-img" />
-    <h3>The Battle of the Capsurers</h3>
-    <p>Juego FPS multijugador divertido y emocionante. ¿Estás listo?</p>
-    <div class="flex-center">
-      <a href="#" class="boton-juego descargar" data-app="The Battle of the Capsurers">Descargar</a>
-      <button class="boton-juego" onclick="toggleForm('form-battle')">Soporte</button>
+    <div class="hero-image" style="background-image: url('carley_foto_web/sitio web.png');">
+        <div class="hero-text">
+            <h1>Bienvenidos a Carley Interactive Studio</h1>
+            <p>Donde las ideas se convierten en realidad.</p>
+        </div>
     </div>
-    <div id="form-battle" class="formulario-soporte">
-      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Gmail | Juego: The Battle of the Capsurers" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
-        <input type="email" name="email" placeholder="Tu correo" required />
-        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-        <button type="submit">Enviar reporte</button>
-      </form>
-    </div>
-  </div>
 
-  <!-- Fire at Will -->
-  <div class="juego">
-    <img src="carley_foto_web/para fire at will.png" alt="Fire at Will" class="juego-img" />
-    <h3>Fire at Will</h3>
-    <p>Battle Royale con modos intensos de combate. ¡Descárgalo ya!</p>
-    <div class="flex-center">
-      <a href="#" class="boton-juego descargar" data-app="Fire at Will">Descargar</a>
-      <button class="boton-juego" onclick="toggleForm('form-fire')">Soporte</button>
-    </div>
-    <div id="form-fire" class="formulario-soporte">
-      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Gmail | Juego: Fire at Will" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
-        <input type="email" name="email" placeholder="Tu correo" required />
-        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-        <button type="submit">Enviar reporte</button>
-      </form>
-    </div>
-  </div>
+    <main>
+        <section id="proyectos">
+            <h2>Nuestros Proyectos</h2>
+            <div class="project-container">
+                <article class="project-item">
+                    <div class="project-image">
+                        <img src="carley_foto_web/para fire at will.png" alt="Fire at Will">
+                    </div>
+                    <div class="project-info">
+                        <h3>Fire at Will</h3>
+                        <p>Un intenso Battle Royale con múltiples modos de combate. ¡Prepárate para la acción!</p>
+                        <div class="project-buttons">
+                            <button class="btn-disabled" disabled>Descargar (No disponible)</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="project-item">
+                    <div class="project-image">
+                        <img src="carley_foto_web/The Battle Of The Capsurers logo.png" alt="The Battle of the Capsuleers">
+                    </div>
+                    <div class="project-info">
+                        <h3>The Battle of the Capsuleers</h3>
+                        <p>Un emocionante FPS multijugador. ¿Aceptas el desafío?</p>
+                        <div class="project-buttons">
+                            <button class="btn-disabled" disabled>Descargar (No disponible)</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-  <!-- Creative Engine -->
-  <div class="juego">
-    <img src="imags/Creative Engine.png" alt="Creative Engine" class="juego-img" />
-    <h3>Creative Engine</h3>
-    <p>Motor para crear tus propios videojuegos. ¡Próximamente disponible!</p>
-    <div class="flex-center">
-      <a href="#" class="boton-juego descargar" data-app="Creative Engine">Descargar</a>
-      <button class="boton-juego" onclick="toggleForm('form-creative')">Soporte</button>
-    </div>
-    <div id="form-creative" class="formulario-soporte">
-      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Gmail | Creative Engine" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
-        <input type="email" name="email" placeholder="Tu correo" required />
-        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-        <button type="submit">Enviar reporte</button>
-      </form>
-    </div>
-  </div>
-</section><section id="apoyo">
-  <h2>Apóyanos ❤️</h2>
-  <p>Tu apoyo nos impulsa a seguir creando experiencias increíbles.</p>
-  <div id="donate-button-container">
-    <div id="donate-button"></div>
-    <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-    <script>
-      PayPal.Donation.Button({
-        env: 'production',
-        hosted_button_id: 'JZ4KM2VUD6AMQ',
-        image: {
-          src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-          alt: 'Donate with PayPal button',
-          title: 'PayPal - The safer, easier way to pay online!'
-        }
-      }).render('#donate-button');
-    </script>
-  </div>
-  <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20"
-     class="boton-juego" target="_blank">
-    Únete a nuestro canal de WhatsApp
-  </a>
-</section>
+        <section id="carly-bot">
+            <h2>Conoce a Carly Bot</h2>
+            <div class="carly-bot-container">
+                <img src="carley_foto_web/Carl_model.jpeg" alt="Modelo de Carly Bot">
+                <div class="carly-bot-info">
+                    <h3>Un asistente más inteligente</h3>
+                    <p>Estamos rediseñando a Carly Bot para ofrecerte una experiencia de usuario superior, más intuitiva y útil.</p>
+                </div>
+            </div>
+        </section>
 
-<section id="contacto">
-  <h2>Contacto 📧</h2>
-  <p>¿Tienes ideas, preguntas o quieres colaborar? Envíanos un mensaje desde el formulario de soporte técnico.</p>
-</section>
+        <section id="creative-engine">
+            <h2>Creative Engine</h2>
+            <div class="creative-engine-intro">
+                <p>🎮 Les damos la bienvenida a Creative Engine. Nuestro motor de videojuegos 2D donde lo imaginable es creable y lo que suena, se vuelve real. Diseñado para funcionar completamente desde la web, no necesitas instalar nada. Solo entra, inicia sesión, y comienza a crear.</p>
+                <div class="progress-bar-container">
+                    <span>Progreso del Desarrollo: 42%</span>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 42%;"></div>
+                    </div>
+                </div>
+                <div class="creative-engine-buttons">
+                    <button id="gallery-btn">Ver Galería de Desarrollo</button>
+                    <button id="solicitar-acceso-btn">Solicitar Acceso a la Beta</button>
+                </div>
+            </div>
+        </section>
 
-<footer>
-  <p>&copy; 2025 Carley Interactive Studio</p>
-</footer>
+        <!-- Gallery Modal -->
+        <div id="gallery-modal" class="modal oculto">
+            <div class="modal-content gallery-modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Galería de Desarrollo de Creative Engine</h2>
+                <div id="gallery-content-container">
+                    <!-- Content will be injected here by script.js -->
+                </div>
+            </div>
+        </div>
 
-<!-- Modales de autenticación -->
-<div id="modal-backdrop" class="modal-backdrop oculto"></div>
+        <section id="donar">
+            <h2>Apoya Nuestro Desarrollo</h2>
+            <p>Tu contribución nos ayuda a seguir creando y mejorando. ¡Cada aporte cuenta!</p>
+            <div id="paypal-donate-button-container">
+                <!-- El botón de PayPal se insertará aquí -->
+            </div>
+        </section>
+    </main>
 
-<div id="modal-login" class="modal oculto">
-  <h3>Iniciar sesión</h3>
-  <input id="login-email" type="email" placeholder="Email" required>
-  <input id="login-password" type="password" placeholder="Contraseña" required>
-  <button id="login-submit">Entrar</button>
-  <a id="open-forgot">¿Olvidaste tu contraseña?</a>
-</div>
+    <footer class="main-footer">
+        <div class="social-links">
+            <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20" target="_blank">WhatsApp</a>
+            <a href="https://facebook.com/groups/carleyJuego" target="_blank">Facebook</a>
+            <!-- Se pueden agregar más redes sociales aquí -->
+        </div>
+        <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
+    </footer>
 
-<div id="modal-register" class="modal oculto">
-  <h3>Crear cuenta</h3>
-  <input id="reg-email"            type="email"    placeholder="Email" required>
-  <input id="reg-password"         type="password" placeholder="Contraseña" required>
-  <input id="reg-confirm-password" type="password" placeholder="Confirmar contraseña" required>
-  <input id="reg-phone"            type="tel"      placeholder="Teléfono (opcional)">
-  <small>Si no agregas teléfono, podrías no recuperar tu cuenta en el futuro.</small>
-  <button id="register-submit">Registrar y entrar</button>
-</div>
-
-<div id="modal-forgot" class="modal oculto">
-  <h3>Recuperar contraseña</h3>
-  <input id="fog-email" type="email" placeholder="Email" required>
-  <input id="fog-phone" type="tel"   placeholder="Teléfono">
-  <button id="fog-request-code">Enviar código</button>
-  <div id="fog-step2" class="oculto">
-    <input id="fog-code" type="text" maxlength="8" placeholder="Código de 8 dígitos">
-    <button id="fog-verify-code">Verificar código</button>
-  </div>
-</div>
-
-<!-- Chat Carley Bot -->
-<div id="chat-widget" class="chat-widget oculto">
-  <div class="chat-header">
-    <img src="imags/Carley Bot.png" alt="Carley Bot" class="bot-avatar">
-    <span class="bot-name">Carley Bot</span>
-    <button id="chat-close-btn" class="chat-close-btn">✖️</button>
-  </div>
-  <div class="chat-body" id="chat-messages"></div>
-  <div class="chat-input">
-    <input id="chat-input-field" type="text" placeholder="Escribe un mensaje..." />
-    <button id="chat-send-btn">Enviar</button>
-  </div>
-</div>
-<button id="chat-open-btn" class="chat-open-btn">💬</button>
-
-<!-- Scripts finales -->
-<script src="js/main.js" defer></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
