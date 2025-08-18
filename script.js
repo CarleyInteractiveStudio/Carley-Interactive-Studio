@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     heroTitle.innerHTML = '';
     heroTitleText.split('').forEach((char, index) => {
         const span = document.createElement('span');
-        span.textContent = char;
+        if (char === ' ') {
+            span.innerHTML = '&nbsp;';
+        } else {
+            span.textContent = char;
+        }
         span.style.animationDelay = `${index * 0.05}s`;
         heroTitle.appendChild(span);
     });
@@ -192,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatBody = document.getElementById('chat-body');
 
     const botResponses = {
-        "hola": "¡Hola! Soy Carly Bot. ¿En qué puedo ayudarte hoy?",
+        "hola": "¡Hola! Soy Carl IA. ¿En qué puedo ayudarte hoy?",
         "proyectos": "Actualmente tenemos dos juegos principales, 'Fire at Will' y 'The Battle of the Capsuleers'. También estamos desarrollando nuestro propio motor, ¡Creative Engine!",
         "creative engine": "Creative Engine es nuestro motor de videojuegos 2D. Puedes ver más sobre su desarrollo en la sección de la galería.",
         "gracias": "¡De nada! Estoy aquí para ayudar.",
@@ -243,5 +247,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initial bot message
-    appendMessage("¡Hola! Soy Carly Bot. Pregúntame sobre nuestros proyectos.", "bot");
+    appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre nuestros proyectos.", "bot");
 });
