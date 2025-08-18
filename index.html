@@ -33,6 +33,18 @@
             <div class="project-container">
                 <article class="project-item">
                     <div class="project-image">
+                        <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine">
+                    </div>
+                    <div class="project-info">
+                        <h3>Creative Engine</h3>
+                        <p>Nuestro propio motor de videojuegos 2D, diseñado para funcionar en la web. ¡La creación no tiene límites!</p>
+                        <div class="project-buttons">
+                            <button class="btn-disabled" disabled>Ver más (próximamente)</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="project-item">
+                    <div class="project-image">
                         <img src="carley_foto_web/para fire at will.png" alt="Fire at Will">
                     </div>
                     <div class="project-info">
@@ -116,5 +128,23 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- Carly Bot Chat Widget -->
+    <div id="chat-widget-container">
+        <div id="chat-window" class="oculto">
+            <div class="chat-header">
+                <h3>Carly Bot</h3>
+                <button id="close-chat-btn">&times;</button>
+            </div>
+            <div id="chat-body">
+                <!-- Messages will be appended here -->
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Escribe un mensaje...">
+                <button id="chat-send-btn">Enviar</button>
+            </div>
+        </div>
+        <button id="open-chat-btn">💬</button>
+    </div>
 </body>
 </html>

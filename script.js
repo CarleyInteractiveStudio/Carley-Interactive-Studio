@@ -182,4 +182,66 @@ document.addEventListener('DOMContentLoaded', () => {
             closeGalleryModal();
         }
     });
+
+    // 7. Carly Bot Chat Logic
+    const openChatBtn = document.getElementById('open-chat-btn');
+    const closeChatBtn = document.getElementById('close-chat-btn');
+    const chatWindow = document.getElementById('chat-window');
+    const chatInput = document.getElementById('chat-input');
+    const chatSendBtn = document.getElementById('chat-send-btn');
+    const chatBody = document.getElementById('chat-body');
+
+    const botResponses = {
+        "hola": "¡Hola! Soy Carly Bot. ¿En qué puedo ayudarte hoy?",
+        "proyectos": "Actualmente tenemos dos juegos principales, 'Fire at Will' y 'The Battle of the Capsuleers'. También estamos desarrollando nuestro propio motor, ¡Creative Engine!",
+        "creative engine": "Creative Engine es nuestro motor de videojuegos 2D. Puedes ver más sobre su desarrollo en la sección de la galería.",
+        "gracias": "¡De nada! Estoy aquí para ayudar.",
+        "default": "No he entendido bien. Puedo darte información sobre 'proyectos' o 'Creative Engine'."
+    };
+
+    const toggleChat = () => {
+        chatWindow.classList.toggle('oculto');
+    };
+
+    const sendMessage = () => {
+        const userMessage = chatInput.value.trim();
+        if (userMessage === '') return;
+
+        appendMessage(userMessage, 'user');
+        chatInput.value = '';
+
+        setTimeout(() => {
+            const botResponse = getBotResponse(userMessage);
+            appendMessage(botResponse, 'bot');
+        }, 500);
+    };
+
+    const appendMessage = (message, sender) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${sender}-message`;
+        messageDiv.textContent = message;
+        chatBody.appendChild(messageDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    };
+
+    const getBotResponse = (userMessage) => {
+        const lowerCaseMessage = userMessage.toLowerCase();
+        if (lowerCaseMessage.includes('hola')) return botResponses.hola;
+        if (lowerCaseMessage.includes('proyecto')) return botResponses.proyectos;
+        if (lowerCaseMessage.includes('creative engine')) return botResponses['creative engine'];
+        if (lowerCaseMessage.includes('gracias')) return botResponses.gracias;
+        return botResponses.default;
+    };
+
+    openChatBtn.addEventListener('click', toggleChat);
+    closeChatBtn.addEventListener('click', toggleChat);
+    chatSendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Initial bot message
+    appendMessage("¡Hola! Soy Carly Bot. Pregúntame sobre nuestros proyectos.", "bot");
 });
