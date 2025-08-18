@@ -84,6 +84,24 @@ body {
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
 }
 
+.emoji-animation {
+    margin-top: 2rem;
+}
+
+.emoji-animation span {
+    display: inline-block;
+    font-size: 2rem;
+    margin: 0 0.5rem;
+    opacity: 0;
+    animation: float-up 1s ease-out forwards;
+}
+
+.emoji-animation span:nth-child(1) { animation-delay: 2.0s; }
+.emoji-animation span:nth-child(2) { animation-delay: 2.2s; }
+.emoji-animation span:nth-child(3) { animation-delay: 2.4s; }
+.emoji-animation span:nth-child(4) { animation-delay: 2.6s; }
+.emoji-animation span:nth-child(5) { animation-delay: 2.8s; }
+
 /* --- Main Content --- */
 main {
     padding-top: 100vh; /* Space for the hero image */
@@ -239,6 +257,17 @@ section.visible .project-item .project-info {
 }
 
 /* --- Animations --- */
+@keyframes float-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
