@@ -367,6 +367,19 @@ section.visible {
 }
 
 /* --- Creative Engine Section --- */
+.creative-engine-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: center;
+    text-align: left;
+}
+
+.creative-engine-img img {
+    width: 100%;
+    border-radius: 10px;
+}
+
 .creative-engine-intro {
     max-width: 800px;
     margin: 0 auto;
