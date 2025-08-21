@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-content">
                 <span class="close-button">&times;</span>
                 <h2>Solicitud de Acceso a Creative Engine</h2>
-                <form id="creative-engine-form">
+                <form id="creative-engine-form" action="https://formspree.io/f/xgegrvjg" method="POST">
                     <label for="email">Correo Electrónico:</label>
                     <input type="email" id="email" name="email" required>
                     <label for="reason">¿Por qué quieres probar el motor?</label>
@@ -124,12 +124,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const form = modal.querySelector('#creative-engine-form');
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            // In a real scenario, this would send the data to a server.
-            // For now, we'll just show a confirmation message.
-            alert('¡Gracias por tu interés! Hemos recibido tu solicitud y te contactaremos pronto.');
-            modal.remove();
+            const formData = new FormData(form);
+            let status = form.querySelector('.form-status');
+            if (!status) {
+                status = document.createElement('p');
+                status.className = 'form-status';
+                form.appendChild(status);
+            }
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    status.innerHTML = "¡Gracias por tu interés! Tu solicitud ha sido enviada.";
+                    status.style.color = 'green';
+                    form.reset();
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 3000);
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                        } else {
+                            status.innerHTML = "Oops! Hubo un problema al enviar tu solicitud.";
+                        }
+                        status.style.color = 'red';
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Enviar Solicitud';
+                    })
+                }
+            }).catch(error => {
+                status.innerHTML = "Oops! Hubo un problema al enviar tu solicitud. Revisa tu conexión a internet.";
+                status.style.color = 'red';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Solicitud';
+            });
         });
     });
 
