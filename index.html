@@ -59,34 +59,40 @@
             </div>
         </section>
 
-        <section id="creative-engine" style="text-align: left;">
+        <section id="creative-engine">
             <h2 style="text-align: center;">Creative Engine</h2>
-            <div class="creative-engine-intro" style="max-width: 900px; margin: 0 auto;">
-                <p><strong>Creative Engine es un motor de videojuegos 100% web,</strong> diseñado para que puedas crear sin necesidad de instalaciones. Funciona directamente en tu navegador (recomendamos Chrome o Edge), guardando todos los proyectos de forma local en tu ordenador para mayor privacidad y control.</p>
-
-                <h4 style="color: var(--accent-color); margin-top: 2rem;">Un Proyecto en Crecimiento</h4>
-                <p>Recientemente, hemos realizado pequeñas mejoras en el editor visual para hacerlo más agradable. Sin embargo, para que el motor alcance su verdadero potencial, necesitamos ayuda. Gran parte del desarrollo inicial se ha hecho con la asistencia de IA (¡hola, soy Jules!), y ahora buscamos talento humano para continuar.</p>
-
-                <h4 style="color: var(--accent-color); margin-top: 2rem;">¡Buscamos Colaboradores!</h4>
-                <p>Si eres un <strong>desarrollador</strong> apasionado y quieres unirte a un proyecto innovador, nos encantaría saber de ti. Tu ayuda es crucial para nuestro gran desafío actual: <strong>mejorar el sistema de UI</strong>, especialmente el Canvas que debe adaptarse a la vista de la cámara. A largo plazo, planeamos integrar <strong>C++ y C#</strong> para optimizar el rendimiento.</p>
-                <p>También queremos construir un motor que la comunidad ame. ¡Dinos qué características te gustaría ver!</p>
-
-                <div class="creative-engine-buttons" style="margin-top: 2rem; justify-content: center;">
-                    <button onclick="window.location.href='mailto:carley.interactive.studio@gmail.com?subject=Quiero aportar como desarrollador'">Soy Desarrollador</button>
-                    <button onclick="window.location.href='#donar'">Apoyar el Proyecto</button>
+            <div class="creative-engine-layout">
+                <div class="creative-engine-img">
+                    <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine Logo">
                 </div>
+                <div class="creative-engine-intro">
+                    <p><strong>Creative Engine es un motor de videojuegos 100% web,</strong> diseñado para que puedas crear sin necesidad de instalaciones. Funciona directamente en tu navegador (recomendamos Chrome o Edge), guardando todos los proyectos de forma local en tu ordenador para mayor privacidad y control.</p>
 
-                <hr style="margin: 3rem 0; border-color: var(--secondary-color);">
+                    <h4 style="color: var(--accent-color); margin-top: 2rem;">Un Proyecto en Crecimiento</h4>
+                    <p>Recientemente, hemos realizado pequeñas mejoras en el editor visual para hacerlo más agradable. Sin embargo, para que el motor alcance su verdadero potencial, necesitamos ayuda. Gran parte del desarrollo inicial se ha hecho con la asistencia de IA (¡hola, soy Jules!), y ahora buscamos talento humano para continuar.</p>
 
-                <h3 style="text-align: center;">Características Principales</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 1rem;">✅ <strong>100% Web y Local:</strong> Sin instalaciones. Funciona offline una vez cargado. Tus proyectos se guardan localmente.</li>
-                    <li style="margin-bottom: 1rem;">✅ <strong>Editor Visual Intuitivo:</strong> Navega por la escena, crea objetos y organiza tu jerarquía con facilidad.</li>
-                    <li style="margin-bottom: 1rem;">✅ <strong>Scripting Flexible:</strong> Usa nuestro lenguaje basado en JavaScript, <strong>Creative Engine Scripting</strong>, que te permite programar en tu propio idioma, o elige otro lenguaje en las preferencias.</li>
-                    <li style="margin-bottom: 1rem;">✅ <strong>Animación Simplificada:</strong> Dibuja animaciones por sprites y contrólalas fácilmente con el controlador de animación.</li>
-                    <li style="margin-bottom: 1rem;">✅ <strong>Herramientas Integradas:</strong> Editor de código con autocompletado, consola de depuración y reproductor de música.</li>
-                    <li style="margin-bottom: 1rem;">✅ <strong>Renderizado Dual:</strong> Elige entre un renderizador Canvas 2D o PixiRenderer para gráficos más realistas.</li>
-                </ul>
+                    <h4 style="color: var(--accent-color); margin-top: 2rem;">¡Buscamos Colaboradores!</h4>
+                    <p>Si eres un <strong>desarrollador</strong> apasionado y quieres unirte a un proyecto innovador, nos encantaría saber de ti. Tu ayuda es crucial para nuestro gran desafío actual: <strong>mejorar el sistema de UI</strong>, especialmente el Canvas que debe adaptarse a la vista de la cámara. A largo plazo, planeamos integrar <strong>C++ y C#</strong> para optimizar el rendimiento.</p>
+                    <p>También queremos construir un motor que la comunidad ame. ¡Dinos qué características te gustaría ver!</p>
+
+                    <div class="creative-engine-buttons" style="margin-top: 2rem; justify-content: center;">
+                        <button onclick="window.location.href='mailto:carley.interactive.studio@gmail.com?subject=Quiero aportar como desarrollador'">Soy Desarrollador</button>
+                        <button onclick="window.location.href='#donar'">Apoyar el Proyecto</button>
+                        <button id="solicitar-acceso-btn">Solicitar Acceso a la Beta</button>
+                    </div>
+
+                    <hr style="margin: 3rem 0; border-color: var(--secondary-color);">
+
+                    <h3 style="text-align: center;">Características Principales</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;">✅ <strong>100% Web y Local:</strong> Sin instalaciones. Funciona offline una vez cargado. Tus proyectos se guardan localmente.</li>
+                        <li style="margin-bottom: 1rem;">✅ <strong>Editor Visual Intuitivo:</strong> Navega por la escena, crea objetos y organiza tu jerarquía con facilidad.</li>
+                        <li style="margin-bottom: 1rem;">✅ <strong>Scripting Flexible:</strong> Usa nuestro lenguaje basado en JavaScript, <strong>Creative Engine Scripting</strong>, que te permite programar en tu propio idioma, o elige otro lenguaje en las preferencias.</li>
+                        <li style="margin-bottom: 1rem;">✅ <strong>Animación Simplificada:</strong> Dibuja animaciones por sprites y contrólalas fácilmente con el controlador de animación.</li>
+                        <li style="margin-bottom: 1rem;">✅ <strong>Herramientas Integradas:</strong> Editor de código con autocompletado, consola de depuración y reproductor de música.</li>
+                        <li style="margin-bottom: 1rem;">✅ <strong>Renderizado Dual:</strong> Elige entre un renderizador Canvas 2D o PixiRenderer para gráficos más realistas.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 

@@ -71,6 +71,91 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPayPalSDK();
 
 
+    // Modal for Creative Engine access request
+    const solicitarBtn = document.getElementById('solicitar-acceso-btn');
+    solicitarBtn.addEventListener('click', () => {
+        // Create and show modal
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Solicitud de Acceso a Creative Engine</h2>
+                <form id="creative-engine-form" action="https://formspree.io/f/mldlyzyy" method="POST">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="reason">¿Por qué quieres probar el motor?</label>
+                    <textarea id="reason" name="reason" rows="4" required></textarea>
+                    <label for="recommendation">¿Cómo te enteraste de nosotros?</label>
+                    <input type="text" id="recommendation" name="recommendation">
+                    <button type="submit">Enviar Solicitud</button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const closeBtn = modal.querySelector('.close-button');
+        closeBtn.addEventListener('click', () => {
+            modal.remove();
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+
+        const form = modal.querySelector('#creative-engine-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            let status = form.querySelector('.form-status');
+            if (!status) {
+                status = document.createElement('p');
+                status.className = 'form-status';
+                form.appendChild(status);
+            }
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    status.innerHTML = "¡Gracias por tu interés! Tu solicitud ha sido enviada.";
+                    status.style.color = 'green';
+                    form.reset();
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 3000);
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                        } else {
+                            status.innerHTML = "Oops! Hubo un problema al enviar tu solicitud.";
+                        }
+                        status.style.color = 'red';
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Enviar Solicitud';
+                    })
+                }
+            }).catch(error => {
+                status.innerHTML = "Oops! Hubo un problema al enviar tu solicitud. Revisa tu conexión a internet.";
+                status.style.color = 'red';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Solicitud';
+            });
+        });
+    });
+
+
     // 4. Carly Bot Chat Logic
     const openChatBtn = document.getElementById('open-chat-btn');
     const closeChatBtn = document.getElementById('close-chat-btn');
