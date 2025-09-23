@@ -22,7 +22,6 @@
             <img src="carley_foto_web/Logo_C.png" alt="Logo Carley Interactive Studio">
         </div>
         <nav class="main-nav">
-            <a href="#proyectos">Proyectos</a>
             <a href="#creative-engine">Creative Engine</a>
             <a href="#carly-bot">Carl IA</a>
             <a href="#donar">Apóyanos</a>
@@ -44,79 +43,52 @@
     </div>
 
     <main>
-        <section id="proyectos">
-            <h2>Nuestros Proyectos</h2>
-            <div class="project-container">
-                <article class="project-item">
-                    <div class="project-image">
-                        <img src="carley_foto_web/para fire at will.png" alt="Fire at Will">
-                    </div>
-                    <div class="project-info">
-                        <h3>Fire at Will</h3>
-                        <p>Un intenso Battle Royale con múltiples modos de combate. ¡Prepárate para la acción!</p>
-                        <div class="project-buttons">
-                            <button class="btn-disabled" disabled>Descargar (No disponible)</button>
-                        </div>
-                    </div>
-                </article>
-                <article class="project-item">
-                    <div class="project-image">
-                        <img src="carley_foto_web/The Battle Of The Capsurers logo.png" alt="The Battle of the Capsuleers">
-                    </div>
-                    <div class="project-info">
-                        <h3>The Battle of the Capsuleers</h3>
-                        <p>Un emocionante FPS multijugador. ¿Aceptas el desafío?</p>
-                        <div class="project-buttons">
-                            <button class="btn-disabled" disabled>Descargar (No disponible)</button>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
 
         <section id="carly-bot">
             <h2>Conoce a Carl IA</h2>
             <div class="carly-bot-container">
                 <img src="carley_foto_web/Carl_model.jpeg" alt="Modelo de Carl IA">
                 <div class="carly-bot-info">
-                    <h3>Un asistente más inteligente</h3>
-                    <p>Estamos rediseñando a Carl IA para ofrecerte una experiencia de usuario superior, más intuitiva y útil.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="creative-engine">
-            <h2>Creative Engine</h2>
-            <div class="creative-engine-layout">
-                <div class="creative-engine-img">
-                    <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine Logo">
-                </div>
-                <div class="creative-engine-intro">
-                    <p>🎮 Les damos la bienvenida a Creative Engine. Nuestro motor de videojuegos 2D donde lo imaginable es creable y lo que suena, se vuelve real. Diseñado para funcionar completamente desde la web, no necesitas instalar nada. Solo entra, inicia sesión, y comienza a crear.</p>
-                    <div class="progress-bar-container">
-                        <span>Progreso del Desarrollo: 65%</span>
-                        <div class="progress-bar">
-                            <div class="progress-bar-fill" style="width: 65%;"></div>
-                        </div>
-                    </div>
-                    <div class="creative-engine-buttons">
-                        <button id="gallery-btn">Ver Galería de Desarrollo</button>
-                        <button id="solicitar-acceso-btn">Solicitar Acceso a la Beta</button>
+                    <h3>Tu Asistente Personal de IA</h3>
+                    <p>Te presentamos a Carl IA, una inteligencia artificial que te ayudará en todo lo que necesites. El modelo base (una variante de Llama) fue descargado y adaptado, ¡no creado desde cero por nosotros! Ahora, solo nos falta un servidor para ponerlo en marcha.</p>
+                    <div class="creative-engine-buttons" style="margin-top: 1rem; justify-content: flex-start;">
+                        <button onclick="window.location.href='#donar'">Apoyar Monetariamente</button>
+                        <button onclick="window.location.href='mailto:carley.interactive.studio@gmail.com?subject=Aportación de Servidor para Carl IA'">Aportar un Servidor</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Gallery Modal -->
-        <div id="gallery-modal" class="modal oculto">
-            <div class="modal-content gallery-modal-content">
-                <span class="close-button">&times;</span>
-                <h2>Galería de Desarrollo de Creative Engine</h2>
-                <div id="gallery-content-container">
-                    <!-- Content will be injected here by script.js -->
+        <section id="creative-engine" style="text-align: left;">
+            <h2 style="text-align: center;">Creative Engine</h2>
+            <div class="creative-engine-intro" style="max-width: 900px; margin: 0 auto;">
+                <p><strong>Creative Engine es un motor de videojuegos 100% web,</strong> diseñado para que puedas crear sin necesidad de instalaciones. Funciona directamente en tu navegador (recomendamos Chrome o Edge), guardando todos los proyectos de forma local en tu ordenador para mayor privacidad y control.</p>
+
+                <h4 style="color: var(--accent-color); margin-top: 2rem;">Un Proyecto en Crecimiento</h4>
+                <p>Recientemente, hemos realizado pequeñas mejoras en el editor visual para hacerlo más agradable. Sin embargo, para que el motor alcance su verdadero potencial, necesitamos ayuda. Gran parte del desarrollo inicial se ha hecho con la asistencia de IA (¡hola, soy Jules!), y ahora buscamos talento humano para continuar.</p>
+
+                <h4 style="color: var(--accent-color); margin-top: 2rem;">¡Buscamos Colaboradores!</h4>
+                <p>Si eres un <strong>desarrollador</strong> apasionado y quieres unirte a un proyecto innovador, nos encantaría saber de ti. Tu ayuda es crucial para nuestro gran desafío actual: <strong>mejorar el sistema de UI</strong>, especialmente el Canvas que debe adaptarse a la vista de la cámara. A largo plazo, planeamos integrar <strong>C++ y C#</strong> para optimizar el rendimiento.</p>
+                <p>También queremos construir un motor que la comunidad ame. ¡Dinos qué características te gustaría ver!</p>
+
+                <div class="creative-engine-buttons" style="margin-top: 2rem; justify-content: center;">
+                    <button onclick="window.location.href='mailto:carley.interactive.studio@gmail.com?subject=Quiero aportar como desarrollador'">Soy Desarrollador</button>
+                    <button onclick="window.location.href='#donar'">Apoyar el Proyecto</button>
                 </div>
+
+                <hr style="margin: 3rem 0; border-color: var(--secondary-color);">
+
+                <h3 style="text-align: center;">Características Principales</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 1rem;">✅ <strong>100% Web y Local:</strong> Sin instalaciones. Funciona offline una vez cargado. Tus proyectos se guardan localmente.</li>
+                    <li style="margin-bottom: 1rem;">✅ <strong>Editor Visual Intuitivo:</strong> Navega por la escena, crea objetos y organiza tu jerarquía con facilidad.</li>
+                    <li style="margin-bottom: 1rem;">✅ <strong>Scripting Flexible:</strong> Usa nuestro lenguaje basado en JavaScript, <strong>Creative Engine Scripting</strong>, que te permite programar en tu propio idioma, o elige otro lenguaje en las preferencias.</li>
+                    <li style="margin-bottom: 1rem;">✅ <strong>Animación Simplificada:</strong> Dibuja animaciones por sprites y contrólalas fácilmente con el controlador de animación.</li>
+                    <li style="margin-bottom: 1rem;">✅ <strong>Herramientas Integradas:</strong> Editor de código con autocompletado, consola de depuración y reproductor de música.</li>
+                    <li style="margin-bottom: 1rem;">✅ <strong>Renderizado Dual:</strong> Elige entre un renderizador Canvas 2D o PixiRenderer para gráficos más realistas.</li>
+                </ul>
             </div>
-        </div>
+        </section>
 
         <section id="donar">
             <h2>Apoya Nuestro Desarrollo</h2>
