@@ -71,6 +71,79 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPayPalSDK();
 
 
+    // 5. Feature List Modals
+    const featureListData = [
+        {
+            title: "100% Web y Local",
+            content: "<p>Creative Engine funciona 100% en tu navegador, sin necesidad de descargar pesados programas. Todo el trabajo se guarda de forma local en una carpeta que tú eliges, dándote control total y privacidad sobre tus proyectos. Una vez cargado, puedes trabajar incluso sin conexión a internet.</p>"
+        },
+        {
+            title: "Editor Visual Intuitivo",
+            content: "<p>La interfaz del editor, incluyendo la jerarquía de objetos y el inspector de propiedades, ha sido rediseñada para ser más bonita, moderna y funcional que antes, haciendo tu flujo de trabajo más rápido y agradable.</p>"
+        },
+        {
+            title: "Scripting Flexible en tu Idioma",
+            content: "<p>¡Rompe la barrera del idioma! Nuestro sistema de scripting te permite programar en tu lengua nativa. Olvídate del inglés si no es lo tuyo.</p><p>Por ejemplo, en lugar de escribir en C#:</p><pre><code>public GameObject character;</code></pre><p>Puedes escribir en Creative Engine Scripting:</p><pre><code>publico objetoJuego personaje;</code></pre><p>Además, el editor de código integrado incluye un sistema de <strong>autocompletado inteligente</strong> que te sugiere palabras y te ayuda a programar mucho más rápido, minimizando errores.</p>"
+        },
+        {
+            title: "Animación Simplificada con Controlador",
+            content: "<p>Organiza todas las animaciones de un personaje o efecto de forma sencilla con nuestro editor de animación. El <strong>Controlador de Animación</strong> te ahorra escribir código complejo para gestionar estados.</p><p>Solo necesitas definir una animación principal (como 'idle') que se reproducirá por defecto, y animaciones secundarias (como 'saltar' o 'correr'). El sistema cambiará automáticamente a la animación secundaria cuando un evento la llame y volverá a la principal cuando termine. ¡No más código manual!</p>"
+        },
+        {
+            title: "Herramientas Integradas",
+            content: "<p>Creative Engine es un entorno de desarrollo todo en uno. Incluye:</p><ul><li>Un <strong>editor de código</strong> para que programes directamente en el motor.</li><li>Un <strong>editor de animación</strong> que te permite dibujar y gestionar tus animaciones por sprites sin salir de la herramienta.</li></ul>"
+        },
+        {
+            title: "Renderizado Dual",
+            content: "<p>Elige el motor de renderizado que mejor se adapte a tu proyecto. Puedes cambiar entre nuestro renderizador <strong>Canvas 2D</strong>, desarrollado desde cero para ser ligero y rápido, o usar <strong>PixiRenderer</strong> si buscas efectos más realistas con un mejor sistema de luces y sombras.</p>"
+        },
+        {
+            title: "Integración con Asistente IA",
+            content: "<p>Próximamente, Creative Engine integrará a <strong>Carl IA</strong>, tu asistente de inteligencia artificial personal. Podrás conversar con la IA a través de una ventana de chat y darle instrucciones a través de un terminal.</p><p>Carl IA podrá interactuar con tu proyecto, crear carpetas, archivos de código y ayudarte a acelerar tu desarrollo. En el futuro, ¡podrá incluso crear un juego completo basado en tu descripción y los recursos que le proporciones!</p>"
+        }
+    ];
+
+    const featureList = document.querySelector('.feature-list');
+
+    const showFeatureModal = (title, content) => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content feature-modal-content">
+                <span class="close-button">&times;</span>
+                <h3>${title}</h3>
+                <div>${content}</div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const close = () => modal.remove();
+        modal.querySelector('.close-button').addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                close();
+            }
+        });
+    };
+
+    if (featureList) {
+        featureList.addEventListener('click', (e) => {
+            const listItem = e.target.closest('li');
+            if (!listItem) return;
+
+            // Find the index of the clicked li
+            const index = Array.from(featureList.children).indexOf(listItem);
+
+            if (index > -1 && featureListData[index]) {
+                const feature = featureListData[index];
+                // Use the h3 content as a fallback title if needed, but prefer the data object
+                const title = feature.title || listItem.querySelector('strong').textContent;
+                showFeatureModal(title, feature.content);
+            }
+        });
+    }
+
+
     // Modal for Creative Engine access request
     const solicitarBtn = document.getElementById('solicitar-acceso-btn');
     solicitarBtn.addEventListener('click', () => {

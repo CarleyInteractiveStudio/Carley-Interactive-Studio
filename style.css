@@ -424,6 +424,37 @@ section.visible {
     to { transform: translateY(0); opacity: 1; }
 }
 
+.feature-modal-content {
+    max-width: 700px; /* Wider modal for more content */
+}
+
+.feature-modal-content h3 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+.feature-modal-content p {
+    line-height: 1.7;
+}
+
+.feature-modal-content pre {
+    background-color: var(--primary-color);
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid #444;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.feature-modal-content code {
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f2;
+}
+
+
 /* --- Creative Engine Section --- */
 .creative-engine-layout {
     display: grid;
@@ -491,6 +522,7 @@ section.visible {
     border-radius: 8px;
     transition: transform 0.3s ease, background-color 0.3s ease;
     will-change: transform;
+    cursor: pointer;
 }
 
 .feature-list li:hover {
