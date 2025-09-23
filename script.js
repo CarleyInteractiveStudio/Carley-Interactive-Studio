@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
             content: "<p>La interfaz del editor, incluyendo la jerarquía de objetos y el inspector de propiedades, ha sido rediseñada para ser más bonita, moderna y funcional que antes, haciendo tu flujo de trabajo más rápido y agradable.</p>"
         },
         {
-            title: "Scripting Flexible en tu Idioma",
-            content: "<p>¡Rompe la barrera del idioma! Nuestro sistema de scripting te permite programar en tu lengua nativa. Olvídate del inglés si no es lo tuyo.</p><p>Por ejemplo, en lugar de escribir en C#:</p><pre><code>public GameObject character;</code></pre><p>Puedes escribir en Creative Engine Scripting:</p><pre><code>publico objetoJuego personaje;</code></pre><p>Además, el editor de código integrado incluye un sistema de <strong>autocompletado inteligente</strong> que te sugiere palabras y te ayuda a programar mucho más rápido, minimizando errores.</p>"
+            title: "Scripting Flexible Inspirado en C# y JS",
+            content: "<p>Nuestro lenguaje de scripting, <strong>Creative Engine Scripting</strong>, está inspirado en la sintaxis de C# y la flexibilidad de JavaScript, pero con una gran ventaja: ¡puedes programar en tu propio idioma!</p><p>El objetivo es que no tengas que escribir código en inglés. Por ejemplo, en lugar de la sintaxis estándar en inglés:</p><pre><code>public gameObject character;</code></pre><p>Puedes usar su equivalente en español directamente en nuestro motor:</p><pre><code>publico objetoJuego personaje;</code></pre><p>Esto, combinado con nuestro editor de código con autocompletado inteligente, hace que el proceso de desarrollo sea más rápido, intuitivo y accesible para todos.</p>"
         },
         {
             title: "Animación Simplificada con Controlador",
