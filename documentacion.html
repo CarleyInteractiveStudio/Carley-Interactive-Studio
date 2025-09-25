@@ -48,6 +48,28 @@
             padding-bottom: 0.5rem;
             margin-bottom: 2rem;
         }
+
+        /* New styles for interactive docs */
+        .doc-topic-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 2rem;
+        }
+        .doc-topic-list li {
+            background-color: var(--card-bg-color);
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            will-change: transform;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .doc-topic-list li:hover {
+            transform: translateX(10px);
+            background-color: #3a3a3a;
+        }
     </style>
 </head>
 <body>
@@ -68,30 +90,15 @@
         <h1>Documentación</h1>
     </div>
 
-    <main>
-        <section id="doc-creative-engine" class="doc-section">
-            <h2>Documentación de Creative Engine</h2>
-            <p>Aquí encontrarás guías, tutoriales y la referencia completa de la API para empezar a crear con Creative Engine.</p>
-
-            <h3 style="margin-top: 3rem;">Resumen de Características</h3>
-            <ul>
-                <li><strong>Plataforma Principal:</strong> Creative Engine es un motor 100% web, lo que te permite usarlo desde cualquier dispositivo con un navegador, sin importar si es antiguo. ¡No consume muchos recursos!</li>
-                <li><strong>Versiones Futuras:</strong> Aunque ahora es web, contaremos con versiones de aplicación para Linux, Windows, Mac, Android y iOS.</li>
-                <li><strong>2D y 3D:</strong> La primera versión se enfocará en 2D, pero nuestro objetivo principal es que el motor soporte tanto 2D como 3D.</li>
-                <li><strong>Gratuito:</strong> El motor es y será 100% gratuito.</li>
-                <li><strong>Interfaz Intuitiva:</strong> Ofrecemos una interfaz de motor real, pero con la facilidad y comodidad de la web y un editor muy lindo y fácil de usar.</li>
-                <li><strong>Enfocado en Novatos:</strong> El motor ofrece muchas ayudas para quienes están empezando en el desarrollo de videojuegos.</li>
-                <li><strong>Scripting Flexible:</strong> Nuestro sistema de scripting, hecho con JavaScript, tiene similitudes con C# y te permite programar en tu propio idioma.</li>
-                <li><strong>Todo en Uno:</strong> Incluye muchas herramientas integradas para que puedas crear tu juego sin tener que salir del motor.</li>
+    <main class="doc-main-container">
+        <section class="doc-section">
+            <h2>Temas de Documentación</h2>
+            <p>Haz clic en un tema para ver más detalles.</p>
+            <ul class="doc-topic-list">
+                <li data-topic-id="0">📝 Resumen de Creative Engine</li>
+                <li data-topic-id="1">🤖 Documentación de Carl IA</li>
+                <!-- Más temas -->
             </ul>
-
-            <p style="margin-top: 2rem;"><em>(El resto del contenido detallado de la documentación se añadirá aquí...)</em></p>
-        </section>
-
-        <section id="doc-carl-ia" class="doc-section">
-            <h2>Documentación de Carl IA</h2>
-            <p>Aprende a interactuar con Carl IA, cómo darle instrucciones y sacar el máximo provecho de tu asistente de desarrollo.</p>
-            <p><em>(El contenido detallado de la documentación se añadirá aquí...)</em></p>
         </section>
     </main>
 
@@ -104,6 +111,6 @@
         <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="docs.js"></script>
 </body>
 </html>
