@@ -4,26 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentación - Carley Interactive Studio</title>
-
-    <!-- Social Media Preview Tags -->
     <meta property="og:title" content="Documentación - Carley Interactive Studio">
     <meta property="og:description" content="Documentación oficial de Creative Engine y Carl IA.">
-    <meta property="og:image" content="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/carley_foto_web/Logo%20C.png">
-    <meta property="og:url" content="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/documentacion.html">
-    <meta name="twitter:card" content="summary_large_image">
-
     <link rel="icon" href="carley_foto_web/Logo_C.png" type="image/png">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Additional styles for documentation page */
         .doc-hero {
-            height: 50vh;
+            height: 40vh;
             background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
             display: flex;
             justify-content: center;
@@ -34,41 +24,91 @@
             font-size: 3.5rem;
             color: var(--accent-color);
         }
-        main.doc-main-container {
-            padding-top: 0;
-        }
-        .doc-section {
-            text-align: left;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-        .doc-section h2 {
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-        }
+        main { padding-top: 0 !important; }
 
-        /* New styles for interactive docs */
-        .doc-topic-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 2rem;
+        .accordion-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
-        .doc-topic-list li {
-            background-color: var(--card-bg-color);
+        .accordion-category {
             margin-bottom: 1rem;
-            padding: 1.5rem;
             border-radius: 8px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            will-change: transform;
+            overflow: hidden;
+            background-color: var(--card-bg-color);
+        }
+        .category-header {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--text-color);
             cursor: pointer;
-            font-size: 1.2rem;
+            text-align: left;
+        }
+        .category-header:hover {
+            background-color: #3a3a3a;
+        }
+        .category-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            flex-grow: 1;
+        }
+        .category-icon {
+            height: 40px;
+            width: 40px;
+            margin-right: 1rem;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        .category-arrow {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .category-header.active .category-arrow {
+            transform: rotate(180deg);
+        }
+        .category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 1rem;
+        }
+        .accordion-item {
+            border-bottom: 1px solid #444;
+        }
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+        .item-header {
+            width: 100%;
+            padding: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            text-align: left;
+            font-size: 1.1rem;
             font-weight: 600;
         }
-        .doc-topic-list li:hover {
-            transform: translateX(10px);
-            background-color: #3a3a3a;
+        .item-header:hover {
+            color: var(--accent-color);
+        }
+        .item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 1rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .item-content ul {
+            padding-left: 20px;
+        }
+        .item-content li {
+            margin-bottom: 0.8rem;
         }
     </style>
 </head>
@@ -82,7 +122,7 @@
             <a href="index.html">Inicio</a>
             <a href="index.html#creative-engine">Creative Engine</a>
             <a href="index.html#carly-bot">Carl IA</a>
-            <a href="#">Documentación</a>
+            <a href="documentacion.html">Documentación</a>
         </nav>
     </header>
 
@@ -90,16 +130,54 @@
         <h1>Documentación</h1>
     </div>
 
-    <main class="doc-main-container">
-        <section class="doc-section">
-            <h2>Temas de Documentación</h2>
-            <p>Haz clic en un tema para ver más detalles.</p>
-            <ul class="doc-topic-list">
-                <li data-topic-id="0">📝 Resumen de Creative Engine</li>
-                <li data-topic-id="1">🤖 Documentación de Carl IA</li>
-                <!-- Más temas -->
-            </ul>
-        </section>
+    <main>
+        <div class="accordion-container">
+            <!-- Category 1: Creative Engine -->
+            <div class="accordion-category">
+                <button class="category-header">
+                    <img src="carley_foto_web/Creative%20Engine%20beta.png" alt="Creative Engine" class="category-icon">
+                    <h2>Documentación de Creative Engine</h2>
+                    <span class="category-arrow">▼</span>
+                </button>
+                <div class="category-content">
+                    <div class="accordion-item">
+                        <button class="item-header">📝 Resumen de Creative Engine</button>
+                        <div class="item-content">
+                            <ul>
+                                <li><strong>Plataforma Principal:</strong> Creative Engine es un motor 100% web, lo que te permite usarlo desde cualquier dispositivo con un navegador, sin importar si es antiguo. ¡No consume muchos recursos!</li>
+                                <li><strong>Versiones Futuras:</strong> Aunque ahora es web, contaremos con versiones de aplicación para Linux, Windows, Mac, Android y iOS.</li>
+                                <li><strong>2D y 3D:</strong> La primera versión se enfocará en 2D, pero nuestro objetivo principal es que el motor soporte tanto 2D como 3D.</li>
+                                <li><strong>Gratuito:</strong> El motor es y será 100% gratuito.</li>
+                                <li><strong>Interfaz Intuitiva:</strong> Ofrecemos una interfaz de motor real, pero con la facilidad y comodidad de la web y un editor muy lindo y fácil de usar.</li>
+                                <li><strong>Enfocado en Novatos:</strong> El motor ofrece muchas ayudas para quienes están empezando en el desarrollo de videojuegos.</li>
+                                <li><strong>Scripting Flexible:</strong> Nuestro sistema de scripting, hecho con JavaScript, tiene similitudes con C# y te permite programar en tu propio idioma.</li>
+                                <li><strong>Todo en Uno:</strong> Incluye muchas herramientas integradas para que puedas crear tu juego sin tener que salir del motor.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Add more topics for Creative Engine here -->
+                </div>
+            </div>
+
+            <!-- Category 2: Carl IA -->
+            <div class="accordion-category">
+                <button class="category-header">
+                    <img src="carley_foto_web/Carl_model.jpeg" alt="Carl IA" class="category-icon">
+                    <h2>Documentación de Carl IA</h2>
+                    <span class="category-arrow">▼</span>
+                </button>
+                <div class="category-content">
+                    <div class="accordion-item">
+                        <button class="item-header">🤖 Introducción a Carl IA</button>
+                        <div class="item-content">
+                            <p>Aprende a interactuar con Carl IA, cómo darle instrucciones y sacar el máximo provecho de tu asistente de desarrollo.</p>
+                            <p><em>(Próximamente más detalles...)</em></p>
+                        </div>
+                    </div>
+                    <!-- Add more topics for Carl IA here -->
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="main-footer">
