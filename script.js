@@ -229,6 +229,103 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    // Generic Modal for Support/Contact
+    const showSupportModal = (config) => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>${config.title}</h2>
+                <p>${config.description}</p>
+                <form id="support-form" action="https://formspree.io/f/mldlyzyy" method="POST">
+                    <input type="hidden" name="_subject" value="${config.subject}">
+                    <label for="email">Tu Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                    <button type="submit">Enviar</button>
+                    <p class="form-status"></p>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const closeBtn = modal.querySelector('.close-button');
+        const form = modal.querySelector('#support-form');
+        const statusEl = modal.querySelector('.form-status');
+        const submitBtn = modal.querySelector('button[type="submit"]');
+
+        const closeModal = () => modal.remove();
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    form.innerHTML = `<p style="color: green;">¡Gracias por tu interés! Nos pondremos en contacto contigo pronto.</p>`;
+                    setTimeout(closeModal, 3000);
+                } else {
+                    response.json().then(data => {
+                        statusEl.textContent = data.errors ? data.errors.map(err => err.message).join(', ') : 'Oops! Hubo un problema.';
+                        statusEl.style.color = 'red';
+                    });
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Enviar';
+                }
+            }).catch(() => {
+                statusEl.textContent = 'Oops! Hubo un problema de red.';
+                statusEl.style.color = 'red';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar';
+            });
+        });
+    };
+
+    // Event Listeners for Support Modals
+    const supportButtonConfigs = {
+        'support-carl-ia-money': {
+            title: 'Apoyar a Carl IA Monetariamente',
+            description: 'Tu donación nos ayuda a cubrir los costos de servidor y desarrollo. ¡Muchas gracias por tu apoyo!',
+            subject: 'Apoyo Monetario para Carl IA'
+        },
+        'support-carl-ia-server': {
+            title: 'Aportar un Servidor para Carl IA',
+            description: 'Si tienes recursos de servidor que puedas aportar, déjanos tu correo y nos pondremos en contacto contigo. ¡Gracias!',
+            subject: 'Interés en Aportar Servidor para Carl IA'
+        },
+        'support-engine-dev': {
+            title: 'Colaborar como Desarrollador',
+            description: '¡Genial! Nos encanta que quieras unirte al equipo. Déjanos tu correo y te contactaremos para hablar sobre cómo puedes contribuir.',
+            subject: 'Interés en Colaborar como Desarrollador'
+        },
+        'support-engine-money': {
+            title: 'Apoyar el Desarrollo del Motor',
+            description: 'Cada contribución nos ayuda a dedicar más tiempo y recursos a Creative Engine. ¡Gracias por ayudarnos a hacerlo posible!',
+            subject: 'Apoyo Monetario para Creative Engine'
+        }
+    };
+
+    Object.keys(supportButtonConfigs).forEach(id => {
+        const button = document.getElementById(id);
+        if (button) {
+            button.addEventListener('click', () => {
+                showSupportModal(supportButtonConfigs[id]);
+            });
+        }
+    });
+
+
     // 4. Carly Bot Chat Logic
     const openChatBtn = document.getElementById('open-chat-btn');
     const closeChatBtn = document.getElementById('close-chat-btn');
