@@ -242,6 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="hidden" name="_subject" value="${config.subject}">
                     <label for="email">Tu Correo Electrónico:</label>
                     <input type="email" id="email" name="email" required>
+                    <label for="message">Mensaje (Opcional):</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
                     <button type="submit">Enviar</button>
                     <p class="form-status"></p>
                 </form>
