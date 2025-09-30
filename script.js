@@ -43,12 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. PayPal Donation Button
-    // The user provided the hosted_button_id: JZ4KM2VUD6AMQ
-    // I need to add the PayPal SDK script to the index.html for this to work.
-    // I will add it now as it's a small change.
-    // Let's assume the SDK is loaded. I'll add the rendering logic here.
-    // Note: The SDK script itself should be in the HTML.
-    // I will add a function to dynamically load the script to avoid modifying the html again.
     function loadPayPalSDK() {
         const script = document.createElement('script');
         script.src = 'https://www.paypalobjects.com/donate/sdk/donate-sdk.js';
@@ -66,8 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         document.body.appendChild(script);
     }
-    // I will not call this function yet, as I need to first add the paypal button styling.
-    // I will come back to this. For now, a function is defined.
     loadPayPalSDK();
 
 
@@ -130,24 +122,17 @@ document.addEventListener('DOMContentLoaded', () => {
         featureList.addEventListener('click', (e) => {
             const listItem = e.target.closest('li');
             if (!listItem) return;
-
-            // Find the index of the clicked li
             const index = Array.from(featureList.children).indexOf(listItem);
-
             if (index > -1 && featureListData[index]) {
                 const feature = featureListData[index];
-                // Use the h3 content as a fallback title if needed, but prefer the data object
                 const title = feature.title || listItem.querySelector('strong').textContent;
                 showFeatureModal(title, feature.content);
             }
         });
     }
 
-
-    // Modal for Creative Engine access request
     const solicitarBtn = document.getElementById('solicitar-acceso-btn');
     solicitarBtn.addEventListener('click', () => {
-        // Create and show modal
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
@@ -228,8 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-
-    // Generic Modal for Support/Contact
     const showSupportModal = (config) => {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -294,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Event Listeners for Support Modals
     const supportButtonConfigs = {
         'support-carl-ia-money': {
             title: 'Apoyar a Carl IA Monetariamente',
@@ -327,8 +309,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
-    // 4. Carly Bot Chat Logic
     const openChatBtn = document.getElementById('open-chat-btn');
     const closeChatBtn = document.getElementById('close-chat-btn');
     const chatWindow = document.getElementById('chat-window');
@@ -387,9 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initial bot message
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
-
 
     // Logic for "Ver nuestros avances" Modal
     const avancesBtn = document.getElementById('ver-avances-btn');
