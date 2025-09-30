@@ -389,4 +389,147 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial bot message
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
+
+
+    // Logic for "Ver nuestros avances" Modal
+    const avancesBtn = document.getElementById('ver-avances-btn');
+    if (avancesBtn) {
+        avancesBtn.addEventListener('click', () => {
+            // Fetch data from the local db.json file
+            fetch('db.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // The data from db.json is nested under an "avances" key
+                    showAvancesModal(data.avances);
+                })
+                .catch(error => {
+                    console.error('Error fetching avances data:', error);
+                    const errorData = [{
+                        section: "Error",
+                        publications: [{
+                            title: "No se pudo cargar el contenido",
+                            description: "Hubo un problema al cargar los datos de los avances. Revisa la consola para más detalles.",
+                            images: [],
+                            youtube: null,
+                            video: null
+                        }]
+                    }];
+                    showAvancesModal(errorData);
+                });
+        });
+    }
+
+    const showAvancesModal = (data) => {
+        let activeCarouselIntervals = []; // Store interval IDs to clear them later
+
+        const modal = document.createElement('div');
+        modal.className = 'modal avances-modal';
+        modal.innerHTML = `
+            <div class="modal-content avances-modal-content">
+                <span class="close-button">&times;</span>
+                <div class="avances-layout">
+                    <aside class="avances-sidebar">
+                        <div class="avances-logo">
+                            <h2>Secciones</h2>
+                        </div>
+                        <nav class="avances-nav">
+                            <ul>
+                                ${data.map(section => `<li>${section.section}</li>`).join('')}
+                            </ul>
+                        </nav>
+                    </aside>
+                    <main class="avances-main">
+                        <!-- Publications will be rendered here -->
+                    </main>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const mainContent = modal.querySelector('.avances-main');
+        const sectionLinks = modal.querySelectorAll('.avances-nav li');
+
+        // Function to clear all active carousel intervals
+        const clearCarouselIntervals = () => {
+            activeCarouselIntervals.forEach(intervalId => clearInterval(intervalId));
+            activeCarouselIntervals = [];
+        };
+
+        const renderPublications = (publications) => {
+            clearCarouselIntervals(); // Clear previous intervals before rendering new content
+            mainContent.innerHTML = publications.map(pub => `
+                <article class="publication">
+                    <h3>${pub.title}</h3>
+                    <p>${pub.description}</p>
+                    <div class="publication-media">
+                        ${
+                            pub.images && pub.images.length > 0 ?
+                            `<div class="image-carousel">
+                                ${pub.images.map(img => `<img src="${img}" alt="${pub.title}">`).join('')}
+                            </div>` : ''
+                        }
+                        ${
+                            pub.video ?
+                            `<video controls src="${pub.video}"></video>` : ''
+                        }
+                    </div>
+                    ${
+                        pub.youtube ?
+                        `<a href="${pub.youtube}" target="_blank" class="youtube-btn">Ver video en YouTube</a>`
+                        : ''
+                    }
+                </article>
+            `).join('');
+
+            // Set up new carousels
+            mainContent.querySelectorAll('.image-carousel').forEach(carousel => {
+                if (carousel.children.length > 1) {
+                    let currentIndex = 0;
+                    const images = Array.from(carousel.children);
+                    images.forEach(img => img.style.display = 'none');
+                    images[0].style.display = 'block';
+
+                    const intervalId = setInterval(() => {
+                        images[currentIndex].style.display = 'none';
+                        currentIndex = (currentIndex + 1) % images.length;
+                        images[currentIndex].style.display = 'block';
+                    }, 3000);
+                    activeCarouselIntervals.push(intervalId); // Store the new interval ID
+                } else if (carousel.children.length === 1) {
+                    carousel.children[0].style.display = 'block';
+                }
+            });
+        };
+
+        sectionLinks.forEach((link, index) => {
+            link.addEventListener('click', () => {
+                sectionLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                renderPublications(data[index].publications);
+            });
+        });
+
+        // Initial render
+        if (data && data.length > 0) {
+            sectionLinks[0].classList.add('active');
+            renderPublications(data[0].publications);
+        }
+
+        const close = () => {
+            clearCarouselIntervals(); // Important: clear intervals on close
+            modal.remove();
+        };
+
+        modal.querySelector('.close-button').addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                close();
+            }
+        });
+    };
 });
