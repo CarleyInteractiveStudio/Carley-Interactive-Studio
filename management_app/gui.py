@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import filedialog
+from tkinter import filedialog, PhotoImage
 import os
 import main as backend # Import our backend logic
 
@@ -8,9 +8,18 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("Carley Studio - Gestor de Contenido")
-        self.geometry("600x800") # Increased height for the new tab
+        self.geometry("600x800")
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
+
+        # Set window icon
+        try:
+            # This works for .png files and is more compatible across OS
+            icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icon.png")
+            self.iconphoto(True, PhotoImage(file=icon_path))
+        except Exception as e:
+            print(f"Error setting icon: {e}. Make sure 'icon.png' is in the same directory.")
+
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
