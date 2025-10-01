@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // The 'supabase' client and credentials are now initialized in supabase-config.js
+    // Initialize the client here, using variables from supabase-config.js
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const storageUrl = `${SUPABASE_URL}/storage/v1/object/public/media/`;
 
     const collaboratorsContainer = document.getElementById('collaborators-container');
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         showLoading();
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('collaborators')
             .select('*')
             .order('name');

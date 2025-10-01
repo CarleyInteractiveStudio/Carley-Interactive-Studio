@@ -367,9 +367,11 @@ document.addEventListener('DOMContentLoaded', () => {
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
 
     // Logic for "Ver nuestros avances" Modal
-    // The 'supabase' client is now initialized in supabase-config.js
     const avancesBtn = document.getElementById('ver-avances-btn');
     if (avancesBtn) {
+        // Initialize the client here, inside the event listener, to ensure supabase-js is loaded.
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         avancesBtn.addEventListener('click', async () => {
             try {
                 // Fetch sections and their related publications from Supabase
