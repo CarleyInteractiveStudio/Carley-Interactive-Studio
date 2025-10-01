@@ -369,41 +369,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
 
+    // --- Supabase Integration ---
+    const SUPABASE_URL = 'https://pufujgwkagbpvbkzbeiy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1ZnVqZ3drYWdicHZia3piZWl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNTA1MDksImV4cCI6MjA3NDgyNjUwOX0.cdX3dzjH_KUHQ9SuUjnM6Tvel0LQOY6SnnVz82K1n_E';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     // Logic for "Ver nuestros avances" Modal
     const avancesBtn = document.getElementById('ver-avances-btn');
     if (avancesBtn) {
-        avancesBtn.addEventListener('click', () => {
-            // Fetch data from the local db.json file
-            fetch('db.json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // The data from db.json is nested under an "avances" key
-                    showAvancesModal(data.avances);
-                })
-                .catch(error => {
-                    console.error('Error fetching avances data:', error);
-                    const errorData = [{
-                        section: "Error",
-                        publications: [{
-                            title: "No se pudo cargar el contenido",
-                            description: "Hubo un problema al cargar los datos de los avances. Revisa la consola para más detalles.",
-                            images: [],
-                            youtube: null,
-                            video: null
-                        }]
-                    }];
-                    showAvancesModal(errorData);
-                });
+        avancesBtn.addEventListener('click', async () => {
+            try {
+                // Fetch sections and their related publications from Supabase
+                const { data, error } = await supabase
+                    .from('sections')
+                    .select(`
+                        name,
+                        publications ( title, description, images, youtube, video )
+                    `)
+                    .order('id'); // Or any other column you want to order by
+
+                if (error) {
+                    throw error;
+                }
+
+                // Adapt the data structure from Supabase to what the modal function expects
+                const adaptedData = data.map(item => ({
+                    section: item.name,
+                    publications: item.publications
+                }));
+
+                showAvancesModal(adaptedData);
+
+            } catch (error) {
+                console.error('Error fetching avances data from Supabase:', error);
+                const errorData = [{
+                    section: "Error",
+                    publications: [{
+                        title: "No se pudo cargar el contenido",
+                        description: `Hubo un problema al conectar con la base de datos: ${error.message}`,
+                        images: [],
+                        youtube: null,
+                        video: null
+                    }]
+                }];
+                showAvancesModal(errorData);
+            }
         });
     }
 
     const showAvancesModal = (data) => {
-        let activeCarouselIntervals = []; // Store interval IDs to clear them later
+        let activeCarouselIntervals = [];
 
         const modal = document.createElement('div');
         modal.className = 'modal avances-modal';
@@ -432,14 +447,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainContent = modal.querySelector('.avances-main');
         const sectionLinks = modal.querySelectorAll('.avances-nav li');
 
-        // Function to clear all active carousel intervals
         const clearCarouselIntervals = () => {
             activeCarouselIntervals.forEach(intervalId => clearInterval(intervalId));
             activeCarouselIntervals = [];
         };
 
         const renderPublications = (publications) => {
-            clearCarouselIntervals(); // Clear previous intervals before rendering new content
+            clearCarouselIntervals();
+            const storageUrl = `${SUPABASE_URL}/storage/v1/object/public/media/`;
+
             mainContent.innerHTML = publications.map(pub => `
                 <article class="publication">
                     <h3>${pub.title}</h3>
@@ -448,12 +464,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${
                             pub.images && pub.images.length > 0 ?
                             `<div class="image-carousel">
-                                ${pub.images.map(img => `<img src="${img}" alt="${pub.title}">`).join('')}
+                                ${pub.images.map(img => `<img src="${storageUrl}${img}" alt="${pub.title}">`).join('')}
                             </div>` : ''
                         }
                         ${
                             pub.video ?
-                            `<video controls src="${pub.video}"></video>` : ''
+                            `<video controls src="${storageUrl}${pub.video}"></video>` : ''
                         }
                     </div>
                     ${
@@ -464,20 +480,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 </article>
             `).join('');
 
-            // Set up new carousels
             mainContent.querySelectorAll('.image-carousel').forEach(carousel => {
                 if (carousel.children.length > 1) {
                     let currentIndex = 0;
                     const images = Array.from(carousel.children);
                     images.forEach(img => img.style.display = 'none');
-                    images[0].style.display = 'block';
+                    if(images.length > 0) images[0].style.display = 'block';
 
                     const intervalId = setInterval(() => {
                         images[currentIndex].style.display = 'none';
                         currentIndex = (currentIndex + 1) % images.length;
                         images[currentIndex].style.display = 'block';
                     }, 3000);
-                    activeCarouselIntervals.push(intervalId); // Store the new interval ID
+                    activeCarouselIntervals.push(intervalId);
                 } else if (carousel.children.length === 1) {
                     carousel.children[0].style.display = 'block';
                 }
@@ -492,14 +507,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Initial render
         if (data && data.length > 0) {
             sectionLinks[0].classList.add('active');
             renderPublications(data[0].publications);
         }
 
         const close = () => {
-            clearCarouselIntervals(); // Important: clear intervals on close
+            clearCarouselIntervals();
             modal.remove();
         };
 
