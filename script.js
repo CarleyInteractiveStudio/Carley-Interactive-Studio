@@ -43,8 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. PayPal Donation Button
-    // The SDK script is now loaded directly in index.html.
-    // We just need to render the button here.
     if (typeof PayPal !== 'undefined') {
         PayPal.Donation.Button({
             env: 'production',
@@ -366,33 +364,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
 
-    // Logic for "Ver nuestros avances" Modal
+    // --- Supabase Integration for "Ver nuestros avances" ---
+    const SUPABASE_URL = 'https://pufujgwkagbpvbkzbeiy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1ZnVqZ3drYWdicHZia3piZWl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNTA1MDksImV4cCI6MjA3NDgyNjUwOX0.cdX3dzjH_KUHQ9SuUjnM6Tvel0LQOY6SnnVz82K1n_E';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const avancesBtn = document.getElementById('ver-avances-btn');
     if (avancesBtn) {
-        // Initialize the client here, inside the event listener, to ensure supabase-js is loaded.
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         avancesBtn.addEventListener('click', async () => {
             try {
-                // Fetch sections and their related publications from Supabase
                 const { data, error } = await supabase
                     .from('sections')
                     .select(`
                         name,
                         publications ( title, description, images, youtube, video )
                     `)
-                    .order('id'); // Or any other column you want to order by
+                    .order('id');
 
-                if (error) {
-                    throw error;
-                }
+                if (error) throw error;
 
-                // Adapt the data structure from Supabase to what the modal function expects
                 const adaptedData = data.map(item => ({
                     section: item.name,
                     publications: item.publications
                 }));
-
                 showAvancesModal(adaptedData);
 
             } catch (error) {
@@ -402,9 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     publications: [{
                         title: "No se pudo cargar el contenido",
                         description: `Hubo un problema al conectar con la base de datos: ${error.message}`,
-                        images: [],
-                        youtube: null,
-                        video: null
+                        images: [], youtube: null, video: null
                     }]
                 }];
                 showAvancesModal(errorData);
