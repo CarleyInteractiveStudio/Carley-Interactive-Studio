@@ -43,24 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. PayPal Donation Button
-    function loadPayPalSDK() {
-        const script = document.createElement('script');
-        script.src = 'https://www.paypalobjects.com/donate/sdk/donate-sdk.js';
-        script.charset = 'UTF-8';
-        script.onload = () => {
-            PayPal.Donation.Button({
-                env: 'production',
-                hosted_button_id: 'JZ4KM2VUD6AMQ',
-                image: {
-                    src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-                    alt: 'Donate with PayPal button',
-                    title: 'PayPal - The safer, easier way to pay online!'
-                }
-            }).render('#paypal-donate-button-container');
-        };
-        document.body.appendChild(script);
+    // The SDK script is now loaded directly in index.html.
+    // We just need to render the button here.
+    if (typeof PayPal !== 'undefined') {
+        PayPal.Donation.Button({
+            env: 'production',
+            hosted_button_id: 'JZ4KM2VUD6AMQ',
+            image: {
+                src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                alt: 'Donate with PayPal button',
+                title: 'PayPal - The safer, easier way to pay online!'
+            }
+        }).render('#paypal-donate-button-container');
+    } else {
+        console.error("PayPal SDK not loaded.");
     }
-    loadPayPalSDK();
 
 
     // 5. Feature List Modals
@@ -369,12 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
 
-    // --- Supabase Integration ---
-    const SUPABASE_URL = 'https://pufujgwkagbpvbkzbeiy.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1ZnVqZ3drYWdicHZia3piZWl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNTA1MDksImV4cCI6MjA3NDgyNjUwOX0.cdX3dzjH_KUHQ9SuUjnM6Tvel0LQOY6SnnVz82K1n_E';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     // Logic for "Ver nuestros avances" Modal
+    // The 'supabase' client is now initialized in supabase-config.js
     const avancesBtn = document.getElementById('ver-avances-btn');
     if (avancesBtn) {
         avancesBtn.addEventListener('click', async () => {

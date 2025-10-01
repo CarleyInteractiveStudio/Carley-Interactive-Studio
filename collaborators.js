@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // --- Supabase Integration ---
-    const SUPABASE_URL = 'https://pufujgwkagbpvbkzbeiy.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1ZnVqZ3drYWdicHZia3piZWl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNTA1MDksImV4cCI6MjA3NDgyNjUwOX0.cdX3dzjH_KUHQ9SuUjnM6Tvel0LQOY6SnnVz82K1n_E';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // The 'supabase' client and credentials are now initialized in supabase-config.js
     const storageUrl = `${SUPABASE_URL}/storage/v1/object/public/media/`;
 
     const collaboratorsContainer = document.getElementById('collaborators-container');
