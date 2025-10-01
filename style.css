@@ -824,48 +824,53 @@ section.visible {
     background-color: #cc0000;
 }
 
-/* --- Collaborators Page --- */
+/* --- Collaborators Page (New Design) --- */
 .collaborator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    gap: 2.5rem;
     margin-top: 3rem;
-    text-align: left;
 }
 
 .collaborator-card {
     background-color: var(--secondary-color);
-    border-radius: 10px;
-    overflow: hidden;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid transparent;
+    border: 1px solid var(--primary-color);
 }
 
 .collaborator-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     border-color: var(--accent-color);
 }
 
-.collaborator-photo img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    display: block;
+.collaborator-photo {
+    margin-bottom: 1.5rem;
 }
 
-.collaborator-info {
-    padding: 1.5rem;
+.collaborator-photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* Makes the image circular */
+    border: 4px solid var(--accent-color);
+    margin: 0 auto;
+    display: block;
 }
 
 .collaborator-info h3 {
     margin-top: 0;
+    margin-bottom: 0.5rem;
     color: var(--accent-color);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
 }
 
 .collaborator-info p {
     font-size: 1rem;
     line-height: 1.6;
     color: var(--text-color);
+    opacity: 0.9;
 }

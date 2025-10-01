@@ -364,16 +364,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     appendMessage("¡Hola! Soy Carl IA. Pregúntame sobre Creative Engine o cómo puedes apoyar.", "bot");
 
-    // --- Supabase Integration for "Ver nuestros avances" ---
-    const SUPABASE_URL = 'https://pufujgwkagbpvbkzbeiy.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1ZnVqZ3drYWdicHZia3piZWl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyNTA1MDksImV4cCI6MjA3NDgyNjUwOX0.cdX3dzjH_KUHQ9SuUjnM6Tvel0LQOY6SnnVz82K1n_E';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+    // Logic for "Ver nuestros avances" Modal
     const avancesBtn = document.getElementById('ver-avances-btn');
     if (avancesBtn) {
         avancesBtn.addEventListener('click', async () => {
             try {
-                const { data, error } = await supabase
+                // Use the globally initialized client from supabase-config.js
+                const { data, error } = await supabaseClient
                     .from('sections')
                     .select(`
                         name,
@@ -441,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const renderPublications = (publications) => {
             clearCarouselIntervals();
+            // Use the global constant from supabase-config.js
             const storageUrl = `${SUPABASE_URL}/storage/v1/object/public/media/`;
 
             mainContent.innerHTML = publications.map(pub => `

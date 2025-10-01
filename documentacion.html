@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentación - Carley Interactive Studio</title>
-    <meta property="og:title" content="Documentación - Carley Interactive Studio">
-    <meta property="og:description" content="Documentación oficial de Creative Engine y Carl IA.">
     <link rel="icon" href="carley_foto_web/Logo_C.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,90 +23,64 @@
             color: var(--accent-color);
         }
         main { padding-top: 0 !important; }
-
-        .accordion-container {
+        .doc-content {
             max-width: 900px;
             margin: 2rem auto;
-            padding: 0 2rem;
+            padding: 2rem;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
         }
         .accordion-category {
             margin-bottom: 1rem;
+            border: 1px solid var(--primary-color);
             border-radius: 8px;
             overflow: hidden;
-            background-color: var(--card-bg-color);
         }
         .category-header {
-            display: flex;
-            align-items: center;
-            width: 100%;
+            background-color: var(--card-bg-color);
             padding: 1rem;
-            background-color: var(--secondary-color);
-            border: none;
-            color: var(--text-color);
             cursor: pointer;
-            text-align: left;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
         }
-        .category-header:hover {
-            background-color: #3a3a3a;
-        }
-        .category-header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            flex-grow: 1;
-        }
-        .category-icon {
-            height: 40px;
-            width: 40px;
-            margin-right: 1rem;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-        .category-arrow {
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        .category-header.active .category-arrow {
-            transform: rotate(180deg);
+        .category-header:hover, .category-header.active {
+            background-color: var(--accent-color);
+            color: white;
         }
         .category-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
             padding: 0 1rem;
         }
         .accordion-item {
-            border-bottom: 1px solid #444;
-        }
-        .accordion-item:last-child {
-            border-bottom: none;
+            border-top: 1px solid var(--primary-color);
         }
         .item-header {
-            width: 100%;
             padding: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-color);
             cursor: pointer;
-            text-align: left;
-            font-size: 1.1rem;
-            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.05);
         }
         .item-header:hover {
-            color: var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.1);
         }
         .item-content {
+            padding: 0 1rem;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-            padding: 0 1rem;
-            font-size: 0.95rem;
-            line-height: 1.7;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            text-align: left;
         }
-        .item-content ul {
-            padding-left: 20px;
+        .item-content pre {
+            background-color: var(--primary-color);
+            padding: 1rem;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
-        .item-content li {
-            margin-bottom: 0.8rem;
+        .item-content code {
+            font-family: 'Courier New', Courier, monospace;
         }
     </style>
 </head>
@@ -129,161 +101,69 @@
     </header>
 
     <div class="doc-hero">
-        <h1>Documentación</h1>
+        <h1>Documentación de Creative Engine</h1>
     </div>
 
     <main>
-        <div class="accordion-container">
-            <!-- Category 1: Creative Engine -->
+        <div class="doc-content">
             <div class="accordion-category">
-                <button class="category-header">
-                    <img src="carley_foto_web/Creative%20Engine%20beta.png" alt="Creative Engine" class="category-icon">
-                    <h2>Documentación de Creative Engine</h2>
-                    <span class="category-arrow">▼</span>
-                </button>
+                <div class="category-header">Introducción</div>
+                <div class="category-content">
+                    <p>Bienvenido a la documentación de Creative Engine. Aquí encontrarás todo lo que necesitas para empezar a crear tus propios videojuegos directamente en la web.</p>
+                </div>
+            </div>
+
+            <div class="accordion-category">
+                <div class="category-header">Primeros Pasos</div>
                 <div class="category-content">
                     <div class="accordion-item">
-                        <button class="item-header">📝 Resumen de Creative Engine</button>
+                        <div class="item-header">1. Crear un Nuevo Proyecto</div>
                         <div class="item-content">
-                            <ul>
-                                <li><strong>Plataforma Principal:</strong> Creative Engine es un motor 100% web, lo que te permite usarlo desde cualquier dispositivo con un navegador, sin importar si es antiguo. ¡No consume muchos recursos!</li>
-                                <li><strong>Versiones Futuras:</strong> Aunque ahora es web, contaremos con versiones de aplicación para Linux, Windows, Mac, Android y iOS.</li>
-                                <li><strong>2D y 3D:</strong> La primera versión se enfocará en 2D, pero nuestro objetivo principal es que el motor soporte tanto 2D como 3D.</li>
-                                <li><strong>Gratuito:</strong> El motor es y será 100% gratuito.</li>
-                                <li><strong>Interfaz Intuitiva:</strong> Ofrecemos una interfaz de motor real, pero con la facilidad y comodidad de la web y un editor muy lindo y fácil de usar.</li>
-                                <li><strong>Enfocado en Novatos:</strong> El motor ofrece muchas ayudas para quienes están empezando en el desarrollo de videojuegos.</li>
-                                <li><strong>Scripting Flexible:</strong> Nuestro sistema de scripting, hecho con JavaScript, tiene similitudes con C# y te permite programar en tu propio idioma.</li>
-                                <li><strong>Todo en Uno:</strong> Incluye muchas herramientas integradas para que puedas crear tu juego sin tener que salir del motor.</li>
-                            </ul>
+                            <p>Para iniciar, haz clic en "Archivo" > "Nuevo Proyecto". Se te pedirá que elijas una carpeta en tu ordenador donde se guardarán todos los archivos de tu proyecto.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <button class="item-header">🚀 Bienvenida</button>
+                        <div class="item-header">2. La Interfaz</div>
                         <div class="item-content">
-                            <p>Te damos la bienvenida a la documentación de Creative Engine. Aquí encontrarás todo lo que necesitas para empezar. Nuestra presentación inicial incluye los logos de nuestra marca, Carley, el motor, y nuestra emocionante colaboración con <strong>Flygame</strong>, la plataforma donde podrás publicar tus juegos y mostrar al mundo la potencia y eficacia de nuestro motor.</p>
-                            <p>Para tu comodidad, hemos incluido una música de fondo suave que se reproduce automáticamente. Nos preocupa tu comodidad y queremos que te sientas relajado mientras trabajas.</p>
-                            <p>Este motor no sería posible sin la increíble ayuda de la IA <strong>Google Jules</strong>. Agradecemos infinitamente a Google por darnos acceso a esta herramienta, que ha sido fundamental en la creación de la mayoría de las partes del motor. También agradecemos a todos los que han colaborado en el proyecto.</p>
-                            <div class="creative-engine-buttons" style="justify-content: flex-start; margin-top: 1rem;">
-                                <a href="https://discord.gg/fBa9ZSAwk6" target="_blank"><button>Únete a Discord</button></a>
-                                <a href="mailto:carley.interactive.studio@gmail.com"><button>Contacto y Soporte</button></a>
-                                <a href="colaboradores.html"><button>Ver Colaboradores</button></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">💡 Nuestra Filosofía</button>
-                        <div class="item-content">
-                            <p>No buscamos ser una réplica de ningún motor existente. Nuestro propósito es que Creative Engine sea un motor fácil de usar y a la vez eficaz, profesional y potente.</p>
-                            <p>El motor es de <strong>código abierto</strong>. Sin embargo, no está permitido copiarlo para publicarlo como si fuese una obra tuya; valoramos mucho la originalidad. Una vez que el motor esté 100% listo y estable, se agregará un botón para poder descargar el código fuente para quienes quieran darle su propio toque personal, pero sin publicarlo públicamente.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">🛠️ Creando tu Primer Proyecto</button>
-                        <div class="item-content">
-                            <p>Cuando presionas "Empezar a Crear", se requerirá que inicies sesión. Esto nos ayuda a saber la cantidad de nuestros usuarios y te facilitará el acceso a futuras herramientas como nuestra tienda de assets.</p>
-                            <p>Próximamente: <a href="#" class="text-link">Creative Engine Asset Store</a></p>
-                            <h4>Iniciando Tu Primer Proyecto</h4>
-                            <p>Una vez que has creado tu proyecto, simplemente haz clic en él y el proyecto se iniciará.</p>
-                            <h4>Proceso de Arranque del Motor</h4>
-                            <p>En este momento, nuestro motor comienza a cargar todos los sistemas y el proyecto de forma conjunta para garantizar un inicio y un arranque óptimos.</p>
-                            <ul>
-                                <li><strong>Velocidad:</strong> El motor está altamente optimizado y arranca muy rápido, a menudo en menos de dos segundos.</li>
-                                <li><strong>Detección de Errores:</strong> Si por alguna razón el motor falla durante el inicio, el detector de errores lo identificará y reportará el fallo.</li>
-                            </ul>
-                            <p>Una vez que el motor arranca completamente y con éxito, obtendrás acceso al Editor para comenzar a crear tu videojuego.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">🎵 Funcionalidades Integradas</button>
-                        <div class="item-content">
-                            <p>El motor contiene varios sistemas (integrados) para que no tengas que depender de herramientas externas:</p>
-                            <h4>Reproductor de Música para Desarrolladores</h4>
-                            <p>Para los desarrolladores que disfrutan escuchar música mientras trabajan, el motor cuenta con un reproductor de música integrado. Simplemente agrega tu música favorita y comienza a trabajar con total relajación y comodidad.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">🎨 Editor de Animación</button>
-                        <div class="item-content">
-                            <p>El motor incluye un editor de animación donde puedes crear animaciones de dos maneras:</p>
-                            <ul>
-                                <li><strong>Dibujo:</strong> Dibuja animaciones por frames y sprites directamente en el editor.</li>
-                                <li><strong>Importación:</strong> Si ya tienes experiencia o has descargado animaciones, simplemente importa la hoja de animación. Luego, en el Inspector, conviértela en una animación lista para usar.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">📦 Gestión de Activos</button>
-                        <div class="item-content">
-                            <h4>Navegador de Archivos y Importación</h4>
-                            <p>El navegador de archivos facilita la adición de activos a tu juego. Para importar cualquier archivo, simplemente arrástralo al navegador. El archivo se importará automáticamente y estará disponible.</p>
-                            <h4>El Inspector</h4>
-                            <p>El Inspector es una herramienta fundamental y muy completa:</p>
-                            <ul>
-                                <li>Contiene muchos componentes pre-hechos listos para usar.</li>
-                                <li>Recuerda que todos tus scripts también se convierten en componentes.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">🏛️ Conceptos Clave: Mater y Leyes</button>
-                        <div class="item-content">
-                            <p>Nuestro motor funciona basándose en los conceptos de Mater y Leyes.</p>
-                            <ul>
-                                <li><strong>Mater:</strong> Es cualquier cosa que exista en la escena. No importa si es un personaje, un objeto estático o cualquier otro elemento.</li>
-                                <li><strong>Leyes:</strong> Son los componentes que acompañan al Mater y le dan sentido y funcionalidad. Esto incluye cualquier cosa, desde un componente de física (RigidBody) hasta un script que defina el comportamiento.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="item-header">🤖 Carl IA + Creative Engine</button>
-                        <div class="item-content">
-                            <h4>Una Integración Innovadora</h4>
-                            <p>La integración de Carl IA en Creative Engine será una innovación total para el motor. Permitirá a los desarrolladores crear juegos simplemente con comandos, diciéndole a la IA qué juego quieren. La IA investigará y creará el juego, programando de forma autónoma.</p>
-                            <p>Estamos planeando integrar esto y ya tenemos la IA lista. Se agregarán dos nuevas ventanas al motor:</p>
-                            <ul>
-                                <li>Un <strong>Terminal</strong>, que se ubicará después de la ventana de código.</li>
-                                <li>Una ventana de <strong>Chat con Carl IA</strong>, accesible desde el menú superior.</li>
-                            </ul>
-                            <p>A través de estas ventanas, podrás conversar con la IA sobre lo que quieres. La IA reaccionará con el entorno de tu proyecto, ejecutando una serie de comandos para crear archivos, scripts, y todo lo necesario. Incluso para escribir código, la IA lo hará a través del terminal, automatizando gran parte del proceso de desarrollo.</p>
+                            <p>La interfaz se divide en varias ventanas: la <strong>Jerarquía</strong> (lista de objetos en tu escena), la <strong>Escena</strong> (vista visual de tu juego), el <strong>Inspector</strong> (propiedades del objeto seleccionado), y el <strong>Navegador de Archivos</strong> (tus assets).</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Category 2: Carl IA -->
             <div class="accordion-category">
-                <button class="category-header">
-                    <img src="carley_foto_web/Carl_model.jpeg" alt="Carl IA" class="category-icon">
-                    <h2>Documentación de Carl IA</h2>
-                    <span class="category-arrow">▼</span>
-                </button>
+                <div class="category-header">Creative Engine Scripting</div>
                 <div class="category-content">
-                    <div class="accordion-item">
-                        <button class="item-header">💡 Introducción y Disponibilidad</button>
+                     <div class="accordion-item">
+                        <div class="item-header">Conceptos Básicos</div>
                         <div class="item-content">
-                            <p>Carl IA será tu asistente completo para todo lo que necesites, desde pedir consejos e información hasta obtener ayuda con programación avanzada. Aunque el modelo base es una versión de Llama (no es nuestro, sino un modelo de IA existente), lo hemos adaptado para que sea un compañero de desarrollo increíblemente potente.</p>
-                            <h4>Multi-idioma y Multi-plataforma</h4>
-                            <p>Carl IA podrá programar en múltiples lenguajes y estará disponible de tres formas distintas para adaptarse a tus necesidades:</p>
+                            <p>Creative Engine Scripting (CES) es un lenguaje basado en JavaScript diseñado para ser fácil de aprender. Cada script es un componente que puedes añadir a un objeto del juego.</p>
+                            <p>Funciones principales:</p>
                             <ul>
-                                <li><strong>Web y App Móvil/Escritorio:</strong> Una versión general para conversar, obtener ayuda y mucho más.</li>
-                                <li><strong>Integrado en Creative Engine:</strong> Una versión especializada y optimizada, enfocada exclusivamente en la creación y desarrollo de videojuegos dentro del motor.</li>
+                                <li><code>iniciar()</code>: Se ejecuta una vez cuando el juego comienza.</li>
+                                <li><code>actualizar()</code>: Se ejecuta en cada fotograma del juego.</li>
                             </ul>
                         </div>
                     </div>
                     <div class="accordion-item">
-                        <button class="item-header">🤖 Carl IA + Creative Engine</button>
+                        <div class="item-header">Ejemplo: Mover un Personaje</div>
                         <div class="item-content">
-                            <h4>Una Integración Innovadora</h4>
-                            <p>La integración de Carl IA en Creative Engine será una innovación total para el motor. Permitirá a los desarrolladores crear juegos simplemente con comandos, diciéndole a la IA qué juego quieren. La IA investigará y creará el juego, programando de forma autónoma.</p>
-                            <p>Estamos planeando integrar esto y ya tenemos la IA lista. Se agregarán dos nuevas ventanas al motor:</p>
-                            <ul>
-                                <li>Un <strong>Terminal</strong>, que se ubicará después de la ventana de código.</li>
-                                <li>Una ventana de <strong>Chat con Carl IA</strong>, accesible desde el menú superior.</li>
-                            </ul>
-                            <p>A través de estas ventanas, podrás conversar con la IA sobre lo que quieres. La IA reaccionará con el entorno de tu proyecto, ejecutando una serie de comandos para crear archivos, scripts, y todo lo necesario. Incluso para escribir código, la IA lo hará a través del terminal, automatizando gran parte del proceso de desarrollo.</p>
+                            <p>Crea un script llamado "MovimientoPersonaje" y añade este código:</p>
+                            <pre><code>
+publico velocidad = 5;
+
+funcion actualizar() {
+    si (Entrada.teclaPresionada("Derecha")) {
+        este.transformar.posicion.x += velocidad * Tiempo.deltaTiempo;
+    }
+    si (Entrada.teclaPresionada("Izquierda")) {
+        este.transformar.posicion.x -= velocidad * Tiempo.deltaTiempo;
+    }
+}
+                            </code></pre>
+                            <p>Arrastra este script a tu objeto "Personaje" en la jerarquía. ¡Ahora puedes moverlo con las flechas!</p>
                         </div>
                     </div>
-                    <!-- Add more topics for Carl IA here -->
                 </div>
             </div>
         </div>

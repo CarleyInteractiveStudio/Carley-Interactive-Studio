@@ -130,11 +130,14 @@
         <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Supabase JS Library -->
+    <!-- SCRIPTS -->
+    <!-- Load libraries first -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- PayPal SDK -->
     <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-    <script src="script.js"></script>
+
+    <!-- Load our config and main scripts last, using defer to ensure the page is ready -->
+    <script src="supabase-config.js" defer></script>
+    <script src="script.js" defer></script>
 
     <!-- Carly Bot Chat Widget -->
     <div id="chat-widget-container">
