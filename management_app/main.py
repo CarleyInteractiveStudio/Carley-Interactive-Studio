@@ -92,6 +92,28 @@ def create_publication(section_id: int, title: str, description: str, images: li
         print(f"Error creating publication: {e}")
         return None
 
+def create_collaborator(name: str, description: str, photo_path: str):
+    """Uploads a collaborator's photo and creates a record in the database."""
+    if not supabase: return None
+    try:
+        # First, upload the photo
+        uploaded_photo_name = upload_file(photo_path)
+        if not uploaded_photo_name:
+            raise Exception("Failed to upload collaborator photo.")
+
+        # Then, create the record in the database
+        data_to_insert = {
+            "name": name,
+            "description": description,
+            "photo_url": uploaded_photo_name
+        }
+        response = supabase.from_("collaborators").insert(data_to_insert).execute()
+        print(f"Collaborator '{name}' created successfully.")
+        return response.data[0] if response.data else None
+    except Exception as e:
+        print(f"Error creating collaborator: {e}")
+        return None
+
 if __name__ == '__main__':
     # This block is for testing the functions.
     # Before running, make sure you have a .env file with your Supabase credentials.

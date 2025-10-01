@@ -52,8 +52,13 @@
     <main>
         <section class="content-section">
             <h2>Gracias a Nuestros Colaboradores</h2>
-            <p>Esta página destacará a las personas increíbles que han contribuido al desarrollo de Creative Engine.</p>
-            <p><em>(Contenido próximamente...)</em></p>
+            <p>Esta página destaca a las personas increíbles que han contribuido al desarrollo de Creative Engine.</p>
+
+            <!-- This container will be filled dynamically by collaborators.js -->
+            <div id="collaborators-container">
+                <p>Cargando colaboradores...</p>
+            </div>
+
         </section>
     </main>
 
@@ -65,6 +70,10 @@
         </div>
         <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
     </footer>
+
+    <!-- Supabase and Collaborators scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="collaborators.js"></script>
 
 </body>
 </html>

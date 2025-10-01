@@ -823,3 +823,49 @@ section.visible {
 .youtube-btn:hover {
     background-color: #cc0000;
 }
+
+/* --- Collaborators Page --- */
+.collaborator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.collaborator-card {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.collaborator-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+.collaborator-photo img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.collaborator-info {
+    padding: 1.5rem;
+}
+
+.collaborator-info h3 {
+    margin-top: 0;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+}
+
+.collaborator-info p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}

@@ -8,7 +8,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("Carley Studio - Gestor de Contenido")
-        self.geometry("600x700")
+        self.geometry("600x800") # Increased height for the new tab
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
@@ -20,12 +20,12 @@ class App(ctk.CTk):
         self.tab_view.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
         self.tab_view.add("Crear Publicación")
         self.tab_view.add("Crear Sección")
+        self.tab_view.add("Añadir Colaborador") # New tab
 
-        # --- Create Publication Tab ---
+        # --- Setup Tabs ---
         self.setup_publication_tab()
-
-        # --- Create Section Tab ---
         self.setup_section_tab()
+        self.setup_collaborator_tab() # Setup for the new tab
 
         # --- Status Label ---
         self.status_label = ctk.CTkLabel(self, text="¡Bienvenido! Crea tu .env y luego reinicia la app.", text_color="gray")
@@ -42,22 +42,18 @@ class App(ctk.CTk):
         tab = self.tab_view.tab("Crear Publicación")
         tab.grid_columnconfigure(1, weight=1)
 
-        # Section Selector
         ctk.CTkLabel(tab, text="Sección:").grid(row=0, column=0, padx=10, pady=10, sticky="w")
         self.section_menu = ctk.CTkOptionMenu(tab, values=["Cargando..."])
         self.section_menu.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
-        # Title
         ctk.CTkLabel(tab, text="Título:").grid(row=1, column=0, padx=10, pady=10, sticky="w")
         self.title_entry = ctk.CTkEntry(tab, placeholder_text="Título de la publicación")
         self.title_entry.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
 
-        # Description
         ctk.CTkLabel(tab, text="Descripción:").grid(row=2, column=0, padx=10, pady=10, sticky="w")
         self.description_textbox = ctk.CTkTextbox(tab, height=100)
         self.description_textbox.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
 
-        # Image Files
         ctk.CTkLabel(tab, text="Imágenes:").grid(row=3, column=0, padx=10, pady=10, sticky="w")
         self.image_button = ctk.CTkButton(tab, text="Seleccionar Imágenes", command=self.select_images)
         self.image_button.grid(row=3, column=1, padx=10, pady=10, sticky="w")
@@ -65,7 +61,6 @@ class App(ctk.CTk):
         self.image_label.grid(row=4, column=1, padx=10, pady=(0,10), sticky="w")
         self.selected_images = []
 
-        # Video File
         ctk.CTkLabel(tab, text="Video (Opcional):").grid(row=5, column=0, padx=10, pady=10, sticky="w")
         self.video_button = ctk.CTkButton(tab, text="Seleccionar Video", command=self.select_video)
         self.video_button.grid(row=5, column=1, padx=10, pady=10, sticky="w")
@@ -73,12 +68,10 @@ class App(ctk.CTk):
         self.video_label.grid(row=6, column=1, padx=10, pady=(0,10), sticky="w")
         self.selected_video = None
 
-        # YouTube Link
         ctk.CTkLabel(tab, text="YouTube (Opcional):").grid(row=7, column=0, padx=10, pady=10, sticky="w")
         self.youtube_entry = ctk.CTkEntry(tab, placeholder_text="Enlace de YouTube")
         self.youtube_entry.grid(row=7, column=1, padx=10, pady=10, sticky="ew")
 
-        # Submit Button
         self.submit_pub_button = ctk.CTkButton(tab, text="Crear Publicación", command=self.create_publication)
         self.submit_pub_button.grid(row=8, column=1, padx=10, pady=20, sticky="e")
 
@@ -92,6 +85,32 @@ class App(ctk.CTk):
 
         self.submit_sec_button = ctk.CTkButton(tab, text="Crear Sección", command=self.create_section)
         self.submit_sec_button.grid(row=1, column=1, padx=10, pady=20, sticky="e")
+
+    def setup_collaborator_tab(self):
+        tab = self.tab_view.tab("Añadir Colaborador")
+        tab.grid_columnconfigure(1, weight=1)
+
+        # Name
+        ctk.CTkLabel(tab, text="Nombre:").grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.collab_name_entry = ctk.CTkEntry(tab, placeholder_text="Nombre del colaborador")
+        self.collab_name_entry.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
+
+        # Description
+        ctk.CTkLabel(tab, text="Descripción:").grid(row=1, column=0, padx=10, pady=10, sticky="w")
+        self.collab_desc_textbox = ctk.CTkTextbox(tab, height=80)
+        self.collab_desc_textbox.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
+
+        # Photo
+        ctk.CTkLabel(tab, text="Foto:").grid(row=2, column=0, padx=10, pady=10, sticky="w")
+        self.collab_photo_button = ctk.CTkButton(tab, text="Seleccionar Foto", command=self.select_collab_photo)
+        self.collab_photo_button.grid(row=2, column=1, padx=10, pady=10, sticky="w")
+        self.collab_photo_label = ctk.CTkLabel(tab, text="No hay foto seleccionada", text_color="gray")
+        self.collab_photo_label.grid(row=3, column=1, padx=10, pady=(0,10), sticky="w")
+        self.selected_collab_photo = None
+
+        # Submit Button
+        self.submit_collab_button = ctk.CTkButton(tab, text="Añadir Colaborador", command=self.create_collaborator)
+        self.submit_collab_button.grid(row=4, column=1, padx=10, pady=20, sticky="e")
 
     def refresh_sections(self):
         self.update_status("Cargando secciones...")
@@ -115,7 +134,6 @@ class App(ctk.CTk):
             self.selected_images = []
             self.image_label.configure(text="No hay imágenes seleccionadas")
 
-
     def select_video(self):
         file = filedialog.askopenfilename(title="Seleccionar Video")
         if file:
@@ -125,10 +143,18 @@ class App(ctk.CTk):
             self.selected_video = None
             self.video_label.configure(text="No hay video seleccionado")
 
+    def select_collab_photo(self):
+        file = filedialog.askopenfilename(title="Seleccionar Foto del Colaborador")
+        if file:
+            self.selected_collab_photo = file
+            self.collab_photo_label.configure(text=f"Foto seleccionada: {os.path.basename(file)}")
+        else:
+            self.selected_collab_photo = None
+            self.collab_photo_label.configure(text="No hay foto seleccionada")
+
     def create_publication(self):
         self.update_status("Creando publicación...", clear_after=0)
 
-        # --- 1. Get data from form ---
         section_name = self.section_menu.get()
         section_id = self.sections_data.get(section_name)
         title = self.title_entry.get()
@@ -139,7 +165,6 @@ class App(ctk.CTk):
             self.update_status("Error: La sección y el título son obligatorios.", clear_after=5000)
             return
 
-        # --- 2. Upload files ---
         uploaded_image_names = []
         if self.selected_images:
             for img_path in self.selected_images:
@@ -149,7 +174,7 @@ class App(ctk.CTk):
                     uploaded_image_names.append(file_name)
                 else:
                     self.update_status(f"Error al subir {os.path.basename(img_path)}", clear_after=5000)
-                    return # Stop if one file fails
+                    return
 
         uploaded_video_name = None
         if self.selected_video:
@@ -159,7 +184,6 @@ class App(ctk.CTk):
                 self.update_status(f"Error al subir el video.", clear_after=5000)
                 return
 
-        # --- 3. Create publication record in DB ---
         self.update_status("Creando registro en la base de datos...")
         result = backend.create_publication(
             section_id=section_id,
@@ -196,9 +220,30 @@ class App(ctk.CTk):
         if result:
             self.update_status(f"¡Sección '{name}' creada con éxito!", clear_after=5000)
             self.section_name_entry.delete(0, 'end')
-            self.refresh_sections() # Update dropdown in the other tab
+            self.refresh_sections()
         else:
             self.update_status(f"Error al crear la sección.", clear_after=5000)
+
+    def create_collaborator(self):
+        name = self.collab_name_entry.get()
+        description = self.collab_desc_textbox.get("1.0", "end-1c")
+        photo_path = self.selected_collab_photo
+
+        if not name or not description or not photo_path:
+            self.update_status("Error: Nombre, descripción y foto son obligatorios.", clear_after=5000)
+            return
+
+        self.update_status(f"Añadiendo a {name}...")
+        result = backend.create_collaborator(name, description, photo_path)
+
+        if result:
+            self.update_status(f"¡Colaborador {name} añadido con éxito!", clear_after=5000)
+            self.collab_name_entry.delete(0, 'end')
+            self.collab_desc_textbox.delete("1.0", "end")
+            self.selected_collab_photo = None
+            self.collab_photo_label.configure(text="No hay foto seleccionada")
+        else:
+            self.update_status(f"Error al añadir al colaborador.", clear_after=5000)
 
     def update_status(self, message, clear_after=0):
         self.status_label.configure(text=message)
