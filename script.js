@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
         avancesBtn.addEventListener('click', async () => {
             try {
                 // Use the globally initialized client from supabase-config.js
-                const { data, error } = await supabaseClient
+                const { data, error } = await window.supabaseClient
                     .from('sections')
                     .select(`
                         name,

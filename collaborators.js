@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // The supabaseClient is now initialized globally in supabase-config.js
-    // We just need to check if it exists.
-    if (typeof supabaseClient === 'undefined') {
+    // Check if the global Supabase client from supabase-config.js exists
+    if (typeof window.supabaseClient === 'undefined') {
         console.error('Supabase client not found. Make sure supabase-config.js is loaded correctly before this script.');
         return;
     }
+    const supabase = window.supabaseClient;
 
-    const storageUrl = `${SUPABASE_URL}/storage/v1/object/public/media/`;
+    // Use the global SUPABASE_URL constant for constructing media paths
+    const storageUrl = `${window.SUPABASE_URL}/storage/v1/object/public/media/`;
 
     const collaboratorsContainer = document.getElementById('collaborators-container');
     if (!collaboratorsContainer) {
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         showLoading();
-        const { data, error } = await supabaseClient
+        const { data, error } = await supabase
             .from('collaborators')
             .select('*')
             .order('name');
