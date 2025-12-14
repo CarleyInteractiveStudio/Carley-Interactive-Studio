@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte - Carley Interactive Studio</title>
+
+    <!-- Social Media Preview Tags -->
+    <meta property="og:title" content="Carley Interactive Studio">
+    <meta property="og:description" content="Donde las ideas se convierten en realidad.">
+    <meta property="og:image" content="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/carley_foto_web/Logo%20C.png">
+    <meta property="og:url" content="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="carley_foto_web/Logo_C.png" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="soporte.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <img src="carley_foto_web/Logo_C.png" alt="Logo Carley Interactive Studio">
+        </div>
+        <nav class="main-nav">
+            <a href="index.html#creative-engine">Creative Engine</a>
+            <a href="index.html#carly-bot">Carl IA</a>
+            <a href="colaboradores.html">Colaboradores</a>
+            <a href="documentacion.html">Documentación</a>
+            <a href="soporte.html">Soporte</a>
+            <a href="index.html#donar">Apóyanos</a>
+        </nav>
+    </header>
+
+    <main class="support-main">
+        <section id="support-form-section">
+            <h2>Formulario de Soporte</h2>
+            <p>¿Necesitas ayuda o tienes alguna sugerencia? Completa el formulario y nos pondremos en contacto contigo.</p>
+
+            <form id="support-form" class="support-form">
+
+                <div class="form-group">
+                    <label for="reason">¿A qué se debe tu consulta?</label>
+                    <select id="reason" name="reason" required>
+                        <option value="" disabled selected>Selecciona una opción...</option>
+                        <option value="recomendacion">Hacer una recomendación</option>
+                        <option value="bug">Reportar un bug/fallo</option>
+                        <option value="ayuda">Necesito ayuda/soporte</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="app">¿Para cuál de nuestras apps es tu solicitud?</label>
+                    <select id="app" name="app" required>
+                        <option value="" disabled selected>Selecciona una app...</option>
+                        <option value="carl_ia">Carl IA</option>
+                        <option value="creative_engine">Creative Engine Web</option>
+                        <option value="vidspri">VidSpri</option>
+                        <option value="asset_store">Asset Store</option>
+                        <option value="appcraft_engine">AppCraft engine</option>
+                        <option value="orion">Orion</option>
+                        <option value="chatway">ChatWay</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Tu correo electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="tu.correo@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Describe tu problema o comentario</label>
+                    <textarea id="description" name="description" rows="6" placeholder="Escribe aquí los detalles..." required></textarea>
+                </div>
+
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="has-files" name="has-files">
+                    <label for="has-files">¿Quieres adjuntar una foto o video?</label>
+                </div>
+
+                <div id="file-upload-section" class="file-upload-section oculto">
+                    <label for="files">Sube tus archivos (máximo 10 fotos y 1 video)</label>
+                    <input type="file" id="files" name="files" multiple accept="image/*,video/*">
+                    <div id="file-preview" class="file-preview"></div>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar Solicitud</button>
+
+            </form>
+        </section>
+    </main>
+
+    <div id="success-panel" class="success-panel oculto">
+        <div class="success-panel-content">
+            <h3>¡Gracias por tu mensaje!</h3>
+            <p>Hemos recibido tu solicitud y te contestaremos lo más pronto posible. Agradecemos tu paciencia.</p>
+            <button id="close-success-panel">Cerrar</button>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="social-links">
+            <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20" target="_blank">WhatsApp</a>
+            <a href="https://www.facebook.com/share/19ccrRy1kZ/" target="_blank">Facebook</a>
+            <a href="https://discord.gg/fBa9ZSAwk6" target="_blank">Discord</a>
+        </div>
+        <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="soporte.js" defer></script>
+
+</body>
+</html>

@@ -103,8 +103,8 @@ body {
 .emoji-animation span:nth-child(5) { animation-delay: 2.8s; }
 
 /* --- Main Content --- */
-main {
-    padding-top: 100vh; /* Space for the hero image */
+.homepage main {
+    padding-top: 100vh; /* Space for the hero image, only on homepage */
 }
 
 section {
