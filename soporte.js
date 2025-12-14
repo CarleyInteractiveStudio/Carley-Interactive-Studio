@@ -4,8 +4,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Configuración ---
-    // IMPORTANTE: Cambia esta URL por la de tu espacio de Hugging Face cuando lo despliegues.
+    // --- Configuración de la API ---
+    // IMPORTANTE: Esta URL debe ser actualizada con la del servidor de producción
+    // cuando se despliegue en Hugging Face.
     const API_BASE_URL = 'http://127.0.0.1:8000';
 
     // --- Referencias a elementos del DOM ---

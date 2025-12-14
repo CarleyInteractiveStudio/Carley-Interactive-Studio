@@ -35,8 +35,9 @@ os.makedirs(UPLOADS_DIR, exist_ok=True)
 # Monta el directorio de 'uploads' para que los archivos sean accesibles vía URL
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
-# Clave de API (En un entorno de producción, esto debería cargarse desde una variable de entorno)
-API_KEY = "c4r13y-5up3r-53cr3t-4p1-k3y-f0r-d35kt0p-4pp"
+# Clave de API - Se lee desde una variable de entorno para mayor seguridad.
+# Se proporciona un valor por defecto para facilitar el desarrollo local.
+API_KEY = os.getenv("API_KEY", "c4r13y-5up3r-53cr3t-4p1-k3y-f0r-d35kt0p-4pp")
 API_KEY_NAME = "X-API-Key"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
