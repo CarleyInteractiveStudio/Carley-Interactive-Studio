@@ -5,12 +5,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Configuración de la API ---
-    // =================================================================================
-    // ¡IMPORTANTE! MODIFICA ESTA LÍNEA ANTES DE USAR EL SITIO WEB EN PRODUCCIÓN.
-    // Reemplaza "URL_DE_TU_BACKEND_EN_HUGGING_FACE" por la URL real de tu servidor.
-    // La URL se verá así: https://tu-usuario-de-hf-nombre-del-space.hf.space
-    // =================================================================================
-    const API_BASE_URL = 'URL_DE_TU_BACKEND_EN_HUGGING_FACE';
+    // --- Configuración de la API ---
+    // La URL del backend desplegado en Hugging Face.
+    const API_BASE_URL = 'https://carley1234-servidor.hf.space';
 
     // --- Referencias a elementos del DOM ---
     const supportForm = document.getElementById('support-form');
