@@ -5,9 +5,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Configuración de la API ---
-    // IMPORTANTE: Esta URL debe ser actualizada con la del servidor de producción
-    // cuando se despliegue en Hugging Face.
-    const API_BASE_URL = 'http://127.0.0.1:8000';
+    // =================================================================================
+    // ¡IMPORTANTE! MODIFICA ESTA LÍNEA ANTES DE USAR EL SITIO WEB EN PRODUCCIÓN.
+    // Reemplaza "URL_DE_TU_BACKEND_EN_HUGGING_FACE" por la URL real de tu servidor.
+    // La URL se verá así: https://tu-usuario-de-hf-nombre-del-space.hf.space
+    // =================================================================================
+    const API_BASE_URL = 'URL_DE_TU_BACKEND_EN_HUGGING_FACE';
 
     // --- Referencias a elementos del DOM ---
     const supportForm = document.getElementById('support-form');

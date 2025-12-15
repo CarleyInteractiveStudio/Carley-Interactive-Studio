@@ -1,6 +1,6 @@
 ---
 title: Servidor de Soporte - Carley Interactive
-emoji:  FastAPI
+emoji: 🚀
 colorFrom: blue
 colorTo: green
 sdk: docker
