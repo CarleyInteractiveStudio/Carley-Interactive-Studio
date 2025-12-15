@@ -128,3 +128,36 @@ def get_ticket(ticket_id: str, api_key: str = Depends(get_api_key)):
         ticket_data = json.load(f)
 
     return ticket_data
+
+
+@app.delete("/tickets/{ticket_id}", status_code=status.HTTP_200_OK, tags=["Tickets (Protegido)"])
+def delete_ticket(ticket_id: str, api_key: str = Depends(get_api_key)):
+    """
+    Elimina un ticket de soporte y todos sus archivos adjuntos. Protegido por clave de API.
+    """
+    ticket_path = os.path.join(TICKETS_DIR, f"{ticket_id}.json")
+    if not os.path.exists(ticket_path):
+        raise HTTPException(status_code=404, detail="Ticket no encontrado")
+
+    try:
+        # Primero, lee los datos del ticket para encontrar los archivos adjuntos
+        with open(ticket_path, "r") as f:
+            ticket_data = json.load(f)
+
+        # Elimina los archivos adjuntos de la carpeta 'uploads'
+        if "attachments" in ticket_data and ticket_data["attachments"]:
+            for attachment in ticket_data["attachments"]:
+                stored_filename = attachment.get("stored_filename")
+                if stored_filename:
+                    file_to_delete_path = os.path.join(UPLOADS_DIR, stored_filename)
+                    if os.path.exists(file_to_delete_path):
+                        os.remove(file_to_delete_path)
+
+        # Finalmente, elimina el archivo JSON del ticket
+        os.remove(ticket_path)
+
+        return {"status": "success", "message": f"Ticket {ticket_id} y sus adjuntos han sido eliminados."}
+
+    except Exception as e:
+        # Captura cualquier error inesperado durante el proceso
+        raise HTTPException(status_code=500, detail=f"Error al eliminar el ticket: {str(e)}")
