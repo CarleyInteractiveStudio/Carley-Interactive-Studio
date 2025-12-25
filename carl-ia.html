@@ -3,32 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colaboradores - Carley Interactive Studio</title>
+    <title>Carl IA - Carley Interactive Studio</title>
     <link rel="icon" href="carley_foto_web/Logo_C.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        .doc-hero {
-            height: 40vh;
-            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .doc-hero h1 {
-            font-size: 3.5rem;
-            color: var(--accent-color);
-        }
-        main { padding-top: 0 !important; }
-        .content-section {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 2rem;
-            text-align: center;
-        }
+        /* Override homepage-specific styles */
+        main { padding-top: 120px !important; }
+        section { opacity: 1; transform: none; } /* Make content visible by default */
     </style>
 </head>
 <body>
@@ -59,20 +43,20 @@
         </nav>
     </header>
 
-    <div class="doc-hero">
-        <h1>Colaboradores</h1>
-    </div>
-
     <main>
-        <section class="content-section">
-            <h2>Gracias a Nuestros Colaboradores</h2>
-            <p>Esta página destaca a las personas increíbles que han contribuido al desarrollo de Creative Engine.</p>
-
-            <!-- This container will be filled dynamically by collaborators.js -->
-            <div id="collaborators-container">
-                <p>Cargando colaboradores...</p>
+        <section id="carly-bot">
+            <h2>Conoce a Carl IA</h2>
+            <div class="carly-bot-container">
+                <img src="carley_foto_web/Carl_model.jpeg" alt="Modelo de Carl IA">
+                <div class="carly-bot-info">
+                    <h3>Tu Asistente Personal de IA</h3>
+                    <p>Te presentamos a Carl IA, una inteligencia artificial que te ayudará en todo lo que necesites. El modelo base (una variante de Llama) fue descargado y adaptado, ¡no creado desde cero por nosotros! Ahora, solo nos falta un servidor para ponerlo en marcha.</p>
+                    <div class="creative-engine-buttons" style="margin-top: 1rem; justify-content: flex-start;">
+                        <button id="support-carl-ia-money">Apoyar Monetariamente</button>
+                        <button id="support-carl-ia-server">Aportar un Servidor</button>
+                    </div>
+                </div>
             </div>
-
         </section>
     </main>
 
@@ -85,10 +69,6 @@
         <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- SCRIPTS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js" defer></script>
-    <script src="collaborators.js" defer></script>
-
+    <script src="script.js" defer></script>
 </body>
 </html>

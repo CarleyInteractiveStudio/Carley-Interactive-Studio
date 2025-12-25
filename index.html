@@ -28,8 +28,19 @@
             <img src="carley_foto_web/Logo_C.png" alt="Logo Carley Interactive Studio">
         </div>
         <nav class="main-nav">
-            <a href="#creative-engine">Creative Engine</a>
-            <a href="#carly-bot">Carl IA</a>
+            <div class="apps-dropdown">
+                <button class="apps-dropdown-toggle">Apps</button>
+                <div class="apps-dropdown-content">
+                    <a href="creative-engine.html">
+                        <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine">
+                        <span>Creative Engine <small>Motor de Videojuegos Web</small></span>
+                    </a>
+                    <a href="carl-ia.html">
+                        <img src="carley_foto_web/Carl_model.jpeg" alt="Carl IA">
+                        <span>Carl IA <small>Tu Asistente de IA Personal</small></span>
+                    </a>
+                </div>
+            </div>
             <a href="colaboradores.html">Colaboradores</a>
             <a href="documentacion.html">Documentación</a>
             <a href="soporte.html">Soporte</a>
@@ -54,59 +65,27 @@
 
     <main>
 
-        <section id="carly-bot">
-            <h2>Conoce a Carl IA</h2>
-            <div class="carly-bot-container">
-                <img src="carley_foto_web/Carl_model.jpeg" alt="Modelo de Carl IA">
-                <div class="carly-bot-info">
-                    <h3>Tu Asistente Personal de IA</h3>
-                    <p>Te presentamos a Carl IA, una inteligencia artificial que te ayudará en todo lo que necesites. El modelo base (una variante de Llama) fue descargado y adaptado, ¡no creado desde cero por nosotros! Ahora, solo nos falta un servidor para ponerlo en marcha.</p>
-                    <div class="creative-engine-buttons" style="margin-top: 1rem; justify-content: flex-start;">
-                        <button id="support-carl-ia-money">Apoyar Monetariamente</button>
-                        <button id="support-carl-ia-server">Aportar un Servidor</button>
-                    </div>
+        <section id="apps-catalog">
+            <h2 class="section-title">Conoce las apps que hemos desarrollado</h2>
+            <div class="apps-grid">
+                <a href="https://carleyinteractivestudio.github.io/VidSpri/" target="_blank" class="app-card available" title="Ir a la app">
+                    <img src="carley_foto_web/VidSpri.png" alt="Logo de VidSpri">
+                    <h3>VidSpri</h3>
+                    <p class="status">Disponible</p>
+                </a>
+                <div class="app-card disabled">
+                    <img src="carley_foto_web/Creative Engine beta.png" alt="Logo de Creative Engine">
+                    <h3>Creative Engine</h3>
+                    <p class="status">En desarrollo</p>
+                </div>
+                <div class="app-card disabled">
+                    <img src="carley_foto_web/Carl_model.jpeg" alt="Logo de Carl IA">
+                    <h3>Carl IA</h3>
+                    <p class="status">En desarrollo</p>
                 </div>
             </div>
         </section>
 
-        <section id="creative-engine">
-            <h2 style="text-align: center;">Creative Engine</h2>
-            <div class="creative-engine-layout">
-                <div class="creative-engine-img">
-                    <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine Logo">
-                </div>
-                <div class="creative-engine-intro">
-                    <p><strong>Creative Engine es un motor de videojuegos 100% web,</strong> diseñado para que puedas crear sin necesidad de instalaciones. Funciona directamente en tu navegador (recomendamos Chrome o Edge), guardando todos los proyectos de forma local en tu ordenador para mayor privacidad y control.</p>
-
-                    <h4 style="color: var(--accent-color); margin-top: 2rem;">Un Proyecto en Crecimiento</h4>
-                    <p>Recientemente, hemos realizado pequeñas mejoras en el editor visual para hacerlo más agradable. Sin embargo, para que el motor alcance su verdadero potencial, necesitamos ayuda. Gran parte del desarrollo inicial se ha hecho con la asistencia de IA (¡hola, soy Jules!), y ahora buscamos talento humano para continuar.</p>
-
-                    <h4 style="color: var(--accent-color); margin-top: 2rem;">¡Buscamos Colaboradores!</h4>
-                    <p>Si eres un <strong>desarrollador</strong> apasionado y quieres unirte a un proyecto innovador, nos encantaría saber de ti. Tu ayuda es crucial para nuestro gran desafío actual: <strong>mejorar el sistema de UI</strong>, especialmente el Canvas que debe adaptarse a la vista de la cámara. A largo plazo, planeamos integrar <strong>C++ y C#</strong> para optimizar el rendimiento.</p>
-                    <p>También queremos construir un motor que la comunidad ame. ¡Dinos qué características te gustaría ver!</p>
-
-                    <div class="creative-engine-buttons" style="margin-top: 2rem; justify-content: center;">
-                        <button id="ver-avances-btn">Ver nuestros avances</button>
-                        <button id="support-engine-dev">Soy Desarrollador</button>
-                        <button id="support-engine-money">Apoyar el Proyecto</button>
-                        <button id="solicitar-acceso-btn">Solicitar Acceso a la Beta</button>
-                    </div>
-
-                    <hr style="margin: 3rem 0; border-color: var(--secondary-color);">
-
-                    <h3 style="text-align: center;">Características Principales</h3>
-                    <ul class="feature-list">
-                        <li>✅ <strong>100% Web y Local:</strong> Sin instalaciones. Funciona offline una vez cargado. Tus proyectos se guardan localmente.</li>
-                        <li>✅ <strong>Editor Visual Intuitivo:</strong> Navega por la escena, crea objetos y organiza tu jerarquía con facilidad.</li>
-                        <li>✅ <strong>Scripting Flexible:</strong> Usa nuestro lenguaje basado en JavaScript, <strong>Creative Engine Scripting</strong>, que te permite programar en tu propio idioma, o elige otro lenguaje en las preferencias.</li>
-                        <li>✅ <strong>Animación Simplificada:</strong> Dibuja animaciones por sprites y contrólalas fácilmente con el controlador de animación.</li>
-                        <li>✅ <strong>Herramientas Integradas:</strong> Editor de código con autocompletado, consola de depuración y reproductor de música.</li>
-                        <li>✅ <strong>Renderizado Dual:</strong> Elige entre un renderizador Canvas 2D o PixiRenderer para gráficos más realistas.</li>
-                        <li>🤖 <strong>Integración con Carl IA:</strong> ¡Próximamente! Creative Engine contará con Carl IA para ayudarte a programar, diseñar y hasta crear tu juego por ti.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
 
         <section id="flygame-collab">
             <h2>Nuestra Colaboración con <a href="https://flygam.com" target="_blank" style="color: #ffde59; text-decoration: none;">Flygame</a></h2>

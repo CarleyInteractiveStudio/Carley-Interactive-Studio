@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Engine - Carley Interactive Studio</title>
+    <link rel="icon" href="carley_foto_web/Logo_C.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Override homepage-specific styles */
+        main { padding-top: 120px !important; }
+        section { opacity: 1; transform: none; } /* Make content visible by default */
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <a href="index.html"><img src="carley_foto_web/Logo_C.png" alt="Logo Carley Interactive Studio"></a>
+        </div>
+        <nav class="main-nav">
+            <div class="apps-dropdown">
+                <button class="apps-dropdown-toggle">Apps</button>
+                <div class="apps-dropdown-content">
+                    <a href="creative-engine.html">
+                        <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine">
+                        <span>Creative Engine <small>Motor de Videojuegos Web</small></span>
+                    </a>
+                    <a href="carl-ia.html">
+                        <img src="carley_foto_web/Carl_model.jpeg" alt="Carl IA">
+                        <span>Carl IA <small>Tu Asistente de IA Personal</small></span>
+                    </a>
+                </div>
+            </div>
+            <a href="colaboradores.html">Colaboradores</a>
+            <a href="documentacion.html">Documentación</a>
+            <a href="soporte.html">Soporte</a>
+            <a href="politica.html">Política</a>
+            <a href="index.html#donar">Apóyanos</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="creative-engine">
+            <h2 style="text-align: center;">Creative Engine</h2>
+            <div class="creative-engine-layout">
+                <div class="creative-engine-img">
+                    <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine Logo">
+                </div>
+                <div class="creative-engine-intro">
+                    <p><strong>Creative Engine es un motor de videojuegos 100% web,</strong> diseñado para que puedas crear sin necesidad de instalaciones. Funciona directamente en tu navegador (recomendamos Chrome o Edge), guardando todos los proyectos de forma local en tu ordenador para mayor privacidad y control.</p>
+                    <h4 style="color: var(--accent-color); margin-top: 2rem;">Un Proyecto en Crecimiento</h4>
+                    <p>Recientemente, hemos realizado pequeñas mejoras en el editor visual para hacerlo más agradable. Sin embargo, para que el motor alcance su verdadero potencial, necesitamos ayuda. Gran parte del desarrollo inicial se ha hecho con la asistencia de IA (¡hola, soy Jules!), y ahora buscamos talento humano para continuar.</p>
+                    <h4 style="color: var(--accent-color); margin-top: 2rem;">¡Buscamos Colaboradores!</h4>
+                    <p>Si eres un <strong>desarrollador</strong> apasionado y quieres unirte a un proyecto innovador, nos encantaría saber de ti. Tu ayuda es crucial para nuestro gran desafío actual: <strong>mejorar el sistema de UI</strong>, especialmente el Canvas que debe adaptarse a la vista de la cámara. A largo plazo, planeamos integrar <strong>C++ y C#</strong> para optimizar el rendimiento.</p>
+                    <p>También queremos construir un motor que la comunidad ame. ¡Dinos qué características te gustaría ver!</p>
+                    <div class="creative-engine-buttons" style="margin-top: 2rem; justify-content: center;">
+                        <button id="ver-avances-btn">Ver nuestros avances</button>
+                        <button id="support-engine-dev">Soy Desarrollador</button>
+                        <button id="support-engine-money">Apoyar el Proyecto</button>
+                        <button id="solicitar-acceso-btn">Solicitar Acceso a la Beta</button>
+                    </div>
+                    <hr style="margin: 3rem 0; border-color: var(--secondary-color);">
+                    <h3 style="text-align: center;">Características Principales</h3>
+                    <ul class="feature-list">
+                        <li>✅ <strong>100% Web y Local:</strong> Sin instalaciones. Funciona offline una vez cargado. Tus proyectos se guardan localmente.</li>
+                        <li>✅ <strong>Editor Visual Intuitivo:</strong> Navega por la escena, crea objetos y organiza tu jerarquía con facilidad.</li>
+                        <li>✅ <strong>Scripting Flexible:</strong> Usa nuestro lenguaje basado en JavaScript, <strong>Creative Engine Scripting</strong>, que te permite programar en tu propio idioma, o elige otro lenguaje en las preferencias.</li>
+                        <li>✅ <strong>Animación Simplificada:</strong> Dibuja animaciones por sprites y contrólalas fácilmente con el controlador de animación.</li>
+                        <li>✅ <strong>Herramientas Integradas:</strong> Editor de código con autocompletado, consola de depuración y reproductor de música.</li>
+                        <li>✅ <strong>Renderizado Dual:</strong> Elige entre un renderizador Canvas 2D o PixiRenderer para gráficos más realistas.</li>
+                        <li>🤖 <strong>Integración con Carl IA:</strong> ¡Próximamente! Creative Engine contará con Carl IA para ayudarte a programar, diseñar y hasta crear tu juego por ti.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="social-links">
+            <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20" target="_blank">WhatsApp</a>
+            <a href="https://www.facebook.com/share/19ccrRy1kZ/" target="_blank">Facebook</a>
+            <a href="https://discord.gg/fBa9ZSAwk6" target="_blank">Discord</a>
+        </div>
+        <p>&copy; 2025 Carley Interactive Studio. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
