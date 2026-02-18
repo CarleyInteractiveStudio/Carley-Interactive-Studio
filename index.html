@@ -10,42 +10,40 @@
 <body class="dark-theme">
 
     <main>
-        <!-- Section Hero con Logo Integrado -->
+        <!-- Section Hero con Logo sin fondo -->
         <section id="hero" class="fade-in">
-            <img src="carley_foto_web/Logo C.png" alt="Carley Logo" class="hero-logo">
+            <img src="Logo Creative sin fondo.png" alt="Carley Logo" class="hero-logo">
             <h1 class="hero-title" data-i18n="hero-title">Carley Interactive Studio</h1>
-            <p class="hero-tagline" data-i18n="hero-tagline">Convertiendo ideas en realidad</p>
-            <div class="glass-card about-card">
-                <p data-i18n="about-text">Somos un pequeño estudio con el objetivo de ser su marca favorita con múltiples productos en todas las áreas. Empezamos en software, luego nos extenderemos al hardware y mucho más.</p>
-            </div>
+            <p class="hero-tagline" data-i18n="hero-tagline">Convirtiendo ideas en realidad</p>
+            <p class="about-text" data-i18n="about-text">Somos un pequeño estudio con el objetivo de ser su marca favorita con múltiples productos en todas las áreas. Empezamos en software, luego nos extenderemos al hardware y mucho más.</p>
         </section>
 
-        <!-- Section Producción -->
+        <!-- Section Producción sin burbujas -->
         <section id="products">
             <h2 class="section-title" data-i18n="products-title">Nuestras Producciones</h2>
 
-            <div class="products-grid">
+            <div class="products-list">
                 <!-- Creative Engine -->
-                <div class="glass-card product-card fade-in">
-                    <img src="Logo Creative sin fondo.png" alt="Creative Engine" class="product-img">
+                <div class="product-item fade-in">
+                    <img src="carley_foto_web/Creative Engine beta.png" alt="Creative Engine" class="product-img">
                     <h3 data-i18n="engine-title">Creative Engine</h3>
                     <p data-i18n="engine-desc-long">Es tu motor de videojuego. Crea con facilidad, no importa si no tienes experiencia; el motor está diseñado para todos. Crea juegos para todo tipo de dispositivos que tengan acceso a un navegador y publícalos con orgullo.</p>
-                    <a href="https://carleyinteractivestudio.github.io/Creative-Engine-Beta/" class="apple-link">Creative Engine Beta <i data-lucide="external-link"></i></a>
+                    <a href="https://carleyinteractivestudio.github.io/Creative-Engine-Beta/" class="apple-link"><span data-i18n="engine-link">Creative Engine Beta</span> <i data-lucide="external-link"></i></a>
                 </div>
 
                 <!-- Creative Games -->
-                <div class="glass-card product-card fade-in">
-                    <img src="https://raw.githubusercontent.com/CarleyInteractiveStudio/Creative-Games/feat-create-game-website-10977585328626350785/Creatives%20Games.png" alt="Creative Games" class="product-img">
+                <div class="product-item fade-in">
+                    <img src="carley_foto_web/Carl_model.jpeg" alt="Creative Games" class="product-img">
                     <h3 data-i18n="games-title">Creative Games</h3>
                     <p data-i18n="games-desc">Una página web para jugar juegos sin tener que descargarlos. Compatible con múltiples dispositivos, incluso con mandos de consola.</p>
-                    <a href="https://carleyinteractivestudio.github.io/Creative-Games/" class="apple-link">Explorar Juegos <i data-lucide="play-circle"></i></a>
+                    <a href="https://carleyinteractivestudio.github.io/Creative-Games/" class="apple-link"><span data-i18n="games-link">Explorar Juegos</span> <i data-lucide="play-circle"></i></a>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="fade-in">
-        <div class="footer-grid">
+        <div class="footer-links-container">
             <a href="#" class="footer-link"><i data-lucide="share-2"></i> <span data-i18n="social">Redes sociales</span></a>
             <a href="#" class="footer-link"><i data-lucide="help-circle"></i> <span data-i18n="help">Ayuda</span></a>
             <a href="#" class="footer-link"><i data-lucide="life-buoy"></i> <span data-i18n="support">Soporte</span></a>
@@ -59,11 +57,11 @@
         </div>
 
         <div class="footer-bottom">
-            <div class="language-container">
-                <button id="lang-menu-btn" class="glass-btn">
+            <div class="language-picker">
+                <button id="lang-menu-btn" class="minimal-btn">
                     <i data-lucide="languages"></i> <span id="current-lang">Español</span>
                 </button>
-                <div id="lang-dropdown" class="glass-card lang-dropdown hidden">
+                <div id="lang-dropdown" class="lang-dropdown hidden">
                     <button onclick="changeLanguage('es')">🇪🇸 Español</button>
                     <button onclick="changeLanguage('en')">🇺🇸 English</button>
                     <button onclick="changeLanguage('fr')">🇫🇷 Français</button>
@@ -72,12 +70,17 @@
                     <button onclick="changeLanguage('it')">🇮🇹 Italiano</button>
                     <button onclick="changeLanguage('zh')">🇨🇳 中文</button>
                     <button onclick="changeLanguage('ja')">🇯🇵 日本語</button>
-                    <button onclick="changeLanguage('sw')">🇰🇪 Kiswahili</button>
+                    <button onclick="changeLanguage('sw')">🌍 Kiswahili</button>
                 </div>
             </div>
             <p class="copyright">&copy; 2026 Carley Interactive Studio</p>
         </div>
     </footer>
+
+    <form id="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="display:none;">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="JZ4KM2VUD6AMQ">
+    </form>
 
     <script src="js/main.js"></script>
     <script>
