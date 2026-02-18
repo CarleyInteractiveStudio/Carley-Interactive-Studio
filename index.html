@@ -5,26 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carley Interactive Studio</title>
     <link rel="stylesheet" href="estilos.css">
-    <!-- Lucide Icons for "Real Icons" -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="dark-theme">
-    <header class="header-minimal">
-        <img src="carley_foto_web/Logo C.png" alt="Carley Logo" class="main-logo">
-    </header>
 
     <main>
+        <!-- Section Hero con Logo Integrado -->
         <section id="hero" class="fade-in">
+            <img src="carley_foto_web/Logo C.png" alt="Carley Logo" class="hero-logo">
             <h1 class="hero-title" data-i18n="hero-title">Carley Interactive Studio</h1>
             <p class="hero-tagline" data-i18n="hero-tagline">Convertiendo ideas en realidad</p>
+            <div class="glass-card about-card">
+                <p data-i18n="about-text">Somos un pequeño estudio con el objetivo de ser su marca favorita con múltiples productos en todas las áreas. Empezamos en software, luego nos extenderemos al hardware y mucho más.</p>
+            </div>
         </section>
 
-        <section id="creative-engine" class="fade-in">
-            <div class="engine-content">
-                <img src="Logo Creative sin fondo.png" alt="Creative Engine" class="engine-img">
-                <h2 data-i18n="engine-heading">Conoce a nuestro motor de video juego</h2>
-                <p data-i18n="engine-desc">Creative Engine diseñado para que todos puedan crear video juegos fácil y rápida.</p>
-                <a href="#" class="apple-link">Creative Engine <i data-lucide="chevron-right"></i></a>
+        <!-- Section Producción -->
+        <section id="products">
+            <h2 class="section-title" data-i18n="products-title">Nuestras Producciones</h2>
+
+            <div class="products-grid">
+                <!-- Creative Engine -->
+                <div class="glass-card product-card fade-in">
+                    <img src="Logo Creative sin fondo.png" alt="Creative Engine" class="product-img">
+                    <h3 data-i18n="engine-title">Creative Engine</h3>
+                    <p data-i18n="engine-desc-long">Es tu motor de videojuego. Crea con facilidad, no importa si no tienes experiencia; el motor está diseñado para todos. Crea juegos para todo tipo de dispositivos que tengan acceso a un navegador y publícalos con orgullo.</p>
+                    <a href="https://carleyinteractivestudio.github.io/Creative-Engine-Beta/" class="apple-link">Creative Engine Beta <i data-lucide="external-link"></i></a>
+                </div>
+
+                <!-- Creative Games -->
+                <div class="glass-card product-card fade-in">
+                    <img src="https://raw.githubusercontent.com/CarleyInteractiveStudio/Creative-Games/feat-create-game-website-10977585328626350785/Creatives%20Games.png" alt="Creative Games" class="product-img">
+                    <h3 data-i18n="games-title">Creative Games</h3>
+                    <p data-i18n="games-desc">Una página web para jugar juegos sin tener que descargarlos. Compatible con múltiples dispositivos, incluso con mandos de consola.</p>
+                    <a href="https://carleyinteractivestudio.github.io/Creative-Games/" class="apple-link">Explorar Juegos <i data-lucide="play-circle"></i></a>
+                </div>
             </div>
         </section>
     </main>
@@ -43,26 +58,30 @@
             <a href="#" class="footer-link"><i data-lucide="users"></i> <span data-i18n="collaborators">Colaboradores</span></a>
         </div>
 
-        <div class="language-selector">
-            <button onclick="changeLanguage('es')" title="Español">🇪🇸</button>
-            <button onclick="changeLanguage('en')" title="English">🇺🇸</button>
-            <button onclick="changeLanguage('fr')" title="Français">🇫🇷</button>
-            <button onclick="changeLanguage('pt')" title="Português">🇵🇹</button>
-            <button onclick="changeLanguage('ru')" title="Русский">🇷🇺</button>
-            <button onclick="changeLanguage('it')" title="Italiano">🇮🇹</button>
-            <button onclick="changeLanguage('zh')" title="中文">🇨🇳</button>
-            <button onclick="changeLanguage('ja')" title="日本語">🇯🇵</button>
-            <button onclick="changeLanguage('sw')" title="Kiswahili">🇰🇪</button>
+        <div class="footer-bottom">
+            <div class="language-container">
+                <button id="lang-menu-btn" class="glass-btn">
+                    <i data-lucide="languages"></i> <span id="current-lang">Español</span>
+                </button>
+                <div id="lang-dropdown" class="glass-card lang-dropdown hidden">
+                    <button onclick="changeLanguage('es')">🇪🇸 Español</button>
+                    <button onclick="changeLanguage('en')">🇺🇸 English</button>
+                    <button onclick="changeLanguage('fr')">🇫🇷 Français</button>
+                    <button onclick="changeLanguage('pt')">🇵🇹 Português</button>
+                    <button onclick="changeLanguage('ru')">🇷🇺 Русский</button>
+                    <button onclick="changeLanguage('it')">🇮🇹 Italiano</button>
+                    <button onclick="changeLanguage('zh')">🇨🇳 中文</button>
+                    <button onclick="changeLanguage('ja')">🇯🇵 日本語</button>
+                    <button onclick="changeLanguage('sw')">🇰🇪 Kiswahili</button>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2026 Carley Interactive Studio</p>
         </div>
-
-        <p class="copyright">&copy; 2026 Carley Interactive Studio</p>
     </footer>
 
     <script src="js/main.js"></script>
     <script>
         lucide.createIcons();
     </script>
-    <!-- PayPal Integration Reserved (JZ4KM2VUD6AMQ) -->
-    <!-- <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script> -->
 </body>
 </html>
