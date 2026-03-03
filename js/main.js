@@ -179,8 +179,37 @@ const translations = {
         footer_info: "Informations",
         footer_products: "Nos Produits",
         my_account: "Mon Compte"
+    },
+    pt: {
+        welcome: "Bem-vindo, estamos felizes em tê-lo aqui",
+        engine_desc: "Você já pensou em desenvolver seu próprio videogame? Projetamos o Creative Engine para você...",
+        search_hint: "Pesquisar no Carley...",
+        footer_channels: "Canais",
+        footer_donations: "Doações",
+        footer_info: "Informações",
+        footer_products: "Nossos Produtos",
+        my_account: "Minha Conta"
+    },
+    zh: {
+        welcome: "欢迎，我们很高兴你能在这里",
+        engine_desc: "你有没有想过开发自己的视频游戏？我们为你设计了 Creative Engine...",
+        search_hint: "在 Carley 搜索...",
+        footer_channels: "频道",
+        footer_donations: "捐赠",
+        footer_info: "信息",
+        footer_products: "我们的产品",
+        my_account: "我的账户"
+    },
+    ru: {
+        welcome: "Добро пожаловать, мы рады видеть вас здесь",
+        engine_desc: "Вы когда-нибудь задумывались о создании собственной видеоигры? Мы разработали Creative Engine для вас...",
+        search_hint: "Поиск в Carley...",
+        footer_channels: "Каналы",
+        footer_donations: "Пожертвования",
+        footer_info: "Информация",
+        footer_products: "Наши продукты",
+        my_account: "Мой аккаунт"
     }
-    // (Other languages omitted for brevity in demo, but dictionary infrastructure exists)
 };
 
 function initializeTranslations() {
