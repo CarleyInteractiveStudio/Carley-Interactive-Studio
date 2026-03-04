@@ -150,87 +150,39 @@ function initializeSearch() {
    Internationalization System
 ============================== */
 const translations = {
-    es: {
-        welcome: "Bienvenido, nos alegra tenerte aquí",
-        engine_desc: "¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine...",
-        search_hint: "Buscar en Carley...",
-        footer_channels: "Canales",
-        footer_donations: "Donaciones",
-        footer_info: "Información",
-        footer_products: "Nuestros Productos",
-        my_account: "Mi Cuenta"
-    },
-    en: {
-        welcome: "Welcome, we're glad to have you here",
-        engine_desc: "Have you ever thought about developing your own video game? We have designed Creative Engine for you...",
-        search_hint: "Search Carley...",
-        footer_channels: "Channels",
-        footer_donations: "Donations",
-        footer_info: "Information",
-        footer_products: "Our Products",
-        my_account: "My Account"
-    },
-    fr: {
-        welcome: "Bienvenue, nous sommes ravis de vous voir ici",
-        engine_desc: "Avez-vous déjà pensé à développer votre propre jeu vidéo ? Nous avons conçu Creative Engine pour vous...",
-        search_hint: "Rechercher Carley...",
-        footer_channels: "Chaînes",
-        footer_donations: "Dons",
-        footer_info: "Informations",
-        footer_products: "Nos Produits",
-        my_account: "Mon Compte"
-    },
-    pt: {
-        welcome: "Bem-vindo, estamos felizes em tê-lo aqui",
-        engine_desc: "Você já pensou em desenvolver seu próprio videogame? Projetamos o Creative Engine para você...",
-        search_hint: "Pesquisar no Carley...",
-        footer_channels: "Canais",
-        footer_donations: "Doações",
-        footer_info: "Informações",
-        footer_products: "Nossos Produtos",
-        my_account: "Minha Conta"
-    },
-    zh: {
-        welcome: "欢迎，我们很高兴你能在这里",
-        engine_desc: "你有没有想过开发自己的视频游戏？我们为你设计了 Creative Engine...",
-        search_hint: "在 Carley 搜索...",
-        footer_channels: "频道",
-        footer_donations: "捐赠",
-        footer_info: "信息",
-        footer_products: "我们的产品",
-        my_account: "我的账户"
-    },
-    ru: {
-        welcome: "Добро пожаловать, мы рады видеть вас здесь",
-        engine_desc: "Вы когда-нибудь задумывались о создании собственной видеоигры? Мы разработали Creative Engine для вас...",
-        search_hint: "Поиск в Carley...",
-        footer_channels: "Каналы",
-        footer_donations: "Пожертвования",
-        footer_info: "Информация",
-        footer_products: "Наши продукты",
-        my_account: "Мой аккаунт"
-    }
+    es: { welcome: "Bienvenido, nos alegra tenerte aquí" },
+    en: { welcome: "Welcome, we're glad to have you here" },
+    fr: { welcome: "Bienvenue, nous sommes ravis de vous voir ici" },
+    pt: { welcome: "Bem-vindo, estamos felizes em tê-lo aqui" },
+    ru: { welcome: "Добро пожаловать, мы рады видеть вас здесь" },
+    zh: { welcome: "欢迎，很高兴您来到这里" },
+    it: { welcome: "Benvenuto, siamo felici di averti qui" },
+    ja: { welcome: "ようこそ、お越しいただきありがとうございます" },
+    sw: { welcome: "Karibu, tunafurahi kuwa nawe hapa" }
 };
 
 function initializeTranslations() {
     const picker = document.getElementById('lang-picker');
-    picker.onchange = (e) => {
-        const lang = e.target.value;
-        const t = translations[lang];
-        if (!t) return;
 
-        document.querySelector('.welcome-msg').textContent = t.welcome;
-        document.getElementById('main-search').placeholder = t.search_hint;
-        document.getElementById('acc-modal-title').textContent = t.my_account;
+    const updateTexts = (lang) => {
+        const t = translations[lang] || translations['es'];
 
-        const footHs = document.querySelectorAll('.footer-h');
-        if (footHs.length >= 4) {
-            footHs[0].textContent = t.footer_channels;
-            footHs[1].textContent = t.footer_donations;
-            footHs[2].textContent = t.footer_info;
-            footHs[3].textContent = t.footer_products;
-        }
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (t[key]) {
+                el.textContent = t[key];
+            }
+        });
+
+        localStorage.setItem('carley-lang', lang);
     };
+
+    picker.onchange = (e) => updateTexts(e.target.value);
+
+    // Initial load
+    const savedLang = localStorage.getItem('carley-lang') || 'es';
+    picker.value = savedLang;
+    updateTexts(savedLang);
 }
 
 /* ==============================
