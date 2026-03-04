@@ -188,7 +188,52 @@ const translations = {
         "privacy-modal-title": "Privacidad",
         "privacy-modal-desc": "Tus datos están seguros. Solo los utilizamos para mejorar tu experiencia en nuestra plataforma.",
         "license-modal-title": "Licencia",
-        "license-modal-desc": "Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales."
+        "license-modal-desc": "Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales.",
+        // Creative Engine
+        "ce-nav-info": "Información",
+        "ce-nav-report": "Reportar",
+        "ce-nav-opinions": "Opiniones",
+        "ce-nav-license": "Licencia",
+        "ce-nav-privacy": "Privacidad",
+        "ce-nav-join": "Únete y Seguirnos",
+        "ce-nav-claims": "Reclamos",
+        "ce-nav-donations": "Donaciones",
+        "ce-info-1": "Creative Engine fue diseñado para todo público. No importa que seas experto, novato o no tengas experiencia alguna, Creative Engine te ayuda y te enseña.",
+        "ce-info-2": "Nuestro motor fue inspirado de Unity pero se basa en materias y leyes. Las materias pueden ser cualquier cosa de tu juego y las leyes todo lo que define el comportamiento de cada cosa de tu juego; son un conjunto de reglas que hacen tu juego único y hacerlo lo que quieras que sea.",
+        "ce-why-title": "¿Por qué usar Creative Engine?",
+        "ce-why-1": "El motor está en varios idiomas diferentes y tiene 3 formas de codificar:",
+        "ce-ces-desc": "Diseñado para quienes ya son expertos en la creación de videojuegos y gustan programar a puro código. Hecho con JS e inspirado en C#, JS y Python. Permite programar completamente en español, inglés, portugués, ruso y chino (y se extenderá a más idiomas).",
+        "ce-scratch-desc": "Podrán crear la lógica del juego arrastrando bloques. Muy bueno para quienes están empezando. Aún está en desarrollo.",
+        "ce-human-desc": "Aquí solo tendrás que hablarle al motor, decirle lo que quieres que haga el script y el motor te entenderá.",
+        "ce-info-3": "Puedes crear un juego en menos de 1 hora y sin escribir ni una sola línea de código. El motor incluye varios componentes básicos que te ayudan a crear tus juegos. Al ser web, puedes publicarlos en varias plataformas y para varios dispositivos.",
+        "ce-info-4": "Nuestro motor tiene un sistema de librería que permite a los desarrolladores crear varias librerías. Si quieres, por ejemplo, una IA para tu juego, no tienes que hacer una IA avanzada desde 0; solo descargas la librería y listo.",
+        "ce-info-5": "Nuestro motor tiene integrado a Carl IA que te ayudará a hacer realidad tus ideas y te guiará en cada paso de tu desarrollo.",
+        "ce-info-free": "Creative Engine es 100% gratuito. No reclamamos derechos por ningún juego hecho con él; de hecho, mientras más creas, más nos alegramos.",
+        "ce-info-open": "El motor mismo estará disponible en código abierto para todos aquellos que quieran modificarlo a sus gustos.",
+        "ce-info-team": "Creative Engine tiene en desarrollo un sistema que te permitirá crear videojuegos en equipo. Muy bueno para escuelas que quieren enseñar el desarrollo de videojuegos a los estudiantes o pequeños estudios.",
+        "ce-info-vidspri": "Creative Engine tiene integrado a Vid Spri, una herramienta que te permite crear animaciones y sonido para tus videojuegos.",
+        "ph-bug-desc": "Describe el fallo...",
+        "field-message": "Mensaje",
+        "field-photos": "Fotos (Máx 5)",
+        "btn-send": "Enviar Reporte",
+        "field-opinion": "Tu Opinión",
+        "ph-opinion": "¿Qué piensas de Creative Engine?",
+        "btn-send-opinion": "Publicar Opinión",
+        "opinion-hint": "Leeremos sus opiniones y consideraremos todas aquellas con más me gusta en futuras actualizaciones.",
+        "ce-license-1": "Los juegos hechos están disponibles bajo la licencia CLG1 (Carley Gratuito).",
+        "ce-license-2": "El licenciatario tiene todo derecho de usar como le dé la gana en todo su producto. No reclamamos ningún porcentaje.",
+        "ce-license-3": "No somos responsables; o sea, no tenemos una obligación de resolver bugs, fallos o errores que pueda presentar el producto.",
+        "ce-license-4": "No tenemos derechos en el producto del usuario a menos que este nos lo permita.",
+        "ce-license-date": "Última actualización: 4 de marzo de 2026",
+        "ce-privacy-main": "No guardamos ningún otro tipo de datos que no sea información necesaria para su cuenta y opiniones en nuestros servidores, etc.",
+        "ce-claim-reason": "Razón del reclamo",
+        "claim-hint": "Puedes reclamar en la misma semana que hayas hecho las donaciones; posteriormente no garantizamos una devuelta.",
+        "btn-send-claim": "Enviar Reclamo",
+        "ce-donate-1": "No necesitas ser un desarrollador para aportar a nuestro motor. Tu apoyo monetario nos ayudará a contratar desarrolladores y pagar servidores para hacer de Vid Spri una herramienta muy útil y gratis.",
+        "ce-donate-2": "Nos financiará a seguir adelante y pagar servidores para que en un futuro puedas usar Carl IA sin depender de API externa de forma gratuita.",
+        "btn-support": "Apoyar",
+        "btn-ad": "Ver un anuncio para apoyarnos",
+        "ce-donate-claim": "Si en todo caso quieres hacer un reclamo puedes hacerlo desde Reclamos."
     },
     en: {
         welcome: "Welcome, we're glad to have you here",
@@ -228,7 +273,52 @@ const translations = {
         "privacy-modal-title": "Privacy",
         "privacy-modal-desc": "Your data is safe. We only use it to improve your experience on our platform.",
         "license-modal-title": "License",
-        "license-modal-desc": "All our products are protected by international intellectual property laws."
+        "license-modal-desc": "All our products are protected by international intellectual property laws.",
+        // Creative Engine
+        "ce-nav-info": "Information",
+        "ce-nav-report": "Report",
+        "ce-nav-opinions": "Opinions",
+        "ce-nav-license": "License",
+        "ce-nav-privacy": "Privacy",
+        "ce-nav-join": "Join & Follow",
+        "ce-nav-claims": "Claims",
+        "ce-nav-donations": "Donations",
+        "ce-info-1": "Creative Engine was designed for everyone. It doesn't matter if you're an expert, a novice, or have no experience at all, Creative Engine helps and teaches you.",
+        "ce-info-2": "Our engine was inspired by Unity but is based on matters and laws. Matters can be anything in your game and laws are everything that defines the behavior of each thing in your game; they are a set of rules that make your game unique and make it what you want it to be.",
+        "ce-why-title": "Why use Creative Engine?",
+        "ce-why-1": "The engine is in several different languages and has 3 ways of coding:",
+        "ce-ces-desc": "Designed for those who are already experts in video game creation and like to program with pure code. Made with JS and inspired by C#, JS, and Python. Allows programming entirely in Spanish, English, Portuguese, Russian, and Chinese (and will be extended to more languages).",
+        "ce-scratch-desc": "You can create game logic by dragging blocks. Great for those who are just starting out. Still in development.",
+        "ce-human-desc": "Here you just have to talk to the engine, tell it what you want the script to do, and the engine will understand you.",
+        "ce-info-3": "You can create a game in less than 1 hour and without writing a single line of code. The engine includes several basic components that help you create your games. Being web-based, you can publish them on multiple platforms and for various devices.",
+        "ce-info-4": "Our engine has a library system that allows developers to create various libraries. If you want, for example, an AI for your game, you don't have to make an advanced AI from scratch; just download the library and that's it.",
+        "ce-info-5": "Our engine has Carl IA integrated, which will help you make your ideas a reality and guide you through every step of your development.",
+        "ce-info-free": "Creative Engine is 100% free. We do not claim rights to any game made with it; in fact, the more you create, the happier we are.",
+        "ce-info-open": "The engine itself will be available in open source for all those who want to modify it to their liking.",
+        "ce-info-team": "Creative Engine is developing a system that will allow you to create video games as a team. Great for schools that want to teach video game development to students or small studios.",
+        "ce-info-vidspri": "Creative Engine has Vid Spri integrated, a tool that allows you to create animations and sound for your video games.",
+        "ph-bug-desc": "Describe the bug...",
+        "field-message": "Message",
+        "field-photos": "Photos (Max 5)",
+        "btn-send": "Send Report",
+        "field-opinion": "Your Opinion",
+        "ph-opinion": "What do you think of Creative Engine?",
+        "btn-send-opinion": "Publish Opinion",
+        "opinion-hint": "We will read your opinions and consider all those with more likes in future updates.",
+        "ce-license-1": "Games made are available under the CLG1 license (Carley Free).",
+        "ce-license-2": "The licensee has every right to use it however they want in their entire product. We do not claim any percentage.",
+        "ce-license-3": "We are not responsible; that is, we do not have an obligation to resolve bugs, failures, or errors that the product may present.",
+        "ce-license-4": "We have no rights in the user's product unless they allow us.",
+        "ce-license-date": "Last updated: March 4, 2026",
+        "ce-privacy-main": "We do not store any other type of data other than information necessary for your account and opinions on our servers, etc.",
+        "ce-claim-reason": "Reason for the claim",
+        "claim-hint": "You can claim in the same week that you have made the donations; thereafter we do not guarantee a refund.",
+        "btn-send-claim": "Send Claim",
+        "ce-donate-1": "You don't need to be a developer to contribute to our engine. Your monetary support will help us hire developers and pay for servers to make Vid Spri a very useful and free tool.",
+        "ce-donate-2": "It will fund us to keep moving forward and pay for servers so that in the future you can use Carl IA without depending on an external API for free.",
+        "btn-support": "Support",
+        "btn-ad": "Watch an ad to support us",
+        "ce-donate-claim": "If in any case you want to make a claim you can do it from Claims."
     },
     fr: {
         welcome: "Bienvenue, nous sommes ravis de vous voir ici",
@@ -539,8 +629,17 @@ function initializeTranslations() {
 
     // Initial load
     const savedLang = localStorage.getItem('carley-lang') || 'es';
-    picker.value = savedLang;
+    if (picker) picker.value = savedLang;
     updateTexts(savedLang);
+
+    window.translateAll = updateTexts;
+
+    // Creative Engine Language Picker Sync
+    const cePicker = document.getElementById('lang-picker-ce');
+    if (cePicker) {
+        cePicker.value = savedLang;
+        cePicker.onchange = (e) => updateTexts(e.target.value);
+    }
 }
 
 /* ==============================
