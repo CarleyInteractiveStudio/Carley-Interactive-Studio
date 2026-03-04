@@ -81,14 +81,16 @@ function updateAuthStateUI(session) {
     const emailDisplay = document.getElementById('user-email-display');
     const usernameInput = document.getElementById('username-edit');
 
+    window.currentUser = session ? session.user : null;
+
     if (session) {
-        loggedInDiv.classList.remove('hidden');
-        loggedOutDiv.classList.add('hidden');
-        emailDisplay.textContent = session.user.email;
-        usernameInput.value = session.user.user_metadata.username || session.user.email.split('@')[0];
+        if (loggedInDiv) loggedInDiv.classList.remove('hidden');
+        if (loggedOutDiv) loggedOutDiv.classList.add('hidden');
+        if (emailDisplay) emailDisplay.textContent = session.user.email;
+        if (usernameInput) usernameInput.value = session.user.user_metadata.username || session.user.email.split('@')[0];
     } else {
-        loggedInDiv.classList.add('hidden');
-        loggedOutDiv.classList.remove('hidden');
+        if (loggedInDiv) loggedInDiv.classList.add('hidden');
+        if (loggedOutDiv) loggedOutDiv.classList.remove('hidden');
     }
 }
 
@@ -99,8 +101,10 @@ function initializeSearch() {
     const searchInput = document.getElementById('main-search');
     const dropdown = document.getElementById('search-dropdown');
 
+    if (!searchInput || !dropdown) return;
+
     const searchMap = [
-        { name: 'Creative Engine', id: 'hero-engine', keywords: ['motor', 'videojuegos', '2d', 'ia'] },
+        { name: 'Creative Engine', id: 'hero-engine', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'] },
         { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'] },
         { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'] },
         { name: 'Donaciones', id: 'studio-footer', keywords: ['apoyo', 'paypal', 'ayuda'] },
@@ -127,7 +131,11 @@ function initializeSearch() {
                 div.className = 'search-result-item';
                 div.textContent = match.name;
                 div.onclick = () => {
-                    document.getElementById(match.id).scrollIntoView({ behavior: 'smooth' });
+                    if (match.url) {
+                        window.location.href = match.url;
+                    } else {
+                        document.getElementById(match.id).scrollIntoView({ behavior: 'smooth' });
+                    }
                     dropdown.classList.add('hidden');
                     searchInput.value = '';
                 };
@@ -155,6 +163,7 @@ const translations = {
         "search-ph": "Buscar en Carley...",
         "hero-desc": "¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine, un motor de videojuego 2D que te facilita todo. No importa que tengas experiencia en la creación de videojuegos o no, Creative Engine está hecho para ti. Cualquier idea que tengas, Creative Engine te ayuda a convertirla en realidad.",
         "hero-cta": "Empezar a Crear",
+        "hero-more": "Saber más",
         "carl-ia-desc": "Nuestra IA actualmente en desarrollo. Muy pronto estará disponible para ayudarte en todo lo que necesites. Nuestro modelo será completo: tendrá visión, podrá hablar, generar texto y escuchar. Lo estamos entrenando para que sea el compañero integral definitivo.",
         "learn-more": "Saber más",
         "traspilador-desc": "Diseñado para desarrolladores. Un modelo de codificación capaz de convertir proyectos de un lenguaje a otro (ejemplo: de JS a C++). Simplifica la migración de tus proyectos y acelera tu flujo de trabajo.",
@@ -240,6 +249,7 @@ const translations = {
         "search-ph": "Search in Carley...",
         "hero-desc": "Have you ever thought about developing your own video game? Well, we have designed Creative Engine for you, a 2D video game engine that makes everything easy. Whether you have experience in game creation or not, Creative Engine is made for you. Any idea you have, Creative Engine helps you turn it into reality.",
         "hero-cta": "Start Creating",
+        "hero-more": "Learn more",
         "carl-ia-desc": "Our AI currently under development. Very soon it will be available to help you with everything you need. Our model will be complete: it will have vision, be able to speak, generate text, and listen. We are training it to be the ultimate integral companion.",
         "learn-more": "Learn more",
         "traspilador-desc": "Designed for developers. A coding model capable of converting projects from one language to another (example: from JS to C++). Simplify your project migration and speed up your workflow.",
@@ -625,7 +635,7 @@ function initializeTranslations() {
         localStorage.setItem('carley-lang', lang);
     };
 
-    picker.onchange = (e) => updateTexts(e.target.value);
+    if (picker) picker.onchange = (e) => updateTexts(e.target.value);
 
     // Initial load
     const savedLang = localStorage.getItem('carley-lang') || 'es';
@@ -646,15 +656,21 @@ function initializeTranslations() {
    Donation System
 ============================== */
 function initializeDonations() {
-    document.getElementById('paypal-link').onclick = (e) => {
-        e.preventDefault();
-        window.open('https://www.paypal.com/donate/?hosted_button_id=JZ4KM2VUD6AMQ', '_blank');
-    };
+    const paypalLink = document.getElementById('paypal-link');
+    if (paypalLink) {
+        paypalLink.onclick = (e) => {
+            e.preventDefault();
+            window.open('https://www.paypal.com/donate/?hosted_button_id=JZ4KM2VUD6AMQ', '_blank');
+        };
+    }
 
-    document.getElementById('info-donations-trigger').onclick = (e) => {
-        e.preventDefault();
-        openStudioModal('modal-donations-info');
-    };
+    const infoTrigger = document.getElementById('info-donations-trigger');
+    if (infoTrigger) {
+        infoTrigger.onclick = (e) => {
+            e.preventDefault();
+            openStudioModal('modal-donations-info');
+        };
+    }
 }
 
 /* ==============================
@@ -676,14 +692,20 @@ window.showAuthForm = function(type) {
     else openStudioModal('modal-auth-register');
 };
 
-document.getElementById('modal-overlay').onclick = () => {
-    document.querySelectorAll('.studio-modal').forEach(m => m.classList.add('hidden'));
-    document.getElementById('modal-overlay').classList.add('hidden');
-};
+const modalOverlay = document.getElementById('modal-overlay');
+if (modalOverlay) {
+    modalOverlay.onclick = () => {
+        document.querySelectorAll('.studio-modal').forEach(m => m.classList.add('hidden'));
+        modalOverlay.classList.add('hidden');
+    };
+}
 
-document.getElementById('account-trigger').onclick = () => {
-    openStudioModal('modal-account');
-};
+const accountTrigger = document.getElementById('account-trigger');
+if (accountTrigger) {
+    accountTrigger.onclick = () => {
+        openStudioModal('modal-account');
+    };
+}
 
 /* ==============================
    Animations & Transitions

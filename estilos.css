@@ -258,6 +258,17 @@ ul {
     font-weight: 400;
 }
 
+.title-link:hover {
+    color: var(--accent);
+    transition: color 0.3s ease;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
 .cta-button {
     background: var(--accent);
     color: white;
