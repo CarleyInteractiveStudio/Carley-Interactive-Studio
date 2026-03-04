@@ -27,7 +27,7 @@
             <div class="search-area">
                 <div class="search-input-wrapper">
                     <i data-lucide="search" class="search-icon"></i>
-                    <input type="text" id="main-search" placeholder="Buscar en Carley...">
+                    <input type="text" id="main-search" placeholder="Buscar en Carley..." data-i18n-ph="search-ph">
                     <div id="search-dropdown" class="search-results-dropdown hidden"></div>
                 </div>
             </div>
@@ -57,10 +57,10 @@
             <div class="hero-content-overlay">
                 <p class="welcome-msg" data-i18n="welcome">Bienvenido, nos alegra tenerte aquí</p>
                 <h1 class="hero-title">Creative Engine</h1>
-                <p class="hero-description">
+                <p class="hero-description" data-i18n="hero-desc">
                     ¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine, un motor de videojuego 2D que te facilita todo. No importa que tengas experiencia en la creación de videojuegos o no, Creative Engine está hecho para ti. Cualquier idea que tengas, Creative Engine te ayuda a convertirla en realidad.
                 </p>
-                <a href="https://carleyinteractivestudio.github.io/Creative-Engine-Beta/" class="cta-button" target="_blank">Empezar a Crear</a>
+                <a href="https://carleyinteractivestudio.github.io/Creative-Engine-Beta/" class="cta-button" target="_blank" data-i18n="hero-cta">Empezar a Crear</a>
             </div>
         </section>
 
@@ -68,10 +68,10 @@
             <div class="reveal-container">
                 <div class="reveal-text">
                     <h2 class="reveal-title">Carl IA</h2>
-                    <p class="reveal-p">
+                    <p class="reveal-p" data-i18n="carl-ia-desc">
                         Nuestra IA actualmente en desarrollo. Muy pronto estará disponible para ayudarte en todo lo que necesites. Nuestro modelo será completo: tendrá visión, podrá hablar, generar texto y escuchar. Lo estamos entrenando para que sea el compañero integral definitivo.
                     </p>
-                    <a href="#" class="reveal-link">Saber más <i data-lucide="chevron-right"></i></a>
+                    <a href="#" class="reveal-link"><span data-i18n="learn-more">Saber más</span> <i data-lucide="chevron-right"></i></a>
                 </div>
                 <div class="reveal-image">
                     <img src="carley_foto_web/Carl_model.jpeg" alt="Carl IA Model">
@@ -86,10 +86,10 @@
                 </div>
                 <div class="reveal-text">
                     <h2 class="reveal-title">Traspilador</h2>
-                    <p class="reveal-p">
+                    <p class="reveal-p" data-i18n="traspilador-desc">
                         Diseñado para desarrolladores. Un modelo de codificación capaz de convertir proyectos de un lenguaje a otro (ejemplo: de JS a C++). Simplifica la migración de tus proyectos y acelera tu flujo de trabajo.
                     </p>
-                    <a href="#" class="reveal-link">Explorar documentación <i data-lucide="chevron-right"></i></a>
+                    <a href="#" class="reveal-link"><span data-i18n="explore-docs">Explorar documentación</span> <i data-lucide="chevron-right"></i></a>
                 </div>
             </div>
         </section>
@@ -98,7 +98,7 @@
     <footer class="studio-footer">
         <div class="footer-grid">
             <div class="footer-section">
-                <h3 class="footer-h">Canales</h3>
+                <h3 class="footer-h" data-i18n="footer-channels">Canales</h3>
                 <ul class="footer-links">
                     <li><a href="https://www.youtube.com/@CarleyInteractiveStudioOficial"><i data-lucide="youtube"></i> YouTube</a></li>
                     <li><a href="https://www.facebook.com/groups/1264745161495908"><i data-lucide="facebook"></i> Facebook</a></li>
@@ -107,21 +107,21 @@
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 class="footer-h">Donaciones</h3>
+                <h3 class="footer-h" data-i18n="footer-donations">Donaciones</h3>
                 <ul class="footer-links">
-                    <li><a href="#" id="paypal-link"><i data-lucide="heart"></i> Donar con PayPal</a></li>
-                    <li><a href="#" id="info-donations-trigger"><i data-lucide="help-circle"></i> ¿Qué hacemos con sus donaciones?</a></li>
+                    <li><a href="#" id="paypal-link"><i data-lucide="heart"></i> <span data-i18n="footer-donate-paypal">Donar con PayPal</span></a></li>
+                    <li><a href="#" id="info-donations-trigger"><i data-lucide="help-circle"></i> <span data-i18n="footer-donate-info">¿Qué hacemos con sus donaciones?</span></a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 class="footer-h">Información</h3>
+                <h3 class="footer-h" data-i18n="footer-info">Información</h3>
                 <ul class="footer-links">
-                    <li><a href="#" onclick="openStudioModal('modal-privacy')">Política de Privacidad</a></li>
-                    <li><a href="#" onclick="openStudioModal('modal-license')">Licencia</a></li>
+                    <li><a href="#" onclick="openStudioModal('modal-privacy')" data-i18n="footer-privacy">Política de Privacidad</a></li>
+                    <li><a href="#" onclick="openStudioModal('modal-license')" data-i18n="footer-license">Licencia</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 class="footer-h">Nuestros Productos</h3>
+                <h3 class="footer-h" data-i18n="footer-products">Nuestros Productos</h3>
                 <ul class="footer-links">
                     <li><a href="#hero-engine">Creative Engine</a></li>
                     <li><a href="#carl-ia">Carl IA</a></li>
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="footer-legal">
-            <p>&copy; 2026 Carley Interactive Studio. Todos los derechos reservados.</p>
+            <p data-i18n="footer-copyright">&copy; 2026 Carley Interactive Studio. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -143,24 +143,24 @@
 
     <div id="modal-account" class="studio-modal hidden">
         <div class="modal-header">
-            <h2 id="acc-modal-title">Mi Cuenta</h2>
+            <h2 id="acc-modal-title" data-i18n="acc-modal-title">Mi Cuenta</h2>
             <button class="close-modal" onclick="closeStudioModal('modal-account')"><i data-lucide="x"></i></button>
         </div>
         <div id="auth-state-logged-in" class="modal-body hidden">
             <div class="user-profile">
-                <p class="field-label">Email</p>
+                <p class="field-label" data-i18n="field-email">Email</p>
                 <p id="user-email-display" class="field-value"></p>
-                <p class="field-label">Nombre de Usuario</p>
+                <p class="field-label" data-i18n="field-username">Nombre de Usuario</p>
                 <input type="text" id="username-edit" class="modal-input">
-                <button id="save-profile" class="modal-btn primary">Actualizar Perfil</button>
-                <button id="logout-action" class="modal-btn danger">Cerrar Sesión</button>
+                <button id="save-profile" class="modal-btn primary" data-i18n="btn-update">Actualizar Perfil</button>
+                <button id="logout-action" class="modal-btn danger" data-i18n="btn-logout">Cerrar Sesión</button>
             </div>
         </div>
         <div id="auth-state-logged-out" class="modal-body">
-            <p class="modal-hint">Inicia sesión para gestionar tus proyectos.</p>
+            <p class="modal-hint" data-i18n="modal-hint">Inicia sesión para gestionar tus proyectos.</p>
             <div class="auth-options">
-                <button onclick="showAuthForm('login')" class="modal-btn primary">Entrar</button>
-                <button onclick="showAuthForm('register')" class="modal-btn outline">Crear Cuenta</button>
+                <button onclick="showAuthForm('login')" class="modal-btn primary" data-i18n="btn-login">Entrar</button>
+                <button onclick="showAuthForm('register')" class="modal-btn outline" data-i18n="btn-register">Crear Cuenta</button>
             </div>
         </div>
     </div>
@@ -168,56 +168,56 @@
     <!-- Auth Sub-modals -->
     <div id="modal-auth-login" class="studio-modal hidden">
         <div class="modal-header">
-            <h2>Iniciar Sesión</h2>
+            <h2 data-i18n="login-title">Iniciar Sesión</h2>
             <button class="close-modal" onclick="closeStudioModal('modal-auth-login')"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
-            <input type="email" id="login-email" placeholder="Email" class="modal-input">
-            <input type="password" id="login-pass" placeholder="Contraseña" class="modal-input">
-            <button id="do-login" class="modal-btn primary">Entrar</button>
+            <input type="email" id="login-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <input type="password" id="login-pass" placeholder="Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <button id="do-login" class="modal-btn primary" data-i18n="btn-login-action">Entrar</button>
         </div>
     </div>
 
     <div id="modal-auth-register" class="studio-modal hidden">
         <div class="modal-header">
-            <h2>Crear Cuenta</h2>
+            <h2 data-i18n="register-title">Crear Cuenta</h2>
             <button class="close-modal" onclick="closeStudioModal('modal-auth-register')"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
-            <input type="email" id="reg-email" placeholder="Email" class="modal-input">
-            <input type="password" id="reg-pass" placeholder="Contraseña" class="modal-input">
-            <input type="password" id="reg-pass-confirm" placeholder="Confirmar Contraseña" class="modal-input">
-            <button id="do-register" class="modal-btn primary">Registrar</button>
+            <input type="email" id="reg-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <input type="password" id="reg-pass" placeholder="Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <input type="password" id="reg-pass-confirm" placeholder="Confirmar Contraseña" class="modal-input" data-i18n-ph="ph-pass-confirm">
+            <button id="do-register" class="modal-btn primary" data-i18n="btn-register-action">Registrar</button>
         </div>
     </div>
 
     <div id="modal-donations-info" class="studio-modal hidden">
         <div class="modal-header">
-            <h2>¿Qué hacemos con sus donaciones?</h2>
+            <h2 data-i18n="donations-modal-title">¿Qué hacemos con sus donaciones?</h2>
             <button class="close-modal" onclick="closeStudioModal('modal-donations-info')"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
-            <p>Tu apoyo nos permite contratar más talento, mejorar nuestros servidores y acelerar el desarrollo de herramientas gratuitas para la comunidad como Creative Engine. Cada donación se invierte directamente en la mejora de nuestras tecnologías.</p>
+            <p data-i18n="donations-modal-desc">Tu apoyo nos permite contratar más talento, mejorar nuestros servidores y acelerar el desarrollo de herramientas gratuitas para la comunidad como Creative Engine. Cada donación se invierte directamente en la mejora de nuestras tecnologías.</p>
         </div>
     </div>
 
     <div id="modal-privacy" class="studio-modal hidden">
         <div class="modal-header">
-            <h2>Privacidad</h2>
+            <h2 data-i18n="privacy-modal-title">Privacidad</h2>
             <button class="close-modal" onclick="closeStudioModal('modal-privacy')"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
-            <p>Tus datos están seguros. Solo los utilizamos para mejorar tu experiencia en nuestra plataforma.</p>
+            <p data-i18n="privacy-modal-desc">Tus datos están seguros. Solo los utilizamos para mejorar tu experiencia en nuestra plataforma.</p>
         </div>
     </div>
 
     <div id="modal-license" class="studio-modal hidden">
         <div class="modal-header">
-            <h2>Licencia</h2>
+            <h2 data-i18n="license-modal-title">Licencia</h2>
             <button class="close-modal" onclick="closeStudioModal('modal-license')"><i data-lucide="x"></i></button>
         </div>
         <div class="modal-body">
-            <p>Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales.</p>
+            <p data-i18n="license-modal-desc">Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales.</p>
         </div>
     </div>
 
