@@ -242,7 +242,11 @@ const translations = {
         "ce-donate-2": "Nos financiará a seguir adelante y pagar servidores para que en un futuro puedas usar Carl IA sin depender de API externa de forma gratuita.",
         "btn-support": "Apoyar",
         "btn-ad": "Ver un anuncio para apoyarnos",
-        "ce-donate-claim": "Si en todo caso quieres hacer un reclamo puedes hacerlo desde Reclamos."
+        "ce-donate-claim": "Si en todo caso quieres hacer un reclamo puedes hacerlo desde Reclamos.",
+        "ce-nav-credits": "Créditos",
+        "credits-main": "Este proyecto no estaría sin la increíble ayuda de Google Jules, quien ha hecho gran parte del proyecto. Agradecemos a Google por sus generosos planes gratuitos.",
+        "credits-ms": "También agradecemos a Microsoft Copilot, que también ha aportado al proyecto significativamente.",
+        "credits-gemini": "Finalmente, agradecemos a Google AI Studio por su generoso plan y a su modelo de Gemini para el uso gratuito de Carl IA."
     },
     en: {
         welcome: "Welcome, we're glad to have you here",
@@ -328,7 +332,11 @@ const translations = {
         "ce-donate-2": "It will fund us to keep moving forward and pay for servers so that in the future you can use Carl IA without depending on an external API for free.",
         "btn-support": "Support",
         "btn-ad": "Watch an ad to support us",
-        "ce-donate-claim": "If in any case you want to make a claim you can do it from Claims."
+        "ce-donate-claim": "If in any case you want to make a claim you can do it from Claims.",
+        "ce-nav-credits": "Credits",
+        "credits-main": "This project wouldn't be possible without the incredible help of Google Jules, who has done much of the project. We thank Google for their generous free plans.",
+        "credits-ms": "We also thank Microsoft Copilot, which has also significantly contributed to the project.",
+        "credits-gemini": "Finally, we thank Google AI Studio for their generous plan and their Gemini model for the free use of Carl IA."
     },
     fr: {
         welcome: "Bienvenue, nous sommes ravis de vous voir ici",

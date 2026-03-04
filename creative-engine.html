@@ -47,6 +47,9 @@
                 <a href="#donations" class="nav-item" data-target="donations">
                     <i data-lucide="heart"></i> <span data-i18n="ce-nav-donations">Donaciones</span>
                 </a>
+                <a href="#coqui" class="nav-item" data-target="coqui">
+                    <i data-lucide="award"></i> <span data-i18n="ce-nav-credits">Créditos</span>
+                </a>
             </nav>
 
             <div class="sidebar-footer">
@@ -67,7 +70,7 @@
 
         <main class="engine-content">
             <section id="info" class="content-section active">
-                <div class="info-hero" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('carley_foto_web/Carl_model.jpeg');">
+                <div class="info-hero" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('carley_foto_web/Escena de videojuego.png');">
                     <h1 class="info-hero-title">Creative Engine</h1>
                 </div>
                 <div class="info-body">
@@ -75,7 +78,7 @@
                     <p class="ce-text" data-i18n="ce-info-2">Nuestro motor fue inspirado de Unity pero se basa en materias y leyes. Las materias pueden ser cualquier cosa de tu juego y las leyes todo lo que define el comportamiento de cada cosa de tu juego; son un conjunto de reglas que hacen tu juego único y hacerlo lo que quieras que sea.</p>
 
                     <div class="video-container">
-                        <video controls class="ce-video">
+                        <video autoplay loop muted playsinline class="ce-video">
                             <source src="https://github.com/CarleyInteractiveStudio/Carley-Interactive-Studio/raw/main/Video%20Project.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -183,6 +186,28 @@
                 </div>
             </section>
 
+            <section id="coqui" class="content-section">
+                <h2 class="section-title" data-i18n="ce-nav-credits">Créditos</h2>
+                <div class="ce-card info-card credits-container">
+                    <p class="ce-text" data-i18n="credits-main">Este proyecto no estaría sin la increíble ayuda de Google Jules, quien ha hecho gran parte del proyecto. Agradecemos a Google por sus generosos planes gratuitos.</p>
+
+                    <div class="credit-item">
+                        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png" alt="Google Jules" class="credit-logo">
+                        <p class="ce-text small"><a href="https://www.google.com" target="_blank" class="inline-link">Google Jules</a></p>
+                    </div>
+
+                    <p class="ce-text" data-i18n="credits-ms">También agradecemos a Microsoft Copilot, que también ha aportado al proyecto significativamente.</p>
+                    <div class="credit-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Microsoft_Copilot_icon.svg/2048px-Microsoft_Copilot_icon.svg.png" alt="Microsoft Copilot" class="credit-logo">
+                    </div>
+
+                    <p class="ce-text" data-i18n="credits-gemini">Finalmente, agradecemos a Google AI Studio por su generoso plan y a su modelo de Gemini para el uso gratuito de Carl IA.</p>
+                    <div class="credit-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Google_Gemini_logo.svg/2560px-Google_Gemini_logo.svg.png" alt="Google Gemini" class="credit-logo">
+                    </div>
+                </div>
+            </section>
+
             <section id="donations" class="content-section">
                 <h2 class="section-title" data-i18n="ce-nav-donations">Donaciones</h2>
                 <div class="ce-card">
@@ -246,17 +271,7 @@
             }, 500);
         });
 
-        // Language picker sync
-        const langPickerCe = document.getElementById('lang-picker-ce');
-        if (langPickerCe) {
-            langPickerCe.value = localStorage.getItem('selectedLang') || 'es';
-            langPickerCe.addEventListener('change', (e) => {
-                const newLang = e.target.value;
-                localStorage.setItem('selectedLang', newLang);
-                if (window.translateAll) window.translateAll(newLang);
-                // Also update the main lang picker if it exists in memory/global
-            });
-        }
+        // Language picker is handled by main.js initializeTranslations()
     </script>
 </body>
 </html>
