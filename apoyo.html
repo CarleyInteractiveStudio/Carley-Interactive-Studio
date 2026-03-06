@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apoyo para todos - Carley Interactive Studio</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .support-page {
+            max-width: 1000px;
+            margin: 8rem auto 4rem;
+            padding: 0 2rem;
+        }
+        .support-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .support-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .supporter-list {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+        .supporter-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 1.1rem;
+        }
+        .supporter-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .supporter-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .supporter-amount {
+            color: #25d366;
+            font-weight: 600;
+        }
+        .empty-list {
+            text-align: center;
+            padding: 3rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="engine-body">
+
+    <header class="glass-header">
+        <div class="header-content">
+            <a href="index.html" class="logo-area">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="logo-c">
+                <div class="logo-name-wrapper">
+                    <span class="logo-name">Carley Interactive Studio</span>
+                </div>
+            </a>
+            <div class="nav-controls">
+                <a href="cuenta.html" class="icon-btn"><i data-lucide="user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="support-page">
+        <div class="support-header">
+            <h1 class="hero-title" style="font-size: 3rem;" data-i18n="support-title">Apoyo para todos</h1>
+            <p class="ce-text" data-i18n="support-intro">Transparencia absoluta. Aquí puedes ver cómo las apps de Carley se mantienen gratuitas para el mundo.</p>
+        </div>
+
+        <div class="support-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-users">0</div>
+                <div class="stat-label" data-i18n="stat-total-users">Usuarios Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-needed">$25</div>
+                <div class="stat-label" data-i18n="stat-monthly-goal">Meta Mensual</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-collected">$0</div>
+                <div class="stat-label" data-i18n="stat-collected-label">Recaudado</div>
+            </div>
+        </div>
+
+        <div class="supporter-list">
+            <h2 class="ce-subtitle" style="margin-top: 0; margin-bottom: 2rem;" data-i18n="list-title">Nuestros Colaboradores</h2>
+            <div class="list-header">
+                <span data-i18n="col-name">Nombre</span>
+                <span data-i18n="col-amount">Aportación</span>
+            </div>
+            <div id="supporter-items-container">
+                <!-- Example item -->
+                <div class="supporter-item">
+                    <div class="supporter-name">
+                        <div class="supporter-avatar">C</div>
+                        <span>Carley Team</span>
+                    </div>
+                    <span class="supporter-amount">$0.00</span>
+                </div>
+                <div class="empty-list" data-i18n="empty-supporters">Aún no hay aportaciones registradas este mes. ¡Sé el primero!</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 4rem;">
+            <p class="ce-text small" data-i18n="support-how-to">¿Quieres aparecer aquí? Apóyanos mediante PayPal en la sección de donaciones de nuestras apps.</p>
+            <a href="index.html#donations" class="cta-button" style="text-decoration: none;" data-i18n="btn-go-donate">Ir a Donar</a>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Placeholder data logic
+        // In a real scenario, this would fetch from a 'donations' table in Supabase
+        const mockSupporters = [];
+
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+
+            // In a real app, we'd fetch actual user counts and donation totals
+            document.getElementById('stat-users').textContent = "1"; // Self
+            document.getElementById('stat-needed').textContent = "$25";
+            document.getElementById('stat-collected').textContent = "$0";
+        });
+    </script>
+</body>
+</html>

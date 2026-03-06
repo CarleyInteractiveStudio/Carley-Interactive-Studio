@@ -83,6 +83,17 @@ function updateAuthStateUI(session) {
 
     window.currentUser = session ? session.user : null;
 
+    // Update Header Icon across all pages
+    const headerUserBtn = document.querySelector('.nav-controls .icon-btn i[data-lucide="user"]');
+    if (headerUserBtn && session) {
+        const meta = session.user.user_metadata;
+        const avatarUrl = meta.avatar_url;
+        if (avatarUrl) {
+            const parent = headerUserBtn.parentElement;
+            parent.innerHTML = `<img src="${avatarUrl}" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);">`;
+        }
+    }
+
     if (session) {
         if (loggedInDiv) loggedInDiv.classList.remove('hidden');
         if (loggedOutDiv) loggedOutDiv.classList.add('hidden');
@@ -231,9 +242,22 @@ const translations = {
         "recovery-desc": "Introduce tu correo para recibir instrucciones de recuperación.",
         "btn-recovery-action": "Enviar Instrucciones",
         "btn-back-home": "Volver al Inicio",
-        "acc-profile-title": "Tu Perfil",
+        "acc-profile-title": "Mi Cuenta",
         "field-email": "Email",
         "field-username": "Nombre de Usuario",
+        "field-pfp": "Foto de Perfil (URL .png/.jpg)",
+        "field-usage": "Uso de la cuenta",
+        "usage-personal": "Personal",
+        "usage-edu": "Educativo",
+        "usage-biz": "Pequeña Empresa",
+        "field-institution": "Nombre de la escuela / estudio",
+        "acc-change-pass": "Cambiar Contraseña",
+        "acc-support-title": "Apoyo para todos",
+        "acc-support-desc": "Mantenemos nuestras apps gratuitas gracias a la colaboración. El costo aumenta según los usuarios.",
+        "btn-see-support": "Ver Colaboradores",
+        "acc-delete-title": "Zona Peligrosa",
+        "acc-delete-warning": "Esta acción es irreversible. Se borrarán todos tus datos.",
+        "btn-delete-acc": "Borrar Cuenta",
         "btn-update": "Actualizar Perfil",
         "btn-logout": "Cerrar Sesión",
         "modal-hint": "Inicia sesión para gestionar tus proyectos.",
@@ -324,7 +348,19 @@ const translations = {
         "vs-os-sqlite-desc": "El motor de base de datos utilizado para gestionar la cola de procesamiento y los códigos de prioridad.",
         "vs-os-translate-desc": "El servicio que potencia la funcionalidad de traducción en la aplicación.",
         "vs-os-feather-desc": "La librería de iconos de código abierto que proporciona los iconos de la interfaz de usuario.",
-        "vs-os-crop-desc": "Una librería de JavaScript para la funcionalidad de recorte de imágenes en el frontend."
+        "vs-os-crop-desc": "Una librería de JavaScript para la funcionalidad de recorte de imágenes en el frontend.",
+        // Apoyo
+        "support-title": "Apoyo para todos",
+        "support-intro": "Transparencia absoluta. Aquí puedes ver cómo las apps de Carley se mantienen gratuitas para el mundo.",
+        "stat-total-users": "Usuarios Totales",
+        "stat-monthly-goal": "Meta Mensual",
+        "stat-collected-label": "Recaudado",
+        "list-title": "Nuestros Colaboradores",
+        "col-name": "Nombre",
+        "col-amount": "Aportación",
+        "empty-supporters": "Aún no hay aportaciones registradas este mes. ¡Sé el primero!",
+        "support-how-to": "¿Quieres aparecer aquí? Apóyanos mediante PayPal en la sección de donaciones de nuestras apps.",
+        "btn-go-donate": "Ir a Donar"
     },
     en: {
         welcome: "Welcome, we're glad to have you here",
@@ -362,9 +398,22 @@ const translations = {
         "recovery-desc": "Enter your email to receive recovery instructions.",
         "btn-recovery-action": "Send Instructions",
         "btn-back-home": "Back to Home",
-        "acc-profile-title": "Your Profile",
+        "acc-profile-title": "My Account",
         "field-email": "Email",
         "field-username": "Username",
+        "field-pfp": "Profile Picture (URL .png/.jpg)",
+        "field-usage": "Account usage",
+        "usage-personal": "Personal",
+        "usage-edu": "Educational",
+        "usage-biz": "Small Business",
+        "field-institution": "School / Studio name",
+        "acc-change-pass": "Change Password",
+        "acc-support-title": "Support for everyone",
+        "acc-support-desc": "We keep our apps free thanks to collaboration. Cost increases with users.",
+        "btn-see-support": "See Contributors",
+        "acc-delete-title": "Danger Zone",
+        "acc-delete-warning": "This action is irreversible. All your data will be deleted.",
+        "btn-delete-acc": "Delete Account",
         "btn-update": "Update Profile",
         "btn-logout": "Log Out",
         "modal-hint": "Log in to manage your projects.",
@@ -455,7 +504,19 @@ const translations = {
         "vs-os-sqlite-desc": "The database engine used to manage the processing queue and priority codes.",
         "vs-os-translate-desc": "The service that powers the translation functionality in the application.",
         "vs-os-feather-desc": "The open-source icon library that provides the user interface icons.",
-        "vs-os-crop-desc": "A JavaScript library for image cropping functionality on the frontend."
+        "vs-os-crop-desc": "A JavaScript library for image cropping functionality on the frontend.",
+        // Support
+        "support-title": "Support for everyone",
+        "support-intro": "Absolute transparency. Here you can see how Carley apps stay free for the world.",
+        "stat-total-users": "Total Users",
+        "stat-monthly-goal": "Monthly Goal",
+        "stat-collected-label": "Collected",
+        "list-title": "Our Contributors",
+        "col-name": "Name",
+        "col-amount": "Contribution",
+        "empty-supporters": "No contributions recorded this month yet. Be the first!",
+        "support-how-to": "Want to appear here? Support us via PayPal in the donations section of our apps.",
+        "btn-go-donate": "Go to Donate"
     },
     fr: {
         welcome: "Bienvenue, nous sommes ravis de vous voir ici",
