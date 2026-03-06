@@ -918,7 +918,15 @@ function initializeTranslations() {
         if (adBtn && adContainer) {
             adBtn.onclick = (e) => {
                 e.preventDefault();
-                adContainer.classList.remove('hidden');
+                if (adContainer.classList.contains('hidden')) {
+                    adContainer.classList.remove('hidden');
+                    // Push the ad unit only after it becomes visible to ensure proper size calculation
+                    try {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    } catch (err) {
+                        console.log("AdSense push waiting for site approval...");
+                    }
+                }
                 adContainer.scrollIntoView({ behavior: 'smooth' });
             };
         }
