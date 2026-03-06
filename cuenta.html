@@ -23,16 +23,17 @@
         }
         .account-card {
             width: 100%;
-            max-width: 450px;
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
+            max-width: 500px;
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(30px);
+            border-radius: 32px;
             padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            max-height: 90vh;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 95vh;
             overflow-y: auto;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE/Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
         .account-card::-webkit-scrollbar {
             display: none; /* Chrome/Safari */
@@ -89,16 +90,20 @@
             color: rgba(255, 255, 255, 0.6);
             margin-bottom: 0.5rem;
         }
-        .acc-input {
+        .acc-input, .acc-select {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 0.8rem 1rem;
+            border-radius: 16px;
+            padding: 0.9rem 1.2rem;
             color: #fff;
-            font-size: 0.95rem;
+            font-size: 1rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+        }
+        .acc-input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.12);
         }
         .acc-input:focus {
             border-color: var(--accent-blue);
@@ -109,6 +114,10 @@
             background-repeat: no-repeat;
             background-position: right 1rem center;
             background-size: 1rem;
+        }
+        .acc-select option {
+            background: #111;
+            color: #fff;
         }
         .checkbox-group {
             display: flex;
@@ -132,8 +141,32 @@
             margin-top: 1.5rem;
         }
         .acc-btn.primary {
-            background: var(--accent-blue);
-            color: #fff;
+            background: #fff;
+            color: #000;
+        }
+        .bubble-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .bubble-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+        .bubble-content {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .acc-btn:active {
             transform: scale(0.98);
@@ -199,38 +232,43 @@
                 <!-- Register Form -->
                 <div id="register-section" class="form-section">
                     <div class="input-group">
-                        <label data-i18n="field-username">Nombre de Usuario</label>
+                        <label><i data-lucide="user" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-username">Nombre de Usuario</span></label>
                         <input type="text" id="reg-username" class="acc-input" placeholder="Tu nombre">
                     </div>
                     <div class="input-group">
-                        <label data-i18n="field-email">Correo Electrónico</label>
+                        <label><i data-lucide="mail" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-email">Correo Electrónico</span></label>
                         <input type="email" id="reg-email" class="acc-input" placeholder="correo@ejemplo.com">
                     </div>
                     <div class="input-group">
-                        <label data-i18n="ph-pass">Contraseña</label>
+                        <label><i data-lucide="lock" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="ph-pass">Contraseña</span></label>
                         <input type="password" id="reg-pass" class="acc-input" placeholder="Mínimo 6 caracteres">
                     </div>
                     <div class="input-group">
-                        <label data-i18n="ph-pass-confirm">Confirmar Contraseña</label>
+                        <label><i data-lucide="check-circle" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="ph-pass-confirm">Confirmar Contraseña</span></label>
                         <input type="password" id="reg-pass-confirm" class="acc-input" placeholder="••••••••">
                     </div>
                     <div class="input-group">
-                        <label data-i18n="field-recovery-email">Correo de Recuperación</label>
+                        <label><i data-lucide="shield-check" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-recovery-email">Correo de Recuperación</span></label>
                         <input type="email" id="reg-recovery-email" class="acc-input" placeholder="alternativo@ejemplo.com">
                     </div>
                     <div class="input-group">
-                        <label data-i18n="field-pfp">Foto de Perfil (URL .png/.jpg)</label>
-                        <input type="text" id="reg-pfp" class="acc-input" placeholder="https://ejemplo.com/foto.png">
+                        <label><i data-lucide="image" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-pfp">Foto de Perfil</span></label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div id="pfp-preview" style="width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.05); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                <i data-lucide="user" style="opacity: 0.3;"></i>
+                            </div>
+                            <input type="file" id="reg-pfp-file" accept="image/*" class="acc-input" style="padding: 0.6rem;">
+                        </div>
                     </div>
                     <div class="input-group">
-                        <label data-i18n="field-gender">Sexo</label>
+                        <label><i data-lucide="users" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-gender">Sexo</span></label>
                         <select id="reg-gender" class="acc-input acc-select">
                             <option value="masculino" data-i18n="gender-m">Masculino</option>
                             <option value="femenino" data-i18n="gender-f">Femenino</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label data-i18n="field-usage">Uso de la cuenta</label>
+                        <label><i data-lucide="activity" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-usage">Uso de la cuenta</span></label>
                         <select id="reg-usage" class="acc-input acc-select">
                             <option value="personal" data-i18n="usage-personal">Personal</option>
                             <option value="educativo" data-i18n="usage-edu">Educativo</option>
@@ -238,11 +276,11 @@
                         </select>
                     </div>
                     <div id="institution-group" class="input-group hidden">
-                        <label id="lbl-institution" data-i18n="field-institution">Nombre de la escuela / estudio</label>
+                        <label id="lbl-institution"><i data-lucide="home" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-institution">Nombre de la escuela / estudio</span></label>
                         <input type="text" id="reg-institution" class="acc-input" placeholder="...">
                     </div>
                     <div class="input-group">
-                        <label data-i18n="field-language">Idioma</label>
+                        <label><i data-lucide="languages" style="width: 14px; margin-right: 4px;"></i> <span data-i18n="field-language">Idioma</span></label>
                         <select id="reg-lang" class="acc-input acc-select">
                             <option value="es">Español</option>
                             <option value="en">English</option>
@@ -288,76 +326,119 @@
                     <h2 data-i18n="acc-profile-title">Mi Cuenta</h2>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 1.5rem; text-align: left; margin-bottom: 2rem; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 16px;">
-                    <div class="user-avatar" id="user-avatar-initial" style="margin: 0; min-width: 60px; height: 60px; font-size: 1.5rem; overflow: hidden;">
+                <!-- Profile Header Bubble -->
+                <div style="display: flex; align-items: center; gap: 1.5rem; text-align: left; margin-bottom: 2rem; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="user-avatar" id="user-avatar-initial" style="margin: 0; min-width: 70px; height: 70px; font-size: 1.8rem; overflow: hidden; border: 2px solid #fff;">
                         <img id="user-avatar-img" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;" class="hidden">
                         <span id="user-avatar-fallback">U</span>
                     </div>
                     <div>
-                        <p id="profile-username" style="font-weight: 600; font-size: 1.1rem; margin: 0;">Nombre de Usuario</p>
-                        <p id="profile-email" style="font-size: 0.85rem; opacity: 0.6; margin: 0;">correo@ejemplo.com</p>
-                        <p id="profile-usage" style="font-size: 0.75rem; color: var(--accent-blue); margin-top: 4px;"></p>
+                        <p id="profile-username" style="font-weight: 700; font-size: 1.3rem; margin: 0;">Nombre de Usuario</p>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <i data-lucide="users" style="width: 14px; opacity: 0.6;"></i>
+                            <span id="profile-gender" style="font-size: 0.9rem; opacity: 0.7;">Sexo</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Settings Sections -->
-                <div style="text-align: left; display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Settings BUBBLES -->
+                <div style="text-align: left;">
 
-                    <!-- Change Password -->
-                    <div class="ce-card" style="padding: 1.5rem; margin: 0;">
-                        <h3 style="font-size: 0.9rem; margin-bottom: 1rem;" data-i18n="acc-change-pass">Cambiar Contraseña</h3>
-                        <div class="input-group">
-                            <input type="password" id="pass-old" class="acc-input" placeholder="Contraseña actual">
-                        </div>
-                        <div class="input-group">
-                            <input type="password" id="pass-new" class="acc-input" placeholder="Nueva contraseña">
-                        </div>
-                        <div class="input-group">
-                            <input type="password" id="pass-confirm" class="acc-input" placeholder="Confirmar nueva contraseña">
-                        </div>
-                        <button id="btn-update-pass" class="acc-btn primary" style="margin-top: 0.5rem;" data-i18n="btn-save">Guardar Cambios</button>
-                        <div style="margin-top: 1rem; text-align: center;">
-                            <button id="btn-profile-recovery" class="inline-link" style="font-size: 0.8rem; background: none; border: none; cursor: pointer; text-decoration: underline;" data-i18n="btn-recovery">Recuperar</button>
+                    <!-- Información Personal Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-personal')">
+                        <span><i data-lucide="user" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="acc-personal-info">Información Personal</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px;"></i>
+                    </button>
+                    <div id="bubble-personal" class="bubble-content hidden">
+                        <p id="profile-email" style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1rem;">correo@ejemplo.com</p>
+                        <p id="profile-usage-display" style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;"></p>
+
+                        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
+                            <h4 style="font-size: 0.9rem; margin-bottom: 1rem;" data-i18n="acc-change-pass">Cambiar Contraseña</h4>
+                            <div class="input-group">
+                                <input type="password" id="pass-old" class="acc-input" placeholder="Contraseña actual">
+                            </div>
+                            <div class="input-group">
+                                <input type="password" id="pass-new" class="acc-input" placeholder="Nueva contraseña">
+                            </div>
+                            <div class="input-group">
+                                <input type="password" id="pass-confirm" class="acc-input" placeholder="Confirmar nueva contraseña">
+                            </div>
+                            <button id="btn-update-pass" class="acc-btn primary" style="margin-top: 0.5rem;" data-i18n="btn-save">Guardar Cambios</button>
                         </div>
                     </div>
 
-                    <!-- Support System & Apps -->
-                    <div class="ce-card" style="padding: 1.5rem; margin: 0; border-color: var(--accent-blue);">
-                        <h3 style="font-size: 0.9rem; margin-bottom: 0.5rem;" data-i18n="acc-support-title">Apoyo para todos</h3>
-                        <p style="font-size: 0.75rem; opacity: 0.8; line-height: 1.4; margin-bottom: 1rem;" data-i18n="acc-support-desc">
-                            Mantenemos nuestras apps gratuitas gracias a la colaboración. El costo aumenta según los usuarios.
+                    <!-- Apoyo para todos Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-support')">
+                        <span><i data-lucide="heart" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="acc-support-title">Apoyo para todos</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px;"></i>
+                    </button>
+                    <div id="bubble-support" class="bubble-content hidden">
+                        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 1.5rem;" data-i18n="acc-support-simple-desc">Nuestras aplicaciones son gratuitas gracias a tu apoyo.</p>
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span>Creative Engine</span>
+                                <span style="color: #25d366;" data-i18n="acc-100-free">100% Gratuito</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span>Vid Spri</span>
+                                <span style="color: #25d366;" data-i18n="acc-100-free">100% Gratuito</span>
+                            </div>
+                        </div>
+                        <a href="donaciones.html" class="acc-btn primary" style="display: block; text-align: center; text-decoration: none;" data-i18n="btn-go-donate-page">Ir a Donaciones</a>
+                    </div>
+
+                    <!-- Soporte Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-help')">
+                        <span><i data-lucide="help-circle" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="ce-nav-report">Soporte</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px;"></i>
+                    </button>
+                    <div id="bubble-help" class="bubble-content hidden">
+                        <a href="creative-engine.html#report" class="bubble-btn" style="background: rgba(255,255,255,0.02);">
+                            <span data-i18n="support-ce">Soporte Creative Engine</span>
+                            <i data-lucide="external-link" style="width: 14px;"></i>
+                        </a>
+                        <a href="vid-spri.html#report" class="bubble-btn" style="background: rgba(255,255,255,0.02);">
+                            <span data-i18n="support-vs">Soporte Vid Spri</span>
+                            <i data-lucide="external-link" style="width: 14px;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Reclamaciones Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-claims')">
+                        <span><i data-lucide="alert-triangle" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="ce-nav-claims">Reclamaciones</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px;"></i>
+                    </button>
+                    <div id="bubble-claims" class="bubble-content hidden">
+                        <p class="ce-text extra-small" style="color: #ffaaaa; margin-bottom: 1.5rem;" data-i18n="claim-sad-msg">
+                            Lamentamos mucho que haya tenido que llegar a este punto. Tratamos de hacer todo de la mejor forma para que todos puedan disfrutar.
                         </p>
-
-                        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                            <!-- App Item -->
-                            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 12px; border-left: 3px solid #25d366;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                    <span style="font-size: 0.85rem; font-weight: 600;">Creative Engine</span>
-                                    <span style="font-size: 0.7rem; color: #25d366;">100% Gratuito</span>
-                                </div>
-                                <button class="acc-btn primary" style="padding: 0.5rem; font-size: 0.75rem; margin-top: 0;" onclick="window.location.href='index.html#donations'">Apoyar esta app</button>
-                            </div>
-
-                            <!-- App Item -->
-                            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 12px; border-left: 3px solid var(--accent-blue);">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                    <span style="font-size: 0.85rem; font-weight: 600;">Vid Spri & Creative Game</span>
-                                    <span style="font-size: 0.7rem; color: var(--accent-blue);">Apoyo</span>
-                                </div>
-                                <div style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 0.5rem;">Meta: <span id="support-needed">$25</span> / mes</div>
-                                <button class="acc-btn primary" style="padding: 0.5rem; font-size: 0.75rem; margin-top: 0;" onclick="window.location.href='index.html#donations'">Apoyar esta app</button>
-                            </div>
+                        <div class="input-group">
+                            <label data-i18n="field-claim-photo">Foto de confirmación de donación</label>
+                            <input type="file" id="claim-photo" class="acc-input" accept="image/*">
                         </div>
-
-                        <a href="apoyo.html" class="acc-btn outline" style="display: block; text-align: center; margin-top: 0.5rem; text-decoration: none; border-color: rgba(255,255,255,0.2); color: #fff;" data-i18n="btn-see-support">Ver Colaboradores</a>
+                        <div class="input-group">
+                            <textarea class="acc-input" style="height: 100px;" placeholder="Explica el motivo..." data-i18n-ph="ph-claim-desc"></textarea>
+                        </div>
+                        <button class="acc-btn primary" data-i18n="btn-send-claim">Enviar Reclamación</button>
                     </div>
 
-                    <!-- Delete Account -->
-                    <div class="ce-card" style="padding: 1.5rem; margin: 0; border-color: rgba(255,68,68,0.3);">
-                        <h3 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: #ff4444;" data-i18n="acc-delete-title">Zona Peligrosa</h3>
-                        <p style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 1rem;" data-i18n="acc-delete-warning">Esta acción es irreversible. Se borrarán todos tus datos.</p>
-                        <button id="btn-delete-account" class="acc-btn outline" style="border-color: #ff4444; color: #ff4444;" data-i18n="btn-delete-acc">Borrar Cuenta</button>
+                    <!-- Borrar Cuenta Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-danger')" style="border-color: rgba(255,68,68,0.2);">
+                        <span style="color: #ff4444;"><i data-lucide="trash-2" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="btn-delete-acc">Borrar Cuenta</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px; color: #ff4444;"></i>
+                    </button>
+                    <div id="bubble-danger" class="bubble-content hidden" style="border-color: rgba(255,68,68,0.3);">
+                        <p style="font-size: 0.85rem; color: #ff4444; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="acc-delete-title">¡PIÉNSALO DOS VECES!</p>
+                        <p style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 1.5rem;" data-i18n="acc-delete-long-warning">
+                            Esta acción es irreversible. Se enviará un correo de confirmación. Por favor, introduce tu contraseña para proceder.
+                        </p>
+                        <div class="input-group">
+                            <input type="password" id="delete-confirm-pass" class="acc-input" placeholder="Tu contraseña actual">
+                        </div>
+                        <button id="btn-delete-account" class="acc-btn primary" style="background: #ff4444; color: #fff;" data-i18n="btn-confirm-delete">Eliminar Permanentemente</button>
                     </div>
+
                 </div>
 
                 <div style="margin-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
@@ -384,6 +465,34 @@
 
     <script src="js/main.js"></script>
     <script>
+        function toggleBubble(id) {
+            const content = document.getElementById(id);
+            const isHidden = content.classList.contains('hidden');
+
+            // Close all others first (optional, for accordion effect)
+            // document.querySelectorAll('.bubble-content').forEach(c => c.classList.add('hidden'));
+
+            if (isHidden) {
+                content.classList.remove('hidden');
+                // Rotate icon if we had one but we use Lucide so we'll just toggle
+            } else {
+                content.classList.add('hidden');
+            }
+        }
+
+        // Image Preview Logic
+        document.getElementById('reg-pfp-file').onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (re) => {
+                    const preview = document.getElementById('pfp-preview');
+                    preview.innerHTML = `<img src="${re.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
         // Tab switching logic
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -426,10 +535,11 @@
 
                 document.getElementById('profile-username').textContent = username;
                 document.getElementById('profile-email').textContent = user.email;
+                document.getElementById('profile-gender').textContent = meta.gender || '---';
 
                 const usageText = meta.usage_type ? (meta.usage_type.charAt(0).toUpperCase() + meta.usage_type.slice(1)) : '';
                 const instText = meta.institution ? ` (${meta.institution})` : '';
-                document.getElementById('profile-usage').textContent = usageText + instText;
+                document.getElementById('profile-usage-display').textContent = (usageText + instText) || 'Personal';
 
                 const fallback = document.getElementById('user-avatar-fallback');
                 const imgEl = document.getElementById('user-avatar-img');
@@ -443,10 +553,6 @@
                     fallback.classList.remove('hidden');
                     imgEl.classList.add('hidden');
                 }
-
-                // Dynamic support cost (Example: $25 base + $1 per 100 users if we had user count)
-                // For now, using the provided $25 base
-                document.getElementById('support-needed').textContent = `$25 / mes`;
 
             } else {
                 authCont.classList.remove('hidden');
@@ -479,7 +585,16 @@
             const pass = document.getElementById('reg-pass').value;
             const confirm = document.getElementById('reg-pass-confirm').value;
             const recovery = document.getElementById('reg-recovery-email').value;
-            const pfp = document.getElementById('reg-pfp').value;
+
+            // Handle profile picture (simplified for this demo, would normally upload to Supabase Storage)
+            const pfpFile = document.getElementById('reg-pfp-file').files[0];
+            let pfpUrl = '';
+            if (pfpFile) {
+                // For now we'll use a placeholder or local URL if possible,
+                // but real app needs Storage. We'll store a mock URL for now.
+                pfpUrl = "https://ui-avatars.com/api/?name=" + username;
+            }
+
             const gender = document.getElementById('reg-gender').value;
             const usage = document.getElementById('reg-usage').value;
             const institution = document.getElementById('reg-institution').value;
@@ -496,7 +611,7 @@
                     data: {
                         username: username,
                         recovery_email: recovery,
-                        avatar_url: pfp,
+                        avatar_url: pfpUrl,
                         gender: gender,
                         usage_type: usage,
                         institution: (usage !== 'personal') ? institution : '',

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donaciones - Carley Interactive Studio</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .donate-page {
+            max-width: 800px;
+            margin: 8rem auto 4rem;
+            padding: 0 2rem;
+            text-align: center;
+        }
+        .donate-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .app-donate-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .app-donate-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="engine-body">
+
+    <header class="glass-header">
+        <div class="header-content">
+            <a href="index.html" class="logo-area">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="logo-c">
+                <div class="logo-name-wrapper">
+                    <span class="logo-name">Carley Interactive Studio</span>
+                </div>
+            </a>
+            <div class="nav-controls">
+                <a href="cuenta.html" class="icon-btn"><i data-lucide="user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="donate-page">
+        <div class="donate-card">
+            <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 1.5rem;" data-i18n="footer-donations">Donaciones</h1>
+            <p class="ce-text" data-i18n="donations-modal-desc">Tu apoyo nos permite contratar más talento, mejorar nuestros servidores y acelerar el desarrollo de herramientas gratuitas para la comunidad.</p>
+
+            <div class="app-grid">
+                <div class="app-donate-item">
+                    <img src="carley_foto_web/Logo_C.png" alt="CE" class="app-icon">
+                    <h3 class="ce-subtitle" style="margin: 0 0 1rem; font-size: 1.2rem;">Creative Engine</h3>
+                    <p class="ce-text extra-small" style="margin-bottom: 1.5rem;" data-i18n="acc-100-free">100% Gratuito</p>
+                    <button class="cta-button" style="padding: 0.8rem 1.5rem; font-size: 0.9rem;" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=JZ4KM2VUD6AMQ', '_blank')">Apoyar</button>
+                </div>
+                <div class="app-donate-item">
+                    <img src="carley_foto_web/Logo VidSpri.png" alt="VS" class="app-icon">
+                    <h3 class="ce-subtitle" style="margin: 0 0 1rem; font-size: 1.2rem;">Vid Spri</h3>
+                    <p class="ce-text extra-small" style="margin-bottom: 1.5rem;" data-i18n="acc-100-free">100% Gratuito</p>
+                    <button class="cta-button" style="padding: 0.8rem 1.5rem; font-size: 0.9rem;" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=JZ4KM2VUD6AMQ', '_blank')">Apoyar</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <a href="apoyo.html" class="inline-link" data-i18n="btn-see-support">Ver Colaboradores</a>
+            </div>
+        </div>
+
+        <div style="margin-top: 4rem;">
+            <a href="index.html" class="cta-button outline" style="text-decoration: none;" data-i18n="btn-back-home">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
