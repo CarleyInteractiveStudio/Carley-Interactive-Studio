@@ -391,6 +391,15 @@ ul {
     color: var(--accent);
 }
 
+.footer-sub-h {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .footer-links li {
     margin-bottom: 0.8rem;
 }
@@ -407,6 +416,17 @@ ul {
 .footer-links a:hover {
     color: white;
     transform: translateX(5px);
+}
+
+.not-available a {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
+.not-available a:hover {
+    transform: none;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .footer-legal {
@@ -528,6 +548,8 @@ ul {
 
 .mini-logo {
     height: 32px;
+    width: auto;
+    object-fit: contain;
 }
 
 .ce-title {
@@ -538,6 +560,18 @@ ul {
 
 .sidebar-nav {
     flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.sidebar-nav {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .nav-item {
@@ -784,12 +818,19 @@ ul {
 .ads-box {
     margin-top: 3rem;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px dashed rgba(255, 255, 255, 0.1);
-    height: 100px;
+    border: 2px solid var(--accent);
+    padding: 1rem;
+    min-height: 100px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 12px;
+    position: relative;
+}
+
+.ads-box.hidden {
+    display: none !important;
 }
 
 .ads-label { font-size: 0.7rem; color: rgba(255, 255, 255, 0.2); text-transform: uppercase; }

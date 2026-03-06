@@ -104,13 +104,53 @@ function initializeSearch() {
     if (!searchInput || !dropdown) return;
 
     const searchMap = [
-        { name: 'Creative Engine', id: 'hero-engine', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'] },
+        { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'] },
         { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'] },
         { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'] },
         { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'] },
-        { name: 'Donaciones', id: 'studio-footer', keywords: ['apoyo', 'paypal', 'ayuda'] },
-        { name: 'Canales', id: 'studio-footer', keywords: ['redes', 'youtube', 'facebook', 'whatsapp'] }
+        { name: 'Donaciones', id: 'donations', keywords: ['apoyo', 'paypal', 'ayuda', 'ads', 'anuncio'] },
+        { name: 'Canales', id: 'footer-channels', keywords: ['redes', 'youtube', 'facebook', 'whatsapp', 'tiktok'] }
     ];
+
+    const performSearch = () => {
+        const query = searchInput.value.toLowerCase().trim();
+        if (!query) return;
+
+        const matches = searchMap.filter(item =>
+            item.name.toLowerCase().includes(query) ||
+            item.keywords.some(k => k.includes(query))
+        );
+
+        if (matches.length > 0) {
+            const match = matches[0];
+            navigateToResult(match);
+        }
+    };
+
+    const navigateToResult = (match) => {
+        if (match.url) {
+            // Check if we are already on the target page
+            const currentPath = window.location.pathname;
+            if (currentPath.includes(match.url)) {
+                if (match.id) {
+                    const el = document.getElementById(match.id);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                window.location.href = match.id ? `${match.url}#${match.id}` : match.url;
+            }
+        } else {
+            // If on home page, scroll. If not, go home then scroll.
+            if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+                const el = document.getElementById(match.id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.location.href = `index.html#${match.id}`;
+            }
+        }
+        dropdown.classList.add('hidden');
+        searchInput.value = '';
+    };
 
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
@@ -131,20 +171,18 @@ function initializeSearch() {
                 const div = document.createElement('div');
                 div.className = 'search-result-item';
                 div.textContent = match.name;
-                div.onclick = () => {
-                    if (match.url) {
-                        window.location.href = match.url;
-                    } else {
-                        document.getElementById(match.id).scrollIntoView({ behavior: 'smooth' });
-                    }
-                    dropdown.classList.add('hidden');
-                    searchInput.value = '';
-                };
+                div.onclick = () => navigateToResult(match);
                 dropdown.appendChild(div);
             });
             dropdown.classList.remove('hidden');
         } else {
             dropdown.classList.add('hidden');
+        }
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
         }
     });
 
@@ -173,6 +211,8 @@ const translations = {
         "footer-donations": "Donaciones",
         "footer-info": "Información",
         "footer-products": "Nuestros Productos",
+        "footer-available": "Disponibles",
+        "footer-not-available": "No Disponibles",
         "footer-donate-paypal": "Donar con PayPal",
         "footer-donate-info": "¿Qué hacemos con sus donaciones?",
         "footer-privacy": "Política de Privacidad",
@@ -287,6 +327,8 @@ const translations = {
         "footer-donations": "Donations",
         "footer-info": "Information",
         "footer-products": "Our Products",
+        "footer-available": "Available",
+        "footer-not-available": "Not Available",
         "footer-donate-paypal": "Donate with PayPal",
         "footer-donate-info": "What do we do with your donations?",
         "footer-privacy": "Privacy Policy",
@@ -868,6 +910,20 @@ function initializeTranslations() {
     updateTexts(savedLang);
 
     window.translateAll = updateTexts;
+
+    // Ad button logic (Handles both internal pages and index.html)
+    const setupAdButton = () => {
+        const adBtn = document.getElementById('ce-ad-btn');
+        const adContainer = document.getElementById('ce-ads-container');
+        if (adBtn && adContainer) {
+            adBtn.onclick = (e) => {
+                e.preventDefault();
+                adContainer.classList.remove('hidden');
+                adContainer.scrollIntoView({ behavior: 'smooth' });
+            };
+        }
+    };
+    setupAdButton();
 
     // Creative Engine Language Picker Sync
     const cePicker = document.getElementById('lang-picker-ce');
