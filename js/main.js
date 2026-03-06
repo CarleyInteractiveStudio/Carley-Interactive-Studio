@@ -219,6 +219,19 @@ const translations = {
         "footer-license": "Licencia",
         "footer-copyright": "© 2026 Carley Interactive Studio. Todos los derechos reservados.",
         "acc-modal-title": "Mi Cuenta",
+        "acc-page-title": "Bienvenido a Carley Studio",
+        "btn-recovery": "Recuperar",
+        "field-recovery-email": "Correo de Recuperación",
+        "field-gender": "Sexo",
+        "gender-m": "Masculino",
+        "gender-f": "Femenino",
+        "field-language": "Idioma",
+        "acc-global-notice": "Esta cuenta le servirá para todos nuestros productos y app Carley.",
+        "acc-terms-accept": "Acepto las condiciones y",
+        "recovery-desc": "Introduce tu correo para recibir instrucciones de recuperación.",
+        "btn-recovery-action": "Enviar Instrucciones",
+        "btn-back-home": "Volver al Inicio",
+        "acc-profile-title": "Tu Perfil",
         "field-email": "Email",
         "field-username": "Nombre de Usuario",
         "btn-update": "Actualizar Perfil",
@@ -235,10 +248,10 @@ const translations = {
         "btn-register-action": "Registrar",
         "donations-modal-title": "¿Qué hacemos con sus donaciones?",
         "donations-modal-desc": "Tu apoyo nos permite contratar más talento, mejorar nuestros servidores y acelerar el desarrollo de herramientas gratuitas para la comunidad como Creative Engine. Cada donación se invierte directamente en la mejora de nuestras tecnologías.",
-        "privacy-modal-title": "Privacidad",
-        "privacy-modal-desc": "Tus datos están seguros. Solo los utilizamos para mejorar tu experiencia en nuestra plataforma.",
+        "privacy-modal-title": "Privacidad y Condiciones de Uso",
+        "privacy-modal-desc": "Su privacidad es nuestra prioridad. No compartimos sus datos con terceros ni los vendemos. Esta cuenta única le servirá para acceder a todos los productos y aplicaciones de Carley Interactive Studio. El usuario es el único responsable de la seguridad de su cuenta y de los datos que decida compartir con terceros. Ofrecemos soporte integral para la recuperación de cuentas y resolución de problemas de acceso. Al usar nuestros servicios, usted acepta que Carley no es responsable por el uso indebido de la cuenta por parte del usuario mismo.",
         "license-modal-title": "Licencia",
-        "license-modal-desc": "Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales.",
+        "license-modal-desc": "Todos nuestros productos están bajo la licencia de Carley Interactive Studio. Los usuarios tienen derecho a usar nuestras herramientas para crear contenido, pero la propiedad intelectual del software original pertenece a Carley.",
         // Creative Engine
         "ce-nav-info": "Información",
         "ce-nav-report": "Reportar",
@@ -315,6 +328,8 @@ const translations = {
     },
     en: {
         welcome: "Welcome, we're glad to have you here",
+        "privacy-modal-title": "Privacy and Terms of Use",
+        "privacy-modal-desc": "Your privacy is our priority. We do not share your data with third parties or sell it. This unique account will allow you to access all Carley Interactive Studio products and apps. The user is solely responsible for the security of their account and any data they choose to share with third parties. We offer full support for account recovery and access issues. By using our services, you agree that Carley is not responsible for any misuse of the account by the user.",
         "search-ph": "Search in Carley...",
         "hero-desc": "Have you ever thought about developing your own video game? Well, we have designed Creative Engine for you, a 2D video game engine that makes everything easy. Whether you have experience in game creation or not, Creative Engine is made for you. Any idea you have, Creative Engine helps you turn it into reality.",
         "hero-cta": "Start Creating",
@@ -335,6 +350,19 @@ const translations = {
         "footer-license": "License",
         "footer-copyright": "© 2026 Carley Interactive Studio. All rights reserved.",
         "acc-modal-title": "My Account",
+        "acc-page-title": "Welcome to Carley Studio",
+        "btn-recovery": "Recover",
+        "field-recovery-email": "Recovery Email",
+        "field-gender": "Gender",
+        "gender-m": "Male",
+        "gender-f": "Female",
+        "field-language": "Language",
+        "acc-global-notice": "This account will serve you for all our products and Carley apps.",
+        "acc-terms-accept": "I accept the conditions and",
+        "recovery-desc": "Enter your email to receive recovery instructions.",
+        "btn-recovery-action": "Send Instructions",
+        "btn-back-home": "Back to Home",
+        "acc-profile-title": "Your Profile",
         "field-email": "Email",
         "field-username": "Username",
         "btn-update": "Update Profile",
@@ -911,6 +939,12 @@ function initializeTranslations() {
 
     window.translateAll = updateTexts;
 
+    // Policy content update for cuenta.html
+    const policyContent = document.getElementById('policy-content');
+    if (policyContent) {
+        policyContent.textContent = translations[savedLang]["privacy-modal-desc"] || translations["es"]["privacy-modal-desc"];
+    }
+
     // Ad button logic (Handles both internal pages and index.html)
     const setupAdButton = () => {
         const adBtn = document.getElementById('ce-ad-btn');
@@ -989,12 +1023,7 @@ if (modalOverlay) {
     };
 }
 
-const accountTrigger = document.getElementById('account-trigger');
-if (accountTrigger) {
-    accountTrigger.onclick = () => {
-        openStudioModal('modal-account');
-    };
-}
+// account-trigger logic moved to account.html or direct link in header
 
 /* ==============================
    Animations & Transitions
