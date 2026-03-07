@@ -6,7 +6,7 @@ Este directorio contiene los scripts necesarios para configurar tu backend en Su
 
 1. Entra a tu panel de **Supabase**.
 2. Ve a la sección **SQL Editor**.
-3. (Opcional) Copia y ejecuta el contenido de `reset.sql` si quieres borrar tablas anteriores y empezar de limpio.
+3. (Opcional) Copia y ejecuta el contenido de `nuclear_reset.sql` si quieres borrar ABSOLUTAMENTE TODO (tablas, funciones, triggers anteriores) y empezar de limpio total.
 4. Copia y ejecuta el contenido de `setup.sql`. Esto creará las tablas y la seguridad necesaria.
 
 ## Tablas Creadas:
