@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTranslations();
     initializeDonations();
     initializeAnimations();
+
+    // Global data fetchers
+    if (document.getElementById('opinions-feed')) fetchOpinions();
+    if (window.location.pathname.includes('donaciones.html')) fetchDonationStats();
 });
 
 /* ==============================
@@ -39,12 +43,12 @@ async function initializeAuth() {
     if (logoutBtn) {
         logoutBtn.onclick = async () => {
             await window.supabaseClient.auth.signOut();
-            closeStudioModal('modal-account');
-            alert('Has cerrado sesión.');
+            window.location.reload(); // Reload to clear session states
         };
     }
 
     // Auth Submission Logic
+    // Login handler on index.html (modal)
     const loginSubmit = document.getElementById('do-login');
     if (loginSubmit) {
         loginSubmit.onclick = async () => {
@@ -1177,4 +1181,120 @@ function initializeAnimations() {
     }, { threshold: 0.2 });
 
     reveals.forEach(r => observer.observe(r));
+}
+
+/* ==============================
+   Real Data Handlers (Supabase)
+============================== */
+
+async function fetchOpinions() {
+    const feed = document.getElementById('opinions-feed');
+    if (!feed) return;
+
+    // Detect if we are on CE or VS page
+    const productId = window.location.pathname.includes('creative-engine.html') ? 'CE' : 'VS';
+
+    const { data, error } = await window.supabaseClient
+        .from('opinions')
+        .select('*, profiles(username, avatar_url)')
+        .eq('product_id', productId)
+        .order('created_at', { ascending: false });
+
+    if (error) return console.error('Error fetching opinions:', error);
+
+    feed.innerHTML = data.map(op => `
+        <div class="opinion-item product-reveal active">
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem;">
+                <img src="${op.profiles?.avatar_url || 'https://ui-avatars.com/api/?name=' + (op.profiles?.username || 'U')}" style="width: 32px; height: 32px; border-radius: 50%;">
+                <span style="font-weight: 600;">${op.profiles?.username || op.user_email.split('@')[0]}</span>
+                <span style="font-size: 0.8rem; opacity: 0.4;">${new Date(op.created_at).toLocaleDateString()}</span>
+            </div>
+            <p style="opacity: 0.8; font-size: 0.95rem;">${op.content}</p>
+        </div>
+    `).join('');
+}
+
+async function fetchDonationStats() {
+    const { data, error } = await window.supabaseClient
+        .from('donations')
+        .select('amount, product_id, donor_name, created_at');
+
+    if (error) return console.error('Error fetching donations:', error);
+
+    const stats = {
+        CE: { current: 0, goal: 26000, donors: [] },
+        VS: { current: 0, goal: 25000, donors: [] }
+    };
+
+    data.forEach(d => {
+        if (stats[d.product_id]) {
+            stats[d.product_id].current += parseFloat(d.amount);
+            stats[d.product_id].donors.push(d);
+        }
+    });
+
+    updateDonationUI(stats);
+    window.currentDonationStats = stats; // Store for sorting in donaciones.html
+}
+
+function updateDonationUI(stats) {
+    // Update Progress Bars and Labels in donaciones.html
+    const ceProgress = (stats.CE.current / stats.CE.goal) * 100;
+    const vsProgress = (stats.VS.current / stats.VS.goal) * 100;
+
+    const ceBar = document.querySelector('.app-donate-item:nth-child(1) .progress-bar');
+    const ceLabel = document.querySelector('.app-donate-item:nth-child(1) .progress-labels span:first-child');
+    if (ceBar) ceBar.style.width = Math.min(ceProgress, 100) + '%';
+    if (ceLabel) ceLabel.textContent = 'Actual: $' + stats.CE.current.toLocaleString();
+
+    const vsBar = document.querySelector('.app-donate-item:nth-child(2) .progress-bar');
+    const vsLabel = document.querySelector('.app-donate-item:nth-child(2) .progress-labels span:first-child');
+    if (vsBar) vsBar.style.width = Math.min(vsProgress, 100) + '%';
+    if (vsLabel) vsLabel.textContent = 'Actual: $' + stats.VS.current.toLocaleString();
+}
+
+// Handler for Submitting Opinions
+const sendOpinionBtn = document.getElementById('send-opinion');
+if (sendOpinionBtn) {
+    sendOpinionBtn.onclick = async () => {
+        if (!window.currentUser) return alert('Debes iniciar sesión para opinar.');
+        const content = document.getElementById('opinion-text').value;
+        const productId = window.location.pathname.includes('creative-engine.html') ? 'CE' : 'VS';
+
+        if (!content) return alert('Escribe algo primero.');
+
+        const { error } = await window.supabaseClient.from('opinions').insert({
+            user_id: window.currentUser.id,
+            user_email: window.currentUser.email,
+            product_id: productId,
+            content: content
+        });
+
+        if (error) alert(error.message);
+        else {
+            alert('¡Gracias por tu opinión!');
+            document.getElementById('opinion-text').value = '';
+            fetchOpinions();
+        }
+    };
+}
+
+// Handler for Submitting Bug Reports
+const sendReportBtn = document.getElementById('send-report');
+if (sendReportBtn) {
+    sendReportBtn.onclick = async () => {
+        const msg = document.getElementById('report-message').value;
+        if (!msg) return alert('Describe el fallo.');
+
+        const { error } = await window.supabaseClient.from('reports').insert({
+            user_email: window.currentUser ? window.currentUser.email : 'anon@carley.com',
+            message: msg
+        });
+
+        if (error) alert(error.message);
+        else {
+            alert('Reporte enviado con éxito.');
+            document.getElementById('report-message').value = '';
+        }
+    };
 }

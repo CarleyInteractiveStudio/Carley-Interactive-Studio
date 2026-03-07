@@ -292,22 +292,30 @@
         }
 
         function sortDonors(type) {
-            let list = [...mockDonors[currentApp]];
+            if (!window.currentDonationStats) return;
+            let list = [...window.currentDonationStats[currentApp].donors];
 
             // Update active btn
-            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) {
+                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                event.target.classList.add('active');
+            }
 
             if (type === 'desc') list.sort((a,b) => b.amount - a.amount);
             if (type === 'asc') list.sort((a,b) => a.amount - b.amount);
-            if (type === 'oldest') list.sort((a,b) => new Date(a.date) - new Date(b.date));
-            if (type === 'newest') list.sort((a,b) => new Date(b.date) - new Date(a.date));
+            if (type === 'oldest') list.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+            if (type === 'newest') list.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
 
             const container = document.getElementById('donors-container');
+            if (list.length === 0) {
+                container.innerHTML = '<p class="ce-text extra-small" style="text-align:center; padding: 2rem; opacity: 0.5;">No hay donaciones aún para este proyecto.</p>';
+                return;
+            }
+
             container.innerHTML = list.map(d => `
                 <div style="display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <span style="font-weight: 600;">${d.name}</span>
-                    <span style="color: #25d366; font-weight: 700;">$${d.amount.toFixed(2)}</span>
+                    <span style="font-weight: 600;">${d.donor_name}</span>
+                    <span style="color: #25d366; font-weight: 700;">$${parseFloat(d.amount).toFixed(2)}</span>
                 </div>
             `).join('');
         }
@@ -329,10 +337,22 @@
                     });
                 },
                 onApprove: (data, actions) => {
-                    return actions.order.capture().then(details => {
-                        alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo como ' + donorName + '!');
-                        // In a real implementation, we would now push donorName and amount to Supabase
+                    return actions.order.capture().then(async details => {
+                        const amount = details.purchase_units[0].amount.value;
+
+                        // Push to Supabase
+                        const { error } = await window.supabaseClient.from('donations').insert({
+                            donor_name: donorName,
+                            amount: parseFloat(amount),
+                            product_id: currentApp,
+                            paypal_order_id: details.id
+                        });
+
+                        if (error) console.error('Error saving donation:', error);
+
+                        alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución ha sido registrada.');
                         closeDonationFlow();
+                        if (typeof fetchDonationStats === 'function') fetchDonationStats();
                     });
                 }
             }).render('#paypal-button-container');
