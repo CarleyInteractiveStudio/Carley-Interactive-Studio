@@ -22,16 +22,22 @@ async function initializeAuth() {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
 
     if (session) {
-        // Fetch real-time language from profile
+        // Fetch real-time language and avatar from profile
         const { data: profile } = await window.supabaseClient
             .from('profiles')
-            .select('language')
+            .select('language, avatar_url')
             .eq('id', session.user.id)
             .single();
 
-        if (profile && profile.language) {
-            localStorage.setItem('carley-lang', profile.language);
-            if (window.translateAll) window.translateAll(profile.language);
+        if (profile) {
+            if (profile.language) {
+                localStorage.setItem('carley-lang', profile.language);
+                if (window.translateAll) window.translateAll(profile.language);
+            }
+            if (profile.avatar_url) {
+                // Update local session metadata for current display
+                session.user.user_metadata.avatar_url = profile.avatar_url;
+            }
         }
     }
 
@@ -39,16 +45,19 @@ async function initializeAuth() {
 
     window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
         updateAuthStateUI(session);
-        if (event === 'SIGNED_IN' && session) {
-            // Check language on sign in
+        if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session) {
+            // Check language and avatar on sign in or update
             const { data: profile } = await window.supabaseClient
                 .from('profiles')
-                .select('language')
+                .select('language, avatar_url')
                 .eq('id', session.user.id)
                 .single();
-            if (profile && profile.language) {
-                localStorage.setItem('carley-lang', profile.language);
-                window.location.reload(); // Force reload to apply language
+            if (profile) {
+                if (profile.language) localStorage.setItem('carley-lang', profile.language);
+                if (profile.avatar_url) session.user.user_metadata.avatar_url = profile.avatar_url;
+
+                if (event === 'SIGNED_IN') window.location.reload(); // Force reload only on initial sign in
+                else updateAuthStateUI(session); // Just refresh UI on update
             }
         }
     });
