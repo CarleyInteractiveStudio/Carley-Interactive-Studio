@@ -115,12 +115,12 @@ function initializeSearch() {
     if (!searchInput || !dropdown) return;
 
     const searchMap = [
-        { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'] },
-        { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'] },
-        { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'] },
-        { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'] },
-        { name: 'Donaciones', id: 'donations', keywords: ['apoyo', 'paypal', 'ayuda', 'ads', 'anuncio'] },
-        { name: 'Canales', id: 'footer-channels', keywords: ['redes', 'youtube', 'facebook', 'whatsapp', 'tiktok'] }
+        { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'], available: true },
+        { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'], available: true },
+        { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'], available: false },
+        { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'], available: false },
+        { name: 'Donaciones', id: 'donations', keywords: ['apoyo', 'paypal', 'ayuda', 'ads', 'anuncio'], available: true },
+        { name: 'Canales', id: 'footer-channels', keywords: ['redes', 'youtube', 'facebook', 'whatsapp', 'tiktok'], available: true }
     ];
 
     const performSearch = () => {
@@ -178,13 +178,32 @@ function initializeSearch() {
         );
 
         if (matches.length > 0) {
-            matches.forEach(match => {
-                const div = document.createElement('div');
-                div.className = 'search-result-item';
-                div.textContent = match.name;
-                div.onclick = () => navigateToResult(match);
-                dropdown.appendChild(div);
-            });
+            const available = matches.filter(m => m.available);
+            const notAvailable = matches.filter(m => !m.available);
+
+            const addGroup = (items, labelKey) => {
+                if (items.length === 0) return;
+                const lang = localStorage.getItem('carley-lang') || 'es';
+                const labelText = translations[lang][labelKey] || translations['es'][labelKey];
+
+                const header = document.createElement('div');
+                header.className = 'search-group-header';
+                header.textContent = labelText;
+                dropdown.appendChild(header);
+
+                items.forEach(match => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    if (!match.available) div.classList.add('not-available');
+                    div.textContent = match.name;
+                    div.onclick = () => navigateToResult(match);
+                    dropdown.appendChild(div);
+                });
+            };
+
+            addGroup(available, 'footer-available');
+            addGroup(notAvailable, 'footer-not-available');
+
             dropdown.classList.remove('hidden');
         } else {
             dropdown.classList.add('hidden');
