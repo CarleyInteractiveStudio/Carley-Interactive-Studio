@@ -11,6 +11,8 @@
             max-width: 1000px;
             margin: 8rem auto 4rem;
             padding: 0 2rem;
+            min-height: 100vh;
+            overflow-y: auto;
         }
         .donate-card {
             background: rgba(15, 15, 15, 0.6);
@@ -325,18 +327,25 @@
         }
 
         function renderPayPal() {
+            const isJoinChecked = document.getElementById('join-donor-list').checked;
+            const donorName = (window.currentUser && isJoinChecked)
+                ? (window.currentUser.user_metadata.username || window.currentUser.email.split('@')[0])
+                : 'Anónimo';
+
             paypal.Buttons({
                 createOrder: (data, actions) => {
                     return actions.order.create({
                         purchase_units: [{
-                            amount: { value: '10.00' }, // Default or dynamic
-                            description: `Donación para ${currentApp}`
+                            amount: { value: '10.00' },
+                            description: `Donación para ${currentApp} de ${donorName}`,
+                            custom_id: donorName // Passing the donor name to PayPal
                         }]
                     });
                 },
                 onApprove: (data, actions) => {
                     return actions.order.capture().then(details => {
-                        alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo!');
+                        alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo como ' + donorName + '!');
+                        // In a real implementation, we would now push donorName and amount to Supabase
                         closeDonationFlow();
                     });
                 }
