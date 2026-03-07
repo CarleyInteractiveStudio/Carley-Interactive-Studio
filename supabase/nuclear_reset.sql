@@ -39,10 +39,4 @@ BEGIN
     END LOOP;
 END $$;
 
--- 4. Re-crear el esquema public para asegurar limpieza total
--- DROP SCHEMA public CASCADE;
--- CREATE SCHEMA public;
--- GRANT ALL ON SCHEMA public TO postgres;
--- GRANT ALL ON SCHEMA public TO public;
-
 -- Ahora puedes ejecutar setup.sql para reconstruir la base de datos de Carley Studio.

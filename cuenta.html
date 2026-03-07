@@ -338,7 +338,22 @@
                         <p id="profile-email" style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1rem;">correo@ejemplo.com</p>
                         <p id="profile-usage-display" style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;"></p>
 
-                        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
+                        <div class="input-group">
+                            <label data-i18n="field-language">Idioma</label>
+                            <select id="profile-lang" class="acc-input acc-select">
+                                <option value="es">🇪🇸 ES</option>
+                                <option value="en">🇺🇸 EN</option>
+                                <option value="fr">🇫🇷 FR</option>
+                                <option value="pt">🇵🇹 PT</option>
+                                <option value="zh">🇨🇳 ZH</option>
+                                <option value="ru">🇷🇺 RU</option>
+                                <option value="it">🇮🇹 IT</option>
+                                <option value="ja">🇯🇵 JA</option>
+                                <option value="sw">🇹🇿 SW</option>
+                            </select>
+                        </div>
+
+                        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; margin-top: 1.5rem;">
                             <h4 style="font-size: 0.9rem; margin-bottom: 1rem;" data-i18n="acc-change-pass">Cambiar Contraseña</h4>
                             <div class="input-group">
                                 <input type="password" id="pass-old" class="acc-input" placeholder="Contraseña actual">
@@ -528,6 +543,14 @@
                 const usageText = meta.usage_type ? (meta.usage_type.charAt(0).toUpperCase() + meta.usage_type.slice(1)) : '';
                 const instText = meta.institution ? ` (${meta.institution})` : '';
                 document.getElementById('profile-usage-display').textContent = (usageText + instText) || 'Personal';
+
+                const profileLang = document.getElementById('profile-lang');
+                if (profileLang) {
+                    profileLang.value = meta.language || 'es';
+                    profileLang.onchange = (e) => {
+                        if (window.translateAll) window.translateAll(e.target.value);
+                    };
+                }
 
                 const fallback = document.getElementById('user-avatar-fallback');
                 const imgEl = document.getElementById('user-avatar-img');

@@ -9,7 +9,7 @@ CREATE TABLE public.profiles (
   gender TEXT,
   usage_type TEXT,
   institution TEXT,
-  language TEXT DEFAULT 'es',
+  language TEXT DEFAULT 'es', -- El idioma preferido del usuario
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

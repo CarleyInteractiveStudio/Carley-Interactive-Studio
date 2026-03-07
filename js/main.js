@@ -20,10 +20,37 @@ document.addEventListener('DOMContentLoaded', () => {
 ============================== */
 async function initializeAuth() {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
+
+    if (session) {
+        // Fetch real-time language from profile
+        const { data: profile } = await window.supabaseClient
+            .from('profiles')
+            .select('language')
+            .eq('id', session.user.id)
+            .single();
+
+        if (profile && profile.language) {
+            localStorage.setItem('carley-lang', profile.language);
+            if (window.translateAll) window.translateAll(profile.language);
+        }
+    }
+
     updateAuthStateUI(session);
 
-    window.supabaseClient.auth.onAuthStateChange((event, session) => {
+    window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
         updateAuthStateUI(session);
+        if (event === 'SIGNED_IN' && session) {
+            // Check language on sign in
+            const { data: profile } = await window.supabaseClient
+                .from('profiles')
+                .select('language')
+                .eq('id', session.user.id)
+                .single();
+            if (profile && profile.language) {
+                localStorage.setItem('carley-lang', profile.language);
+                window.location.reload(); // Force reload to apply language
+            }
+        }
     });
 
     // Profile Actions
@@ -1052,7 +1079,7 @@ const translations = {
 function initializeTranslations() {
     const picker = document.getElementById('lang-picker');
 
-    const updateTexts = (lang) => {
+    const updateTexts = async (lang) => {
         const t = translations[lang] || translations['es'];
 
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1070,6 +1097,20 @@ function initializeTranslations() {
         });
 
         localStorage.setItem('carley-lang', lang);
+
+        // Update pickers
+        ['lang-picker', 'lang-picker-ce'].forEach(id => {
+            const p = document.getElementById(id);
+            if (p) p.value = lang;
+        });
+
+        // Sync with Supabase if logged in
+        if (window.currentUser) {
+            await window.supabaseClient
+                .from('profiles')
+                .update({ language: lang })
+                .eq('id', window.currentUser.id);
+        }
     };
 
     if (picker) picker.onchange = (e) => updateTexts(e.target.value);
@@ -1112,7 +1153,6 @@ function initializeTranslations() {
     // Creative Engine Language Picker Sync
     const cePicker = document.getElementById('lang-picker-ce');
     if (cePicker) {
-        cePicker.value = savedLang;
         cePicker.onchange = (e) => updateTexts(e.target.value);
     }
 }
