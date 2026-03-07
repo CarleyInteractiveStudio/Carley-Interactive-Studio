@@ -532,12 +532,16 @@ ul {
    Creative Engine Layout
 ============================== */
 .engine-body {
-    overflow: hidden;
+    overflow-y: auto;
+}
+
+.fixed-page {
+    overflow: hidden !important;
 }
 
 .engine-layout {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
 }
 
