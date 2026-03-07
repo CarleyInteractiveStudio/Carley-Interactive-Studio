@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTranslations();
     initializeDonations();
     initializeAnimations();
+
+    // Global data fetchers
+    if (document.getElementById('opinions-feed')) fetchOpinions();
+    if (window.location.pathname.includes('donaciones.html')) fetchDonationStats();
 });
 
 /* ==============================
@@ -16,10 +20,46 @@ document.addEventListener('DOMContentLoaded', () => {
 ============================== */
 async function initializeAuth() {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
+
+    if (session) {
+        // Fetch real-time language and avatar from profile
+        const { data: profile } = await window.supabaseClient
+            .from('profiles')
+            .select('language, avatar_url')
+            .eq('id', session.user.id)
+            .single();
+
+        if (profile) {
+            if (profile.language) {
+                localStorage.setItem('carley-lang', profile.language);
+                if (window.translateAll) window.translateAll(profile.language);
+            }
+            if (profile.avatar_url) {
+                // Update local session metadata for current display
+                session.user.user_metadata.avatar_url = profile.avatar_url;
+            }
+        }
+    }
+
     updateAuthStateUI(session);
 
-    window.supabaseClient.auth.onAuthStateChange((event, session) => {
+    window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
         updateAuthStateUI(session);
+        if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session) {
+            // Check language and avatar on sign in or update
+            const { data: profile } = await window.supabaseClient
+                .from('profiles')
+                .select('language, avatar_url')
+                .eq('id', session.user.id)
+                .single();
+            if (profile) {
+                if (profile.language) localStorage.setItem('carley-lang', profile.language);
+                if (profile.avatar_url) session.user.user_metadata.avatar_url = profile.avatar_url;
+
+                if (event === 'SIGNED_IN') window.location.reload(); // Force reload only on initial sign in
+                else updateAuthStateUI(session); // Just refresh UI on update
+            }
+        }
     });
 
     // Profile Actions
@@ -39,12 +79,12 @@ async function initializeAuth() {
     if (logoutBtn) {
         logoutBtn.onclick = async () => {
             await window.supabaseClient.auth.signOut();
-            closeStudioModal('modal-account');
-            alert('Has cerrado sesión.');
+            window.location.reload(); // Reload to clear session states
         };
     }
 
     // Auth Submission Logic
+    // Login handler on index.html (modal)
     const loginSubmit = document.getElementById('do-login');
     if (loginSubmit) {
         loginSubmit.onclick = async () => {
@@ -83,6 +123,17 @@ function updateAuthStateUI(session) {
 
     window.currentUser = session ? session.user : null;
 
+    // Update Header Icon across all pages
+    const headerUserBtn = document.querySelector('.nav-controls .icon-btn i[data-lucide="user"]');
+    if (headerUserBtn && session) {
+        const meta = session.user.user_metadata;
+        const avatarUrl = meta.avatar_url;
+        if (avatarUrl) {
+            const parent = headerUserBtn.parentElement;
+            parent.innerHTML = `<img src="${avatarUrl}" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);">`;
+        }
+    }
+
     if (session) {
         if (loggedInDiv) loggedInDiv.classList.remove('hidden');
         if (loggedOutDiv) loggedOutDiv.classList.add('hidden');
@@ -104,13 +155,53 @@ function initializeSearch() {
     if (!searchInput || !dropdown) return;
 
     const searchMap = [
-        { name: 'Creative Engine', id: 'hero-engine', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'] },
-        { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'] },
-        { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'] },
-        { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'] },
-        { name: 'Donaciones', id: 'studio-footer', keywords: ['apoyo', 'paypal', 'ayuda'] },
-        { name: 'Canales', id: 'studio-footer', keywords: ['redes', 'youtube', 'facebook', 'whatsapp'] }
+        { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'], available: true },
+        { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'], available: true },
+        { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'], available: false },
+        { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'], available: false },
+        { name: 'Donaciones', id: 'donations', keywords: ['apoyo', 'paypal', 'ayuda', 'ads', 'anuncio'], available: true },
+        { name: 'Canales', id: 'footer-channels', keywords: ['redes', 'youtube', 'facebook', 'whatsapp', 'tiktok'], available: true }
     ];
+
+    const performSearch = () => {
+        const query = searchInput.value.toLowerCase().trim();
+        if (!query) return;
+
+        const matches = searchMap.filter(item =>
+            item.name.toLowerCase().includes(query) ||
+            item.keywords.some(k => k.includes(query))
+        );
+
+        if (matches.length > 0) {
+            const match = matches[0];
+            navigateToResult(match);
+        }
+    };
+
+    const navigateToResult = (match) => {
+        if (match.url) {
+            // Check if we are already on the target page
+            const currentPath = window.location.pathname;
+            if (currentPath.includes(match.url)) {
+                if (match.id) {
+                    const el = document.getElementById(match.id);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                window.location.href = match.id ? `${match.url}#${match.id}` : match.url;
+            }
+        } else {
+            // If on home page, scroll. If not, go home then scroll.
+            if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+                const el = document.getElementById(match.id);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.location.href = `index.html#${match.id}`;
+            }
+        }
+        dropdown.classList.add('hidden');
+        searchInput.value = '';
+    };
 
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
@@ -127,24 +218,41 @@ function initializeSearch() {
         );
 
         if (matches.length > 0) {
-            matches.forEach(match => {
-                const div = document.createElement('div');
-                div.className = 'search-result-item';
-                div.textContent = match.name;
-                div.onclick = () => {
-                    if (match.url) {
-                        window.location.href = match.url;
-                    } else {
-                        document.getElementById(match.id).scrollIntoView({ behavior: 'smooth' });
-                    }
-                    dropdown.classList.add('hidden');
-                    searchInput.value = '';
-                };
-                dropdown.appendChild(div);
-            });
+            const available = matches.filter(m => m.available);
+            const notAvailable = matches.filter(m => !m.available);
+
+            const addGroup = (items, labelKey) => {
+                if (items.length === 0) return;
+                const lang = localStorage.getItem('carley-lang') || 'es';
+                const labelText = translations[lang][labelKey] || translations['es'][labelKey];
+
+                const header = document.createElement('div');
+                header.className = 'search-group-header';
+                header.textContent = labelText;
+                dropdown.appendChild(header);
+
+                items.forEach(match => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    if (!match.available) div.classList.add('not-available');
+                    div.textContent = match.name;
+                    div.onclick = () => navigateToResult(match);
+                    dropdown.appendChild(div);
+                });
+            };
+
+            addGroup(available, 'footer-available');
+            addGroup(notAvailable, 'footer-not-available');
+
             dropdown.classList.remove('hidden');
         } else {
             dropdown.classList.add('hidden');
+        }
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
         }
     });
 
@@ -169,20 +277,62 @@ const translations = {
         "learn-more": "Saber más",
         "traspilador-desc": "Diseñado para desarrolladores. Un modelo de codificación capaz de convertir proyectos de un lenguaje a otro (ejemplo: de JS a C++). Simplifica la migración de tus proyectos y acelera tu flujo de trabajo.",
         "explore-docs": "Explorar documentación",
+        "btn-save": "Guardar Cambios",
+        "btn-go-donate-page": "Ir a Donaciones",
+        "btn-confirm-delete": "Eliminar Permanentemente",
         "footer-channels": "Canales",
         "footer-donations": "Donaciones",
         "footer-info": "Información",
         "footer-products": "Nuestros Productos",
+        "footer-available": "Disponibles",
+        "footer-not-available": "No Disponibles",
         "footer-donate-paypal": "Donar con PayPal",
         "footer-donate-info": "¿Qué hacemos con sus donaciones?",
         "footer-privacy": "Política de Privacidad",
         "footer-license": "Licencia",
         "footer-copyright": "© 2026 Carley Interactive Studio. Todos los derechos reservados.",
         "acc-modal-title": "Mi Cuenta",
+        "acc-page-title": "Bienvenido a Carley Studio",
+        "btn-recovery": "Recuperar",
+        "field-recovery-email": "Correo de Recuperación",
+        "field-gender": "Sexo",
+        "gender-m": "Masculino",
+        "gender-f": "Femenino",
+        "field-language": "Idioma",
+        "acc-global-notice": "Esta cuenta le servirá para todos nuestros productos y app Carley.",
+        "acc-terms-accept": "Acepto las condiciones y",
+        "recovery-desc": "Introduce tu correo para recibir instrucciones de recuperación.",
+        "btn-recovery-action": "Enviar Instrucciones",
+        "btn-back-home": "Volver al Inicio",
+        "acc-profile-title": "Mi Cuenta",
         "field-email": "Email",
         "field-username": "Nombre de Usuario",
+        "field-pfp": "Foto de Perfil (URL .png/.jpg)",
+        "field-usage": "Uso de la cuenta",
+        "usage-personal": "Personal",
+        "usage-edu": "Educativo",
+        "usage-biz": "Pequeña Empresa",
+        "field-institution": "Nombre de la escuela / estudio",
+        "acc-change-pass": "Cambiar Contraseña",
+        "acc-support-title": "Apoyo para todos",
+        "acc-support-desc": "Mantenemos nuestras apps gratuitas gracias a la colaboración. El costo aumenta según los usuarios.",
+        "btn-see-support": "Ver Colaboradores",
+        "acc-delete-title": "Zona Peligrosa",
+        "acc-delete-warning": "Esta acción es irreversible. Se borrarán todos tus datos.",
+        "btn-delete-acc": "Borrar Cuenta",
         "btn-update": "Actualizar Perfil",
         "btn-logout": "Cerrar Sesión",
+        "acc-personal-info": "Información Personal",
+        "acc-support-simple-desc": "Nuestras aplicaciones son gratuitas gracias a tu apoyo.",
+        "acc-100-free": "100% Gratuito",
+        "btn-go-donate-page": "Ir a Donaciones",
+        "support-ce": "Soporte Creative Engine",
+        "support-vs": "Soporte Vid Spri",
+        "claim-sad-msg": "Lamentamos mucho que haya tenido que llegar a este punto. Tratamos de hacer todo de la mejor forma para que todos puedan disfrutar.",
+        "field-claim-photo": "Foto de confirmación de donación",
+        "ph-claim-desc": "Explica el motivo...",
+        "acc-delete-long-warning": "Esta acción es irreversible. Se enviará un correo de confirmación. Por favor, introduce tu contraseña para proceder.",
+        "btn-confirm-delete": "Eliminar Permanentemente",
         "modal-hint": "Inicia sesión para gestionar tus proyectos.",
         "btn-login": "Entrar",
         "btn-register": "Crear Cuenta",
@@ -195,10 +345,10 @@ const translations = {
         "btn-register-action": "Registrar",
         "donations-modal-title": "¿Qué hacemos con sus donaciones?",
         "donations-modal-desc": "Tu apoyo nos permite contratar más talento, mejorar nuestros servidores y acelerar el desarrollo de herramientas gratuitas para la comunidad como Creative Engine. Cada donación se invierte directamente en la mejora de nuestras tecnologías.",
-        "privacy-modal-title": "Privacidad",
-        "privacy-modal-desc": "Tus datos están seguros. Solo los utilizamos para mejorar tu experiencia en nuestra plataforma.",
+        "privacy-modal-title": "Privacidad y Condiciones de Uso",
+        "privacy-modal-desc": "Su privacidad es nuestra prioridad. No compartimos sus datos con terceros ni los vendemos. Esta cuenta única le servirá para acceder a todos los productos y aplicaciones de Carley Interactive Studio. El usuario es el único responsable de la seguridad de su cuenta y de los datos que decida compartir con terceros. Ofrecemos soporte integral para la recuperación de cuentas y resolución de problemas de acceso. Al usar nuestros servicios, usted acepta que Carley no es responsable por el uso indebido de la cuenta por parte del usuario mismo.",
         "license-modal-title": "Licencia",
-        "license-modal-desc": "Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales.",
+        "license-modal-desc": "Todos nuestros productos están bajo la licencia de Carley Interactive Studio. Los usuarios tienen derecho a usar nuestras herramientas para crear contenido, pero la propiedad intelectual del software original pertenece a Carley.",
         // Creative Engine
         "ce-nav-info": "Información",
         "ce-nav-report": "Reportar",
@@ -257,6 +407,11 @@ const translations = {
         "vs-credits-main": "Créditos Desarrollo y Asistencia VidSpri es un proyecto de Carley Interactive Studio. Este proyecto fue desarrollado con la asistencia de Jules, un ingeniero de software de IA de Google. Agradecemos a Google por proporcionar acceso a esta increíble herramienta que hizo posible acelerar y mejorar nuestro proceso de desarrollo.",
         "vs-credits-hf": "Agradecimientos Especiales Queremos extender un agradecimiento especial a Hugging Face por proporcionar el alojamiento gratuito para nuestros servidores a través de su plataforma Spaces. Su apoyo a la comunidad de código abierto es lo que permite que herramientas como VidSpri estén disponibles para todos de forma gratuita.",
         "vs-credits-os": "Tecnologías y Librerías de Código Abierto Esta aplicación no sería posible sin el increíble trabajo de la comunidad de código abierto. Agradecemos a los desarrolladores y mantenedores de las siguientes tecnologías y librerías:",
+        "donate-big-title": "Tu apoyo vale mucho",
+        "donate-intro-msg": "Estás aportando a que otros puedan usar nuestra app y motor de forma gratuita.",
+        "transparency-title": "Nuestra Misión",
+        "transparency-desc-long": "Queremos que VidSpri sea gratuito para todos, sin modelos freemium ni premium. Queremos que todos tengan el mismo acceso a todas las herramientas para crear animaciones y música. Creative Engine ya es gratuito, y queremos que Carl IA también lo sea, completamente integrado. Para mantener esto, necesitamos cubrir costos de servidores de Hugging Face y Supabase.",
+        "support-action-title": "Apoyar proyecto",
         "vs-tutorial-title": "Tutoriales",
         "vs-tutorial-desc": "Aprende a usar Vid Spri para tus proyectos.",
         "vs-donate-1": "No necesitas ser un desarrollador para aportar a nuestro proyecto. Tu apoyo monetario nos ayudará a contratar desarrolladores y pagar servidores para hacer de Vid Spri una herramienta muy útil y gratis.",
@@ -271,10 +426,34 @@ const translations = {
         "vs-os-sqlite-desc": "El motor de base de datos utilizado para gestionar la cola de procesamiento y los códigos de prioridad.",
         "vs-os-translate-desc": "El servicio que potencia la funcionalidad de traducción en la aplicación.",
         "vs-os-feather-desc": "La librería de iconos de código abierto que proporciona los iconos de la interfaz de usuario.",
-        "vs-os-crop-desc": "Una librería de JavaScript para la funcionalidad de recorte de imágenes en el frontend."
+        "vs-os-crop-desc": "Una librería de JavaScript para la funcionalidad de recorte de imágenes en el frontend.",
+        "acc-100-free": "100% Gratuito",
+        "acc-personal-info": "Información Personal",
+        "acc-support-simple-desc": "Nuestras aplicaciones son gratuitas gracias a tu apoyo.",
+        "support-ce": "Soporte Creative Engine",
+        "support-vs": "Soporte Vid Spri",
+        "claim-sad-msg": "Lamentamos mucho que haya tenido que llegar a este punto. Tratamos de hacer todo de la mejor forma para que todos puedan disfrutar.",
+        "field-claim-photo": "Foto de confirmación de donación",
+        "ph-claim-desc": "Explica el motivo...",
+        "acc-delete-long-warning": "Esta acción es irreversible. Se enviará un correo de confirmación. Por favor, introduce tu contraseña para proceder.",
+        "btn-confirm-delete": "Eliminar Permanentemente",
+        "btn-go-donate-page": "Ir a Donaciones",
+        "support-title": "Apoyo para todos",
+        "support-intro": "Transparencia absoluta. Aquí puedes ver cómo las apps de Carley se mantienen gratuitas para el mundo.",
+        "stat-total-users": "Usuarios Totales",
+        "stat-monthly-goal": "Meta Mensual",
+        "stat-collected-label": "Recaudado",
+        "list-title": "Nuestros Colaboradores",
+        "col-name": "Nombre",
+        "col-amount": "Aportación",
+        "empty-supporters": "Aún no hay aportaciones registradas este mes. ¡Sé el primero!",
+        "support-how-to": "¿Quieres aparecer aquí? Apóyanos mediante PayPal en la sección de donaciones de nuestras apps.",
+        "btn-go-donate": "Ir a Donar"
     },
     en: {
         welcome: "Welcome, we're glad to have you here",
+        "privacy-modal-title": "Privacy and Terms of Use",
+        "privacy-modal-desc": "Your privacy is our priority. We do not share your data with third parties or sell it. This unique account will allow you to access all Carley Interactive Studio products and apps. The user is solely responsible for the security of their account and any data they choose to share with third parties. We offer full support for account recovery and access issues. By using our services, you agree that Carley is not responsible for any misuse of the account by the user.",
         "search-ph": "Search in Carley...",
         "hero-desc": "Have you ever thought about developing your own video game? Well, we have designed Creative Engine for you, a 2D video game engine that makes everything easy. Whether you have experience in game creation or not, Creative Engine is made for you. Any idea you have, Creative Engine helps you turn it into reality.",
         "hero-cta": "Start Creating",
@@ -283,20 +462,62 @@ const translations = {
         "learn-more": "Learn more",
         "traspilador-desc": "Designed for developers. A coding model capable of converting projects from one language to another (example: from JS to C++). Simplify your project migration and speed up your workflow.",
         "explore-docs": "Explore documentation",
+        "btn-save": "Save Changes",
+        "btn-go-donate-page": "Go to Donations",
+        "btn-confirm-delete": "Permanently Delete",
         "footer-channels": "Channels",
         "footer-donations": "Donations",
         "footer-info": "Information",
         "footer-products": "Our Products",
+        "footer-available": "Available",
+        "footer-not-available": "Not Available",
         "footer-donate-paypal": "Donate with PayPal",
         "footer-donate-info": "What do we do with your donations?",
         "footer-privacy": "Privacy Policy",
         "footer-license": "License",
         "footer-copyright": "© 2026 Carley Interactive Studio. All rights reserved.",
         "acc-modal-title": "My Account",
+        "acc-page-title": "Welcome to Carley Studio",
+        "btn-recovery": "Recover",
+        "field-recovery-email": "Recovery Email",
+        "field-gender": "Gender",
+        "gender-m": "Male",
+        "gender-f": "Female",
+        "field-language": "Language",
+        "acc-global-notice": "This account will serve you for all our products and Carley apps.",
+        "acc-terms-accept": "I accept the conditions and",
+        "recovery-desc": "Enter your email to receive recovery instructions.",
+        "btn-recovery-action": "Send Instructions",
+        "btn-back-home": "Back to Home",
+        "acc-profile-title": "My Account",
         "field-email": "Email",
         "field-username": "Username",
+        "field-pfp": "Profile Picture (URL .png/.jpg)",
+        "field-usage": "Account usage",
+        "usage-personal": "Personal",
+        "usage-edu": "Educational",
+        "usage-biz": "Small Business",
+        "field-institution": "School / Studio name",
+        "acc-change-pass": "Change Password",
+        "acc-support-title": "Support for everyone",
+        "acc-support-desc": "We keep our apps free thanks to collaboration. Cost increases with users.",
+        "btn-see-support": "See Contributors",
+        "acc-delete-title": "Danger Zone",
+        "acc-delete-warning": "This action is irreversible. All your data will be deleted.",
+        "btn-delete-acc": "Delete Account",
         "btn-update": "Update Profile",
         "btn-logout": "Log Out",
+        "acc-personal-info": "Personal Information",
+        "acc-support-simple-desc": "Our applications are free thanks to your support.",
+        "acc-100-free": "100% Free",
+        "btn-go-donate-page": "Go to Donations",
+        "support-ce": "Creative Engine Support",
+        "support-vs": "Vid Spri Support",
+        "claim-sad-msg": "We are very sorry that it has come to this. We try to do everything in the best way so that everyone can enjoy.",
+        "field-claim-photo": "Donation confirmation photo",
+        "ph-claim-desc": "Explain the reason...",
+        "acc-delete-long-warning": "This action is irreversible. A confirmation email will be sent. Please enter your password to proceed.",
+        "btn-confirm-delete": "Permanently Delete",
         "modal-hint": "Log in to manage your projects.",
         "btn-login": "Enter",
         "btn-register": "Create Account",
@@ -371,6 +592,11 @@ const translations = {
         "vs-credits-main": "VidSpri Development and Assistance Credits is a project of Carley Interactive Studio. This project was developed with the assistance of Jules, a Google AI software engineer. We thank Google for providing access to this incredible tool that made it possible to accelerate and improve our development process.",
         "vs-credits-hf": "Special Thanks We want to extend a special thanks to Hugging Face for providing free hosting for our servers through their Spaces platform. Their support for the open-source community is what allows tools like VidSpri to be available to everyone for free.",
         "vs-credits-os": "Open Source Technologies and Libraries This application would not be possible without the incredible work of the open-source community. We thank the developers and maintainers of the following technologies and libraries:",
+        "donate-big-title": "Your support is worth a lot",
+        "donate-intro-msg": "You are contributing so that others can use our app and engine for free.",
+        "transparency-title": "Our Mission",
+        "transparency-desc-long": "We want VidSpri to be free for everyone, without freemium or premium models. We want everyone to have the same access to all tools to create animations and music. Creative Engine is already free, and we want Carl IA to be too, fully integrated. To maintain this, we need to cover server costs for Hugging Face and Supabase.",
+        "support-action-title": "Support project",
         "vs-tutorial-title": "Tutorials",
         "vs-tutorial-desc": "Learn how to use Vid Spri for your projects.",
         "vs-donate-1": "You don't need to be a developer to contribute to our project. Your monetary support will help us hire developers and pay for servers to make Vid Spri a very useful and free tool.",
@@ -385,7 +611,29 @@ const translations = {
         "vs-os-sqlite-desc": "The database engine used to manage the processing queue and priority codes.",
         "vs-os-translate-desc": "The service that powers the translation functionality in the application.",
         "vs-os-feather-desc": "The open-source icon library that provides the user interface icons.",
-        "vs-os-crop-desc": "A JavaScript library for image cropping functionality on the frontend."
+        "vs-os-crop-desc": "A JavaScript library for image cropping functionality on the frontend.",
+        "acc-100-free": "100% Free",
+        "acc-personal-info": "Personal Information",
+        "acc-support-simple-desc": "Our applications are free thanks to your support.",
+        "support-ce": "Creative Engine Support",
+        "support-vs": "Vid Spri Support",
+        "claim-sad-msg": "We are very sorry that it has come to this. We try to do everything in the best way so that everyone can enjoy.",
+        "field-claim-photo": "Donation confirmation photo",
+        "ph-claim-desc": "Explain the reason...",
+        "acc-delete-long-warning": "This action is irreversible. A confirmation email will be sent. Please enter your password to proceed.",
+        "btn-confirm-delete": "Permanently Delete",
+        "btn-go-donate-page": "Go to Donations",
+        "support-title": "Support for everyone",
+        "support-intro": "Absolute transparency. Here you can see how Carley apps stay free for the world.",
+        "stat-total-users": "Total Users",
+        "stat-monthly-goal": "Monthly Goal",
+        "stat-collected-label": "Collected",
+        "list-title": "Our Contributors",
+        "col-name": "Name",
+        "col-amount": "Contribution",
+        "empty-supporters": "No contributions recorded this month yet. Be the first!",
+        "support-how-to": "Want to appear here? Support us via PayPal in the donations section of our apps.",
+        "btn-go-donate": "Go to Donate"
     },
     fr: {
         welcome: "Bienvenue, nous sommes ravis de vous voir ici",
@@ -840,7 +1088,7 @@ const translations = {
 function initializeTranslations() {
     const picker = document.getElementById('lang-picker');
 
-    const updateTexts = (lang) => {
+    const updateTexts = async (lang) => {
         const t = translations[lang] || translations['es'];
 
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -858,6 +1106,20 @@ function initializeTranslations() {
         });
 
         localStorage.setItem('carley-lang', lang);
+
+        // Update pickers
+        ['lang-picker', 'lang-picker-ce'].forEach(id => {
+            const p = document.getElementById(id);
+            if (p) p.value = lang;
+        });
+
+        // Sync with Supabase if logged in
+        if (window.currentUser) {
+            await window.supabaseClient
+                .from('profiles')
+                .update({ language: lang })
+                .eq('id', window.currentUser.id);
+        }
     };
 
     if (picker) picker.onchange = (e) => updateTexts(e.target.value);
@@ -869,10 +1131,37 @@ function initializeTranslations() {
 
     window.translateAll = updateTexts;
 
+    // Policy content update for cuenta.html
+    const policyContent = document.getElementById('policy-content');
+    if (policyContent) {
+        policyContent.textContent = translations[savedLang]["privacy-modal-desc"] || translations["es"]["privacy-modal-desc"];
+    }
+
+    // Ad button logic (Handles both internal pages and index.html)
+    const setupAdButton = () => {
+        const adBtn = document.getElementById('ce-ad-btn');
+        const adContainer = document.getElementById('ce-ads-container');
+        if (adBtn && adContainer) {
+            adBtn.onclick = (e) => {
+                e.preventDefault();
+                if (adContainer.classList.contains('hidden')) {
+                    adContainer.classList.remove('hidden');
+                    // Push the ad unit only after it becomes visible to ensure proper size calculation
+                    try {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    } catch (err) {
+                        console.log("AdSense push waiting for site approval...");
+                    }
+                }
+                adContainer.scrollIntoView({ behavior: 'smooth' });
+            };
+        }
+    };
+    setupAdButton();
+
     // Creative Engine Language Picker Sync
     const cePicker = document.getElementById('lang-picker-ce');
     if (cePicker) {
-        cePicker.value = savedLang;
         cePicker.onchange = (e) => updateTexts(e.target.value);
     }
 }
@@ -925,12 +1214,7 @@ if (modalOverlay) {
     };
 }
 
-const accountTrigger = document.getElementById('account-trigger');
-if (accountTrigger) {
-    accountTrigger.onclick = () => {
-        openStudioModal('modal-account');
-    };
-}
+// account-trigger logic moved to account.html or direct link in header
 
 /* ==============================
    Animations & Transitions
@@ -946,4 +1230,120 @@ function initializeAnimations() {
     }, { threshold: 0.2 });
 
     reveals.forEach(r => observer.observe(r));
+}
+
+/* ==============================
+   Real Data Handlers (Supabase)
+============================== */
+
+async function fetchOpinions() {
+    const feed = document.getElementById('opinions-feed');
+    if (!feed) return;
+
+    // Detect if we are on CE or VS page
+    const productId = window.location.pathname.includes('creative-engine.html') ? 'CE' : 'VS';
+
+    const { data, error } = await window.supabaseClient
+        .from('opinions')
+        .select('*, profiles(username, avatar_url)')
+        .eq('product_id', productId)
+        .order('created_at', { ascending: false });
+
+    if (error) return console.error('Error fetching opinions:', error);
+
+    feed.innerHTML = data.map(op => `
+        <div class="opinion-item product-reveal active">
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem;">
+                <img src="${op.profiles?.avatar_url || 'https://ui-avatars.com/api/?name=' + (op.profiles?.username || 'U')}" style="width: 32px; height: 32px; border-radius: 50%;">
+                <span style="font-weight: 600;">${op.profiles?.username || op.user_email.split('@')[0]}</span>
+                <span style="font-size: 0.8rem; opacity: 0.4;">${new Date(op.created_at).toLocaleDateString()}</span>
+            </div>
+            <p style="opacity: 0.8; font-size: 0.95rem;">${op.content}</p>
+        </div>
+    `).join('');
+}
+
+async function fetchDonationStats() {
+    const { data, error } = await window.supabaseClient
+        .from('donations')
+        .select('amount, product_id, donor_name, created_at');
+
+    if (error) return console.error('Error fetching donations:', error);
+
+    const stats = {
+        CE: { current: 0, goal: 26000, donors: [] },
+        VS: { current: 0, goal: 25000, donors: [] }
+    };
+
+    data.forEach(d => {
+        if (stats[d.product_id]) {
+            stats[d.product_id].current += parseFloat(d.amount);
+            stats[d.product_id].donors.push(d);
+        }
+    });
+
+    updateDonationUI(stats);
+    window.currentDonationStats = stats; // Store for sorting in donaciones.html
+}
+
+function updateDonationUI(stats) {
+    // Update Progress Bars and Labels in donaciones.html
+    const ceProgress = (stats.CE.current / stats.CE.goal) * 100;
+    const vsProgress = (stats.VS.current / stats.VS.goal) * 100;
+
+    const ceBar = document.querySelector('.app-donate-item:nth-child(1) .progress-bar');
+    const ceLabel = document.querySelector('.app-donate-item:nth-child(1) .progress-labels span:first-child');
+    if (ceBar) ceBar.style.width = Math.min(ceProgress, 100) + '%';
+    if (ceLabel) ceLabel.textContent = 'Actual: $' + stats.CE.current.toLocaleString();
+
+    const vsBar = document.querySelector('.app-donate-item:nth-child(2) .progress-bar');
+    const vsLabel = document.querySelector('.app-donate-item:nth-child(2) .progress-labels span:first-child');
+    if (vsBar) vsBar.style.width = Math.min(vsProgress, 100) + '%';
+    if (vsLabel) vsLabel.textContent = 'Actual: $' + stats.VS.current.toLocaleString();
+}
+
+// Handler for Submitting Opinions
+const sendOpinionBtn = document.getElementById('send-opinion');
+if (sendOpinionBtn) {
+    sendOpinionBtn.onclick = async () => {
+        if (!window.currentUser) return alert('Debes iniciar sesión para opinar.');
+        const content = document.getElementById('opinion-text').value;
+        const productId = window.location.pathname.includes('creative-engine.html') ? 'CE' : 'VS';
+
+        if (!content) return alert('Escribe algo primero.');
+
+        const { error } = await window.supabaseClient.from('opinions').insert({
+            user_id: window.currentUser.id,
+            user_email: window.currentUser.email,
+            product_id: productId,
+            content: content
+        });
+
+        if (error) alert(error.message);
+        else {
+            alert('¡Gracias por tu opinión!');
+            document.getElementById('opinion-text').value = '';
+            fetchOpinions();
+        }
+    };
+}
+
+// Handler for Submitting Bug Reports
+const sendReportBtn = document.getElementById('send-report');
+if (sendReportBtn) {
+    sendReportBtn.onclick = async () => {
+        const msg = document.getElementById('report-message').value;
+        if (!msg) return alert('Describe el fallo.');
+
+        const { error } = await window.supabaseClient.from('reports').insert({
+            user_email: window.currentUser ? window.currentUser.email : 'anon@carley.com',
+            message: msg
+        });
+
+        if (error) alert(error.message);
+        else {
+            alert('Reporte enviado con éxito.');
+            document.getElementById('report-message').value = '';
+        }
+    };
 }
