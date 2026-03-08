@@ -541,8 +541,9 @@ ul {
 
 .engine-layout {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     width: 100vw;
+    overflow: hidden;
 }
 
 .sidebar {
@@ -657,29 +658,35 @@ ul {
 /* Content Area */
 .engine-content {
     flex-grow: 1;
+    height: 100%;
     overflow-y: auto;
     background: var(--bg);
     padding: 0;
     scroll-behavior: smooth;
+    /* Hide scrollbars but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.engine-content::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* Global Hidden Scrollbar */
+html, body {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-body::-webkit-scrollbar {
-    display: none;
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    display: none !important;
 }
 
 * {
     scrollbar-width: none;
     -ms-overflow-style: none;
-}
-
-*::-webkit-scrollbar {
-    display: none;
-}
-
-.engine-content::-webkit-scrollbar {
-    display: none;
 }
 
 .content-section {

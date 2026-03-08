@@ -2,6 +2,13 @@
    Core Logic & Functional Systems
 ============================== */
 
+// Supabase Global Client Initialization
+const SUPABASE_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
+if (typeof supabase !== 'undefined') {
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     initializeAuth();
@@ -348,6 +355,7 @@ const translations = {
         "footer-not-available": "No Disponibles",
         "footer-donate-paypal": "Donar con PayPal",
         "footer-donate-info": "¿Qué hacemos con sus donaciones?",
+        "footer-see-donors": "Ver donantes",
         "footer-privacy": "Política de Privacidad",
         "footer-license": "Licencia",
         "footer-copyright": "© 2026 Carley Interactive Studio. Todos los derechos reservados.",
@@ -418,6 +426,7 @@ const translations = {
         "ce-nav-join": "Únete y Seguirnos",
         "ce-nav-claims": "Reclamos",
         "ce-nav-donations": "Donaciones",
+        "ce-donate-intro": "Tu apoyo es lo que mantiene este proyecto vivo y gratuito para todos. Con total transparencia, te compartimos que mantener Creative Engine requiere cubrir costos de servidores y desarrollo para que siga siendo una herramienta accesible para todos sin barreras económicas. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.",
         "ce-info-1": "Creative Engine fue diseñado para todo público. No importa que seas experto, novato o no tengas experiencia alguna, Creative Engine te ayuda y te enseña.",
         "ce-info-2": "Nuestro motor fue inspirado de Unity pero se basa en materias y leyes. Las materias pueden ser cualquier cosa de tu juego y las leyes todo lo que define el comportamiento de cada cosa de tu juego; son un conjunto de reglas que hacen tu juego único y hacerlo lo que quieras que sea.",
         "ce-why-title": "¿Por qué usar Creative Engine?",
@@ -460,6 +469,7 @@ const translations = {
         "credits-gemini": "Finalmente, agradecemos a Google AI Studio por su generoso plan y a su modelo de Gemini para el uso gratuito de Carl IA.",
         // Vid Spri
         "vs-nav-tutorials": "Tutoriales",
+        "vs-donate-intro": "Tu apoyo es lo que permite que Vid Spri siga siendo una herramienta gratuita y de libre acceso. Queremos que cada creador tenga las mejores herramientas sin importar su presupuesto, y por ello mantenemos una total transparencia sobre los costos de servidores necesarios para que la IA funcione para ti. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.",
         "vs-info-1": "VidSpri fue creado pensando en los desarrolladores novatos o aquellos que quieren crear sus videojuegos 2D pero que no tienen experiencia dibujando cada fotograma.",
         "vs-info-2": "A muchos les ha ocurrido acudir a la IA para generar fotogramas para sus personajes, pero la IA tampoco puede hacer bien este trabajo; no sabe cómo hacerlo hasta que nos dimos cuenta de que la IA, al generar video, lo hace mucho mejor que cuando genera una simple imagen con varios sprites.",
         "vs-info-3": "Se nos ocurrió hacer una herramienta que convierte videos a hojas de sprites. Nuestra herramienta saca fotogramas de videos y los convierte en una hoja de sprites o genera un video para sacarle fotogramas, logrando un mejor resultado.",
@@ -533,6 +543,7 @@ const translations = {
         "footer-not-available": "Not Available",
         "footer-donate-paypal": "Donate with PayPal",
         "footer-donate-info": "What do we do with your donations?",
+        "footer-see-donors": "See donors",
         "footer-privacy": "Privacy Policy",
         "footer-license": "License",
         "footer-copyright": "© 2026 Carley Interactive Studio. All rights reserved.",
@@ -603,6 +614,7 @@ const translations = {
         "ce-nav-join": "Join & Follow",
         "ce-nav-claims": "Claims",
         "ce-nav-donations": "Donations",
+        "ce-donate-intro": "Your support is what keeps this project alive and free for everyone. With total transparency, we share that maintaining Creative Engine requires covering server and development costs so that it remains an accessible tool for everyone without economic barriers. Your donations will help others use our tools for free.",
         "ce-info-1": "Creative Engine was designed for everyone. It doesn't matter if you're an expert, a novice, or have no experience at all, Creative Engine helps and teaches you.",
         "ce-info-2": "Our engine was inspired by Unity but is based on matters and laws. Matters can be anything in your game and laws are everything that defines the behavior of each thing in your game; they are a set of rules that make your game unique and make it what you want it to be.",
         "ce-why-title": "Why use Creative Engine?",
@@ -645,6 +657,7 @@ const translations = {
         "credits-gemini": "Finally, we thank Google AI Studio for their generous plan and their Gemini model for the free use of Carl IA.",
         // Vid Spri
         "vs-nav-tutorials": "Tutorials",
+        "vs-donate-intro": "Your support is what allows Vid Spri to remain a free and open access tool. We want every creator to have the best tools regardless of their budget, and therefore we maintain total transparency about the server costs necessary for the AI to work for you. Your donations will help others use our tools for free.",
         "vs-info-1": "VidSpri was created with novice developers in mind or those who want to create their 2D video games but have no experience drawing each frame.",
         "vs-info-2": "Many have turned to AI to generate frames for their characters, but AI can't do this job well either; it doesn't know how to do it until we realized that AI, when generating video, does it much better than when it generates a simple image with several sprites.",
         "vs-info-3": "We came up with the idea of making a tool that converts videos to sprite sheets. Our tool takes frames from videos and converts them into a sprite sheet or generates a video to take frames from it, achieving a better result.",
