@@ -12,7 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Global data fetchers
     if (document.getElementById('opinions-feed')) fetchOpinions();
-    if (window.location.pathname.includes('donaciones.html')) fetchDonationStats();
+    if (window.location.pathname.includes('donaciones.html')) {
+        fetchDonationStats();
+        setupHubListeners();
+    } else {
+        fetchDonationStats(); // Still need stats for project pages progress bars
+    }
 });
 
 /* ==============================
@@ -144,6 +149,61 @@ function updateAuthStateUI(session) {
         if (loggedOutDiv) loggedOutDiv.classList.remove('hidden');
     }
 }
+
+window.openDonationFlow = function(app) {
+    const modal = document.getElementById('donation-flow-modal');
+    if (!modal) return;
+    window.currentDonationApp = app;
+    const targetName = document.getElementById('app-target-name');
+    if (targetName) targetName.textContent = app === 'CE' ? 'Creative Engine' : 'Vid Spri';
+    modal.classList.remove('hidden');
+    renderPayPal();
+};
+
+window.closeDonationFlow = function() {
+    const modal = document.getElementById('donation-flow-modal');
+    if (modal) modal.classList.add('hidden');
+    const container = document.getElementById('paypal-button-container');
+    if (container) container.innerHTML = '';
+};
+
+window.renderPayPal = function() {
+    const container = document.getElementById('paypal-button-container');
+    if (!container || !window.paypal) return;
+
+    const isJoinChecked = document.getElementById('join-donor-list')?.checked ?? true;
+    const donorName = (window.currentUser && isJoinChecked)
+        ? (window.currentUser.user_metadata.username || window.currentUser.email.split('@')[0])
+        : 'Anónimo';
+
+    window.paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: '10.00' },
+                    description: `Donación para ${window.currentDonationApp} de ${donorName}`,
+                    custom_id: donorName
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(async details => {
+                const amount = details.purchase_units[0].amount.value;
+                const { error } = await window.supabaseClient.from('donations').insert({
+                    donor_name: donorName,
+                    amount: parseFloat(amount),
+                    product_id: window.currentDonationApp,
+                    paypal_order_id: details.id,
+                    user_id: window.currentUser ? window.currentUser.id : null
+                });
+                if (error) console.error('Error saving donation:', error);
+                alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución ha sido registrada.');
+                closeDonationFlow();
+                if (typeof fetchDonationStats === 'function') fetchDonationStats();
+            });
+        }
+    }).render('#paypal-button-container');
+};
 
 /* ==============================
    Search Engine Logic
@@ -1266,7 +1326,7 @@ async function fetchOpinions() {
 async function fetchDonationStats() {
     const { data, error } = await window.supabaseClient
         .from('donations')
-        .select('amount, product_id, donor_name, created_at');
+        .select('*, profiles(avatar_url, username)');
 
     if (error) return console.error('Error fetching donations:', error);
 
@@ -1287,19 +1347,86 @@ async function fetchDonationStats() {
 }
 
 function updateDonationUI(stats) {
-    // Update Progress Bars and Labels in donaciones.html
+    // Update Progress Bars and Labels across pages
     const ceProgress = (stats.CE.current / stats.CE.goal) * 100;
     const vsProgress = (stats.VS.current / stats.VS.goal) * 100;
 
-    const ceBar = document.querySelector('.app-donate-item:nth-child(1) .progress-bar');
-    const ceLabel = document.querySelector('.app-donate-item:nth-child(1) .progress-labels span:first-child');
+    // Creative Engine
+    const ceBar = document.getElementById('ce-progress-bar');
+    const ceLabel = document.getElementById('ce-current-amount');
     if (ceBar) ceBar.style.width = Math.min(ceProgress, 100) + '%';
     if (ceLabel) ceLabel.textContent = 'Actual: $' + stats.CE.current.toLocaleString();
 
-    const vsBar = document.querySelector('.app-donate-item:nth-child(2) .progress-bar');
-    const vsLabel = document.querySelector('.app-donate-item:nth-child(2) .progress-labels span:first-child');
+    // Vid Spri
+    const vsBar = document.getElementById('vs-progress-bar');
+    const vsLabel = document.getElementById('vs-current-amount');
     if (vsBar) vsBar.style.width = Math.min(vsProgress, 100) + '%';
     if (vsLabel) vsLabel.textContent = 'Actual: $' + stats.VS.current.toLocaleString();
+
+    // If on hub page, render list
+    if (document.getElementById('donors-hub-container')) {
+        renderDonorsList();
+    }
+}
+
+function setupHubListeners() {
+    const filterApp = document.getElementById('filter-app');
+    const sortOrder = document.getElementById('sort-order');
+
+    if (filterApp) filterApp.onchange = () => renderDonorsList();
+    if (sortOrder) sortOrder.onchange = () => renderDonorsList();
+}
+
+function renderDonorsList() {
+    const container = document.getElementById('donors-hub-container');
+    const filterApp = document.getElementById('filter-app')?.value || 'all';
+    const sortOrder = document.getElementById('sort-order')?.value || 'desc';
+
+    if (!container || !window.currentDonationStats) return;
+
+    // Combine all donors
+    let allDonors = [];
+    if (filterApp === 'all') {
+        allDonors = [...window.currentDonationStats.CE.donors, ...window.currentDonationStats.VS.donors];
+    } else {
+        allDonors = [...window.currentDonationStats[filterApp].donors];
+    }
+
+    // Sort
+    if (sortOrder === 'desc') allDonors.sort((a,b) => b.amount - a.amount);
+    if (sortOrder === 'asc') allDonors.sort((a,b) => a.amount - b.amount);
+    if (sortOrder === 'newest') allDonors.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+    if (sortOrder === 'oldest') allDonors.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+
+    if (allDonors.length === 0) {
+        container.innerHTML = '<div class="empty-state">No se encontraron donaciones con estos filtros.</div>';
+        return;
+    }
+
+    container.innerHTML = allDonors.map(d => {
+        const goal = d.product_id === 'CE' ? 26000 : 25000;
+        const percentage = ((d.amount / goal) * 100).toFixed(2);
+        const appName = d.product_id === 'CE' ? 'Creative Engine' : 'Vid Spri';
+
+        // Mock avatar logic: In real app we would join with profiles table
+        const avatar = d.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${d.donor_name}&background=random`;
+
+        return `
+            <div class="donor-card product-reveal active">
+                <div class="donor-info">
+                    <img src="${avatar}" class="donor-pfp" alt="${d.donor_name}">
+                    <div>
+                        <span class="donor-name">${d.donor_name}</span>
+                        <span class="donor-app">${appName}</span>
+                    </div>
+                </div>
+                <div class="donor-amount-area">
+                    <span class="donor-amount">$${parseFloat(d.amount).toFixed(2)}</span>
+                    <span class="donor-percentage">+${percentage}%</span>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 // Handler for Submitting Opinions

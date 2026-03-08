@@ -648,6 +648,12 @@ ul {
     background: var(--accent);
 }
 
+.home-btn img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
 /* Content Area */
 .engine-content {
     flex-grow: 1;
