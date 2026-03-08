@@ -223,6 +223,7 @@ function initializeSearch() {
 
     const searchMap = [
         { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'], available: true },
+        { name: 'Cómo crear tu primer juego', id: 'tutorials', url: 'creative-engine.html', keywords: ['tutorial', 'empezar', 'aprender', 'guia'], available: true },
         { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'], available: true },
         { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'], available: false },
         { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'], available: false },
@@ -426,6 +427,9 @@ const translations = {
         "ce-nav-join": "Únete y Seguirnos",
         "ce-nav-claims": "Reclamos",
         "ce-nav-donations": "Donaciones",
+        "ce-nav-tutorials": "Tutoriales",
+        "ce-tutorial-title": "Cómo crear tu primer juego",
+        "ce-tutorial-desc": "Aprende los fundamentos de Creative Engine y empieza tu aventura como desarrollador.",
         "ce-donate-intro": "Tu apoyo es lo que mantiene este proyecto vivo y gratuito para todos. Con total transparencia, te compartimos que mantener Creative Engine requiere cubrir costos de servidores y desarrollo para que siga siendo una herramienta accesible para todos sin barreras económicas. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.",
         "ce-info-1": "Creative Engine fue diseñado para todo público. No importa que seas experto, novato o no tengas experiencia alguna, Creative Engine te ayuda y te enseña.",
         "ce-info-2": "Nuestro motor fue inspirado de Unity pero se basa en materias y leyes. Las materias pueden ser cualquier cosa de tu juego y las leyes todo lo que define el comportamiento de cada cosa de tu juego; son un conjunto de reglas que hacen tu juego único y hacerlo lo que quieras que sea.",
@@ -614,6 +618,9 @@ const translations = {
         "ce-nav-join": "Join & Follow",
         "ce-nav-claims": "Claims",
         "ce-nav-donations": "Donations",
+        "ce-nav-tutorials": "Tutoriales",
+        "ce-tutorial-title": "How to create your first game",
+        "ce-tutorial-desc": "Learn the fundamentals of Creative Engine and start your adventure as a developer.",
         "ce-donate-intro": "Your support is what keeps this project alive and free for everyone. With total transparency, we share that maintaining Creative Engine requires covering server and development costs so that it remains an accessible tool for everyone without economic barriers. Your donations will help others use our tools for free.",
         "ce-info-1": "Creative Engine was designed for everyone. It doesn't matter if you're an expert, a novice, or have no experience at all, Creative Engine helps and teaches you.",
         "ce-info-2": "Our engine was inspired by Unity but is based on matters and laws. Matters can be anything in your game and laws are everything that defines the behavior of each thing in your game; they are a set of rules that make your game unique and make it what you want it to be.",
