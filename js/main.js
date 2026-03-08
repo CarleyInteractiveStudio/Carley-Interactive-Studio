@@ -2,6 +2,13 @@
    Core Logic & Functional Systems
 ============================== */
 
+// Supabase Global Client Initialization
+const SUPABASE_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
+if (typeof supabase !== 'undefined') {
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     initializeAuth();
@@ -12,7 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Global data fetchers
     if (document.getElementById('opinions-feed')) fetchOpinions();
-    if (window.location.pathname.includes('donaciones.html')) fetchDonationStats();
+    if (window.location.pathname.includes('donaciones.html')) {
+        fetchDonationStats();
+        setupHubListeners();
+    } else {
+        fetchDonationStats(); // Still need stats for project pages progress bars
+    }
 });
 
 /* ==============================
@@ -145,6 +157,61 @@ function updateAuthStateUI(session) {
     }
 }
 
+window.openDonationFlow = function(app) {
+    const modal = document.getElementById('donation-flow-modal');
+    if (!modal) return;
+    window.currentDonationApp = app;
+    const targetName = document.getElementById('app-target-name');
+    if (targetName) targetName.textContent = app === 'CE' ? 'Creative Engine' : 'Vid Spri';
+    modal.classList.remove('hidden');
+    renderPayPal();
+};
+
+window.closeDonationFlow = function() {
+    const modal = document.getElementById('donation-flow-modal');
+    if (modal) modal.classList.add('hidden');
+    const container = document.getElementById('paypal-button-container');
+    if (container) container.innerHTML = '';
+};
+
+window.renderPayPal = function() {
+    const container = document.getElementById('paypal-button-container');
+    if (!container || !window.paypal) return;
+
+    const isJoinChecked = document.getElementById('join-donor-list')?.checked ?? true;
+    const donorName = (window.currentUser && isJoinChecked)
+        ? (window.currentUser.user_metadata.username || window.currentUser.email.split('@')[0])
+        : 'Anónimo';
+
+    window.paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: '10.00' },
+                    description: `Donación para ${window.currentDonationApp} de ${donorName}`,
+                    custom_id: donorName
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(async details => {
+                const amount = details.purchase_units[0].amount.value;
+                const { error } = await window.supabaseClient.from('donations').insert({
+                    donor_name: donorName,
+                    amount: parseFloat(amount),
+                    product_id: window.currentDonationApp,
+                    paypal_order_id: details.id,
+                    user_id: window.currentUser ? window.currentUser.id : null
+                });
+                if (error) console.error('Error saving donation:', error);
+                alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución ha sido registrada.');
+                closeDonationFlow();
+                if (typeof fetchDonationStats === 'function') fetchDonationStats();
+            });
+        }
+    }).render('#paypal-button-container');
+};
+
 /* ==============================
    Search Engine Logic
 ============================== */
@@ -156,9 +223,11 @@ function initializeSearch() {
 
     const searchMap = [
         { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'], available: true },
+        { name: 'Cómo crear tu primer juego', id: 'tutorials', url: 'creative-engine.html', keywords: ['tutorial', 'empezar', 'aprender', 'guia'], available: true },
         { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'], available: true },
-        { name: 'Carl IA', id: 'carl-ia', keywords: ['inteligencia artificial', 'modelo', 'multimodal'], available: false },
-        { name: 'Traspilador', id: 'traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'], available: false },
+        { name: 'Creative Games', url: 'https://creativegame.online', keywords: ['juegos', 'web', 'jugar', 'online'], available: true },
+        { name: 'Carl IA', keywords: ['inteligencia artificial', 'modelo', 'multimodal'], available: false },
+        { name: 'Traspilador', keywords: ['modelo', 'codificación', 'traducción', 'c++'], available: false },
         { name: 'Donaciones', id: 'donations', keywords: ['apoyo', 'paypal', 'ayuda', 'ads', 'anuncio'], available: true },
         { name: 'Canales', id: 'footer-channels', keywords: ['redes', 'youtube', 'facebook', 'whatsapp', 'tiktok'], available: true }
     ];
@@ -273,6 +342,9 @@ const translations = {
         "hero-desc": "¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine, un motor de videojuego 2D que te facilita todo. No importa que tengas experiencia en la creación de videojuegos o no, Creative Engine está hecho para ti. Cualquier idea que tengas, Creative Engine te ayuda a convertirla en realidad.",
         "hero-cta": "Empezar a Crear",
         "hero-more": "Saber más",
+        "creative-games-desc": "Juega sin tener que descargar nada, diviértete en la web. Juega todos los juegos hechos con Creative Engine, ya sea para PC, consola o móviles.",
+        "btn-visit": "Visitar",
+        "vidspri-home-desc": "Crea animaciones a partir de videos para tus juegos. Genera un video en cualquier página y nuestra herramienta te lo convierte en una hoja de sprites para tus videojuegos.",
         "carl-ia-desc": "Nuestra IA actualmente en desarrollo. Muy pronto estará disponible para ayudarte en todo lo que necesites. Nuestro modelo será completo: tendrá visión, podrá hablar, generar texto y escuchar. Lo estamos entrenando para que sea el compañero integral definitivo.",
         "learn-more": "Saber más",
         "traspilador-desc": "Diseñado para desarrolladores. Un modelo de codificación capaz de convertir proyectos de un lenguaje a otro (ejemplo: de JS a C++). Simplifica la migración de tus proyectos y acelera tu flujo de trabajo.",
@@ -288,6 +360,8 @@ const translations = {
         "footer-not-available": "No Disponibles",
         "footer-donate-paypal": "Donar con PayPal",
         "footer-donate-info": "¿Qué hacemos con sus donaciones?",
+        "footer-see-donors": "Ver donantes",
+        "footer-see-collabs": "Colaboradores",
         "footer-privacy": "Política de Privacidad",
         "footer-license": "Licencia",
         "footer-copyright": "© 2026 Carley Interactive Studio. Todos los derechos reservados.",
@@ -358,6 +432,11 @@ const translations = {
         "ce-nav-join": "Únete y Seguirnos",
         "ce-nav-claims": "Reclamos",
         "ce-nav-donations": "Donaciones",
+        "ce-nav-collabs": "Colaboradores",
+        "ce-nav-tutorials": "Tutoriales",
+        "ce-tutorial-title": "Cómo crear tu primer juego",
+        "ce-tutorial-desc": "Aprende los fundamentos de Creative Engine y empieza tu aventura como desarrollador.",
+        "ce-donate-intro": "Tu apoyo es lo que mantiene este proyecto vivo y gratuito para todos. Con total transparencia, te compartimos que mantener Creative Engine requiere cubrir costos de servidores y desarrollo para que siga siendo una herramienta accesible para todos sin barreras económicas. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.",
         "ce-info-1": "Creative Engine fue diseñado para todo público. No importa que seas experto, novato o no tengas experiencia alguna, Creative Engine te ayuda y te enseña.",
         "ce-info-2": "Nuestro motor fue inspirado de Unity pero se basa en materias y leyes. Las materias pueden ser cualquier cosa de tu juego y las leyes todo lo que define el comportamiento de cada cosa de tu juego; son un conjunto de reglas que hacen tu juego único y hacerlo lo que quieras que sea.",
         "ce-why-title": "¿Por qué usar Creative Engine?",
@@ -400,6 +479,7 @@ const translations = {
         "credits-gemini": "Finalmente, agradecemos a Google AI Studio por su generoso plan y a su modelo de Gemini para el uso gratuito de Carl IA.",
         // Vid Spri
         "vs-nav-tutorials": "Tutoriales",
+        "vs-donate-intro": "Tu apoyo es lo que permite que Vid Spri siga siendo una herramienta gratuita y de libre acceso. Queremos que cada creador tenga las mejores herramientas sin importar su presupuesto, y por ello mantenemos una total transparencia sobre los costos de servidores necesarios para que la IA funcione para ti. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.",
         "vs-info-1": "VidSpri fue creado pensando en los desarrolladores novatos o aquellos que quieren crear sus videojuegos 2D pero que no tienen experiencia dibujando cada fotograma.",
         "vs-info-2": "A muchos les ha ocurrido acudir a la IA para generar fotogramas para sus personajes, pero la IA tampoco puede hacer bien este trabajo; no sabe cómo hacerlo hasta que nos dimos cuenta de que la IA, al generar video, lo hace mucho mejor que cuando genera una simple imagen con varios sprites.",
         "vs-info-3": "Se nos ocurrió hacer una herramienta que convierte videos a hojas de sprites. Nuestra herramienta saca fotogramas de videos y los convierte en una hoja de sprites o genera un video para sacarle fotogramas, logrando un mejor resultado.",
@@ -458,6 +538,9 @@ const translations = {
         "hero-desc": "Have you ever thought about developing your own video game? Well, we have designed Creative Engine for you, a 2D video game engine that makes everything easy. Whether you have experience in game creation or not, Creative Engine is made for you. Any idea you have, Creative Engine helps you turn it into reality.",
         "hero-cta": "Start Creating",
         "hero-more": "Learn more",
+        "creative-games-desc": "Play without downloading anything, have fun on the web. Play all games made with Creative Engine, whether for PC, console, or mobile.",
+        "btn-visit": "Visit",
+        "vidspri-home-desc": "Create animations from videos for your games. Generate a video on any page and our tool converts it into a sprite sheet for your video games.",
         "carl-ia-desc": "Our AI currently under development. Very soon it will be available to help you with everything you need. Our model will be complete: it will have vision, be able to speak, generate text, and listen. We are training it to be the ultimate integral companion.",
         "learn-more": "Learn more",
         "traspilador-desc": "Designed for developers. A coding model capable of converting projects from one language to another (example: from JS to C++). Simplify your project migration and speed up your workflow.",
@@ -473,6 +556,8 @@ const translations = {
         "footer-not-available": "Not Available",
         "footer-donate-paypal": "Donate with PayPal",
         "footer-donate-info": "What do we do with your donations?",
+        "footer-see-donors": "See donors",
+        "footer-see-collabs": "Collaborators",
         "footer-privacy": "Privacy Policy",
         "footer-license": "License",
         "footer-copyright": "© 2026 Carley Interactive Studio. All rights reserved.",
@@ -543,6 +628,11 @@ const translations = {
         "ce-nav-join": "Join & Follow",
         "ce-nav-claims": "Claims",
         "ce-nav-donations": "Donations",
+        "ce-nav-collabs": "Collaborators",
+        "ce-nav-tutorials": "Tutoriales",
+        "ce-tutorial-title": "How to create your first game",
+        "ce-tutorial-desc": "Learn the fundamentals of Creative Engine and start your adventure as a developer.",
+        "ce-donate-intro": "Your support is what keeps this project alive and free for everyone. With total transparency, we share that maintaining Creative Engine requires covering server and development costs so that it remains an accessible tool for everyone without economic barriers. Your donations will help others use our tools for free.",
         "ce-info-1": "Creative Engine was designed for everyone. It doesn't matter if you're an expert, a novice, or have no experience at all, Creative Engine helps and teaches you.",
         "ce-info-2": "Our engine was inspired by Unity but is based on matters and laws. Matters can be anything in your game and laws are everything that defines the behavior of each thing in your game; they are a set of rules that make your game unique and make it what you want it to be.",
         "ce-why-title": "Why use Creative Engine?",
@@ -585,6 +675,7 @@ const translations = {
         "credits-gemini": "Finally, we thank Google AI Studio for their generous plan and their Gemini model for the free use of Carl IA.",
         // Vid Spri
         "vs-nav-tutorials": "Tutorials",
+        "vs-donate-intro": "Your support is what allows Vid Spri to remain a free and open access tool. We want every creator to have the best tools regardless of their budget, and therefore we maintain total transparency about the server costs necessary for the AI to work for you. Your donations will help others use our tools for free.",
         "vs-info-1": "VidSpri was created with novice developers in mind or those who want to create their 2D video games but have no experience drawing each frame.",
         "vs-info-2": "Many have turned to AI to generate frames for their characters, but AI can't do this job well either; it doesn't know how to do it until we realized that AI, when generating video, does it much better than when it generates a simple image with several sprites.",
         "vs-info-3": "We came up with the idea of making a tool that converts videos to sprite sheets. Our tool takes frames from videos and converts them into a sprite sheet or generates a video to take frames from it, achieving a better result.",
@@ -1227,9 +1318,16 @@ function initializeAnimations() {
                 entry.target.classList.add('active');
             }
         });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 }); // Reduced threshold slightly for better visibility on small screens
 
-    reveals.forEach(r => observer.observe(r));
+    reveals.forEach(r => {
+        // If already visible in viewport, activate immediately
+        const rect = r.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            r.classList.add('active');
+        }
+        observer.observe(r);
+    });
 }
 
 /* ==============================
@@ -1266,7 +1364,7 @@ async function fetchOpinions() {
 async function fetchDonationStats() {
     const { data, error } = await window.supabaseClient
         .from('donations')
-        .select('amount, product_id, donor_name, created_at');
+        .select('*, profiles(avatar_url, username)');
 
     if (error) return console.error('Error fetching donations:', error);
 
@@ -1287,19 +1385,88 @@ async function fetchDonationStats() {
 }
 
 function updateDonationUI(stats) {
-    // Update Progress Bars and Labels in donaciones.html
+    // Update Progress Bars and Labels across pages
     const ceProgress = (stats.CE.current / stats.CE.goal) * 100;
     const vsProgress = (stats.VS.current / stats.VS.goal) * 100;
 
-    const ceBar = document.querySelector('.app-donate-item:nth-child(1) .progress-bar');
-    const ceLabel = document.querySelector('.app-donate-item:nth-child(1) .progress-labels span:first-child');
+    // Creative Engine
+    const ceBar = document.getElementById('ce-progress-bar');
+    const ceLabel = document.getElementById('ce-current-amount');
     if (ceBar) ceBar.style.width = Math.min(ceProgress, 100) + '%';
     if (ceLabel) ceLabel.textContent = 'Actual: $' + stats.CE.current.toLocaleString();
 
-    const vsBar = document.querySelector('.app-donate-item:nth-child(2) .progress-bar');
-    const vsLabel = document.querySelector('.app-donate-item:nth-child(2) .progress-labels span:first-child');
+    // Vid Spri
+    const vsBar = document.getElementById('vs-progress-bar');
+    const vsLabel = document.getElementById('vs-current-amount');
     if (vsBar) vsBar.style.width = Math.min(vsProgress, 100) + '%';
     if (vsLabel) vsLabel.textContent = 'Actual: $' + stats.VS.current.toLocaleString();
+
+    // If on hub page, render list
+    if (document.getElementById('donors-hub-container')) {
+        renderDonorsList();
+    }
+}
+
+// Logic for Collaborators page moved to the HTML file for direct access to Supabase data
+
+function setupHubListeners() {
+    const filterApp = document.getElementById('filter-app');
+    const sortOrder = document.getElementById('sort-order');
+
+    if (filterApp) filterApp.onchange = () => renderDonorsList();
+    if (sortOrder) sortOrder.onchange = () => renderDonorsList();
+}
+
+function renderDonorsList() {
+    const container = document.getElementById('donors-hub-container');
+    const filterApp = document.getElementById('filter-app')?.value || 'all';
+    const sortOrder = document.getElementById('sort-order')?.value || 'desc';
+
+    if (!container || !window.currentDonationStats) return;
+
+    // Combine all donors
+    let allDonors = [];
+    if (filterApp === 'all') {
+        allDonors = [...window.currentDonationStats.CE.donors, ...window.currentDonationStats.VS.donors];
+    } else {
+        allDonors = [...window.currentDonationStats[filterApp].donors];
+    }
+
+    // Sort
+    if (sortOrder === 'desc') allDonors.sort((a,b) => b.amount - a.amount);
+    if (sortOrder === 'asc') allDonors.sort((a,b) => a.amount - b.amount);
+    if (sortOrder === 'newest') allDonors.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+    if (sortOrder === 'oldest') allDonors.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+
+    if (allDonors.length === 0) {
+        container.innerHTML = '<div class="empty-state">No se encontraron donaciones con estos filtros.</div>';
+        return;
+    }
+
+    container.innerHTML = allDonors.map(d => {
+        const goal = d.product_id === 'CE' ? 26000 : 25000;
+        const percentage = ((d.amount / goal) * 100).toFixed(2);
+        const appName = d.product_id === 'CE' ? 'Creative Engine' : 'Vid Spri';
+
+        // Mock avatar logic: In real app we would join with profiles table
+        const avatar = d.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${d.donor_name}&background=random`;
+
+        return `
+            <div class="donor-card product-reveal active">
+                <div class="donor-info">
+                    <img src="${avatar}" class="donor-pfp" alt="${d.donor_name}">
+                    <div>
+                        <span class="donor-name">${d.donor_name}</span>
+                        <span class="donor-app">${appName}</span>
+                    </div>
+                </div>
+                <div class="donor-amount-area">
+                    <span class="donor-amount">$${parseFloat(d.amount).toFixed(2)}</span>
+                    <span class="donor-percentage">+${percentage}%</span>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 // Handler for Submitting Opinions
