@@ -357,6 +357,7 @@ const translations = {
         "footer-donate-paypal": "Donar con PayPal",
         "footer-donate-info": "¿Qué hacemos con sus donaciones?",
         "footer-see-donors": "Ver donantes",
+        "footer-see-collabs": "Colaboradores",
         "footer-privacy": "Política de Privacidad",
         "footer-license": "Licencia",
         "footer-copyright": "© 2026 Carley Interactive Studio. Todos los derechos reservados.",
@@ -427,6 +428,7 @@ const translations = {
         "ce-nav-join": "Únete y Seguirnos",
         "ce-nav-claims": "Reclamos",
         "ce-nav-donations": "Donaciones",
+        "ce-nav-collabs": "Colaboradores",
         "ce-nav-tutorials": "Tutoriales",
         "ce-tutorial-title": "Cómo crear tu primer juego",
         "ce-tutorial-desc": "Aprende los fundamentos de Creative Engine y empieza tu aventura como desarrollador.",
@@ -548,6 +550,7 @@ const translations = {
         "footer-donate-paypal": "Donate with PayPal",
         "footer-donate-info": "What do we do with your donations?",
         "footer-see-donors": "See donors",
+        "footer-see-collabs": "Collaborators",
         "footer-privacy": "Privacy Policy",
         "footer-license": "License",
         "footer-copyright": "© 2026 Carley Interactive Studio. All rights reserved.",
@@ -618,6 +621,7 @@ const translations = {
         "ce-nav-join": "Join & Follow",
         "ce-nav-claims": "Claims",
         "ce-nav-donations": "Donations",
+        "ce-nav-collabs": "Collaborators",
         "ce-nav-tutorials": "Tutoriales",
         "ce-tutorial-title": "How to create your first game",
         "ce-tutorial-desc": "Learn the fundamentals of Creative Engine and start your adventure as a developer.",
@@ -1307,9 +1311,16 @@ function initializeAnimations() {
                 entry.target.classList.add('active');
             }
         });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 }); // Reduced threshold slightly for better visibility on small screens
 
-    reveals.forEach(r => observer.observe(r));
+    reveals.forEach(r => {
+        // If already visible in viewport, activate immediately
+        const rect = r.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            r.classList.add('active');
+        }
+        observer.observe(r);
+    });
 }
 
 /* ==============================
@@ -1388,6 +1399,8 @@ function updateDonationUI(stats) {
         renderDonorsList();
     }
 }
+
+// Logic for Collaborators page moved to the HTML file for direct access to Supabase data
 
 function setupHubListeners() {
     const filterApp = document.getElementById('filter-app');

@@ -1,9 +1,0 @@
-127.0.0.1 - - [08/Mar/2026 21:00:16] "GET /creative-engine.html HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:16] "GET /estilos.css HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:16] "GET /carley_foto_web/Logo_C.png HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:16] "GET /carley_foto_web/vidspri_mascot.png HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:16] "GET /js/main.js HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:16] "GET /carley_foto_web/Escena%20de%20videojuego.png HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:18] "GET /vid-spri.html HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:18] "GET /carley_foto_web/Logo%20VidSpri.png HTTP/1.1" 200 -
-127.0.0.1 - - [08/Mar/2026 21:00:18] "GET /carley_foto_web/mascot.png HTTP/1.1" 200 -
