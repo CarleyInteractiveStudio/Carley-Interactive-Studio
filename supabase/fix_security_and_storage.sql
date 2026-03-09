@@ -13,7 +13,11 @@ BEGIN
     END IF;
 
     IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'donations' AND COLUMN_NAME = 'user_id') THEN
-        ALTER TABLE public.donations ADD COLUMN user_id UUID REFERENCES auth.users ON DELETE SET NULL;
+        ALTER TABLE public.donations ADD COLUMN user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL;
+    ELSE
+        -- Ensure the foreign key points to profiles for better joining
+        ALTER TABLE public.donations DROP CONSTRAINT IF EXISTS donations_user_id_fkey;
+        ALTER TABLE public.donations ADD CONSTRAINT donations_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE SET NULL;
     END IF;
 END $$;
 
@@ -76,7 +80,12 @@ GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 
 GRANT SELECT, INSERT ON ALL TABLES IN SCHEMA public TO anon;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon;
+
+-- Explicitly grant SELECT on profiles to anon so joins work in donation list
+GRANT SELECT ON TABLE public.profiles TO anon;
+GRANT SELECT ON TABLE public.profiles TO authenticated;
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE ON TABLES TO authenticated;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT ON TABLES TO anon;

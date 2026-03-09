@@ -537,14 +537,15 @@
             document.getElementById('policy-modal').classList.add('hidden');
         }
 
-        // Wait for main.js to initialize then sync UI
-        const checkAuth = setInterval(async () => {
-            if (window.supabaseClient) {
-                const { data: { session } } = await window.supabaseClient.auth.getSession();
-                updatePageUI(session);
-                clearInterval(checkAuth);
-            }
-        }, 100);
+        // Sincronizar con el estado de autenticación global de main.js
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkUser = setInterval(() => {
+                if (window.currentUser !== undefined) {
+                    updatePageUI(window.currentUser ? { user: window.currentUser } : null);
+                    clearInterval(checkUser);
+                }
+            }, 100);
+        });
 
         function updatePageUI(session) {
             const authCont = document.getElementById('auth-container');
@@ -597,26 +598,53 @@
             }
         }
 
+        // Helper to add async handlers with guards and loading state
+        const setHandler = (id, fn) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.onclick = async (e) => {
+                const originalText = el.textContent;
+                const isButton = el.tagName === 'BUTTON';
+                if (isButton) {
+                    el.disabled = true;
+                    el.textContent = "Procesando...";
+                }
+                try {
+                    await fn(e);
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    if (isButton) {
+                        el.disabled = false;
+                        el.textContent = originalText;
+                    }
+                }
+            };
+        };
+
         // Local Auth Handlers
-        document.getElementById('btn-do-login').onclick = async () => {
+        setHandler('btn-do-login', async () => {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
             const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password: pass });
             if (error) alert(error.message);
             else window.location.reload();
-        };
-
-        // Conditional institution field
-        document.getElementById('reg-usage').addEventListener('change', (e) => {
-            const group = document.getElementById('institution-group');
-            if (e.target.value === 'educativo' || e.target.value === 'empresa') {
-                group.classList.remove('hidden');
-            } else {
-                group.classList.add('hidden');
-            }
         });
 
-        document.getElementById('btn-do-register').onclick = async () => {
+        // Conditional institution field
+        const regUsage = document.getElementById('reg-usage');
+        if (regUsage) {
+            regUsage.addEventListener('change', (e) => {
+                const group = document.getElementById('institution-group');
+                if (e.target.value === 'educativo' || e.target.value === 'empresa') {
+                    group.classList.remove('hidden');
+                } else {
+                    group.classList.add('hidden');
+                }
+            });
+        }
+
+        setHandler('btn-do-register', async () => {
             const username = document.getElementById('reg-username').value;
             const email = document.getElementById('reg-email').value;
             const pass = document.getElementById('reg-pass').value;
@@ -664,14 +692,14 @@
                 alert("Cuenta creada con éxito. Verifica tu correo si es necesario.");
                 window.location.reload();
             }
-        };
+        });
 
-        document.getElementById('btn-logout').onclick = async () => {
+        setHandler('btn-logout', async () => {
             await window.supabaseClient.auth.signOut();
             window.location.reload();
-        };
+        });
 
-        document.getElementById('btn-update-profile').onclick = async () => {
+        setHandler('btn-update-profile', async () => {
             const newUsername = document.getElementById('profile-username-edit').value;
             const pfpFile = document.getElementById('profile-pfp-file').files[0];
             const lang = document.getElementById('profile-lang').value;
@@ -700,7 +728,6 @@
             if (error) {
                 alert(error.message);
             } else {
-                // Also update Auth metadata for consistency
                 const authData = { username: newUsername };
                 if (avatarUrl) authData.avatar_url = avatarUrl;
 
@@ -711,9 +738,9 @@
                 alert("Perfil actualizado correctamente.");
                 window.location.reload();
             }
-        };
+        });
 
-        document.getElementById('btn-update-pass').onclick = async () => {
+        setHandler('btn-update-pass', async () => {
             const newPass = document.getElementById('pass-new').value;
             const confirm = document.getElementById('pass-confirm').value;
 
@@ -728,9 +755,9 @@
                 document.getElementById('pass-new').value = "";
                 document.getElementById('pass-confirm').value = "";
             }
-        };
+        });
 
-        document.getElementById('btn-delete-account').onclick = async () => {
+        setHandler('btn-delete-account', async () => {
             const pass = document.getElementById('delete-confirm-pass').value;
             if (!pass) return alert("Por favor, introduce tu contraseña para confirmar.");
 
@@ -750,9 +777,9 @@
                     window.location.href = 'index.html';
                 }
             }
-        };
+        });
 
-        document.getElementById('btn-submit-claim').onclick = async () => {
+        setHandler('btn-submit-claim', async () => {
             const reason = document.getElementById('claim-reason').value;
             const photoFile = document.getElementById('claim-photo-file').files[0];
 
@@ -780,21 +807,23 @@
             }
         };
 
-        document.getElementById('btn-profile-recovery').onclick = async () => {
+        setHandler('btn-profile-recovery', async () => {
             const { data: { user } } = await window.supabaseClient.auth.getUser();
             if (user) {
                 const { error } = await window.supabaseClient.auth.resetPasswordForEmail(user.email);
                 if (error) alert(error.message);
                 else alert("Instrucciones enviadas a tu correo.");
             }
-        };
+        });
 
-        document.getElementById('btn-do-recovery').onclick = async () => {
-            const email = document.getElementById('recovery-email').value;
+        setHandler('btn-do-recovery', async () => {
+            const emailInput = document.getElementById('recovery-email');
+            const email = emailInput ? emailInput.value : '';
+            if (!email) return alert("Ingresa tu correo.");
             const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email);
             if (error) alert(error.message);
             else alert("Instrucciones enviadas a tu correo.");
-        };
+        });
     </script>
 </body>
 </html>
