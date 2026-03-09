@@ -805,7 +805,7 @@
                 document.getElementById('claim-reason').value = '';
                 document.getElementById('claim-photo-file').value = '';
             }
-        };
+        });
 
         setHandler('btn-profile-recovery', async () => {
             const { data: { user } } = await window.supabaseClient.auth.getUser();

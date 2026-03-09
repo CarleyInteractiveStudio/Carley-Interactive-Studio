@@ -1427,11 +1427,12 @@ async function fetchOpinions() {
 }
 
 async function fetchDonationStats() {
+    if (!window.supabaseClient) return;
     const { data, error } = await window.supabaseClient
         .from('donations')
         .select('*, profiles(avatar_url, username)');
 
-    if (error) return console.error('Error fetching donations:', error);
+    if (error) return console.error('Error fetching donations:', error.message || error);
 
     const stats = {
         CE: { current: 0, goal: 26000, donors: [] },
