@@ -209,7 +209,12 @@ window.closeDonationFlow = function() {
 
 window.renderPayPal = function() {
     const container = document.getElementById('paypal-button-container');
-    if (!container || !window.paypal) return;
+    if (!container) return;
+
+    if (!window.paypal) {
+        container.innerHTML = '<p style="color: #ffaa00; font-size: 0.8rem;">Error: No se pudo cargar el módulo de PayPal. Verifica tu conexión o el Client ID.</p>';
+        return;
+    }
 
     const isJoinChecked = document.getElementById('join-donor-list')?.checked ?? true;
     const donorName = (window.currentUser && isJoinChecked)
@@ -234,11 +239,7 @@ window.renderPayPal = function() {
                         currency_code: 'USD'
                     },
                     description: `Donación para ${window.currentDonationApp} de ${donorName}`,
-                    custom_id: JSON.stringify({
-                        app: window.currentDonationApp,
-                        donor: donorName,
-                        userId: window.currentUser ? window.currentUser.id : null
-                    })
+                    custom_id: donorName // Simple ID for reporting
                 }]
             });
         },
@@ -255,9 +256,9 @@ window.renderPayPal = function() {
 
                 if (error) {
                     console.error('Error saving donation:', error);
-                    alert('Tu donación fue procesada por PayPal pero hubo un error al registrarla en nuestro sistema. Por favor contacta a soporte.');
+                    alert('¡Gracias! PayPal confirmó el pago, pero hubo un pequeño error al guardarlo en nuestra lista pública. No te preocupes, el dinero llegó correctamente.');
                 } else {
-                    alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución de $' + capturedAmount + ' ha sido registrada.');
+                    alert('¡Donación exitosa! Gracias por tu apoyo a Carley Studio.');
                 }
 
                 closeDonationFlow();
@@ -265,8 +266,8 @@ window.renderPayPal = function() {
             });
         },
         onError: (err) => {
-            console.error('PayPal Error:', err);
-            alert('Hubo un error con el proceso de pago de PayPal.');
+            console.error('PayPal Buttons Error:', err);
+            alert('El sistema de pagos no pudo iniciarse. Asegúrate de que el monto sea válido.');
         }
     }).render('#paypal-button-container');
 };
