@@ -22,6 +22,26 @@ window.escapeHTML = function(str) {
     }
 }
 
+// Global File Upload Helper
+window.uploadFile = async function(bucket, file, path) {
+    if (!window.supabaseClient) return { error: { message: "Supabase not initialized" } };
+
+    const { data, error } = await window.supabaseClient.storage
+        .from(bucket)
+        .upload(path, file, {
+            cacheControl: '3600',
+            upsert: true
+        });
+
+    if (error) return { error };
+
+    const { data: { publicUrl } } = window.supabaseClient.storage
+        .from(bucket)
+        .getPublicUrl(data.path);
+
+    return { publicUrl };
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     initializeAuth();
@@ -189,7 +209,12 @@ window.closeDonationFlow = function() {
 
 window.renderPayPal = function() {
     const container = document.getElementById('paypal-button-container');
-    if (!container || !window.paypal) return;
+    if (!container) return;
+
+    if (!window.paypal) {
+        container.innerHTML = '<p style="color: #ffaa00; font-size: 0.8rem;">Error: No se pudo cargar el módulo de PayPal. Verifica tu conexión o el Client ID.</p>';
+        return;
+    }
 
     const isJoinChecked = document.getElementById('join-donor-list')?.checked ?? true;
     const donorName = (window.currentUser && isJoinChecked)
@@ -197,30 +222,52 @@ window.renderPayPal = function() {
         : 'Anónimo';
 
     window.paypal.Buttons({
+        style: {
+            layout: 'vertical',
+            color:  'gold',
+            shape:  'rect',
+            label:  'paypal'
+        },
         createOrder: (data, actions) => {
+            const amountInput = document.getElementById('donation-amount');
+            const amount = amountInput ? amountInput.value : '10.00';
+
             return actions.order.create({
                 purchase_units: [{
-                    amount: { value: '10.00' },
+                    amount: {
+                        value: amount,
+                        currency_code: 'USD'
+                    },
                     description: `Donación para ${window.currentDonationApp} de ${donorName}`,
-                    custom_id: donorName
+                    custom_id: donorName // Simple ID for reporting
                 }]
             });
         },
         onApprove: (data, actions) => {
             return actions.order.capture().then(async details => {
-                const amount = details.purchase_units[0].amount.value;
+                const capturedAmount = details.purchase_units[0].amount.value;
                 const { error } = await window.supabaseClient.from('donations').insert({
                     donor_name: donorName,
-                    amount: parseFloat(amount),
+                    amount: parseFloat(capturedAmount),
                     product_id: window.currentDonationApp,
                     paypal_order_id: details.id,
                     user_id: window.currentUser ? window.currentUser.id : null
                 });
-                if (error) console.error('Error saving donation:', error);
-                alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución ha sido registrada.');
+
+                if (error) {
+                    console.error('Error saving donation:', error);
+                    alert('¡Gracias! PayPal confirmó el pago, pero hubo un pequeño error al guardarlo en nuestra lista pública. No te preocupes, el dinero llegó correctamente.');
+                } else {
+                    alert('¡Donación exitosa! Gracias por tu apoyo a Carley Studio.');
+                }
+
                 closeDonationFlow();
                 if (typeof fetchDonationStats === 'function') fetchDonationStats();
             });
+        },
+        onError: (err) => {
+            console.error('PayPal Buttons Error:', err);
+            alert('El sistema de pagos no pudo iniciarse. Asegúrate de que el monto sea válido.');
         }
     }).render('#paypal-button-container');
 };
@@ -413,8 +460,8 @@ const translations = {
         "acc-support-simple-desc": "Nuestras aplicaciones son gratuitas gracias a tu apoyo.",
         "acc-100-free": "100% Gratuito",
         "btn-go-donate-page": "Ir a Donaciones",
-        "support-ce": "Soporte Creative Engine",
-        "support-vs": "Soporte Vid Spri",
+        "support-ce": "Apoyar a Creative Engine",
+        "support-vs": "Apoyar a Vid Spri",
         "claim-sad-msg": "Lamentamos mucho que haya tenido que llegar a este punto. Tratamos de hacer todo de la mejor forma para que todos puedan disfrutar.",
         "field-claim-photo": "Foto de confirmación de donación",
         "ph-claim-desc": "Explica el motivo...",
@@ -609,8 +656,8 @@ const translations = {
         "acc-support-simple-desc": "Our applications are free thanks to your support.",
         "acc-100-free": "100% Free",
         "btn-go-donate-page": "Go to Donations",
-        "support-ce": "Creative Engine Support",
-        "support-vs": "Vid Spri Support",
+        "support-ce": "Support Creative Engine",
+        "support-vs": "Support Vid Spri",
         "claim-sad-msg": "We are very sorry that it has come to this. We try to do everything in the best way so that everyone can enjoy.",
         "field-claim-photo": "Donation confirmation photo",
         "ph-claim-desc": "Explain the reason...",
@@ -1381,11 +1428,20 @@ async function fetchOpinions() {
 }
 
 async function fetchDonationStats() {
+    if (!window.supabaseClient) return;
     const { data, error } = await window.supabaseClient
         .from('donations')
         .select('*, profiles(avatar_url, username)');
 
-    if (error) return console.error('Error fetching donations:', error);
+    if (error) {
+        console.error('Detailed Error fetching donations:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+        });
+        return;
+    }
 
     const stats = {
         CE: { current: 0, goal: 26000, donors: [] },
