@@ -22,6 +22,26 @@ window.escapeHTML = function(str) {
     }
 }
 
+// Global File Upload Helper
+window.uploadFile = async function(bucket, file, path) {
+    if (!window.supabaseClient) return { error: { message: "Supabase not initialized" } };
+
+    const { data, error } = await window.supabaseClient.storage
+        .from(bucket)
+        .upload(path, file, {
+            cacheControl: '3600',
+            upsert: true
+        });
+
+    if (error) return { error };
+
+    const { data: { publicUrl } } = window.supabaseClient.storage
+        .from(bucket)
+        .getPublicUrl(data.path);
+
+    return { publicUrl };
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     initializeAuth();
@@ -197,30 +217,56 @@ window.renderPayPal = function() {
         : 'Anónimo';
 
     window.paypal.Buttons({
+        style: {
+            layout: 'vertical',
+            color:  'gold',
+            shape:  'rect',
+            label:  'paypal'
+        },
         createOrder: (data, actions) => {
+            const amountInput = document.getElementById('donation-amount');
+            const amount = amountInput ? amountInput.value : '10.00';
+
             return actions.order.create({
                 purchase_units: [{
-                    amount: { value: '10.00' },
+                    amount: {
+                        value: amount,
+                        currency_code: 'USD'
+                    },
                     description: `Donación para ${window.currentDonationApp} de ${donorName}`,
-                    custom_id: donorName
+                    custom_id: JSON.stringify({
+                        app: window.currentDonationApp,
+                        donor: donorName,
+                        userId: window.currentUser ? window.currentUser.id : null
+                    })
                 }]
             });
         },
         onApprove: (data, actions) => {
             return actions.order.capture().then(async details => {
-                const amount = details.purchase_units[0].amount.value;
+                const capturedAmount = details.purchase_units[0].amount.value;
                 const { error } = await window.supabaseClient.from('donations').insert({
                     donor_name: donorName,
-                    amount: parseFloat(amount),
+                    amount: parseFloat(capturedAmount),
                     product_id: window.currentDonationApp,
                     paypal_order_id: details.id,
                     user_id: window.currentUser ? window.currentUser.id : null
                 });
-                if (error) console.error('Error saving donation:', error);
-                alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución ha sido registrada.');
+
+                if (error) {
+                    console.error('Error saving donation:', error);
+                    alert('Tu donación fue procesada por PayPal pero hubo un error al registrarla en nuestro sistema. Por favor contacta a soporte.');
+                } else {
+                    alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución de $' + capturedAmount + ' ha sido registrada.');
+                }
+
                 closeDonationFlow();
                 if (typeof fetchDonationStats === 'function') fetchDonationStats();
             });
+        },
+        onError: (err) => {
+            console.error('PayPal Error:', err);
+            alert('Hubo un error con el proceso de pago de PayPal.');
         }
     }).render('#paypal-button-container');
 };
@@ -413,8 +459,8 @@ const translations = {
         "acc-support-simple-desc": "Nuestras aplicaciones son gratuitas gracias a tu apoyo.",
         "acc-100-free": "100% Gratuito",
         "btn-go-donate-page": "Ir a Donaciones",
-        "support-ce": "Soporte Creative Engine",
-        "support-vs": "Soporte Vid Spri",
+        "support-ce": "Apoyar a Creative Engine",
+        "support-vs": "Apoyar a Vid Spri",
         "claim-sad-msg": "Lamentamos mucho que haya tenido que llegar a este punto. Tratamos de hacer todo de la mejor forma para que todos puedan disfrutar.",
         "field-claim-photo": "Foto de confirmación de donación",
         "ph-claim-desc": "Explica el motivo...",
@@ -609,8 +655,8 @@ const translations = {
         "acc-support-simple-desc": "Our applications are free thanks to your support.",
         "acc-100-free": "100% Free",
         "btn-go-donate-page": "Go to Donations",
-        "support-ce": "Creative Engine Support",
-        "support-vs": "Vid Spri Support",
+        "support-ce": "Support Creative Engine",
+        "support-vs": "Support Vid Spri",
         "claim-sad-msg": "We are very sorry that it has come to this. We try to do everything in the best way so that everyone can enjoy.",
         "field-claim-photo": "Donation confirmation photo",
         "ph-claim-desc": "Explain the reason...",

@@ -333,6 +333,11 @@
                         <p id="profile-email" style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1rem;">correo@ejemplo.com</p>
                         <p id="profile-usage-display" style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;"></p>
 
+                            <div class="input-group">
+                                <label data-i18n="field-username">Nombre de Usuario</label>
+                                <input type="text" id="profile-username-edit" class="acc-input" placeholder="Tu nombre">
+                            </div>
+
                         <div class="input-group">
                             <label data-i18n="field-language">Idioma</label>
                             <select id="profile-lang" class="acc-input acc-select">
@@ -379,17 +384,17 @@
                     </button>
                     <div id="bubble-support" class="bubble-content hidden">
                         <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <a href="donaciones.html" class="inline-link" style="font-size: 0.85rem; font-weight: 600;" data-i18n="footer-donate-info">¿Qué hacemos con sus donaciones?</a>
+                            <a href="donaciones.html" class="inline-link" style="font-size: 0.85rem; font-weight: 600;" data-i18n="footer-see-donors">Ver donantes</a>
                         </div>
                         <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 1.5rem;" data-i18n="acc-support-simple-desc">Nuestras aplicaciones son gratuitas gracias a tu apoyo.</p>
                         <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; align-items: center;">
                                 <span>Creative Engine</span>
-                                <span style="color: #25d366;" data-i18n="acc-100-free">100% Gratuito</span>
+                                <a href="donaciones.html?donate=CE" class="inline-link" style="font-size: 0.8rem;" data-i18n="support-ce">Apoyar a Creative Engine</a>
                             </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; align-items: center;">
                                 <span>Vid Spri</span>
-                                <span style="color: #25d366;" data-i18n="acc-100-free">100% Gratuito</span>
+                                <a href="donaciones.html?donate=VS" class="inline-link" style="font-size: 0.8rem;" data-i18n="support-vs">Apoyar a Vid Spri</a>
                             </div>
                         </div>
                         <a href="donaciones.html" class="acc-btn primary" style="display: block; text-align: center; text-decoration: none;" data-i18n="btn-go-donate-page">Ir a Donaciones</a>
@@ -422,12 +427,12 @@
                         </p>
                         <div class="input-group">
                             <label data-i18n="field-claim-photo">Foto de confirmación de donación</label>
-                            <input type="file" id="claim-photo" class="acc-input" accept="image/*">
+                            <input type="file" id="claim-photo-file" class="acc-input" accept="image/*">
                         </div>
                         <div class="input-group">
-                            <textarea class="acc-input" style="height: 100px;" placeholder="Explica el motivo..." data-i18n-ph="ph-claim-desc"></textarea>
+                            <textarea id="claim-reason" class="acc-input" style="height: 100px;" placeholder="Explica el motivo..." data-i18n-ph="ph-claim-desc"></textarea>
                         </div>
-                        <button class="acc-btn primary" data-i18n="btn-send-claim">Enviar Reclamación</button>
+                        <button id="btn-submit-claim" class="acc-btn primary" data-i18n="btn-send-claim">Enviar Reclamación</button>
                     </div>
 
                     <!-- Borrar Cuenta Bubble -->
@@ -554,6 +559,9 @@
                 const avatarUrl = meta.avatar_url;
 
                 document.getElementById('profile-username').textContent = username;
+                const usernameEdit = document.getElementById('profile-username-edit');
+                if (usernameEdit) usernameEdit.value = username;
+
                 document.getElementById('profile-email').textContent = user.email;
                 document.getElementById('profile-gender').textContent = meta.gender || '---';
 
@@ -614,15 +622,6 @@
             const confirm = document.getElementById('reg-pass-confirm').value;
             const recovery = document.getElementById('reg-recovery-email').value;
 
-            // Handle profile picture (simplified for this demo, would normally upload to Supabase Storage)
-            const pfpFile = document.getElementById('reg-pfp-file').files[0];
-            let pfpUrl = '';
-            if (pfpFile) {
-                // For now we'll use a placeholder or local URL if possible,
-                // but real app needs Storage. We'll store a mock URL for now.
-                pfpUrl = "https://ui-avatars.com/api/?name=" + username;
-            }
-
             const gender = document.getElementById('reg-gender').value;
             const usage = document.getElementById('reg-usage').value;
             const institution = document.getElementById('reg-institution').value;
@@ -639,7 +638,6 @@
                     data: {
                         username: username,
                         recovery_email: recovery,
-                        avatar_url: pfpUrl,
                         gender: gender,
                         usage_type: usage,
                         institution: (usage !== 'personal') ? institution : '',
@@ -648,8 +646,20 @@
                 }
             });
 
-            if (error) alert(error.message);
-            else {
+            if (error) {
+                alert(error.message);
+            } else {
+                // Handle profile picture upload after signup if successful
+                const pfpFile = document.getElementById('reg-pfp-file').files[0];
+                if (pfpFile && data.user) {
+                    const { publicUrl, error: uploadError } = await window.uploadFile('avatars', pfpFile, `${data.user.id}/profile.jpg`);
+                    if (!uploadError) {
+                        await window.supabaseClient.auth.updateUser({
+                            data: { avatar_url: publicUrl }
+                        });
+                        await window.supabaseClient.from('profiles').update({ avatar_url: publicUrl }).eq('id', data.user.id);
+                    }
+                }
                 alert("Cuenta creada con éxito. Verifica tu correo si es necesario.");
                 window.location.reload();
             }
@@ -661,17 +671,24 @@
         };
 
         document.getElementById('btn-update-profile').onclick = async () => {
+            const newUsername = document.getElementById('profile-username-edit').value;
             const pfpFile = document.getElementById('profile-pfp-file').files[0];
             const lang = document.getElementById('profile-lang').value;
 
             let avatarUrl = '';
             if (pfpFile) {
-                // Mock logic: In a real app we'd upload to Supabase Storage
-                // For this studio version, we'll simulate a saved URL
-                avatarUrl = "https://ui-avatars.com/api/?background=random&name=" + document.getElementById('profile-username').textContent;
+                const { publicUrl, error: uploadError } = await window.uploadFile('avatars', pfpFile, `${window.currentUser.id}/profile_${Date.now()}.jpg`);
+                if (uploadError) {
+                    alert("Error subiendo imagen: " + uploadError.message);
+                } else {
+                    avatarUrl = publicUrl;
+                }
             }
 
-            const updateData = { language: lang };
+            const updateData = {
+                language: lang,
+                username: newUsername
+            };
             if (avatarUrl) updateData.avatar_url = avatarUrl;
 
             const { error } = await window.supabaseClient
@@ -679,8 +696,17 @@
                 .update(updateData)
                 .eq('id', window.currentUser.id);
 
-            if (error) alert(error.message);
-            else {
+            if (error) {
+                alert(error.message);
+            } else {
+                // Also update Auth metadata for consistency
+                const authData = { username: newUsername };
+                if (avatarUrl) authData.avatar_url = avatarUrl;
+
+                await window.supabaseClient.auth.updateUser({
+                    data: authData
+                });
+
                 alert("Perfil actualizado correctamente.");
                 window.location.reload();
             }
@@ -704,13 +730,52 @@
         };
 
         document.getElementById('btn-delete-account').onclick = async () => {
-            const confirmDel = confirm("¿ESTÁS SEGURO? Esta acción borrará tu cuenta permanentemente y no se puede deshacer.");
+            const pass = document.getElementById('delete-confirm-pass').value;
+            if (!pass) return alert("Por favor, introduce tu contraseña para confirmar.");
+
+            const confirmDel = confirm("¿ESTÁS SEGURO? Esta acción enviará una solicitud de borrado de cuenta permanente.");
             if (confirmDel) {
-                // Supabase doesn't allow users to delete themselves directly via client SDK for security.
-                // Usually requires a Edge Function. For now, we sign out and tell the user.
-                alert("Para completar la eliminación de datos, por favor contacta a soporte o usa el formulario de Reclamos indicando tu deseo de borrar la cuenta. Por ahora, cerraremos tu sesión.");
-                await window.supabaseClient.auth.signOut();
-                window.location.href = 'index.html';
+                const { error } = await window.supabaseClient.from('deletion_requests').insert({
+                    user_id: window.currentUser.id,
+                    user_email: window.currentUser.email,
+                    reason: "User requested deletion via account page"
+                });
+
+                if (error) {
+                    alert("Error al enviar solicitud: " + error.message);
+                } else {
+                    alert("Solicitud de borrado enviada. Recibirás un correo de confirmación pronto. Por seguridad, cerraremos tu sesión.");
+                    await window.supabaseClient.auth.signOut();
+                    window.location.href = 'index.html';
+                }
+            }
+        };
+
+        document.getElementById('btn-submit-claim').onclick = async () => {
+            const reason = document.getElementById('claim-reason').value;
+            const photoFile = document.getElementById('claim-photo-file').files[0];
+
+            if (!reason) return alert("Por favor explica el motivo del reclamo.");
+
+            let photoUrl = '';
+            if (photoFile) {
+                const { publicUrl, error: uploadError } = await window.uploadFile('claims', photoFile, `${window.currentUser.id}/claim_${Date.now()}.jpg`);
+                if (!uploadError) photoUrl = publicUrl;
+            }
+
+            const { error } = await window.supabaseClient.from('claims').insert({
+                user_id: window.currentUser.id,
+                user_email: window.currentUser.email,
+                reason: reason,
+                photo_url: photoUrl
+            });
+
+            if (error) {
+                alert("Error al enviar el reclamo: " + error.message);
+            } else {
+                alert("Reclamo enviado correctamente. Lo revisaremos pronto.");
+                document.getElementById('claim-reason').value = '';
+                document.getElementById('claim-photo-file').value = '';
             }
         };
 
