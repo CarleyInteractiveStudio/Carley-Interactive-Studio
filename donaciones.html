@@ -122,7 +122,20 @@
                 </div>
             </a>
             <div class="nav-controls">
-                <a href="cuenta.html" class="icon-btn"><i data-lucide="user" id="header-user-icon"></i></a>
+                <select id="lang-picker" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="cuenta.html" class="icon-btn">
+                    <i data-lucide="user"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -133,22 +146,28 @@
             <p class="ce-text" data-i18n="donate-intro-msg">Estás aportando a que otros puedan usar nuestra app y motor de forma gratuita.</p>
         </div>
 
-        <div class="donate-hub-header">
-            <h2 class="ce-subtitle" style="margin: 0;" data-i18n="list-title">Nuestros Colaboradores</h2>
+        <div class="donate-hub-header" style="position: sticky; top: 70px; background: var(--bg); z-index: 100; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <h2 class="ce-subtitle" style="margin: 0; font-size: 1.5rem;" data-i18n="list-title">Nuestros Colaboradores</h2>
 
             <div class="hub-controls">
-                <select id="filter-app" class="hub-select">
-                    <option value="all">Todas las Apps</option>
-                    <option value="CE">Creative Engine</option>
-                    <option value="VS">Vid Spri</option>
-                </select>
+                <div class="control-group">
+                    <label style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block;">Filtrar App</label>
+                    <select id="filter-app" class="hub-select">
+                        <option value="all">Todas las Apps</option>
+                        <option value="CE">Creative Engine</option>
+                        <option value="VS">Vid Spri</option>
+                    </select>
+                </div>
 
-                <select id="sort-order" class="hub-select">
-                    <option value="desc">Más donó</option>
-                    <option value="asc">Menos donó</option>
-                    <option value="newest">Más reciente</option>
-                    <option value="oldest">Más antiguo</option>
-                </select>
+                <div class="control-group">
+                    <label style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block;">Ordenar por</label>
+                    <select id="sort-order" class="hub-select">
+                        <option value="desc">Más donó</option>
+                        <option value="asc">Menos donó</option>
+                        <option value="newest">Más reciente</option>
+                        <option value="oldest">Más antiguo</option>
+                    </select>
+                </div>
             </div>
         </div>
 

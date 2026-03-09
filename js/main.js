@@ -2,11 +2,24 @@
    Core Logic & Functional Systems
 ============================== */
 
+// Security Helpers
+window.escapeHTML = function(str) {
+    if (!str) return "";
+    return str.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+};
+
 // Supabase Global Client Initialization
-const SUPABASE_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
-if (typeof supabase !== 'undefined') {
-    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+{
+    const SB_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
+    const SB_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
+    if (typeof supabase !== 'undefined') {
+        window.supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1349,16 +1362,22 @@ async function fetchOpinions() {
 
     if (error) return console.error('Error fetching opinions:', error);
 
-    feed.innerHTML = data.map(op => `
-        <div class="opinion-item product-reveal active">
-            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem;">
-                <img src="${op.profiles?.avatar_url || 'https://ui-avatars.com/api/?name=' + (op.profiles?.username || 'U')}" style="width: 32px; height: 32px; border-radius: 50%;">
-                <span style="font-weight: 600;">${op.profiles?.username || op.user_email.split('@')[0]}</span>
-                <span style="font-size: 0.8rem; opacity: 0.4;">${new Date(op.created_at).toLocaleDateString()}</span>
+    feed.innerHTML = data.map(op => {
+        const username = escapeHTML(op.profiles?.username || op.user_email.split('@')[0]);
+        const content = escapeHTML(op.content);
+        const avatar = op.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${username}`;
+
+        return `
+            <div class="opinion-item product-reveal active">
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem;">
+                    <img src="${avatar}" style="width: 32px; height: 32px; border-radius: 50%;">
+                    <span style="font-weight: 600;">${username}</span>
+                    <span style="font-size: 0.8rem; opacity: 0.4;">${new Date(op.created_at).toLocaleDateString()}</span>
+                </div>
+                <p style="opacity: 0.8; font-size: 0.95rem;">${content}</p>
             </div>
-            <p style="opacity: 0.8; font-size: 0.95rem;">${op.content}</p>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 async function fetchDonationStats() {
@@ -1447,16 +1466,16 @@ function renderDonorsList() {
         const goal = d.product_id === 'CE' ? 26000 : 25000;
         const percentage = ((d.amount / goal) * 100).toFixed(2);
         const appName = d.product_id === 'CE' ? 'Creative Engine' : 'Vid Spri';
+        const donorNameEscaped = escapeHTML(d.donor_name);
 
-        // Mock avatar logic: In real app we would join with profiles table
-        const avatar = d.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${d.donor_name}&background=random`;
+        const avatar = d.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${donorNameEscaped}&background=random`;
 
         return `
             <div class="donor-card product-reveal active">
                 <div class="donor-info">
-                    <img src="${avatar}" class="donor-pfp" alt="${d.donor_name}">
+                    <img src="${avatar}" class="donor-pfp" alt="${donorNameEscaped}">
                     <div>
-                        <span class="donor-name">${d.donor_name}</span>
+                        <span class="donor-name">${donorNameEscaped}</span>
                         <span class="donor-app">${appName}</span>
                     </div>
                 </div>

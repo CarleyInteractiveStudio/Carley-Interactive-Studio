@@ -165,6 +165,13 @@
                 <select id="lang-picker" class="lang-picker">
                     <option value="es">🇪🇸 ES</option>
                     <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
                 </select>
                 <a href="cuenta.html" class="icon-btn">
                     <i data-lucide="user"></i>
@@ -228,23 +235,33 @@
                 return;
             }
 
-            grid.innerHTML = data.map(c => `
-                <div class="collab-card" onclick="openCollabModal(${JSON.stringify(c).replace(/"/g, '&quot;')})">
-                    <div class="card-image-wrapper">
-                        <img src="${c.photo_url || 'https://ui-avatars.com/api/?name=' + c.name + '&background=00aaff&color=fff&size=512'}" class="collab-photo" alt="${c.name}">
+            grid.innerHTML = data.map(c => {
+                const name = escapeHTML(c.name);
+                const type = escapeHTML(c.type || 'Colaborador');
+                const photo = c.photo_url || `https://ui-avatars.com/api/?name=${name}&background=00aaff&color=fff&size=512`;
+
+                return `
+                    <div class="collab-card" onclick="openCollabModal(${JSON.stringify(c).replace(/"/g, '&quot;')})">
+                        <div class="card-image-wrapper">
+                            <img src="${photo}" class="collab-photo" alt="${name}">
+                        </div>
+                        <div class="card-content">
+                            <span class="collab-name">${name}</span>
+                            <span class="collab-type">${type}</span>
+                        </div>
                     </div>
-                    <div class="card-content">
-                        <span class="collab-name">${c.name}</span>
-                        <span class="collab-type">${c.type || 'Colaborador'}</span>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         window.openCollabModal = function(collab) {
-            document.getElementById('modal-collab-name').textContent = collab.name;
-            document.getElementById('modal-collab-photo').src = collab.photo_url || 'https://ui-avatars.com/api/?name=' + collab.name + '&background=00aaff&color=fff';
-            document.getElementById('modal-collab-details').textContent = collab.collaboration_details;
+            const name = escapeHTML(collab.name);
+            const details = escapeHTML(collab.collaboration_details);
+            const photo = collab.photo_url || `https://ui-avatars.com/api/?name=${name}&background=00aaff&color=fff`;
+
+            document.getElementById('modal-collab-name').textContent = name;
+            document.getElementById('modal-collab-photo').src = photo;
+            document.getElementById('modal-collab-details').textContent = details;
 
             document.getElementById('collab-detail-modal').classList.remove('hidden');
             document.getElementById('modal-overlay').classList.remove('hidden');
