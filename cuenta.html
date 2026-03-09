@@ -384,21 +384,17 @@
                         <i data-lucide="chevron-down" style="width: 18px;"></i>
                     </button>
                     <div id="bubble-support" class="bubble-content hidden">
-                        <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <a href="donaciones.html" class="inline-link" style="font-size: 0.85rem; font-weight: 600;" data-i18n="footer-see-donors">Ver donantes</a>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <a href="creative-engine.html#donations" class="bubble-btn" style="background: rgba(255,255,255,0.02); border-bottom: none; border-radius: 12px; padding: 1rem;">
+                                <span data-i18n="support-ce">Apoyar a Creative Engine</span>
+                                <i data-lucide="external-link" style="width: 14px;"></i>
+                            </a>
+                            <a href="vid-spri.html#donations" class="bubble-btn" style="background: rgba(255,255,255,0.02); border-bottom: none; border-radius: 12px; padding: 1rem;">
+                                <span data-i18n="support-vs">Apoyar a Vid Spri</span>
+                                <i data-lucide="external-link" style="width: 14px;"></i>
+                            </a>
+                            <a href="donaciones.html" class="acc-btn primary" style="display: block; text-align: center; text-decoration: none; margin-top: 1rem;" data-i18n="footer-see-donors">Ver donantes</a>
                         </div>
-                        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 1.5rem;" data-i18n="acc-support-simple-desc">Nuestras aplicaciones son gratuitas gracias a tu apoyo.</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; align-items: center;">
-                                <span>Creative Engine</span>
-                                <a href="donaciones.html?donate=CE" class="inline-link" style="font-size: 0.8rem;" data-i18n="support-ce">Apoyar a Creative Engine</a>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; align-items: center;">
-                                <span>Vid Spri</span>
-                                <a href="donaciones.html?donate=VS" class="inline-link" style="font-size: 0.8rem;" data-i18n="support-vs">Apoyar a Vid Spri</a>
-                            </div>
-                        </div>
-                        <a href="donaciones.html" class="acc-btn primary" style="display: block; text-align: center; text-decoration: none;" data-i18n="btn-go-donate-page">Ir a Donaciones</a>
                     </div>
 
                     <!-- Soporte Bubble -->
@@ -481,13 +477,8 @@
         function toggleBubble(id) {
             const content = document.getElementById(id);
             const isHidden = content.classList.contains('hidden');
-
-            // Close all others first (optional, for accordion effect)
-            // document.querySelectorAll('.bubble-content').forEach(c => c.classList.add('hidden'));
-
             if (isHidden) {
                 content.classList.remove('hidden');
-                // Rotate icon if we had one but we use Lucide so we'll just toggle
             } else {
                 content.classList.add('hidden');
             }
@@ -524,7 +515,6 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-
                 btn.classList.add('active');
                 document.getElementById(`${btn.dataset.tab}-section`).classList.add('active');
             });
@@ -650,7 +640,6 @@
             const pass = document.getElementById('reg-pass').value;
             const confirm = document.getElementById('reg-pass-confirm').value;
             const recovery = document.getElementById('reg-recovery-email').value;
-
             const gender = document.getElementById('reg-gender').value;
             const usage = document.getElementById('reg-usage').value;
             const institution = document.getElementById('reg-institution').value;
@@ -678,14 +667,11 @@
             if (error) {
                 alert(error.message);
             } else {
-                // Handle profile picture upload after signup if successful
                 const pfpFile = document.getElementById('reg-pfp-file').files[0];
                 if (pfpFile && data.user) {
                     const { publicUrl, error: uploadError } = await window.uploadFile('avatars', pfpFile, `${data.user.id}/profile.jpg`);
                     if (!uploadError) {
-                        await window.supabaseClient.auth.updateUser({
-                            data: { avatar_url: publicUrl }
-                        });
+                        await window.supabaseClient.auth.updateUser({ data: { avatar_url: publicUrl } });
                         await window.supabaseClient.from('profiles').update({ avatar_url: publicUrl }).eq('id', data.user.id);
                     }
                 }
@@ -703,38 +689,21 @@
             const newUsername = document.getElementById('profile-username-edit').value;
             const pfpFile = document.getElementById('profile-pfp-file').files[0];
             const lang = document.getElementById('profile-lang').value;
-
             let avatarUrl = '';
             if (pfpFile) {
                 const { publicUrl, error: uploadError } = await window.uploadFile('avatars', pfpFile, `${window.currentUser.id}/profile_${Date.now()}.jpg`);
-                if (uploadError) {
-                    alert("Error subiendo imagen: " + uploadError.message);
-                } else {
-                    avatarUrl = publicUrl;
-                }
+                if (uploadError) alert("Error subiendo imagen: " + uploadError.message);
+                else avatarUrl = publicUrl;
             }
-
-            const updateData = {
-                language: lang,
-                username: newUsername
-            };
+            const updateData = { language: lang, username: newUsername };
             if (avatarUrl) updateData.avatar_url = avatarUrl;
-
-            const { error } = await window.supabaseClient
-                .from('profiles')
-                .update(updateData)
-                .eq('id', window.currentUser.id);
-
+            const { error } = await window.supabaseClient.from('profiles').update(updateData).eq('id', window.currentUser.id);
             if (error) {
                 alert(error.message);
             } else {
                 const authData = { username: newUsername };
                 if (avatarUrl) authData.avatar_url = avatarUrl;
-
-                await window.supabaseClient.auth.updateUser({
-                    data: authData
-                });
-
+                await window.supabaseClient.auth.updateUser({ data: authData });
                 alert("Perfil actualizado correctamente.");
                 window.location.reload();
             }
@@ -743,10 +712,8 @@
         setHandler('btn-update-pass', async () => {
             const newPass = document.getElementById('pass-new').value;
             const confirm = document.getElementById('pass-confirm').value;
-
             if (newPass !== confirm) return alert("Las contraseñas no coinciden.");
             if (newPass.length < 6) return alert("La contraseña debe tener al menos 6 caracteres.");
-
             const { error } = await window.supabaseClient.auth.updateUser({ password: newPass });
             if (error) alert(error.message);
             else {
@@ -760,7 +727,6 @@
         setHandler('btn-delete-account', async () => {
             const pass = document.getElementById('delete-confirm-pass').value;
             if (!pass) return alert("Por favor, introduce tu contraseña para confirmar.");
-
             const confirmDel = confirm("¿ESTÁS SEGURO? Esta acción enviará una solicitud de borrado de cuenta permanente.");
             if (confirmDel) {
                 const { error } = await window.supabaseClient.from('deletion_requests').insert({
@@ -768,10 +734,8 @@
                     user_email: window.currentUser.email,
                     reason: "User requested deletion via account page"
                 });
-
-                if (error) {
-                    alert("Error al enviar solicitud: " + error.message);
-                } else {
+                if (error) alert("Error al enviar solicitud: " + error.message);
+                else {
                     alert("Solicitud de borrado enviada. Recibirás un correo de confirmación pronto. Por seguridad, cerraremos tu sesión.");
                     await window.supabaseClient.auth.signOut();
                     window.location.href = 'index.html';
@@ -782,25 +746,20 @@
         setHandler('btn-submit-claim', async () => {
             const reason = document.getElementById('claim-reason').value;
             const photoFile = document.getElementById('claim-photo-file').files[0];
-
             if (!reason) return alert("Por favor explica el motivo del reclamo.");
-
             let photoUrl = '';
             if (photoFile) {
                 const { publicUrl, error: uploadError } = await window.uploadFile('claims', photoFile, `${window.currentUser.id}/claim_${Date.now()}.jpg`);
                 if (!uploadError) photoUrl = publicUrl;
             }
-
             const { error } = await window.supabaseClient.from('claims').insert({
                 user_id: window.currentUser.id,
                 user_email: window.currentUser.email,
                 reason: reason,
                 photo_url: photoUrl
             });
-
-            if (error) {
-                alert("Error al enviar el reclamo: " + error.message);
-            } else {
+            if (error) alert("Error al enviar el reclamo: " + error.message);
+            else {
                 alert("Reclamo enviado correctamente. Lo revisaremos pronto.");
                 document.getElementById('claim-reason').value = '';
                 document.getElementById('claim-photo-file').value = '';

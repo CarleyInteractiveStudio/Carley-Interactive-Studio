@@ -84,8 +84,10 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon;
 
 -- Explicitly grant SELECT on profiles to anon so joins work in donation list
+-- Explicitly grant SELECT on profiles and users to enable joins for public data
 GRANT SELECT ON TABLE public.profiles TO anon;
 GRANT SELECT ON TABLE public.profiles TO authenticated;
+GRANT SELECT ON TABLE public.profiles TO service_role;
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE ON TABLES TO authenticated;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT ON TABLES TO anon;

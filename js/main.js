@@ -1432,7 +1432,15 @@ async function fetchDonationStats() {
         .from('donations')
         .select('*, profiles(avatar_url, username)');
 
-    if (error) return console.error('Error fetching donations:', error.message || error);
+    if (error) {
+        console.error('Detailed Error fetching donations:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+        });
+        return;
+    }
 
     const stats = {
         CE: { current: 0, goal: 26000, donors: [] },
