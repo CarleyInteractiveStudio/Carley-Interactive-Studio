@@ -12,4 +12,4 @@ Sigue estos pasos para activar las donaciones reales en tu sitio web:
     `script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"`
     Cambia `test` por tu clave larga.
 
-**Nota:** He dejado el código con `client-id=test` para que los botones se activen ahora mismo y puedas probar cómo se ven, pero para recibir dinero real necesitas seguir estos pasos.
+**Nota:** Ya he configurado tu **Client ID Real** (`Aa2neOo...`) en todo el sitio web (`creative-engine.html`, `vid-spri.html` y `donaciones.html`). ¡Las donaciones ya están activas y listas para recibir pagos reales!
