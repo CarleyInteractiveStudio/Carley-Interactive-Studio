@@ -63,6 +63,27 @@ ON public.donations FOR INSERT
 WITH CHECK (amount > 0);
 
 -- 4. STORAGE BUCKETS AND POLICIES (Fixes "new row violates row-level security policy")
+-- 4. FIX SCHEMA PERMISSIONS (Fixes "permission denied for schema public")
+GRANT USAGE ON SCHEMA public TO anon;
+GRANT USAGE ON SCHEMA public TO authenticated;
+GRANT USAGE ON SCHEMA public TO service_role;
+
+GRANT ALL ON ALL TABLES IN SCHEMA public TO postgres;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO postgres;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO postgres;
+
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
+
+GRANT SELECT, INSERT ON ALL TABLES IN SCHEMA public TO anon;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE ON TABLES TO authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT ON TABLES TO anon;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO anon;
+
+-- 5. STORAGE BUCKETS AND POLICIES (Fixes "new row violates row-level security policy")
 
 -- Create Buckets if they don't exist
 INSERT INTO storage.buckets (id, name, public)
