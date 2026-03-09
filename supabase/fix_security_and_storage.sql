@@ -1,6 +1,23 @@
--- Fix Security and Storage RLS for Carley Interactive Studio
+-- Migration and Fix Script for Carley Interactive Studio
+-- This script ensures columns exist and fixes RLS issues.
 
--- 1. Fix mutable search_path for handle_new_user (fixes security warning)
+-- 1. Ensure user_id column exists in all relevant tables
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'claims' AND COLUMN_NAME = 'user_id') THEN
+        ALTER TABLE public.claims ADD COLUMN user_id UUID REFERENCES auth.users ON DELETE SET NULL;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'reports' AND COLUMN_NAME = 'user_id') THEN
+        ALTER TABLE public.reports ADD COLUMN user_id UUID REFERENCES auth.users ON DELETE SET NULL;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'donations' AND COLUMN_NAME = 'user_id') THEN
+        ALTER TABLE public.donations ADD COLUMN user_id UUID REFERENCES auth.users ON DELETE SET NULL;
+    END IF;
+END $$;
+
+-- 2. Fix mutable search_path for handle_new_user (security warning)
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -19,9 +36,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
--- 2. Refine RLS policies to be less permissive (fixing "always true" warnings)
+-- 3. Refine RLS policies (fixing "always true" warnings)
 
--- For claims: Only authenticated users should send claims for themselves
+-- Claims
+ALTER TABLE public.claims ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Cualquiera puede enviar reclamos" ON public.claims;
 DROP POLICY IF EXISTS "Usuarios autenticados pueden enviar sus propios reclamos" ON public.claims;
 CREATE POLICY "Usuarios autenticados pueden enviar sus propios reclamos"
@@ -29,20 +47,22 @@ ON public.claims FOR INSERT
 TO authenticated
 WITH CHECK (auth.uid() = user_id);
 
--- For reports: Check if email is provided (minimal check to avoid "always true" lint)
+-- Reports
+ALTER TABLE public.reports ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Cualquiera puede enviar reportes" ON public.reports;
 CREATE POLICY "Cualquiera puede enviar reportes"
 ON public.reports FOR INSERT
 WITH CHECK (user_email IS NOT NULL);
 
--- For donations: Minimal check to ensure amount is valid
+-- Donations
+ALTER TABLE public.donations ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Insertar donaciones (público para PayPal callback)" ON public.donations;
 DROP POLICY IF EXISTS "Insertar donaciones verificadas" ON public.donations;
 CREATE POLICY "Insertar donaciones verificadas"
 ON public.donations FOR INSERT
 WITH CHECK (amount > 0);
 
--- 3. STORAGE BUCKETS AND POLICIES (Fixes "new row violates row-level security policy")
+-- 4. STORAGE BUCKETS AND POLICIES (Fixes "new row violates row-level security policy")
 
 -- Create Buckets if they don't exist
 INSERT INTO storage.buckets (id, name, public)
