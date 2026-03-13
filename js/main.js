@@ -1163,7 +1163,7 @@ const translations = {
         "privacy-modal-title": "プライバシー",
         "privacy-modal-desc": "あなたのデータは安全です。 当社のプラットフォームでの体験を向上させるためにのみ使用します。",
         "license-modal-title": "ライセンス",
-        "license-modal-desc": "当社のすべての製品は、国際的な知的財産法によって保护されています。",
+        "license-modal-desc": "当社のすべての製品は、国際的な知的財産法によって保護されています。",
         "ce-nav-tutorials": "チュートリアル",
         "ce-tutorial-ui-title": "Creative Engineのインターフェースを学ぶ",
         "ce-tutorial-ui-desc": "Creative Engineのインターフェースを学んで、簡単に制作しましょう。発売時にエンジンが備えているすべての機能と、各ツールの用途について説明します。これにより、ビデオゲームの作成方法がより明確になります。",
