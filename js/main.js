@@ -498,8 +498,11 @@ const translations = {
         "ce-tutorial-ui-desc": "Aprende la interfaz de Creative Engine para crear con facilidad. Descubrirás todo lo que tiene el motor en su lanzamiento y para qué sirve cada herramienta; así sabrás mejor cómo crear tu videojuego.",
         "ce-tutorial-carl-title": "Cómo activar a Carl",
         "ce-tutorial-carl-desc": "Aprende a activar a Carl, tu compañero de desarrollo que te acompañará en el desarrollo de tus videojuegos.",
+        "ce-tutorial-prog-title": "Cómo programar en Creative Engine",
+        "ce-tutorial-prog-desc": "Aprende a programar tus propios videojuegos usando CES (Creative Engine Scripting) y otras herramientas de codificación.",
         "ce-tutorial-title": "Cómo crear tu primer juego",
         "ce-tutorial-desc": "Aprende los fundamentos de Creative Engine y empieza tu aventura como desarrollador.",
+        "tutorial-not-available": "Aun no esta disponible este tutorial quieres ver nuestro canal y otros videos",
         "ce-donate-intro": "Tu apoyo es lo que mantiene este proyecto vivo y gratuito para todos. Con total transparencia, te compartimos que mantener Creative Engine requiere cubrir costos de servidores y desarrollo para que siga siendo una herramienta accesible para todos sin barreras económicas. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.",
         "ce-info-1": "Creative Engine fue diseñado para todo público. No importa que seas experto, novato o no tengas experiencia alguna, Creative Engine te ayuda y te enseña.",
         "ce-info-2": "Nuestro motor fue inspirado de Unity pero se basa en materias y leyes. Las materias pueden ser cualquier cosa de tu juego y las leyes todo lo que define el comportamiento de cada cosa de tu juego; son un conjunto de reglas que hacen tu juego único y hacerlo lo que quieras que sea.",
@@ -698,8 +701,11 @@ const translations = {
         "ce-tutorial-ui-desc": "Learn the Creative Engine interface to create with ease. You will discover everything the engine has at launch and what each tool is for; this way you will better know how to create your video game.",
         "ce-tutorial-carl-title": "How to activate Carl",
         "ce-tutorial-carl-desc": "Learn how to activate Carl, your development companion who will accompany you in the development of your video games.",
+        "ce-tutorial-prog-title": "How to program in Creative Engine",
+        "ce-tutorial-prog-desc": "Learn to program your own video games using CES (Creative Engine Scripting) and other coding tools.",
         "ce-tutorial-title": "How to create your first game",
         "ce-tutorial-desc": "Learn the fundamentals of Creative Engine and start your adventure as a developer.",
+        "tutorial-not-available": "This tutorial is not yet available, do you want to see our channel and other videos?",
         "ce-donate-intro": "Your support is what keeps this project alive and free for everyone. With total transparency, we share that maintaining Creative Engine requires covering server and development costs so that it remains an accessible tool for everyone without economic barriers. Your donations will help others use our tools for free.",
         "ce-info-1": "Creative Engine was designed for everyone. It doesn't matter if you're an expert, a novice, or have no experience at all, Creative Engine helps and teaches you.",
         "ce-info-2": "Our engine was inspired by Unity but is based on matters and laws. Matters can be anything in your game and laws are everything that defines the behavior of each thing in your game; they are a set of rules that make your game unique and make it what you want it to be.",
@@ -838,6 +844,9 @@ const translations = {
         "ce-tutorial-ui-desc": "Apprenez l'interface de Creative Engine pour créer avec facilité. Vous découvrirez tout ce que le moteur propose à son lancement et à quoi sert chaque outil ; ainsi, vous saurez mieux comment créer votre jeu vidéo.",
         "ce-tutorial-carl-title": "Comment activer Carl",
         "ce-tutorial-carl-desc": "Apprenez à activer Carl, votre compagnon de développement qui vous accompagnera dans le développement de vos jeux vidéo.",
+        "ce-tutorial-prog-title": "Comment programmer dans Creative Engine",
+        "ce-tutorial-prog-desc": "Apprenez à programmer vos propres jeux vidéo en utilisant CES (Creative Engine Scripting) et d'autres outils de codage.",
+        "tutorial-not-available": "Ce tutoriel n'est pas encore disponible, voulez-vous voir notre chaîne et d'autres vidéos ?",
         // Vid Spri (FR)
         "vs-nav-tutorials": "Tutoriels",
         "vs-info-1": "VidSpri a été créé pour les développeurs débutants ou ceux qui souhaitent créer leurs jeux vidéo 2D mais n'ont aucune expérience dans le dessin de chaque image.",
@@ -907,6 +916,9 @@ const translations = {
         "ce-tutorial-ui-desc": "Aprenda a interface do Creative Engine para criar com facilidade. Você descobrirá tudo o que o motor tem no lançamento e para que serve cada ferramenta; assim você saberá melhor como criar o seu videogame.",
         "ce-tutorial-carl-title": "Como ativar o Carl",
         "ce-tutorial-carl-desc": "Aprenda como ativar o Carl, seu companheiro de desenvolvimento que o acompanhará no desenvolvimento de seus videogames.",
+        "ce-tutorial-prog-title": "Como programar no Creative Engine",
+        "ce-tutorial-prog-desc": "Aprenda a programar seus próprios videogames usando CES (Creative Engine Scripting) e outras ferramentas de codificação.",
+        "tutorial-not-available": "Este tutorial ainda não está disponível, você quer ver nosso canal e outros vídeos?",
         // Vid Spri (PT)
         "vs-nav-tutorials": "Tutoriais",
         "vs-info-1": "O VidSpri foi criado pensando nos desenvolvedores novatos ou naqueles que querem criar seus jogos 2D mas não têm experiência desenhando cada quadro.",
@@ -976,6 +988,9 @@ const translations = {
         "ce-tutorial-ui-desc": "Изучите интерфейс Creative Engine, чтобы с легкостью создавать игры. Вы узнаете обо всем, что есть в движке на момент запуска, и для чего нужен каждый инструмент; так вы будете лучше знать, как создать свою видеоигру.",
         "ce-tutorial-carl-title": "Как активировать Карла",
         "ce-tutorial-carl-desc": "Узнайте, как активировать Карла, вашего компаньона по разработке, который будет сопровождать вас в создании ваших видеоигр.",
+        "ce-tutorial-prog-title": "Как программировать в Creative Engine",
+        "ce-tutorial-prog-desc": "Научитесь программировать свои собственные видеоигры, используя CES (Creative Engine Scripting) и другие инструменты кодирования.",
+        "tutorial-not-available": "Этот урок еще не доступен, вы хотите посмотреть наш канал и другие видео?",
         // Vid Spri (RU)
         "vs-nav-tutorials": "Обучение",
         "vs-info-1": "VidSpri был создан для начинающих разработчиков или тех, кто хочет создавать свои 2D-видеоигры, но не имеет опыта рисования каждого кадра.",
@@ -1045,6 +1060,9 @@ const translations = {
         "ce-tutorial-ui-desc": "学习 Creative Engine 界面，轻松创作。您将发现引擎在发布时所具备的一切功能以及每种工具的用途；这样您就能更好地了解如何制作您的视频游戏。",
         "ce-tutorial-carl-title": "如何激活 Carl",
         "ce-tutorial-carl-desc": "了解如何激活 Carl，他是您的开发伙伴，将陪伴您开发视频游戏。",
+        "ce-tutorial-prog-title": "如何在 Creative Engine 中编程",
+        "ce-tutorial-prog-desc": "学习使用 CES (Creative Engine Scripting) 和其他编码工具编写您自己的视频游戏。",
+        "tutorial-not-available": "本教程尚未推出，您想查看我们的频道和其他视频吗？",
         // Vid Spri (ZH)
         "vs-nav-tutorials": "教程",
         "vs-info-1": "VidSpri 是为新手开发人员或想要创建 2D 视频游戏但没有绘制每一帧经验的人创建的。",
@@ -1114,6 +1132,9 @@ const translations = {
         "ce-tutorial-ui-desc": "Impara l'interfaccia di Creative Engine per creare con facilità. Scoprirai tutto ciò che il motore offre al lancio e a cosa serve ogni strumento; in questo modo saprai meglio come creare il tuo videogioco.",
         "ce-tutorial-carl-title": "Come attivare Carl",
         "ce-tutorial-carl-desc": "Scopri come attivare Carl, il tuo compagno di sviluppo che ti accompagnerà nello sviluppo dei tuoi videogiochi.",
+        "ce-tutorial-prog-title": "Come programmare in Creative Engine",
+        "ce-tutorial-prog-desc": "Impara a programmare i tuoi videogiochi usando CES (Creative Engine Scripting) e altri strumenti di codifica.",
+        "tutorial-not-available": "Questo tutorial non è ancora disponibile, vuoi vedere il nostro canale e altri video?",
         // Vid Spri (IT)
         "vs-nav-tutorials": "Tutorial",
         "vs-info-1": "VidSpri è stato creato pensando agli sviluppatori principianti o a coloro che vogliono creare i propri videogiochi 2D ma non hanno esperienza nel disegnare ogni singolo fotogramma.",
@@ -1183,6 +1204,9 @@ const translations = {
         "ce-tutorial-ui-desc": "Creative Engineのインターフェースを学んで、簡単に制作しましょう。発売時にエンジンが備えているすべての機能と、各ツールの用途について説明します。これにより、ビデオゲームの作成方法がより明確になります。",
         "ce-tutorial-carl-title": "Carlを起動する方法",
         "ce-tutorial-carl-desc": "ビデオゲームの開発に同行する開発パートナー、Carlを起動する方法を学びましょう。",
+        "ce-tutorial-prog-title": "Creative Engineでのプログラミング方法",
+        "ce-tutorial-prog-desc": "CES (Creative Engine Scripting) やその他のコーディングツールを使用して、独自のビデオゲームをプログラミングする方法を学びます。",
+        "tutorial-not-available": "このチュートリアルはまだ利用できません。私たちのチャンネルや他のビデオをご覧になりますか？",
         // Vid Spri (JA)
         "vs-nav-tutorials": "チュートリアル",
         "vs-info-1": "VidSpriは、初心者開発者や、2Dビデオゲームを作成したいが各フレームを描く経験がない人を対象に作成されました。",
@@ -1252,6 +1276,9 @@ const translations = {
         "ce-tutorial-ui-desc": "Jifunze kiolesura cha Creative Engine ili kuunda kwa urahisi. Utajua kila kitu ambacho injini inacho wakati wa uzinduzi na kazi ya kila chombo; kwa njia hii utajua vyema jinsi ya kuunda mchezo wako wa video.",
         "ce-tutorial-carl-title": "Jinsi ya kumwanzisha Carl",
         "ce-tutorial-carl-desc": "Jifunze jinsi ya kumwanzisha Carl, mshirika wako wa uundaji ambaye atakuongoza katika uundaji wa michezo yako ya video.",
+        "ce-tutorial-prog-title": "Jinsi ya kupanga katika Creative Engine",
+        "ce-tutorial-prog-desc": "Jifunze kupanga michezo yako ya video ukitumia CES (Creative Engine Scripting) na zana zingine za usimbaji.",
+        "tutorial-not-available": "Mafunzo haya bado hayajapatikana, unataka kuona kituo chetu na video zingine?",
         // Vid Spri (SW)
         "vs-nav-tutorials": "Mafunzo",
         "vs-info-1": "VidSpri iliundwa kwa ajili ya watengenezaji wa michezo wanaoanza au wale wanaotaka kuunda michezo yao ya 2D lakini hawana uzoefu wa kuchora kila fremu.",
@@ -1612,6 +1639,77 @@ if (sendOpinionBtn) {
         }
     };
 }
+
+/* ==============================
+   Tutorial Availability Logic
+============================== */
+window.handleTutorialClick = function(url) {
+    if (url) {
+        window.open(url, '_blank');
+    } else {
+        const lang = localStorage.getItem('carley-lang') || 'es';
+        const msg = translations[lang]['tutorial-not-available'] || translations['es']['tutorial-not-available'];
+
+        // Create custom 10-second toast notification
+        const existing = document.getElementById('tutorial-toast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'tutorial-toast';
+        toast.className = 'studio-toast';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #111;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 9999;
+            max-width: 300px;
+            animation: slideIn 0.3s ease;
+        `;
+
+        toast.innerHTML = `
+            <p style="margin: 0 0 1rem 0; font-size: 0.9rem; line-height: 1.4;">${msg}</p>
+            <div style="display: flex; gap: 10px;">
+                <button id="toast-yes" class="ce-btn primary small" style="padding: 5px 15px; font-size: 0.8rem;">Sí</button>
+                <button id="toast-no" class="ce-btn outline small" style="padding: 5px 15px; font-size: 0.8rem;">No</button>
+            </div>
+            <div id="toast-progress" style="height: 3px; background: var(--accent); width: 100%; position: absolute; bottom: 0; left: 0; transition: width 10s linear; border-radius: 0 0 15px 15px;"></div>
+        `;
+
+        document.body.appendChild(toast);
+
+        // Trigger progress animation
+        setTimeout(() => {
+            const bar = document.getElementById('toast-progress');
+            if (bar) bar.style.width = '0%';
+        }, 10);
+
+        const closeToast = () => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        };
+
+        const timer = setTimeout(closeToast, 10000);
+
+        document.getElementById('toast-yes').onclick = () => {
+            clearTimeout(timer);
+            window.open('https://www.youtube.com/@CarleyInteractiveStudioOficial', '_blank');
+            closeToast();
+        };
+
+        document.getElementById('toast-no').onclick = () => {
+            clearTimeout(timer);
+            closeToast();
+        };
+    }
+};
 
 // Handler for Submitting Bug Reports
 const sendReportBtn = document.getElementById('send-report');
