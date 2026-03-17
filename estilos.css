@@ -930,3 +930,44 @@ body::-webkit-scrollbar,
         transform: translateY(0);
     }
 }
+
+/* ==============================
+   Toast Notifications
+============================== */
+.studio-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #111;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    max-width: 300px;
+    animation: slideIn 0.3s ease;
+    overflow: hidden;
+}
+
+.studio-toast p {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.toast-actions {
+    display: flex;
+    gap: 10px;
+}
+
+#toast-progress {
+    height: 3px;
+    background: var(--accent);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: width 10s linear;
+    border-radius: 0 0 15px 15px;
+}

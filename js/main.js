@@ -398,6 +398,8 @@ function initializeSearch() {
 const translations = {
     es: {
         welcome: "Bienvenido, nos alegra tenerte aquí",
+        "btn-yes": "Sí",
+        "btn-no": "No",
         "search-ph": "Buscar en Carley...",
         "hero-desc": "¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine, un motor de videojuego 2D que te facilita todo. No importa que tengas experiencia en la creación de videojuegos o no, Creative Engine está hecho para ti. Cualquier idea que tengas, Creative Engine te ayuda a convertirla en realidad.",
         "hero-cta": "Empezar a Crear",
@@ -493,6 +495,9 @@ const translations = {
         "ce-nav-claims": "Reclamos",
         "ce-nav-donations": "Donaciones",
         "ce-nav-collabs": "Colaboradores",
+        "ce-nav-solutions": "Soluciones Rápidas",
+        "ce-solutions-title": "Soluciones Rápidas",
+        "ce-solutions-placeholder": "Por ahora no hay soluciones rápidas, pero si encuentras fallos, por favor repórtalos. Así empezaremos a agregar formas de resolverlos.",
         "ce-nav-tutorials": "Tutoriales",
         "ce-tutorial-ui-title": "Aprende la interfaz de Creative Engine",
         "ce-tutorial-ui-desc": "Aprende la interfaz de Creative Engine para crear con facilidad. Descubrirás todo lo que tiene el motor en su lanzamiento y para qué sirve cada herramienta; así sabrás mejor cómo crear tu videojuego.",
@@ -599,6 +604,8 @@ const translations = {
     },
     en: {
         welcome: "Welcome, we're glad to have you here",
+        "btn-yes": "Yes",
+        "btn-no": "No",
         "privacy-modal-title": "Privacy and Terms of Use",
         "privacy-modal-desc": "Your privacy is our priority. We do not share your data with third parties or sell it. This unique account will allow you to access all Carley Interactive Studio products and apps. The user is solely responsible for the security of their account and any data they choose to share with third parties. We offer full support for account recovery and access issues. By using our services, you agree that Carley is not responsible for any misuse of the account by the user.",
         "search-ph": "Search in Carley...",
@@ -696,6 +703,9 @@ const translations = {
         "ce-nav-claims": "Claims",
         "ce-nav-donations": "Donations",
         "ce-nav-collabs": "Collaborators",
+        "ce-nav-solutions": "Quick Solutions",
+        "ce-solutions-title": "Quick Solutions",
+        "ce-solutions-placeholder": "For now, there are no quick solutions, but if you find any bugs, please report them. This way we will start adding ways to solve them.",
         "ce-nav-tutorials": "Tutorials",
         "ce-tutorial-ui-title": "Learn the Creative Engine interface",
         "ce-tutorial-ui-desc": "Learn the Creative Engine interface to create with ease. You will discover everything the engine has at launch and what each tool is for; this way you will better know how to create your video game.",
@@ -802,6 +812,8 @@ const translations = {
     },
     fr: {
         welcome: "Bienvenue, nous sommes ravis de vous voir ici",
+        "btn-yes": "Oui",
+        "btn-no": "Non",
         "search-ph": "Rechercher dans Carley...",
         "hero-desc": "Avez-vous déjà pensé à développer votre propre jeu vidéo ? Eh bien, nous avons conçu Creative Engine pour vous, un moteur de jeu vidéo 2D qui facilite tout. Que vous ayez de l'expérience dans la création de jeux ou non, Creative Engine est fait pour vous. Quelle que soit votre idée, Creative Engine vous aide à la concrétiser.",
         "hero-cta": "Commencer à créer",
@@ -840,6 +852,9 @@ const translations = {
         "license-modal-title": "Licence",
         "license-modal-desc": "Tous nos produits sont protégés par les lois internationales sur la propriété intellectuelle.",
         "ce-nav-tutorials": "Tutoriels",
+        "ce-nav-solutions": "Solutions Rapides",
+        "ce-solutions-title": "Solutions Rapides",
+        "ce-solutions-placeholder": "Pour l'instant, il n'y a pas de solutions rapides, mais si vous trouvez des bugs, veuillez les signaler. De cette façon, nous commencerons à ajouter des moyens de les résoudre.",
         "ce-tutorial-ui-title": "Apprenez l'interface de Creative Engine",
         "ce-tutorial-ui-desc": "Apprenez l'interface de Creative Engine pour créer avec facilité. Vous découvrirez tout ce que le moteur propose à son lancement et à quoi sert chaque outil ; ainsi, vous saurez mieux comment créer votre jeu vidéo.",
         "ce-tutorial-carl-title": "Comment activer Carl",
@@ -874,6 +889,8 @@ const translations = {
     },
     pt: {
         welcome: "Bem-vindo, estamos felizes em tê-lo aqui",
+        "btn-yes": "Sim",
+        "btn-no": "Não",
         "search-ph": "Pesquisar em Carley...",
         "hero-desc": "Já pensou em desenvolver seu próprio videogame? Bem, projetamos o Creative Engine para você, um motor de videogame 2D que facilita tudo. Não importa se você tem experiência na criação de jogos ou não, o Creative Engine foi feito para você. Qualquer ideia que você tenha, o Creative Engine ajuda a torná-la realidade.",
         "hero-cta": "Começar a criar",
@@ -912,6 +929,9 @@ const translations = {
         "license-modal-title": "Licença",
         "license-modal-desc": "Todos os nossos produtos são protegidos por leis de propriedade intelectual internacionais.",
         "ce-nav-tutorials": "Tutoriais",
+        "ce-nav-solutions": "Soluções Rápidas",
+        "ce-solutions-title": "Soluções Rápidas",
+        "ce-solutions-placeholder": "Por enquanto, não há soluções rápidas, mas se você encontrar algum bug, por favor, denuncie. Assim começaremos a adicionar formas de resolvê-los.",
         "ce-tutorial-ui-title": "Aprenda a interface do Creative Engine",
         "ce-tutorial-ui-desc": "Aprenda a interface do Creative Engine para criar com facilidade. Você descobrirá tudo o que o motor tem no lançamento e para que serve cada ferramenta; assim você saberá melhor como criar o seu videogame.",
         "ce-tutorial-carl-title": "Como ativar o Carl",
@@ -946,6 +966,8 @@ const translations = {
     },
     ru: {
         welcome: "Добро пожаловать, мы рады видеть вас здесь",
+        "btn-yes": "Да",
+        "btn-no": "Нет",
         "search-ph": "Поиск в Carley...",
         "hero-desc": "Вы когда-нибудь задумывались о разработке собственной видеоигры? Что ж, мы разработали для вас Creative Engine — движок для 2D-видеоигр, который упрощает все. Неважно, есть ли у вас опыт создания игр или нет, Creative Engine создан для вас. Любую вашу идею Creative Engine поможет воплотить в реальность.",
         "hero-cta": "Начать создание",
@@ -984,6 +1006,9 @@ const translations = {
         "license-modal-title": "Лицензия",
         "license-modal-desc": "Все наши продукты защищены международными законами об интеллектуальной собственности.",
         "ce-nav-tutorials": "Обучение",
+        "ce-nav-solutions": "Быстрые решения",
+        "ce-solutions-title": "Быстрые решения",
+        "ce-solutions-placeholder": "На данный момент быстрых решений нет, но если вы обнаружите какие-либо ошибки, пожалуйста, сообщите о них. Так мы начнем добавлять способы их решения.",
         "ce-tutorial-ui-title": "Изучите интерфейс Creative Engine",
         "ce-tutorial-ui-desc": "Изучите интерфейс Creative Engine, чтобы с легкостью создавать игры. Вы узнаете обо всем, что есть в движке на момент запуска, и для чего нужен каждый инструмент; так вы будете лучше знать, как создать свою видеоигру.",
         "ce-tutorial-carl-title": "Как активировать Карла",
@@ -1018,6 +1043,8 @@ const translations = {
     },
     zh: {
         welcome: "欢迎，很高兴您来到这里",
+        "btn-yes": "是",
+        "btn-no": "否",
         "search-ph": "在 Carley 中搜索...",
         "hero-desc": "您是否想过开发自己的视频游戏？ 那么，我们为您设计了 Creative Engine，这是一款让一切变得简单的 2D 视频游戏引擎。 无论您是否有游戏创作经验，Creative Engine 都是为您量身定制的。 无论您有什么想法，Creative Engine 都能帮助您将其变为现实。",
         "hero-cta": "开始创作",
@@ -1056,6 +1083,9 @@ const translations = {
         "license-modal-title": "许可",
         "license-modal-desc": "我们的所有产品均受国际知识产权法保护。",
         "ce-nav-tutorials": "教程",
+        "ce-nav-solutions": "快速解决方案",
+        "ce-solutions-title": "快速解决方案",
+        "ce-solutions-placeholder": "目前还没有快速解决方案，但如果您发现任何错误，请举报。这样我们将开始添加解决它们的方法。",
         "ce-tutorial-ui-title": "学习 Creative Engine 界面",
         "ce-tutorial-ui-desc": "学习 Creative Engine 界面，轻松创作。您将发现引擎在发布时所具备的一切功能以及每种工具的用途；这样您就能更好地了解如何制作您的视频游戏。",
         "ce-tutorial-carl-title": "如何激活 Carl",
@@ -1090,6 +1120,8 @@ const translations = {
     },
     it: {
         welcome: "Benvenuto, siamo felici di averti qui",
+        "btn-yes": "Sì",
+        "btn-no": "No",
         "search-ph": "Cerca in Carley...",
         "hero-desc": "Hai mai pensato di sviluppare il tuo videogioco? Bene, abbiamo progettato per te Creative Engine, un motore di videogioco 2D che semplifica tutto. Non importa se hai esperienza nella creazione di giochi o meno, Creative Engine è fatto per te. Qualunque idea tu abbia, Creative Engine ti aiuta a trasformarla in realtà.",
         "hero-cta": "Inizia a creare",
@@ -1128,6 +1160,9 @@ const translations = {
         "license-modal-title": "Licenza",
         "license-modal-desc": "Tutti i nostri prodotti sono protetti dalle leggi internazionali sulla proprietà intellettuale.",
         "ce-nav-tutorials": "Tutorial",
+        "ce-nav-solutions": "Soluzioni Rapide",
+        "ce-solutions-title": "Soluzioni Rapide",
+        "ce-solutions-placeholder": "Per ora non ci sono soluzioni rapide, ma se trovi dei bug, segnalali. In questo modo inizieremo ad aggiungere modi per risolverli.",
         "ce-tutorial-ui-title": "Impara l'interfaccia di Creative Engine",
         "ce-tutorial-ui-desc": "Impara l'interfaccia di Creative Engine per creare con facilità. Scoprirai tutto ciò che il motore offre al lancio e a cosa serve ogni strumento; in questo modo saprai meglio come creare il tuo videogioco.",
         "ce-tutorial-carl-title": "Come attivare Carl",
@@ -1162,6 +1197,8 @@ const translations = {
     },
     ja: {
         welcome: "ようこそ、お越しいただきありがとうございます",
+        "btn-yes": "はい",
+        "btn-no": "いいえ",
         "search-ph": "Carleyで検索...",
         "hero-desc": "自分のビデオゲームを開発したいと思ったことはありませんか？ 私たちは、すべてを簡単にする2Dビデオゲームエンジン「Creative Engine」をあなたのために設計しました。 ゲーム制作の経験があるかないかにかかわらず、Creative Engineはあなたのために作られています。 どんなアイデアでも、Creative Engineがそれを現実に変えるお手伝いをします。",
         "hero-cta": "制作を開始する",
@@ -1200,6 +1237,9 @@ const translations = {
         "license-modal-title": "ライセンス",
         "license-modal-desc": "当社のすべての製品は、国際的な知的財産法によって保護されています。",
         "ce-nav-tutorials": "チュートリアル",
+        "ce-nav-solutions": "クイックソリューション",
+        "ce-solutions-title": "クイックソリューション",
+        "ce-solutions-placeholder": "現時点ではクイックソリューションはありませんが、バグを見つけた場合は報告してください。これにより、解決方法の追加を開始します。",
         "ce-tutorial-ui-title": "Creative Engineのインターフェースを学ぶ",
         "ce-tutorial-ui-desc": "Creative Engineのインターフェースを学んで、簡単に制作しましょう。発売時にエンジンが備えているすべての機能と、各ツールの用途について説明します。これにより、ビデオゲームの作成方法がより明確になります。",
         "ce-tutorial-carl-title": "Carlを起動する方法",
@@ -1234,6 +1274,8 @@ const translations = {
     },
     sw: {
         welcome: "Karibu, tunafurahi kuwa nawe hapa",
+        "btn-yes": "Ndiyo",
+        "btn-no": "Hapana",
         "search-ph": "Tafuta katika Carley...",
         "hero-desc": "Je, umewahi kufikiria kukuza mchezo wako wa video? Naam, tumekuandalia Creative Engine, injini ya mchezo wa video wa 2D inayofanya kila kitu kuwa rahisi. Haijalishi kama una uzoefu katika uundaji wa mchezo au la, Creative Engine imeundwa kwa ajili yako. Wazo lolote ulilonalo, Creative Engine inakusaidia kulifanya kuwa kweli.",
         "hero-cta": "Anza Kuunda",
@@ -1272,6 +1314,9 @@ const translations = {
         "license-modal-title": "Leseni",
         "license-modal-desc": "Bidhaa zetu zote zinalindwa na sheria za kimataifa za mali miliki.",
         "ce-nav-tutorials": "Mafunzo",
+        "ce-nav-solutions": "Suluhisho za Haraka",
+        "ce-solutions-title": "Suluhisho za Haraka",
+        "ce-solutions-placeholder": "Kwa sasa, hakuna suluhisho za haraka, lakini ukipata hitilafu zozote, tafadhali ziripoti. Kwa njia hii tutaanza kuongeza njia za kuzitatua.",
         "ce-tutorial-ui-title": "Jifunze kiolesura cha Creative Engine",
         "ce-tutorial-ui-desc": "Jifunze kiolesura cha Creative Engine ili kuunda kwa urahisi. Utajua kila kitu ambacho injini inacho wakati wa uzinduzi na kazi ya kila chombo; kwa njia hii utajua vyema jinsi ya kuunda mchezo wako wa video.",
         "ce-tutorial-carl-title": "Jinsi ya kumwanzisha Carl",
@@ -1654,31 +1699,20 @@ window.handleTutorialClick = function(url) {
         const existing = document.getElementById('tutorial-toast');
         if (existing) existing.remove();
 
+        const btnYes = translations[lang]['btn-yes'] || translations['es']['btn-yes'];
+        const btnNo = translations[lang]['btn-no'] || translations['es']['btn-no'];
+
         const toast = document.createElement('div');
         toast.id = 'tutorial-toast';
         toast.className = 'studio-toast';
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #111;
-            color: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 9999;
-            max-width: 300px;
-            animation: slideIn 0.3s ease;
-        `;
 
         toast.innerHTML = `
-            <p style="margin: 0 0 1rem 0; font-size: 0.9rem; line-height: 1.4;">${msg}</p>
-            <div style="display: flex; gap: 10px;">
-                <button id="toast-yes" class="ce-btn primary small" style="padding: 5px 15px; font-size: 0.8rem;">Sí</button>
-                <button id="toast-no" class="ce-btn outline small" style="padding: 5px 15px; font-size: 0.8rem;">No</button>
+            <p>${msg}</p>
+            <div class="toast-actions">
+                <button id="toast-yes" class="ce-btn primary small">${btnYes}</button>
+                <button id="toast-no" class="ce-btn outline small">${btnNo}</button>
             </div>
-            <div id="toast-progress" style="height: 3px; background: var(--accent); width: 100%; position: absolute; bottom: 0; left: 0; transition: width 10s linear; border-radius: 0 0 15px 15px;"></div>
+            <div id="toast-progress"></div>
         `;
 
         document.body.appendChild(toast);

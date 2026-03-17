@@ -66,6 +66,9 @@
                 <a href="colaboradores.html" class="nav-item">
                     <i data-lucide="award"></i> <span data-i18n="ce-nav-collabs">Colaboradores</span>
                 </a>
+                <a href="soluciones-rapidas.html" class="nav-item">
+                    <i data-lucide="zap"></i> <span data-i18n="ce-nav-solutions">Soluciones Rápidas</span>
+                </a>
                 <a href="#coqui" class="nav-item" data-target="coqui">
                     <i data-lucide="info"></i> <span data-i18n="ce-nav-credits">Créditos</span>
                 </a>
@@ -343,8 +346,10 @@
         // Specific logic for Creative Engine page
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', (e) => {
-                e.preventDefault();
                 const target = item.getAttribute('data-target');
+                if (!target) return; // Allow normal navigation for links without data-target
+
+                e.preventDefault();
 
                 // Update nav
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -352,7 +357,8 @@
 
                 // Update content
                 document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                document.getElementById(target).classList.add('active');
+                const section = document.getElementById(target);
+                if (section) section.classList.add('active');
 
                 // Update URL hash without jumping
                 history.pushState(null, null, '#' + target);

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soluciones Rápidas - Creative Engine</title>
+    <meta name="description" content="Encuentra soluciones a los errores más comunes en Creative Engine.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carleystudio.com/soluciones-rapidas.html">
+    <meta property="og:title" content="Soluciones Rápidas - Creative Engine">
+    <meta property="og:description" content="Guía de resolución de problemas para desarrolladores de Creative Engine.">
+    <meta property="og:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
+    <style>
+        .solutions-page-container {
+            padding: 100px 20px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            min-height: calc(100vh - 200px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .solutions-header {
+            margin-bottom: 40px;
+        }
+
+        .solutions-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to bottom, #ffffff, #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .solutions-content {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .solutions-placeholder-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .report-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem 2rem;
+            background: rgba(0, 170, 255, 0.1);
+            color: var(--accent);
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .report-hint:hover {
+            background: rgba(0, 170, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .solutions-title { font-size: 2rem; }
+            .solutions-content { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body class="engine-body">
+
+    <header class="glass-header">
+        <div class="header-content">
+            <div class="logo-area" onclick="window.location.href='index.html'">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="logo-c">
+                <div class="logo-name-wrapper">
+                    <span class="logo-name">Carley Interactive Studio</span>
+                </div>
+            </div>
+
+            <div class="search-area">
+                <div class="search-input-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="main-search" placeholder="Buscar en Carley..." data-i18n-ph="search-ph">
+                    <div id="search-dropdown" class="search-results-dropdown hidden"></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <select id="lang-picker" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="cuenta.html" class="icon-btn">
+                    <i data-lucide="user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="solutions-page-container">
+        <div class="solutions-content product-reveal active">
+            <header class="solutions-header">
+                <h1 class="solutions-title" data-i18n="ce-solutions-title">Soluciones Rápidas</h1>
+            </header>
+
+            <p class="solutions-placeholder-text" data-i18n="ce-solutions-placeholder">
+                Por ahora no hay soluciones rápidas, pero si encuentras fallos, por favor repórtalos. Así empezaremos a agregar formas de resolverlos.
+            </p>
+
+            <a href="creative-engine.html#report" class="report-hint">
+                <i data-lucide="bug"></i>
+                <span data-i18n="ce-nav-report">Reportar</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="studio-footer">
+        <div class="footer-legal">
+            <p data-i18n="footer-copyright">&copy; 2026 Carley Interactive Studio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
