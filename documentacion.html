@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación - Creative Engine</title>
+    <meta name="description" content="Guía de componentes y scripting para Creative Engine.">
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
+</head>
+<body class="engine-body fixed-page">
+
+    <div class="engine-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="mini-logo">
+                <span class="ce-title">Creative Engine</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="creative-engine.html#info" class="nav-item">
+                    <i data-lucide="info"></i> <span data-i18n="ce-nav-info">Información</span>
+                </a>
+                <a href="documentacion.html" class="nav-item active">
+                    <i data-lucide="book"></i> <span data-i18n="ce-nav-docs">Documentación</span>
+                </a>
+                <div class="sidebar-subnav">
+                    <a href="#leyes" class="subnav-item active" data-target="leyes">Leyes</a>
+                </div>
+                <a href="creative-engine.html#tutorials" class="nav-item">
+                    <i data-lucide="play-circle"></i> <span data-i18n="ce-nav-tutorials">Tutoriales</span>
+                </a>
+                <a href="soluciones-rapidas.html" class="nav-item">
+                    <i data-lucide="zap"></i> <span data-i18n="ce-nav-solutions">Soluciones Rápidas</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <select id="lang-picker-ce" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="index.html" class="home-btn" title="Volver al Inicio">
+                    <img src="carley_foto_web/Logo_C.png" alt="Home">
+                </a>
+            </div>
+        </aside>
+
+        <main class="engine-content">
+            <section id="leyes" class="content-section active">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-leyes-title">Guía de Componentes (Leyes) - Creative Engine</h1>
+                    <p class="ce-text" data-i18n="ce-docs-leyes-intro">En Creative Engine, las Materias (objetos) cobran vida a través de las Leyes (components). Cada Ley añade una funcionalidad específica, como gravedad, renderizado de imagen o lógica de IA. Esta guía detalla el uso de los componentes tanto en el Inspector como en los Scripts (.ces) utilizando la sintaxis moderna (sin prefijos como this. o motor.).</p>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-core-title">1. Componentes Base (Core)</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="map-pin"></i> <span data-i18n="ce-docs-transform-name">Transform (Transformación)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-transform-desc">Define la posición, rotación y escala de un objeto en el espacio 2D.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-transform-inspector">Uso en Inspector: Edita los valores X e Y para mover el objeto. Usa los botones de volteo (Flip) para invertir la imagen.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>posicion.x += 5; // Mueve a la derecha
+rotacion += 45;  // Rota 45 grados
+escala.x = 2;    // Duplica el tamaño horizontal
+voltearH = verdadero; // Invierte horizontalmente</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="video"></i> <span data-i18n="ce-docs-camera-name">Camera (Cámara)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-camera-desc">Define el área visible del juego.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-camera-inspector">Uso en Inspector: Configura el color de fondo, el zoom y la máscara de capas (Culling Mask) para decidir qué objetos ve esta cámara.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>camara.orthographicSize = 10; // Cambia el zoom
+camara.backgroundColor = "#ff0000"; // Fondo rojo</code></pre>
+                        </div>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-render-title">2. Renderizado y Visuales</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="image"></i> <span data-i18n="ce-docs-sprite-name">SpriteRenderer (Renderizador de Sprite)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-sprite-desc">Muestra una imagen (.png, .jpg) o un cuadro de una hoja de sprites (.ceSprite).</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-sprite-inspector">Uso en Inspector: Arrastra una imagen al campo "Source". Puedes cambiar el color para tintar la imagen o ajustar la opacidad.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>renderizadorDeSprite.color = "#00ff00"; // Tinta de verde
+renderizadorDeSprite.opacity = 0.5;      // Semi-transparente
+renderizadorDeSprite.spriteName = "Salto"; // Cambia el sprite (si es .ceSprite)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="waves"></i> <span data-i18n="ce-docs-water-name">Water (Agua)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-water-desc">Simulación física de fluidos basada en partículas.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-water-inspector">Uso en Inspector: Define el ancho y alto del área de agua. Ajusta la densidad (flotación) y viscosidad.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>agua.densidad = 2.0; // Los objetos flotarán más
+agua.mostrarMareas = verdadero;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="clapperboard"></i> <span data-i18n="ce-docs-video-name">VideoPlayer (Reproductor de Video)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-video-desc">Reproduce archivos de video en el mundo o en la UI.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-video-inspector">Uso en Inspector: Soporta formatos .mp4 y .webm. Puedes activar el bucle (loop) y ajustar el volumen.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>reproductorDeVideo.reproducir();
+reproductorDeVideo.pausar();
+reproductorDeVideo.volumen = 0.8;</code></pre>
+                        </div>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-physics-title">3. Físicas 2D</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="scale"></i> <span data-i18n="ce-docs-rigidbody-name">Rigidbody2D (Física)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-rigidbody-desc">Permite que el objeto reaccione a la gravedad y colisiones.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-rigidbody-inspector">Uso en Inspector: Cambia el tipo de cuerpo a "Dynamic" para que caiga, o "Kinematic" para moverlo manualmente pero que detecte colisiones.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>fisica.applyImpulse(nuevo Vector2(0, -10)); // Salto
+fisica.velocity.x = 5; // Velocidad constante
+fisica.gravityScale = 0; // Desactiva gravedad</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="package"></i> <span data-i18n="ce-docs-collider-name">BoxCollider2D / CircleCollider2D (Colisionadores)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-collider-desc">Definen la forma física para los choques.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-collider-inspector">Uso en Inspector: Ajusta el tamaño o radio. Si marcas "Is Trigger", el objeto no chocará pero detectará cuando algo entre en su área.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>si (estaTocandoTag("Suelo")) {
+    imprimir("En el suelo");
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-ai-title">4. Inteligencia y Movimiento</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="brain"></i> <span data-i18n="ce-docs-basicai-name">BasicAI (IA Básica)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-basicai-desc">Comportamientos automáticos para NPCs y enemigos.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-basicai-modes">Modos: Follow (Sigue a una Materia), Escape (Huye de un objetivo), Wander (Camina aleatoriamente).</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>iaBasica.speed = 250;
+iaBasica.behavior = "Follow";
+iaBasica.target = buscar("Jugador");</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="shield-check"></i> <span data-i18n="ce-docs-patrol-name">Patrol (Patrulla)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-patrol-desc">Mueve el objeto entre dos puntos.</p>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>patrulla.distancia = 500;
+patrulla.velocidad = 100;</code></pre>
+                        </div>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-ui-title">5. Interfaz de Usuario (UI)</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="layout"></i> <span data-i18n="ce-docs-canvas-name">Canvas (Lienzo)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-canvas-desc">El contenedor principal para todos los elementos de interfaz.</p>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>lienzo.scaleChildren = verdadero;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="mouse-pointer-2"></i> <span data-i18n="ce-docs-button-name">Button (Botón)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-button-desc">Detecta clics del usuario.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-button-inspector">Uso en Inspector: Permite definir colores para los estados (Normal, Presionado, Desactivado) o cambiar sprites.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>alHacerClick() {
+    imprimir("¡Botón presionado!");
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="type"></i> <span data-i18n="ce-docs-uitext-name">UIText (Texto UI)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-uitext-desc">Muestra texto en pantalla con fuentes personalizadas.</p>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>textoUI.text = "Puntos: " + puntos;
+textoUI.fontSize = 40;</code></pre>
+                        </div>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-anim-title">6. Animación y Audio</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="gamepad-2"></i> <span data-i18n="ce-docs-animator-name">AnimatorController (Controlador)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-animator-desc">Gestiona estados de animación (Caminar, Saltar, Quieto).</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-animator-inspector">Uso en Inspector: Requiere un archivo .ceanim. El "Smart Mode" anima automáticamente según el movimiento.</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>controlador.play("Atacar"); // Fuerza un estado</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="volume-2"></i> <span data-i18n="ce-docs-audio-name">AudioSource (Fuente de Audio)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-audio-desc">Reproduce efectos de sonido o música.</p>
+                        <ul class="ce-list">
+                            <li data-i18n="ce-docs-audio-inspector">Uso en Inspector: Soporta Audio Espacial (el volumen baja si el objeto se aleja).</li>
+                        </ul>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Scripting (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>fuenteDeAudio.reproducir();
+fuenteDeAudio.loop = verdadero;
+reproducir.Explosion(); // Atajo proxy (reproduce sonido por nombre)</code></pre>
+                        </div>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-others-title">7. Otros Componentes</h2>
+                    <ul class="ce-list">
+                        <li data-i18n="ce-docs-others-raycast">RaycastSource (Rallo): Lanza rayos invisibles para detectar paredes o enemigos al frente.</li>
+                        <li data-i18n="ce-docs-others-particles">ParticleSystem (Partículas): Crea efectos de fuego, humo o chispas usando un prefab como base.</li>
+                        <li data-i18n="ce-docs-others-parallax">Parallax: Crea fondos infinitos que se mueven a distinta velocidad para dar profundidad.</li>
+                        <li data-i18n="ce-docs-others-light">Light2D (Luces): Ilumina tu escena con luces puntuales, focales o formas libres.</li>
+                    </ul>
+
+                    <div class="doc-protip">
+                        <h2 class="ce-subtitle" data-i18n="ce-docs-protip-title">Pro-Tip de Scripting</h2>
+                        <p class="ce-text" data-i18n="ce-docs-protip-desc">Recuerda que en Creative Engine, puedes acceder a cualquier componente directamente por su nombre en español. No necesitas usar prefijos.</p>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>Ejemplo completo (.ces)</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code>ve motor;
+
+publico numero fuerzaSalto = 12;
+
+alActualizar(delta) {
+    si (teclaRecienPresionada("Space") y estaTocandoTag("Suelo")) {
+        fisica.applyImpulse(nuevo Vector2(0, -fuerzaSalto));
+        reproducir.Salto(); // Llama al sonido o animación
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.querySelectorAll('.subnav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const target = item.getAttribute('data-target');
+                if (!target) return;
+                e.preventDefault();
+                document.querySelectorAll('.subnav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                const section = document.getElementById(target);
+                if (section) section.classList.add('active');
+                history.pushState(null, null, '#' + target);
+            });
+        });
+
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {
+                const targetBtn = document.querySelector(`.subnav-item[data-target="${hash}"]`);
+                if (targetBtn) targetBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
