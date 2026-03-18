@@ -27,7 +27,14 @@
                     <i data-lucide="book"></i> <span data-i18n="ce-nav-docs">Documentación</span>
                 </a>
                 <div class="sidebar-subnav">
-                    <a href="#leyes" class="subnav-item active" data-target="leyes">Leyes</a>
+                    <a href="#leyes" class="subnav-item active" data-target="leyes" data-i18n="ce-nav-docs-leyes">Leyes</a>
+                    <a href="#scripting" class="subnav-item" data-target="scripting" data-i18n="ce-nav-docs-scripting">Scripting CES</a>
+                    <a href="#librerias" class="subnav-item" data-target="librerias" data-i18n="ce-nav-docs-libs">Librerías</a>
+                    <a href="#carlia" class="subnav-item" data-target="carlia" data-i18n="ce-nav-docs-carl">Carl IA</a>
+                    <a href="#terminal" class="subnav-item" data-target="terminal" data-i18n="ce-nav-docs-terminal">Terminal</a>
+                    <a href="#avanzado" class="subnav-item" data-target="avanzado" data-i18n="ce-nav-docs-advanced">Avanzado</a>
+                    <a href="#editores" class="subnav-item" data-target="editores" data-i18n="ce-nav-docs-editors">Editores</a>
+                    <a href="#config" class="subnav-item" data-target="config" data-i18n="ce-nav-docs-config">Configuración</a>
                 </div>
                 <a href="creative-engine.html#tutorials" class="nav-item">
                     <i data-lucide="play-circle"></i> <span data-i18n="ce-nav-tutorials">Tutoriales</span>
@@ -338,6 +345,205 @@ alActualizar(delta) {
 }</code></pre>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section id="scripting" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-title">Guía Maestra de Scripting (CES)</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-intro">Creative Engine utiliza CES (Creative Engine Script), un lenguaje potente basado en JavaScript pero simplificado para creadores de videojuegos.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-core-title">Conceptos Fundamentales</h2>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-import">Todo script debe empezar con la instrucción para conectar con el motor: ve motor;</p>
+                    <div class="code-block-wrapper">
+                        <pre class="code-block"><code>ve motor;</code></pre>
+                    </div>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-access">Acceso Directo: NO necesitas escribir this. o mtr. para acceder a los componentes.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-vars-title">Variables Públicas (Inspector)</h2>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-vars-desc">Para que una variable aparezca en el Inspector, usa la palabra clave publico.</p>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>CES</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>publico numero velocidad = 5;
+publico texto nombreJugador = "Héroe";
+publico booleano esInvencible = falso;
+publico Materia objetivo;
+publico Sprite icono;
+publico Audio sonidoSalto;</code></pre>
+                    </div>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-events-title">Eventos de Ciclo de Vida</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>CES</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>alEmpezar() {
+    imprimir("¡Hola Mundo!");
+}
+
+alActualizar(delta) {
+    // Se ejecuta cada frame
+}
+
+alHacerClick() {
+}</code></pre>
+                    </div>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-example-title">Ejemplos Prácticos</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Controlador de Personaje</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>ve motor;
+publico numero velocidad = 300;
+
+alActualizar(delta) {
+    variable movX = 0;
+    si (teclaPresionada("ArrowRight")) movX = 1;
+    sino si (teclaPresionada("ArrowLeft")) movX = -1;
+
+    fisica.velocity.x = movX * (velocidad * delta);
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="librerias" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-libs-title">Guía de Librerías y Extensibilidad</h1>
+                    <p class="ce-text" data-i18n="ce-docs-libs-intro">Las librerías (.celib) permiten extender tanto la interfaz del editor como las capacidades de programación.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-ui-title">1. Librerías de Interfaz (Herramientas del Editor)</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>JavaScript API</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>CreativeEngine.API.registrarVentana({
+    nombre: "Mi Herramienta",
+    alAbrir: function(panel) {
+        panel.texto("¡Hola!");
+        panel.boton("Click", () => alert("OK"));
+    }
+});</code></pre>
+                    </div>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-runtime-title">2. Librerías de Runtime (Nuevas Funciones)</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>JavaScript Runtime</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>const MiLib = {
+    saludar: () => console.log("Hola desde Lib")
+};
+CreativeEngine.API.registrarRuntimeAPI("MiLib", MiLib);</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="carlia" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-carl-title">Guía de Carl IA: Tu Asistente Autónomo</h1>
+                    <p class="ce-text" data-i18n="ce-docs-carl-intro">Carl IA es un agente inteligente capaz de manipular el editor, crear archivos y ayudarte a construir tu juego paso a paso.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-activate-title">Cómo Activar a Carl IA</h2>
+                    <ul class="ce-list">
+                        <li data-i18n="ce-docs-carl-act-1">Botón Superior: Icono del robot 🤖 (Carl)</li>
+                        <li data-i18n="ce-docs-carl-act-2">Atajo: Shift + Ctrl + L</li>
+                    </ul>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-config-title">Configuración (API Keys)</h2>
+                    <p class="ce-text" data-i18n="ce-docs-carl-keys">Configura tu clave en Editar > Preferencias > IA. Soportamos Google Gemini (Gratis), OpenAI y Anthropic.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-skills-title">Habilidades Autónomas</h2>
+                    <p class="ce-text" data-i18n="ce-docs-carl-skill-1">"Crea un objeto llamado Jugador con SpriteRenderer."</p>
+                    <p class="ce-text" data-i18n="ce-docs-carl-skill-2">"Crea un script que mueva al jugador con las flechas."</p>
+                </div>
+            </section>
+
+            <section id="terminal" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-terminal-title">Guía de la Terminal</h1>
+                    <p class="ce-text" data-i18n="ce-docs-terminal-intro">La Terminal es una herramienta avanzada para interactuar con el motor mediante comandos de texto.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-activate">Cómo Activar la Terminal</h2>
+                    <ul class="ce-list">
+                        <li data-i18n="ce-docs-terminal-act-1">Ventana > Terminal</li>
+                        <li data-i18n="ce-docs-terminal-act-2">Panel Inferior > Pestaña Terminal</li>
+                    </ul>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-fs-title">1. Comandos de Sistema</h2>
+                    <ul class="ce-list">
+                        <li data-i18n="ce-docs-terminal-ls">ls: Listar archivos.</li>
+                        <li data-i18n="ce-docs-terminal-cd">cd <carpeta>: Cambiar de carpeta.</li>
+                        <li data-i18n="ce-docs-terminal-clear">clear: Limpiar terminal.</li>
+                    </ul>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-scene-title">2. Comandos de Escena</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Terminal</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>mkobj Bala
+addcomp 10 SpriteRenderer
+setprop 10 Transform position.x 100</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="avanzado" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-advanced-title">Guía Avanzada</h1>
+                    <p class="ce-text" data-i18n="ce-docs-advanced-intro">Gestión de activos, diseño de niveles y publicación.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-advanced-struct-title">1. Estructura de Proyectos</h2>
+                    <ul class="ce-list">
+                        <li data-i18n="ce-docs-advanced-struct-1">/Assets: Imágenes, sonidos, scripts.</li>
+                        <li data-i18n="ce-docs-advanced-struct-2">/lib: Librerías (.celib).</li>
+                        <li data-i18n="ce-docs-advanced-struct-3">project.ceconfig: Configuración técnica.</li>
+                    </ul>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-advanced-scenes-title">2. Gestión de Escenas</h2>
+                    <p class="ce-text" data-i18n="ce-docs-advanced-scenes-desc">Usa Ctrl + S para guardar. Las escenas (.ceScene) contienen todos los objetos y luces.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-advanced-build-title">3. El Sistema de Build</h2>
+                    <p class="ce-text" data-i18n="ce-docs-advanced-build-desc">Genera un paquete web independiente (.zip) listo para hosting.</p>
+                </div>
+            </section>
+
+            <section id="editores" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-editors-title">Guía de Editores Visuales</h1>
+                    <p class="ce-text" data-i18n="ce-docs-editors-intro">Suite de herramientas para animaciones y niveles.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-editors-sprite-title">1. Editor de Sprites</h2>
+                    <p class="ce-text" data-i18n="ce-docs-editors-sprite-desc">Recorta imágenes grandes en múltiples sprites pequeños.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-editors-anim-title">2. Editor de Animaciones</h2>
+                    <p class="ce-text" data-i18n="ce-docs-editors-anim-desc">Crea secuencias (.cea) usando una línea de tiempo.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-editors-tilemap-title">3. Editor de Tilemaps</h2>
+                    <p class="ce-text" data-i18n="ce-docs-editors-tilemap-desc">Diseña niveles basados en rejilla con pinceles y capas.</p>
+                </div>
+            </section>
+
+            <section id="config" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-config-title">Configuración y Ambiente</h1>
+                    <p class="ce-text" data-i18n="ce-docs-config-intro">Personaliza tu flujo de trabajo y atmósfera.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-config-project-title">1. Configuración del Proyecto</h2>
+                    <p class="ce-text" data-i18n="ce-docs-config-project-desc">Gestiona Sorting Layers, Collision Layers y Tags.</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-config-ambient-title">2. Control de Ambiente</h2>
+                    <p class="ce-text" data-i18n="ce-docs-config-ambient-desc">Ciclo Día/Noche, filtros de color y luces ambientales.</p>
                 </div>
             </section>
         </main>
