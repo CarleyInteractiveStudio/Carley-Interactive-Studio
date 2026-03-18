@@ -314,6 +314,8 @@ function initializeSearch() {
 
     const searchMap = [
         { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'], available: true },
+        { name: 'Documentación', url: 'documentacion.html', keywords: ['guia', 'leyes', 'componentes', 'scripting', 'ces'], available: true },
+        { name: 'Leyes', id: 'leyes', url: 'documentacion.html', keywords: ['componentes', 'guia', 'motor'], available: true },
         { name: 'Cómo crear tu primer juego', id: 'tutorials', url: 'creative-engine.html', keywords: ['tutorial', 'empezar', 'aprender', 'guia'], available: true },
         { name: 'Vid Spri', id: 'info', url: 'vid-spri.html', keywords: ['sprites', 'video', 'animacion', 'sonido'], available: true },
         { name: 'Creative Games', url: 'https://creativegame.online', keywords: ['juegos', 'web', 'jugar', 'online'], available: true },
