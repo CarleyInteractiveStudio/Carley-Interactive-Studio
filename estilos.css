@@ -696,6 +696,11 @@ body::-webkit-scrollbar,
     margin: 0 auto;
 }
 
+.engine-content .content-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .content-section.active {
     display: block;
     animation: fadeIn 0.5s ease;
@@ -911,10 +916,10 @@ body::-webkit-scrollbar,
 
 @media (max-width: 800px) {
     .sidebar { width: 70px; padding: 2rem 0.5rem; }
-    .ce-title, .nav-item span, .sidebar-footer select { display: none; }
+    .ce-title, .nav-item span, .sidebar-footer select, .sidebar-subnav { display: none; }
     .sidebar-logo { padding: 0; justify-content: center; }
     .nav-item { justify-content: center; padding: 1rem; }
-    .content-section { padding: 2rem; }
+    .content-section { padding: 2rem 1rem; }
 }
 
 /* ==============================
@@ -970,4 +975,146 @@ body::-webkit-scrollbar,
     left: 0;
     transition: width 10s linear;
     border-radius: 0 0 15px 15px;
+}
+
+/* ==============================
+   Documentation Styles
+============================== */
+.doc-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.doc-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to bottom, #ffffff, #00aaff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .doc-title {
+        font-size: 1.8rem;
+    }
+    .doc-container {
+        padding: 1rem;
+    }
+    .doc-item-title {
+        font-size: 1.2rem;
+    }
+}
+
+.doc-separator {
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 3rem 0;
+}
+
+.doc-item {
+    margin-bottom: 3rem;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.doc-item-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.doc-item-title i {
+    width: 24px;
+    height: 24px;
+}
+
+.sidebar-subnav {
+    margin: 0.5rem 0 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding-left: 1rem;
+}
+
+.subnav-item {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.subnav-item:hover, .subnav-item.active {
+    color: var(--accent);
+}
+
+/* Code Blocks */
+.code-block-wrapper {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    overflow: hidden;
+}
+
+.code-header {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.6rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.code-header span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.4;
+    font-weight: 600;
+}
+
+.copy-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+}
+
+.copy-btn.copied {
+    color: #4CAF50;
+}
+
+.code-block {
+    margin: 0;
+    padding: 1.2rem;
+    font-family: 'Fira Code', 'Cascadia Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #d1d1d1;
+    overflow-x: auto;
+}
+
+.doc-protip {
+    background: rgba(0, 170, 255, 0.03);
+    border: 1px solid rgba(0, 170, 255, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    margin-top: 4rem;
 }
