@@ -68,6 +68,10 @@
                     <h1 class="doc-title" data-i18n="ce-docs-leyes-title">Guía de Componentes (Leyes) - Creative Engine</h1>
                     <p class="ce-text" data-i18n="ce-docs-leyes-intro">En Creative Engine, las Materias (objetos) cobran vida a través de las Leyes (components). Cada Ley añade una funcionalidad específica, como gravedad, renderizado de imagen o lógica de IA. Esta guía detalla el uso de los componentes tanto en el Inspector como en los Scripts (.ces) utilizando la sintaxis moderna (sin prefijos como this. o motor.).</p>
 
+                    <div class="not-available-msg hidden">
+                        <p data-i18n="ce-docs-not-available">La documentación no está disponible actualmente en este idioma.</p>
+                    </div>
+
                     <hr class="doc-separator">
 
                     <h2 class="ce-subtitle" data-i18n="ce-docs-core-title">1. Componentes Base (Core)</h2>
@@ -80,10 +84,10 @@
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>posicion.x += 5; // Mueve a la derecha
+                            <pre class="code-block"><code data-i18n="ce-docs-transform-code">posicion.x += 5; // Mueve a la derecha
 rotacion += 45;  // Rota 45 grados
 escala.x = 2;    // Duplica el tamaño horizontal
 voltearH = verdadero; // Invierte horizontalmente</code></pre>
@@ -98,10 +102,10 @@ voltearH = verdadero; // Invierte horizontalmente</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>camara.orthographicSize = 10; // Cambia el zoom
+                            <pre class="code-block"><code data-i18n="ce-docs-camera-code">camara.orthographicSize = 10; // Cambia el zoom
 camara.backgroundColor = "#ff0000"; // Fondo rojo</code></pre>
                         </div>
                     </div>
@@ -118,12 +122,12 @@ camara.backgroundColor = "#ff0000"; // Fondo rojo</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>renderizadorDeSprite.color = "#00ff00"; // Tinta de verde
+                            <pre class="code-block"><code data-i18n="ce-docs-sprite-code">renderizadorDeSprite.color = "#00ff00"; // Tinta de verde
 renderizadorDeSprite.opacity = 0.5;      // Semi-transparente
-renderizadorDeSprite.spriteName = "Salto"; // Cambia el sprite (si es .ceSprite)</code></pre>
+renderizadorDeSprite.spriteName = "Salto"; // Cambia el sprite</code></pre>
                         </div>
                     </div>
 
@@ -135,10 +139,10 @@ renderizadorDeSprite.spriteName = "Salto"; // Cambia el sprite (si es .ceSprite)
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>agua.densidad = 2.0; // Los objetos flotarán más
+                            <pre class="code-block"><code data-i18n="ce-docs-water-code">agua.densidad = 2.0; // Los objetos flotarán más
 agua.mostrarMareas = verdadero;</code></pre>
                         </div>
                     </div>
@@ -151,10 +155,10 @@ agua.mostrarMareas = verdadero;</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>reproductorDeVideo.reproducir();
+                            <pre class="code-block"><code data-i18n="ce-docs-video-code">reproductorDeVideo.reproducir();
 reproductorDeVideo.pausar();
 reproductorDeVideo.volumen = 0.8;</code></pre>
                         </div>
@@ -172,10 +176,10 @@ reproductorDeVideo.volumen = 0.8;</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>fisica.applyImpulse(nuevo Vector2(0, -10)); // Salto
+                            <pre class="code-block"><code data-i18n="ce-docs-rigidbody-code">fisica.applyImpulse(nuevo Vector2(0, -10)); // Salto
 fisica.velocity.x = 5; // Velocidad constante
 fisica.gravityScale = 0; // Desactiva gravedad</code></pre>
                         </div>
@@ -189,10 +193,10 @@ fisica.gravityScale = 0; // Desactiva gravedad</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>si (estaTocandoTag("Suelo")) {
+                            <pre class="code-block"><code data-i18n="ce-docs-collider-code">si (estaTocandoTag("Suelo")) {
     imprimir("En el suelo");
 }</code></pre>
                         </div>
@@ -210,10 +214,10 @@ fisica.gravityScale = 0; // Desactiva gravedad</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>iaBasica.speed = 250;
+                            <pre class="code-block"><code data-i18n="ce-docs-basicai-code">iaBasica.speed = 250;
 iaBasica.behavior = "Follow";
 iaBasica.target = buscar("Jugador");</code></pre>
                         </div>
@@ -224,27 +228,63 @@ iaBasica.target = buscar("Jugador");</code></pre>
                         <p class="ce-text" data-i18n="ce-docs-patrol-desc">Mueve el objeto entre dos puntos.</p>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>patrulla.distancia = 500;
+                            <pre class="code-block"><code data-i18n="ce-docs-patrol-code">patrulla.distancia = 500;
 patrulla.velocidad = 100;</code></pre>
                         </div>
                     </div>
 
                     <hr class="doc-separator">
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-ui-title">5. Interfaz de Usuario (UI)</h2>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-tech-title">5. Sistemas Técnicos</h2>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="sparkles"></i> <span data-i18n="ce-docs-particles-title">Particles (Partículas)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-particles-desc">Crea efectos visuales complejos como fuego o humo.</p>
+                        <div class="code-block-wrapper">
+                            <pre class="code-block"><code data-i18n="ce-docs-particles-code">particulas.emitir(10);
+particulas.detener();</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="layers"></i> <span data-i18n="ce-docs-post-title">Post-Processing</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-post-desc">Filtros visuales globales como Bloom o Corrección de Color.</p>
+                        <div class="code-block-wrapper">
+                            <pre class="code-block"><code data-i18n="ce-docs-post-code">postProcesado.bloom = verdadero;
+postProcesado.vignette = 0.5;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="volume-2"></i> <span data-i18n="ce-docs-audio-title">Audio</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-audio-desc">Gestión de música y efectos de sonido.</p>
+                        <div class="code-block-wrapper">
+                            <pre class="code-block"><code data-i18n="ce-docs-audio-code">sonido.reproducir("Explosion");
+sonido.volumenPrincipal = 1.0;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="gauge"></i> <span data-i18n="ce-docs-opt-title">Optimization</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-opt-desc">Herramientas para mejorar el rendimiento del juego.</p>
+                    </div>
+
+                    <hr class="doc-separator">
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-ui-title">6. Interfaz de Usuario (UI)</h2>
 
                     <div class="doc-item">
                         <h3 class="doc-item-title"><i data-lucide="layout"></i> <span data-i18n="ce-docs-canvas-name">Canvas (Lienzo)</span></h3>
                         <p class="ce-text" data-i18n="ce-docs-canvas-desc">El contenedor principal para todos los elementos de interfaz.</p>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>lienzo.scaleChildren = verdadero;</code></pre>
+                            <pre class="code-block"><code data-i18n="ce-docs-canvas-code">lienzo.scaleChildren = verdadero;</code></pre>
                         </div>
                     </div>
 
@@ -256,10 +296,10 @@ patrulla.velocidad = 100;</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>alHacerClick() {
+                            <pre class="code-block"><code data-i18n="ce-docs-button-code">alHacerClick() {
     imprimir("¡Botón presionado!");
 }</code></pre>
                         </div>
@@ -270,17 +310,17 @@ patrulla.velocidad = 100;</code></pre>
                         <p class="ce-text" data-i18n="ce-docs-uitext-desc">Muestra texto en pantalla con fuentes personalizadas.</p>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>textoUI.text = "Puntos: " + puntos;
+                            <pre class="code-block"><code data-i18n="ce-docs-uitext-code">textoUI.text = "Puntos: " + puntos;
 textoUI.fontSize = 40;</code></pre>
                         </div>
                     </div>
 
                     <hr class="doc-separator">
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-anim-title">6. Animación y Audio</h2>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-anim-title">7. Animación y Audio</h2>
 
                     <div class="doc-item">
                         <h3 class="doc-item-title"><i data-lucide="gamepad-2"></i> <span data-i18n="ce-docs-animator-name">AnimatorController (Controlador)</span></h3>
@@ -290,25 +330,25 @@ textoUI.fontSize = 40;</code></pre>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>controlador.play("Atacar"); // Fuerza un estado</code></pre>
+                            <pre class="code-block"><code data-i18n="ce-docs-animator-code">controlador.play("Atacar"); // Fuerza un estado</code></pre>
                         </div>
                     </div>
 
                     <div class="doc-item">
-                        <h3 class="doc-item-title"><i data-lucide="volume-2"></i> <span data-i18n="ce-docs-audio-name">AudioSource (Fuente de Audio)</span></h3>
-                        <p class="ce-text" data-i18n="ce-docs-audio-desc">Reproduce efectos de sonido o música.</p>
+                        <h3 class="doc-item-title"><i data-lucide="volume-2"></i> <span data-i18n="ce-docs-audiosource-name">AudioSource (Fuente de Audio)</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-audiosource-desc">Reproduce efectos de sonido o música.</p>
                         <ul class="ce-list">
-                            <li data-i18n="ce-docs-audio-inspector">Uso en Inspector: Soporta Audio Espacial (el volumen baja si el objeto se aleja).</li>
+                            <li data-i18n="ce-docs-audiosource-inspector">Uso en Inspector: Soporta Audio Espacial (el volumen baja si el objeto se aleja).</li>
                         </ul>
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Scripting (.ces)</span>
+                                <span data-i18n="ce-docs-leyes-scripting">Scripting:</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>fuenteDeAudio.reproducir();
+                            <pre class="code-block"><code data-i18n="ce-docs-audiosource-code">fuenteDeAudio.reproducir();
 fuenteDeAudio.loop = verdadero;
 reproducir.Explosion(); // Atajo proxy (reproduce sonido por nombre)</code></pre>
                         </div>
@@ -316,7 +356,7 @@ reproducir.Explosion(); // Atajo proxy (reproduce sonido por nombre)</code></pre
 
                     <hr class="doc-separator">
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-others-title">7. Otros Componentes</h2>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-others-title">8. Otros Componentes</h2>
                     <ul class="ce-list">
                         <li data-i18n="ce-docs-others-raycast">RaycastSource (Rallo): Lanza rayos invisibles para detectar paredes o enemigos al frente.</li>
                         <li data-i18n="ce-docs-others-particles">ParticleSystem (Partículas): Crea efectos de fuego, humo o chispas usando un prefab como base.</li>
@@ -330,10 +370,10 @@ reproducir.Explosion(); // Atajo proxy (reproduce sonido por nombre)</code></pre
 
                         <div class="code-block-wrapper">
                             <div class="code-header">
-                                <span>Ejemplo completo (.ces)</span>
+                                <span data-i18n="ce-docs-scripting-example-title">Ejemplo completo (.ces)</span>
                                 <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                             </div>
-                            <pre class="code-block"><code>ve motor;
+                            <pre class="code-block"><code data-i18n="ce-docs-protip-code">ve motor;
 
 publico numero fuerzaSalto = 12;
 
@@ -356,17 +396,17 @@ alActualizar(delta) {
                     <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-core-title">Conceptos Fundamentales</h2>
                     <p class="ce-text" data-i18n="ce-docs-scripting-import">Todo script debe empezar con la instrucción para conectar con el motor: ve motor;</p>
                     <div class="code-block-wrapper">
-                        <pre class="code-block"><code>ve motor;</code></pre>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-import-code">ve motor;</code></pre>
                     </div>
                     <p class="ce-text" data-i18n="ce-docs-scripting-access">Acceso Directo: NO necesitas escribir this. o mtr. para acceder a los componentes.</p>
 
                     <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-input-title">Entrada (Input) y Movimiento</h2>
                     <div class="code-block-wrapper">
                         <div class="code-header">
-                            <span data-i18n="ce-docs-scripting">Scripting</span>
+                            <span data-i18n="ce-docs-leyes-scripting">Scripting</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>si (teclaPresionada("Space")) {
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-input-code">si (teclaPresionada("Space")) {
     fisica.applyImpulse(nuevo Vector2(0, 10));
 }</code></pre>
                     </div>
@@ -374,10 +414,10 @@ alActualizar(delta) {
                     <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-functions-title">Funciones Especiales</h2>
                     <div class="code-block-wrapper">
                         <div class="code-header">
-                            <span data-i18n="ce-docs-scripting">Scripting</span>
+                            <span data-i18n="ce-docs-leyes-scripting">Scripting</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>buscar("Enemigo");
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-functions-code">buscar("Enemigo");
 destruir(estaMateria);
 instanciar(balaPrefab, posicion);</code></pre>
                     </div>
@@ -389,7 +429,7 @@ instanciar(balaPrefab, posicion);</code></pre>
                             <span>CES</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>publico numero velocidad = 5;
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-vars-code">publico numero velocidad = 5;
 publico texto nombreJugador = "Héroe";
 publico booleano esInvencible = falso;
 publico Materia objetivo;
@@ -403,7 +443,7 @@ publico Audio sonidoSalto;</code></pre>
                             <span>CES</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>alEmpezar() {
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-events-code">alEmpezar() {
     imprimir("¡Hola Mundo!");
 }
 
@@ -421,7 +461,7 @@ alHacerClick() {
                             <span>Controlador de Personaje</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>ve motor;
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-example-code">ve motor;
 publico numero velocidad = 300;
 
 alActualizar(delta) {
@@ -449,7 +489,7 @@ alActualizar(delta) {
                             <span>JavaScript API</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>CreativeEngine.API.registrarVentana({
+                        <pre class="code-block"><code data-i18n="ce-docs-libs-ui-code">CreativeEngine.API.registrarVentana({
     nombre: "Mi Herramienta",
     alAbrir: function(panel) {
         panel.texto("¡Hola!");
@@ -464,7 +504,7 @@ alActualizar(delta) {
                             <span>JavaScript Runtime</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>const MiLib = {
+                        <pre class="code-block"><code data-i18n="ce-docs-libs-runtime-code">const MiLib = {
     saludar: () => console.log("Hola desde Lib")
 };
 CreativeEngine.API.registrarRuntimeAPI("MiLib", MiLib);</code></pre>
@@ -519,7 +559,7 @@ CreativeEngine.API.registrarRuntimeAPI("MiLib", MiLib);</code></pre>
                             <span>Terminal</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code>mkobj Bala
+                        <pre class="code-block"><code data-i18n="ce-docs-terminal-code">mkobj Bala
 addcomp 10 SpriteRenderer
 setprop 10 Transform position.x 100</code></pre>
                     </div>
