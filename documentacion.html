@@ -360,6 +360,28 @@ alActualizar(delta) {
                     </div>
                     <p class="ce-text" data-i18n="ce-docs-scripting-access">Acceso Directo: NO necesitas escribir this. o mtr. para acceder a los componentes.</p>
 
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-input-title">Entrada (Input) y Movimiento</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span data-i18n="ce-docs-scripting">Scripting</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>si (teclaPresionada("Space")) {
+    fisica.applyImpulse(nuevo Vector2(0, 10));
+}</code></pre>
+                    </div>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-functions-title">Funciones Especiales</h2>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span data-i18n="ce-docs-scripting">Scripting</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code>buscar("Enemigo");
+destruir(estaMateria);
+instanciar(balaPrefab, posicion);</code></pre>
+                    </div>
+
                     <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-vars-title">Variables Públicas (Inspector)</h2>
                     <p class="ce-text" data-i18n="ce-docs-scripting-vars-desc">Para que una variable aparezca en el Inspector, usa la palabra clave publico.</p>
                     <div class="code-block-wrapper">
@@ -418,6 +440,9 @@ alActualizar(delta) {
                     <h1 class="doc-title" data-i18n="ce-docs-libs-title">Guía de Librerías y Extensibilidad</h1>
                     <p class="ce-text" data-i18n="ce-docs-libs-intro">Las librerías (.celib) permiten extender tanto la interfaz del editor como las capacidades de programación.</p>
 
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-install-title">Cómo Crear e Instalar una Librería</h2>
+                    <p class="ce-text" data-i18n="ce-docs-libs-intro">Crea un archivo .js con tu lógica y expórtalo como una .celib.</p>
+
                     <h2 class="ce-subtitle" data-i18n="ce-docs-libs-ui-title">1. Librerías de Interfaz (Herramientas del Editor)</h2>
                     <div class="code-block-wrapper">
                         <div class="code-header">
@@ -464,6 +489,9 @@ CreativeEngine.API.registrarRuntimeAPI("MiLib", MiLib);</code></pre>
                     <h2 class="ce-subtitle" data-i18n="ce-docs-carl-skills-title">Habilidades Autónomas</h2>
                     <p class="ce-text" data-i18n="ce-docs-carl-skill-1">"Crea un objeto llamado Jugador con SpriteRenderer."</p>
                     <p class="ce-text" data-i18n="ce-docs-carl-skill-2">"Crea un script que mueva al jugador con las flechas."</p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-modes-title">Modos de Ejecución</h2>
+                    <p class="ce-text" data-i18n="ce-docs-carl-modes-desc">Carl puede trabajar en modo "Asistente" (te guía) o "Autónomo" (hace los cambios por ti).</p>
                 </div>
             </section>
 
