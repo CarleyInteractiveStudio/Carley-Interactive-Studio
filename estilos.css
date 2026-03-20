@@ -160,6 +160,14 @@ ul {
     letter-spacing: 1px;
 }
 
+.app-white {
+    color: #ffffff;
+}
+
+.craft-green {
+    color: #7ED957; /* Un verde vibrante que combina con el logo 3D */
+}
+
 .search-icon {
     width: 18px;
     color: rgba(255, 255, 255, 0.4);
