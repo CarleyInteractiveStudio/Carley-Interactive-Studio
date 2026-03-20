@@ -147,6 +147,27 @@ ul {
     font-style: italic;
 }
 
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.app-white {
+    color: #ffffff;
+}
+
+.craft-green {
+    color: #7ED957; /* Un verde vibrante que combina con el logo 3D */
+}
+
 .search-icon {
     width: 18px;
     color: rgba(255, 255, 255, 0.4);
