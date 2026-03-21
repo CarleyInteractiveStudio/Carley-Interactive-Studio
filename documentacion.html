@@ -28,7 +28,27 @@
                 </a>
                 <div class="sidebar-subnav">
                     <a href="#leyes" class="subnav-item active" data-target="leyes" data-i18n="ce-nav-docs-leyes">Leyes</a>
-                    <a href="#scripting" class="subnav-item" data-target="scripting" data-i18n="ce-nav-docs-scripting">Scripting CES</a>
+
+                    <div class="nav-group">
+                        <a href="#scripting" class="subnav-item" data-target="scripting" data-i18n="ce-nav-docs-scripting">Scripting CES</a>
+                        <div class="sub-menu">
+                            <a href="#cap0" class="subnav-item mini" data-target="cap0" data-i18n="ce-docs-nav-cap0">Cap 0</a>
+                            <a href="#cap1" class="subnav-item mini" data-target="cap1" data-i18n="ce-docs-nav-cap1">Cap 1</a>
+                            <a href="#cap2" class="subnav-item mini" data-target="cap2" data-i18n="ce-docs-nav-cap2">Cap 2</a>
+                            <a href="#cap3" class="subnav-item mini" data-target="cap3" data-i18n="ce-docs-nav-cap3">Cap 3</a>
+                            <a href="#cap4" class="subnav-item mini" data-target="cap4" data-i18n="ce-docs-nav-cap4">Cap 4</a>
+                            <a href="#cap5" class="subnav-item mini" data-target="cap5" data-i18n="ce-docs-nav-cap5">Cap 5</a>
+                            <a href="#cap6" class="subnav-item mini" data-target="cap6" data-i18n="ce-docs-nav-cap6">Cap 6</a>
+                            <a href="#cap7" class="subnav-item mini" data-target="cap7" data-i18n="ce-docs-nav-cap7">Cap 7</a>
+                            <a href="#cap8" class="subnav-item mini" data-target="cap8" data-i18n="ce-docs-nav-cap8">Cap 8</a>
+                            <a href="#cap9" class="subnav-item mini" data-target="cap9" data-i18n="ce-docs-nav-cap9">Cap 9</a>
+                            <a href="#cap10" class="subnav-item mini" data-target="cap10" data-i18n="ce-docs-nav-cap10">Cap 10</a>
+                            <a href="#cap11" class="subnav-item mini" data-target="cap11" data-i18n="ce-docs-nav-cap11">Cap 11</a>
+                        </div>
+                    </div>
+
+                    <a href="#vehicles" class="subnav-item" data-target="vehicles" data-i18n="ce-docs-nav-vehicles">Vehículos</a>
+                    <a href="#anim-adv" class="subnav-item" data-target="anim-adv" data-i18n="ce-docs-nav-anim-adv">Animación Pro</a>
                     <a href="#librerias" class="subnav-item" data-target="librerias" data-i18n="ce-nav-docs-libs">Librerías</a>
                     <a href="#carlia" class="subnav-item" data-target="carlia" data-i18n="ce-nav-docs-carl">Carl IA</a>
                     <a href="#terminal" class="subnav-item" data-target="terminal" data-i18n="ce-nav-docs-terminal">Terminal</a>
@@ -388,89 +408,197 @@ alActualizar(delta) {
                 </div>
             </section>
 
+            <!-- Scripting Overview and Chapters -->
             <section id="scripting" class="content-section">
                 <div class="doc-container">
-                    <h1 class="doc-title" data-i18n="ce-docs-scripting-title">Guía Maestra de Scripting (CES)</h1>
-                    <p class="ce-text" data-i18n="ce-docs-scripting-intro">Creative Engine utiliza CES (Creative Engine Script), un lenguaje potente basado en JavaScript pero simplificado para creadores de videojuegos.</p>
-
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-core-title">Conceptos Fundamentales</h2>
-                    <p class="ce-text" data-i18n="ce-docs-scripting-import">Todo script debe empezar con la instrucción para conectar con el motor: ve motor;</p>
-                    <div class="code-block-wrapper">
-                        <pre class="code-block"><code data-i18n="ce-docs-scripting-import-code">ve motor;</code></pre>
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-title">El Libro Maestro del Scripting (CES)</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-intro">Este manual completo te enseñará a programar desde cero usando el potente lenguaje CES (Creative Engine Script). Haz clic en los capítulos en el menú lateral para profundizar en cada tema.</p>
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="book-open"></i> <span data-i18n="ce-docs-nav-cap1">Capítulo 1: Filosofía</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-scripting-cap1-content"></p>
                     </div>
-                    <p class="ce-text" data-i18n="ce-docs-scripting-access">Acceso Directo: NO necesitas escribir this. o mtr. para acceder a los componentes.</p>
+                </div>
+            </section>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-input-title">Entrada (Input) y Movimiento</h2>
-                    <div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span data-i18n="ce-docs-leyes-scripting">Scripting</span>
-                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
-                        </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-scripting-input-code">si (teclaPresionada("Space")) {
-    fisica.applyImpulse(nuevo Vector2(0, 10));
-}</code></pre>
-                    </div>
-
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-functions-title">Funciones Especiales</h2>
-                    <div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span data-i18n="ce-docs-leyes-scripting">Scripting</span>
-                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
-                        </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-scripting-functions-code">buscar("Enemigo");
-destruir(estaMateria);
-instanciar(balaPrefab, posicion);</code></pre>
-                    </div>
-
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-vars-title">Variables Públicas (Inspector)</h2>
-                    <p class="ce-text" data-i18n="ce-docs-scripting-vars-desc">Para que una variable aparezca en el Inspector, usa la palabra clave publico.</p>
+            <section id="cap0" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap0-title">Tu Primer Script</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap0-desc"></p>
                     <div class="code-block-wrapper">
                         <div class="code-header">
                             <span>CES</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-scripting-vars-code">publico numero velocidad = 5;
-publico texto nombreJugador = "Héroe";
-publico booleano esInvencible = falso;
-publico Materia objetivo;
-publico Sprite icono;
-publico Audio sonidoSalto;</code></pre>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap0-code"></code></pre>
                     </div>
+                </div>
+            </section>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-events-title">Eventos de Ciclo de Vida</h2>
+            <section id="cap1" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap1-title">Filosofía</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap1-content"></p>
+                </div>
+            </section>
+
+            <section id="cap2" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap2-title">Anatomía</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap2-content"></p>
+                </div>
+            </section>
+
+            <section id="cap3" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap3-title">Variables</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap3-content"></p>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap3-types" style="white-space: pre-wrap;"></p>
                     <div class="code-block-wrapper">
                         <div class="code-header">
                             <span>CES</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-scripting-events-code">alEmpezar() {
-    imprimir("¡Hola Mundo!");
-}
-
-alActualizar(delta) {
-    // Se ejecuta cada frame
-}
-
-alHacerClick() {
-}</code></pre>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap3-code"></code></pre>
                     </div>
+                </div>
+            </section>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-scripting-example-title">Ejemplos Prácticos</h2>
+            <section id="cap4" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap4-title">Ciclo de Vida</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap4-events" style="white-space: pre-wrap;"></p>
+                </div>
+            </section>
+
+            <section id="cap5" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap5-title">Input y Físicas</h1>
                     <div class="code-block-wrapper">
                         <div class="code-header">
-                            <span>Controlador de Personaje</span>
+                            <span>CES</span>
                             <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
                         </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-scripting-example-code">ve motor;
-publico numero velocidad = 300;
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap5-code"></code></pre>
+                    </div>
+                </div>
+            </section>
 
-alActualizar(delta) {
-    variable movX = 0;
-    si (teclaPresionada("ArrowRight")) movX = 1;
-    sino si (teclaPresionada("ArrowLeft")) movX = -1;
+            <section id="cap6" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap6-title">Diccionario API</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap6-content" style="white-space: pre-wrap;"></p>
+                </div>
+            </section>
 
-    fisica.velocity.x = movX * (velocidad * delta);
-}</code></pre>
+            <section id="cap7" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap7-title">Mensajería</h1>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Emitter</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap7-emisor"></code></pre>
+                    </div>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Receiver</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap7-receptor"></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cap8" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap8-title">Corrutinas</h1>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Wait</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap8-code1"></code></pre>
+                    </div>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Loop</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap8-code2"></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cap9" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap9-title">Cookbook</h1>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>CES</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                        </div>
+                        <pre class="code-block"><code data-i18n="ce-docs-scripting-cap9-mov" style="white-space: pre-wrap;"></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cap10" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap10-title">Optimización</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap10-tips" style="white-space: pre-wrap;"></p>
+                </div>
+            </section>
+
+            <section id="cap11" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-scripting-cap11-title">Solución de Problemas</h1>
+                    <p class="ce-text" data-i18n="ce-docs-scripting-cap11-content" style="white-space: pre-wrap;"></p>
+                </div>
+            </section>
+
+            <!-- New Components: Vehicles -->
+            <section id="vehicles" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-vehicles-title">Vehículos y Controladores Avanzados</h1>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="fan"></i> <span data-i18n="ce-docs-helicopter-name">HelicopterController</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-helicopter-desc"></p>
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span>CES</span>
+                                <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
+                            </div>
+                            <pre class="code-block"><code data-i18n="ce-docs-helicopter-code"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="plane"></i> <span data-i18n="ce-docs-plane-name">PlaneController</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-plane-desc"></p>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="car"></i> <span data-i18n="ce-docs-topdown-name">VehicleTopDown</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-topdown-desc"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Animation and Lighting -->
+            <section id="anim-adv" class="content-section">
+                <div class="doc-container">
+                    <h1 class="doc-title" data-i18n="ce-docs-anim-adv-title">Animación y Sistemas Visuales</h1>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="bone"></i> <span data-i18n="ce-docs-skeleton-name">Skeleton e IK</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-skeleton-desc"></p>
+                    </div>
+
+                    <div class="doc-item">
+                        <h3 class="doc-item-title"><i data-lucide="sun"></i> <span data-i18n="ce-docs-light-name">Iluminación 2D</span></h3>
+                        <p class="ce-text" data-i18n="ce-docs-light-desc"></p>
                     </div>
                 </div>
             </section>
@@ -480,89 +608,48 @@ alActualizar(delta) {
                     <h1 class="doc-title" data-i18n="ce-docs-libs-title">Guía de Librerías y Extensibilidad</h1>
                     <p class="ce-text" data-i18n="ce-docs-libs-intro">Las librerías (.celib) permiten extender tanto la interfaz del editor como las capacidades de programación.</p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-install-title">Cómo Crear e Instalar una Librería</h2>
-                    <p class="ce-text" data-i18n="ce-docs-libs-intro">Crea un archivo .js con tu lógica y expórtalo como una .celib.</p>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-cap1-title">Capítulo 1: El Poder de la Extensibilidad</h2>
+                    <p class="ce-text" data-i18n="ce-docs-libs-cap1-content" style="white-space: pre-wrap;"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-ui-title">1. Librerías de Interfaz (Herramientas del Editor)</h2>
-                    <div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span>JavaScript API</span>
-                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
-                        </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-libs-ui-code">CreativeEngine.API.registrarVentana({
-    nombre: "Mi Herramienta",
-    alAbrir: function(panel) {
-        panel.texto("¡Hola!");
-        panel.boton("Click", () => alert("OK"));
-    }
-});</code></pre>
-                    </div>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-cap4-title">Capítulo 4: Referencia API UI</h2>
+                    <p class="ce-text" data-i18n="ce-docs-libs-cap4-content" style="white-space: pre-wrap;"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-runtime-title">2. Librerías de Runtime (Nuevas Funciones)</h2>
-                    <div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span>JavaScript Runtime</span>
-                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
-                        </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-libs-runtime-code">const MiLib = {
-    saludar: () => console.log("Hola desde Lib")
-};
-CreativeEngine.API.registrarRuntimeAPI("MiLib", MiLib);</code></pre>
-                    </div>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-cap5-title">Capítulo 5: Extensiones de Runtime</h2>
+                    <p class="ce-text" data-i18n="ce-docs-libs-cap5-content" style="white-space: pre-wrap;"></p>
+
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-libs-cap8-title">Capítulo 8: Instalación</h2>
+                    <p class="ce-text" data-i18n="ce-docs-libs-cap8-content" style="white-space: pre-wrap;"></p>
                 </div>
             </section>
 
             <section id="carlia" class="content-section">
                 <div class="doc-container">
                     <h1 class="doc-title" data-i18n="ce-docs-carl-title">Guía de Carl IA: Tu Asistente Autónomo</h1>
-                    <p class="ce-text" data-i18n="ce-docs-carl-intro">Carl IA es un agente inteligente capaz de manipular el editor, crear archivos y ayudarte a construir tu juego paso a paso.</p>
+                    <p class="ce-text" data-i18n="ce-docs-carl-intro"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-activate-title">Cómo Activar a Carl IA</h2>
-                    <ul class="ce-list">
-                        <li data-i18n="ce-docs-carl-act-1">Botón Superior: Icono del robot 🤖 (Carl)</li>
-                        <li data-i18n="ce-docs-carl-act-2">Atajo: Shift + Ctrl + L</li>
-                    </ul>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-deep-title">Modo de Planeación Profunda</h2>
+                    <p class="ce-text" data-i18n="ce-docs-carl-deep-desc"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-config-title">Configuración (API Keys)</h2>
-                    <p class="ce-text" data-i18n="ce-docs-carl-keys">Configura tu clave en Editar > Preferencias > IA. Soportamos Google Gemini (Gratis), OpenAI y Anthropic.</p>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-autonomy-title">Comandos Autónomos</h2>
+                    <p class="ce-text" data-i18n="ce-docs-carl-autonomy-list" style="white-space: pre-wrap;"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-skills-title">Habilidades Autónomas</h2>
-                    <p class="ce-text" data-i18n="ce-docs-carl-skill-1">"Crea un objeto llamado Jugador con SpriteRenderer."</p>
-                    <p class="ce-text" data-i18n="ce-docs-carl-skill-2">"Crea un script que mueva al jugador con las flechas."</p>
-
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-modes-title">Modos de Ejecución</h2>
-                    <p class="ce-text" data-i18n="ce-docs-carl-modes-desc">Carl puede trabajar en modo "Asistente" (te guía) o "Autónomo" (hace los cambios por ti).</p>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-carl-chc-title">CHC (Code Helper)</h2>
+                    <p class="ce-text" data-i18n="ce-docs-carl-chc-desc"></p>
                 </div>
             </section>
 
             <section id="terminal" class="content-section">
                 <div class="doc-container">
                     <h1 class="doc-title" data-i18n="ce-docs-terminal-title">Guía de la Terminal</h1>
-                    <p class="ce-text" data-i18n="ce-docs-terminal-intro">La Terminal es una herramienta avanzada para interactuar con el motor mediante comandos de texto.</p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-activate">Cómo Activar la Terminal</h2>
-                    <ul class="ce-list">
-                        <li data-i18n="ce-docs-terminal-act-1">Ventana > Terminal</li>
-                        <li data-i18n="ce-docs-terminal-act-2">Panel Inferior > Pestaña Terminal</li>
-                    </ul>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-files-title">Gestión de Archivos</h2>
+                    <p class="ce-text" data-i18n="ce-docs-terminal-files-list" style="white-space: pre-wrap;"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-fs-title">1. Comandos de Sistema</h2>
-                    <ul class="ce-list">
-                        <li data-i18n="ce-docs-terminal-ls">ls: Listar archivos.</li>
-                        <li data-i18n="ce-docs-terminal-cd">cd <carpeta>: Cambiar de carpeta.</li>
-                        <li data-i18n="ce-docs-terminal-clear">clear: Limpiar terminal.</li>
-                    </ul>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-inspect-title">Inspección de Objetos</h2>
+                    <p class="ce-text" data-i18n="ce-docs-terminal-inspect-list" style="white-space: pre-wrap;"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-scene-title">2. Comandos de Escena</h2>
-                    <div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span>Terminal</span>
-                            <button class="copy-btn" onclick="copyToClipboard(this.parentElement.nextElementSibling.innerText, this)"><i data-lucide="copy"></i></button>
-                        </div>
-                        <pre class="code-block"><code data-i18n="ce-docs-terminal-code">mkobj Bala
-addcomp 10 SpriteRenderer
-setprop 10 Transform position.x 100</code></pre>
-                    </div>
+                    <h2 class="ce-subtitle" data-i18n="ce-docs-terminal-control-title">Control de Juego</h2>
+                    <p class="ce-text" data-i18n="ce-docs-terminal-control-list" style="white-space: pre-wrap;"></p>
                 </div>
             </section>
 
@@ -617,6 +704,7 @@ setprop 10 Transform position.x 100</code></pre>
         </main>
     </div>
 
+    <script src="js/docs-content.js"></script>
     <script src="js/main.js"></script>
     <script>
         document.querySelectorAll('.subnav-item').forEach(item => {
