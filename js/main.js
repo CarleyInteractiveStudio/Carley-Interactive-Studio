@@ -2559,24 +2559,20 @@ function initializeTranslations() {
     const picker = document.getElementById('lang-picker') || document.getElementById('lang-picker-ce');
 
     const updateTexts = async (lang) => {
-        const t = translations[lang] || translations["es"];
+        // Merge main translations with doc-specific content if available
+        let t = {...(translations[lang] || translations["es"])};
+        if (window.docsTranslations) {
+            const docLang = window.docsTranslations[lang] ? lang : 'en'; // Fallback to English for docs
+            t = {...t, ...window.docsTranslations[docLang]};
+        }
 
         const isDocPage = window.location.pathname.includes('documentacion.html');
         const supportedDocs = ['es', 'en', 'pt', 'ru', 'zh'];
         const notAvailableMsg = document.querySelector('.not-available-msg');
-        const docSeparators = document.querySelectorAll('.doc-separator');
-        const docItems = document.querySelectorAll('.doc-item, .doc-protip, .ce-subtitle');
 
+        // Hide not available message always if we fallback to English
         if (isDocPage) {
-            if (supportedDocs.includes(lang)) {
-                if (notAvailableMsg) notAvailableMsg.classList.add('hidden');
-                docSeparators.forEach(s => s.classList.remove('hidden'));
-                docItems.forEach(i => i.classList.remove('hidden'));
-            } else {
-                if (notAvailableMsg) notAvailableMsg.classList.remove('hidden');
-                docSeparators.forEach(s => s.classList.add('hidden'));
-                docItems.forEach(i => i.classList.add('hidden'));
-            }
+            if (notAvailableMsg) notAvailableMsg.classList.add('hidden');
         }
 
         document.querySelectorAll('[data-i18n]').forEach(el => {

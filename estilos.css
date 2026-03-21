@@ -1074,6 +1074,24 @@ body::-webkit-scrollbar,
     color: var(--accent);
 }
 
+.subnav-item.mini {
+    font-size: 0.75rem;
+    padding-left: 0.5rem;
+}
+
+.sub-menu {
+    display: none;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin: 0.2rem 0 0.5rem 1rem;
+    border-left: 1px solid rgba(255,255,255,0.05);
+}
+
+.nav-group:focus-within .sub-menu,
+.nav-group:hover .sub-menu {
+    display: flex;
+}
+
 /* Code Blocks */
 .code-block-wrapper {
     background: #0a0a0a;
