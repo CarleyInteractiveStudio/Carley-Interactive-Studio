@@ -11,7 +11,76 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Cap 8: Corrutinas",
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Optimización",
-        "ce-docs-nav-cap11": "Cap 11: FAQ",
+        "ce-docs-nav-cap11": "Cap 11: Bajo el Capó",
+        "ce-docs-nav-cap12": "Cap 12: Alias",
+        "ce-docs-nav-cap13": "Cap 13: Depuración",
+        "ce-docs-nav-cap14": "Cap 14: CELIB",
+        "ce-docs-nav-cap15": "Cap 15: Matemáticas",
+        "ce-docs-nav-cap16": "Cap 16: UI",
+        "ce-docs-nav-cap17": "Cap 17: Capas y Tags",
+        "ce-docs-nav-cap18": "Cap 18: Prefabs",
+        "ce-docs-nav-cap19": "Cap 19: Acceso Scripts",
+        "ce-docs-nav-cap20": "Cap 20: Plataformas",
+        "ce-docs-nav-cap21": "Cap 21: RPG",
+        "ce-docs-nav-cap22": "Cap 22: Top-Down",
+        "ce-docs-nav-cap23": "Cap 23: Puzzle",
+        "ce-docs-nav-cap24": "Cap 24: IA Avanzada",
+        "ce-docs-nav-cap25": "Cap 25: Inventario",
+        "ce-docs-nav-cap26": "Cap 26: Diálogos",
+        "ce-docs-nav-cap27": "Cap 27: Efectos Visuales",
+        "ce-docs-nav-cap28": "Cap 28: Físicas Pro",
+        "ce-docs-nav-cap29": "Cap 29: Multijugador",
+        "ce-docs-nav-cap30": "Cap 30: Procedural",
+        "ce-docs-nav-cap31": "Cap 31: Agua",
+        "ce-docs-nav-cap32": "Cap 32: Shooter",
+        "ce-docs-nav-cap33": "Cap 33: Carreras",
+        "ce-docs-nav-cap34": "Cap 34: Día/Noche",
+        "ce-docs-nav-cap35": "Cap 35: Vehículos",
+        "ce-docs-nav-cap36": "Cap 36: Tycoon",
+        "ce-docs-nav-cap37": "Cap 37: Estados",
+        "ce-docs-nav-cap38": "Cap 38: Cinemáticas",
+        "ce-docs-nav-cap39": "Cap 39: Match-3",
+        "ce-docs-nav-cap40": "Cap 40: Escenas Pro",
+        "ce-docs-nav-cap41": "Cap 41: Parry",
+        "ce-docs-nav-cap42": "Cap 42: Minijuegos",
+        "ce-docs-nav-cap43": "Cap 43: Crafteo",
+        "ce-docs-nav-cap44": "Cap 44: Parkour",
+        "ce-docs-nav-cap45": "Cap 45: Compañero IA",
+        "ce-docs-nav-cap46": "Cap 46: Clima",
+        "ce-docs-nav-cap47": "Cap 47: Cartas",
+        "ce-docs-nav-cap48": "Cap 48: Pooling",
+        "ce-docs-nav-cap49": "Cap 49: Leaderboard",
+        "ce-docs-nav-cap50": "Cap 50: Espacio",
+
+        "ce-nav-docs-masterbook": "Libro Maestro",
+        "ce-docs-master-title": "Libro Maestro Ultra-Detallado",
+        "ce-docs-master-intro": "¡Bienvenido a la cumbre absoluta del conocimiento en Creative Engine! Este manual ha sido redactado para explicarte hasta el último tornillo del motor de la forma más sencilla, detallada, humana y extensa posible.",
+        "ce-docs-master-cap1-title": "Capítulo 1: El Actor y su Guion",
+        "ce-docs-master-cap1-content": "Imagina que estás en un teatro inmenso. Una Materia es cualquier cosa en el escenario. Por sí misma es 'aire'. Tiene ubicación (X e Y) y es jerárquica (Padres e Hijos).\n\nSi la Materia es el actor, la Ley es el guion. Las leyes son acumulables (Gravedad + Imagen + Caminar = ¡Personaje!) y modulares.",
+        "ce-docs-master-cap2-title": "Capítulo 2: El Catálogo de Materias",
+        "ce-docs-master-cap2-content": "• Materia Vacía: Como ancla, cerebro de script o punto de spawn.\n• Materia Sprite: Dibuja imágenes en pantalla.\n• Materias Geométricas: Rectángulos y círculos para diseño rápido (Blockout).\n• Materia Cámara: Tus ojos en el mundo (Zoom, Culling Mask).\n• Materia Luz: Sombras dinámicas y atmósfera.\n• Materia Audio: Música 2D y Sonido Espacial 3D.\n• Materia Tilemap: Fábrica de niveles eficiente.",
+        "ce-docs-master-cap3-title": "Capítulo 3: El Universo de la UI",
+        "ce-docs-master-cap3-content": "La UI debe ser hija de un Canva.\n• Screen Space: Fijo en el cristal de tu monitor (HUD, Inventario).\n• World Space: Dentro del mundo (diálogos de NPCs).\n• Anclajes (Anchors): Asegura que tus botones no se muevan en distintas pantallas.",
+        "ce-docs-master-cap4-title": "Capítulo 4: Físicas y Tacto",
+        "ce-docs-master-cap4-content": "• Rigidbody 2D: Dynamic (vive), Static (suelo), Kinematic (ascensor).\n• Colisionadores: Box, Circle y Capsule. Usa 'Is Trigger' para monedas o zonas de detección.",
+        "ce-docs-master-cap5-title": "Capítulo 5: El Ciclo de Vida",
+        "ce-docs-master-cap5-content": "• Start: Configuración inicial (una vez).\n• Update: 60 veces por segundo (movimiento).\n• FixedUpdate: Latido constante para físicas estables.",
+        "ce-docs-master-cap6-title": "Capítulo 6: El Taller del Artista",
+        "ce-docs-master-cap6-content": "• Slicer: Corta hojas de sprites automáticamente con Carl IA.\n• Editor de Animación: Crea la ilusión de vida con líneas de tiempo.\n• AnimatorController: El cerebro visual de tus animaciones. Usa 'Smart Mode' para animar según el movimiento automáticamente.",
+        "ce-docs-master-cap7-title": "Capítulo 7: Organización Maestra",
+        "ce-docs-master-cap7-content": "• Tags: Marca grupos de objetos (ej: 'Enemigo') para que la bala sepa con qué chocar.\n• Capas (Layers): Control total de choques (ej: Agua no choca con Fuego).",
+        "ce-docs-master-cap8-title": "Capítulo 8: Taller Práctico",
+        "ce-docs-master-cap8-content": "1. Crea Suelo (Static + BoxCollider).\n2. Crea Héroe (Dynamic + Fixed Rotation + Movement).\n3. Configura Cámara (Camera Follow).\n4. Crea Meta (Trigger + Scene Loader).",
+        "ce-docs-master-cap9-title": "Capítulo 9: Psicología del Diseño",
+        "ce-docs-master-cap9-content": "• Regla de los 3 segundos: El jugador debe entender qué hacer rápido.\n• Feedback: Añade sonidos y destellos para cada acción.\n• Curva de Aprendizaje: Enseña antes de presionar.",
+        "ce-docs-master-cap10-title": "Capítulo 10: Construcción de Mundos",
+        "ce-docs-master-cap10-content": "• Parallax: Crea capas de fondo a distintas velocidades para dar profundidad real.\n• Iluminación Dinámica: Usa Point Lights en la oscuridad para crear tensión.",
+        "ce-docs-master-cap11-title": "Capítulo 11: El Secreto de los Prefabs",
+        "ce-docs-master-cap11-content": "Un molde maestro. Si cambias el Prefab, cambias todas sus copias en todos los niveles a la vez.",
+        "ce-docs-master-cap12-title": "Capítulo 12: Glosario Técnico",
+        "ce-docs-master-cap12-content": "• DeltaTime: Tiempo entre frames.\n• Vector2: Par de números (X, Y).\n• Draw Call: Petición de dibujo a la tarjeta gráfica (¡Manténlas bajas!).",
+        "ce-docs-master-cap13-title": "Capítulo 13: El Médico del Motor",
+        "ce-docs-master-cap13-content": "Si atraviesas el suelo, revisa que no sea Dynamic. Si no ves nada, revisa la Cámara. Si va lento, usa Tilemaps.",
 
         "ce-docs-scripting-cap0-title": "Capítulo 0: Tu Primer Script en 60 Segundos",
         "ce-docs-scripting-cap0-desc": "¿Quieres ver resultados ya? Sigue estos pasos:\n1. En el Navegador de Assets, haz clic derecho y selecciona Nuevo > Script (CES). Ponle de nombre HolaMundo.ces.\n2. Haz doble clic para abrirlo y pega el código de abajo.\n3. Arrastra ese archivo desde la biblioteca hacia cualquier objeto en tu escena.\n4. ¡Dale a Play!",
@@ -51,8 +120,162 @@ window.docsTranslations = {
         "ce-docs-scripting-cap10-title": "Capítulo 10: Optimización y Mejores Prácticas",
         "ce-docs-scripting-cap10-tips": "1. Usa delta: Asegura velocidad constante en cualquier PC.\n2. Evita buscar() en alActualizar: Hazlo en alEmpezar.\n3. Pooling: Reutiliza balas en lugar de crear/destruir.\n4. Capas de Colisión: Optimiza choques en ajustes.",
 
-        "ce-docs-scripting-cap11-title": "Capítulo 11: Solución de Problemas y FAQ",
-        "ce-docs-scripting-cap11-content": "P: ¿Puedo usar JS normal?\nR: ¡Sí! CES es una capa sobre JS (Math.random(), etc).\nP: ¿Cómo destruyo el objeto?\nR: destruir(mtr); o destruir(materia);",
+        "ce-docs-scripting-cap11-title": "Capítulo 11: Bajo el Capó (El Proceso)",
+        "ce-docs-scripting-cap11-content": "Cuando guardas un script .ces, ocurre este proceso en milisegundos:\n1. Analizador Léxico: Identifica palabras clave (si, ve, publico).\n2. Mapeador de Alias: Traduce los términos (ej: fisica -> Rigidbody2D).\n3. Generación de JS: Se crea un archivo de JavaScript puro que el motor carga en la escena.",
+
+        "ce-docs-scripting-cap12-title": "Capítulo 12: Glosario de Alias (API)",
+        "ce-docs-scripting-cap12-content": "El motor permite usar términos en español e inglés indistintamente:\n• vida / health\n• fisica / physics\n• posicion / transform\n• reproducir / play\n• imprimir / log\n• esperar / wait\n• si / if\n• sino / else",
+
+        "ce-docs-scripting-cap13-title": "Capítulo 13: Depuración (Debugging)",
+        "ce-docs-scripting-cap13-content": "Usa imprimir(\"mensaje\") para ver qué pasa internamente. Los errores aparecerán en la Consola del Editor. Si ves 'Variable no definida', revisa que hayas usado 'variable' o 'publico'.",
+
+        "ce-docs-scripting-cap14-title": "Capítulo 14: Scripting Avanzado con CELIB",
+        "ce-docs-scripting-cap14-content": "Si necesitas funciones que el motor no tiene, puedes crear librerías en JS puro (.celib). Ejemplo:\nexport function miFuncion() { ... }",
+
+        "ce-docs-scripting-cap15-title": "Capítulo 15: Referencia de Funciones Matemáticas",
+        "ce-docs-scripting-cap15-content": "• azar(min, max): Número aleatorio.\n• absoluto(n): Convierte negativo a positivo.\n• redondear(n): Quita decimales.\n• seno/coseno: Para movimientos circulares.\n• limitar(val, min, max): Mantén un valor en un rango.",
+
+        "ce-docs-scripting-cap16-title": "Capítulo 16: Interacción con la UI",
+        "ce-docs-scripting-cap16-content": "Puedes cambiar textos de la interfaz así:\npuntajeUI.textoContenido = \"Puntos: \" + puntos;\nO barras de vida:\nbarraVida.porcentaje = vidaActual / vidaMaxima;",
+
+        "ce-docs-scripting-cap17-title": "Capítulo 17: Gestión de Capas y Tags",
+        "ce-docs-scripting-cap17-content": "Usa Tags para identificar grupos (si (otro.tieneTag(\"Enemigo\"))). Las Capas (Layers) sirven para que objetos específicos no choquen entre sí.",
+
+        "ce-docs-scripting-cap18-title": "Capítulo 18: El Sistema de Prefabs",
+        "ce-docs-scripting-cap18-content": "Crea objetos desde código con instanciar(miPrefab, x, y). Ideal para disparos o spawn de oleadas.",
+
+        "ce-docs-scripting-cap19-title": "Capítulo 19: Acceso a Otros Scripts",
+        "ce-docs-scripting-cap19-content": "Puedes llamar funciones de otros scripts:\nobjeto.obtenerScript(\"Nombre\").funcionPublica();",
+
+        "ce-docs-scripting-cap20-title": "Capítulo 20: MECÁNICAS DE PLATAFORMAS",
+        "ce-docs-scripting-cap20-content": "Para un buen movimiento, usa fuerzas graduales en lugar de cambiar la posición directamente. No olvides el Coyote Time y el salto en pared para mejorar el 'feel'.",
+        "ce-docs-scripting-cap20-code": "si (teclaPresionada(\"d\")) fisica.applyForce(500, 0);\nsi (teclaRecienPresionada(\"Space\") y enSuelo) fisica.applyImpulse(0, -800);",
+
+        "ce-docs-scripting-cap21-title": "Capítulo 21: MECÁNICAS DE RPG",
+        "ce-docs-scripting-cap21-content": "Gestiona nivel, XP y estadísticas. Usa subirNivel() para aumentar vida máxima y curar al jugador automáticamente.",
+        "ce-docs-scripting-cap21-code": "funcion ganarXP(cant) {\n    xpActual += cant;\n    si (xpActual >= xpSig) subirNivel();\n}",
+
+        "ce-docs-scripting-cap22-title": "Capítulo 22: MECÁNICAS DE TOP-DOWN",
+        "ce-docs-scripting-cap22-content": "Movimiento en 8 direcciones. Normaliza el vector (multiplica por 0.707 en diagonales) para que no camine más rápido de lado.",
+        "ce-docs-scripting-cap22-code": "x += movX * velocidad * delta;\ny += movY * velocidad * delta;",
+
+        "ce-docs-scripting-cap23-title": "Capítulo 23: MECÁNICAS DE PUZZLE",
+        "ce-docs-scripting-cap23-content": "Usa estados booleanos (abierta/cerrada) y detecta colisiones con etiquetas como 'Caja' o 'Boton' para activar puertas.",
+        "ce-docs-scripting-cap23-code": "alEntrarEnColision(otro) {\n    si (otro.tieneTag(\"Boton\")) abrirPuerta();\n}",
+
+        "ce-docs-scripting-cap24-title": "Capítulo 24: INTELIGENCIA ARTIFICIAL AVANZADA",
+        "ce-docs-scripting-cap24-content": "Usa distancias y ángulos para crear conos de visión. Si el jugador entra en el rango y ángulo, el enemigo empieza la persecución.",
+        "ce-docs-scripting-cap24-code": "variable dist = distancia(x, y, jug.x, jug.y);\nsi (dist < rango) perseguir();",
+
+        "ce-docs-scripting-cap25-title": "Capítulo 25: SISTEMAS DE INVENTARIO",
+        "ce-docs-scripting-cap25-content": "Usa listas (arrays) para guardar nombres de objetos. Limita el tamaño de la lista para crear un inventario con slots limitados.",
+        "ce-docs-scripting-cap25-code": "variable inventario = [];\ninventario.push(\"Pocion\");",
+
+        "ce-docs-scripting-cap26-title": "Capítulo 26: DIÁLOGOS Y NARRATIVA",
+        "ce-docs-scripting-cap26-content": "Crea una lista de frases y un índice. Cada vez que el jugador interactúa, muestra la frase actual y aumenta el índice.",
+
+        "ce-docs-scripting-cap27-title": "Capítulo 27: EFECTOS VISUALES",
+        "ce-docs-scripting-cap27-content": "Sacudida de cámara (Screen Shake) y parpadeo de daño (Hit Flash) para dar impacto a los golpes.",
+
+        "ce-docs-scripting-cap28-title": "Capítulo 28: FÍSICAS PRO",
+        "ce-docs-scripting-cap28-content": "Gravedad inversa con 'fisica.escalaGravedad = -1' o ganchos de agarre usando Raycasts para detectar puntos de anclaje.",
+        "ce-docs-scripting-cap28-code": "si (teclaPresionada(\"g\")) fisica.escalaGravedad *= -1;",
+
+        "ce-docs-scripting-cap29-title": "Capítulo 29: MULTIJUGADOR LOCAL",
+        "ce-docs-scripting-cap29-content": "Asigna distintos sets de teclas según el ID del jugador (WASD para P1, Flechas para P2).",
+
+        "ce-docs-scripting-cap30-title": "Capítulo 30: GENERACIÓN PROCEDURAL",
+        "ce-docs-scripting-cap30-content": "Crea mundos infinitos usando bucles 'mientras' e instanciando salas aleatoriamente una tras otra.",
+
+        "ce-docs-scripting-cap31-title": "Capítulo 31: MECÁNICAS DE AGUA",
+        "ce-docs-scripting-cap31-content": "Aplica fuerzas hacia arriba (Buoyancy) cuando un objeto esté dentro de un Trigger con la etiqueta 'Agua'.",
+
+        "ce-docs-scripting-cap32-title": "Capítulo 32: SISTEMA DE SHOOTER",
+        "ce-docs-scripting-cap32-content": "Añade retroceso (empuje hacia atrás) y dispersión aleatoria al ángulo de las balas para más realismo.",
+
+        "ce-docs-scripting-cap33-title": "Capítulo 33: SISTEMA DE CARRERAS",
+        "ce-docs-scripting-cap33-content": "Usa cronómetros y guarda el 'Mejor Tiempo' en la memoria del navegador para crear récords.",
+
+        "ce-docs-scripting-cap34-title": "Capítulo 34: DÍA Y NOCHE",
+        "ce-docs-scripting-cap34-content": "Modifica la intensidad y el color de la Luz Global en un bucle según el tiempo transcurrido.",
+
+        "ce-docs-scripting-cap35-title": "Capítulo 35: VEHÍCULOS",
+        "ce-docs-scripting-cap35-content": "Usa rotación y vectores frontales (coseno/seno) para mover coches en la dirección en la que apuntan.",
+
+        "ce-docs-scripting-cap36-title": "Capítulo 36: TYCOON",
+        "ce-docs-scripting-cap36-content": "Ajuste a la rejilla (Grid Snapping) dividiendo y redondeando la posición del ratón por el tamaño de celda.",
+
+        "ce-docs-scripting-cap37-title": "Capítulo 37: ESTADOS (DEBUFFS)",
+        "ce-docs-scripting-cap37-content": "Usa bucles 'cada(1)' para aplicar daño por veneno o cambiar el color del personaje temporalmente.",
+
+        "ce-docs-scripting-cap38-title": "Capítulo 38: CINEMÁTICAS",
+        "ce-docs-scripting-cap38-content": "Bloquea el control del jugador y usa 'esperar(segundos)' para coordinar movimientos de cámaras y NPCs.",
+
+        "ce-docs-scripting-cap39-title": "Capítulo 39: MATCH-3",
+        "ce-docs-scripting-cap39-content": "Detecta vecinos en las 4 direcciones y comprueba si comparten el mismo color para destruirlos.",
+
+        "ce-docs-scripting-cap40-title": "Capítulo 40: ESCENAS PRO",
+        "ce-docs-scripting-cap40-content": "Pantallas de carga con fundidos a negro (Fade Out) animando la opacidad de una imagen de UI.",
+
+        "ce-docs-scripting-cap41-title": "Capítulo 41: PARRY",
+        "ce-docs-scripting-cap41-content": "Crea una pequeña ventana de tiempo (0.2s) tras presionar bloqueo donde el jugador es invulnerable.",
+
+        "ce-docs-scripting-cap42-title": "Capítulo 42: MINIJUEGOS",
+        "ce-docs-scripting-cap42-content": "Crea mecánicas de ganzúa comparando el ángulo del ratón con un ángulo objetivo secreto.",
+
+        "ce-docs-scripting-cap43-title": "Capítulo 43: CRAFTEO",
+        "ce-docs-scripting-cap43-content": "Comprueba si una lista de ingredientes contiene los elementos necesarios para crear un Prefab nuevo.",
+
+        "ce-docs-scripting-cap44-title": "Capítulo 44: PARKOUR",
+        "ce-docs-scripting-cap44-content": "Detección de bordes lanzando rayos (Raycast) frontales a la altura de las manos del personaje.",
+
+        "ce-docs-scripting-cap45-title": "Capítulo 45: COMPAÑERO IA",
+        "ce-docs-scripting-cap45-content": "Usa 'moverHacia' si la distancia con el líder es mayor a un límite, para que te siga orgánicamente.",
+
+        "ce-docs-scripting-cap46-title": "Capítulo 46: CLIMA",
+        "ce-docs-scripting-cap46-content": "Instancia gotas de lluvia sobre el jugador y usa destellos blancos en pantalla para simular rayos.",
+
+        "ce-docs-scripting-cap47-title": "Capítulo 47: CARTAS",
+        "ce-docs-scripting-cap47-content": "Usa 'mazo.pop()' para sacar la última carta y 'mano.push()' para añadirla a las opciones del jugador.",
+
+        "ce-docs-scripting-cap48-title": "Capítulo 48: OPTIMIZACIÓN (POOLING)",
+        "ce-docs-scripting-cap48-content": "Crea 100 balas al inicio y desactívalas. En lugar de crear nuevas, activa las que ya existen.",
+        "ce-docs-scripting-cap48-code": "variable pool = []; // Pre-crea y reutiliza",
+
+        "ce-docs-scripting-cap49-title": "Capítulo 49: LEADERBOARD",
+        "ce-docs-scripting-cap49-content": "Guarda una lista de récords y ordénala de mayor a menor para mostrar el Top 5 local.",
+
+        "ce-docs-scripting-cap50-title": "Capítulo 50: VIAJES ESPACIALES",
+        "ce-docs-scripting-cap50-content": "En el espacio no hay rozamiento. Usa 'applyForce' para acelerar y la velocidad se mantendrá constante.",
+        "ce-docs-scripting-cap50-code": "variable rad = rotacion * (3.14 / 180);\nfisica.applyForce(coseno(rad) * fuerza, seno(rad) * fuerza);",
+
+        "ce-docs-sceneloader-desc": "Permite viajar entre distintos niveles del juego (.ceScene). Puedes activarlo al chocar o por código.",
+        "ce-docs-sceneloader-name": "SceneLoader (Niveles)",
+
+        "ce-docs-solutions-title": "Guía de Solución Rápida (FAQ)",
+        "ce-docs-solutions-intro": "Más de 50 soluciones a problemas comunes en Creative Engine.",
+        "ce-docs-solutions-scripting": "💻 1. Errores de Scripting (CES)",
+        "ce-docs-solutions-physics": "🌍 2. Físicas y Colisiones",
+        "ce-docs-solutions-ui": "🎨 3. Interfaz de Usuario (UI)",
+        "ce-docs-solutions-audio": "🎬 4. Audio y Animaciones",
+        "ce-docs-solutions-editor": "🛠️ 5. Errores del Editor",
+
+        "ce-sol-1": "<b>Variable no definida:</b> Revisa que usaste 'publico' o 'variable'.",
+        "ce-sol-2": "<b>El script no corre:</b> Asegúrate de que empiece con 've motor;'.",
+        "ce-sol-3": "<b>Error de llave:</b> Revisa que cada '{' tenga su '}'.",
+        "ce-sol-4": "<b>delta no funciona:</b> Asegúrate de que alActualizar reciba '(delta)'.",
+        "ce-sol-5": "<b>Objeto nulo:</b> Revisa que buscar(\"Nombre\") esté escrito exacto.",
+        "ce-sol-21": "<b>Atraviesa el suelo:</b> Cambia el suelo a Rigidbody 'Static'.",
+        "ce-sol-23": "<b>Gira sin parar:</b> Activa 'Fixed Rotation' en el Rigidbody.",
+        "ce-sol-27": "<b>No choca:</b> Revisa que ambos tengan un Collider (Box/Circle).",
+        "ce-sol-31": "<b>Botón no clickable:</b> Revisa que sea hijo de un Canva.",
+        "ce-sol-34": "<b>Texto no cambia:</b> Asegúrate de usar '.textoContenido' en el script.",
+        "ce-sol-36": "<b>UI invisible:</b> Revisa que el Canva tenga el modo 'Screen Space'.",
+        "ce-sol-41": "<b>No se oye:</b> Revisa el volumen y que 'Play on Awake' esté marcado.",
+        "ce-sol-42": "<b>Animación no cambia:</b> Revisa que el nombre en play(\"...\") sea exacto.",
+        "ce-sol-46": "<b>Sonido 3D lejos:</b> Sube el radio de audición en el Inspector.",
+        "ce-sol-51": "<b>No guarda:</b> No uses caracteres raros (ñ, á) en el nombre del proyecto.",
+        "ce-sol-55": "<b>Pantalla negra:</b> Revisa que tengas una Cámara en la escena.",
 
         "ce-docs-nav-vehicles": "Vehículos",
         "ce-docs-vehicles-title": "Vehículos y Controladores Avanzados",
