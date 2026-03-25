@@ -2580,9 +2580,18 @@ function initializeTranslations() {
             if (t[key]) {
                 if (key.includes('-code')) {
                     el.textContent = t[key].replace(/\\n/g, '\n');
+                    // Show the wrapper if it was hidden and has content
+                    const wrapper = el.closest('.code-block-wrapper');
+                    if (wrapper) wrapper.classList.remove('hidden');
+                } else if ((el.tagName === 'UL' || el.tagName === 'LI' || el.tagName === 'P') && (t[key].includes('<li>') || t[key].includes('<b>'))) {
+                    el.innerHTML = t[key];
                 } else {
                     el.textContent = t[key];
                 }
+            } else if (key.includes('-code')) {
+                // Hide code blocks that have no content for the current language
+                const wrapper = el.closest('.code-block-wrapper');
+                if (wrapper) wrapper.classList.add('hidden');
             }
         });
 
