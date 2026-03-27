@@ -6,112 +6,109 @@
     <title>Donaciones - Carley Interactive Studio</title>
     <link rel="stylesheet" href="estilos.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         .donate-page {
             max-width: 1000px;
             margin: 8rem auto 4rem;
             padding: 0 2rem;
         }
-        .donate-card {
-            text-align: center;
-            padding: 0;
-        }
-        .transparency-section {
-            text-align: left;
-            margin: 4rem 0;
-            padding: 0;
-        }
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin: 4rem 0;
-        }
-        .app-donate-item {
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            position: relative;
-            padding: 0;
-        }
-        .app-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-        }
-        .progress-container {
-            background: rgba(255,255,255,0.05);
-            height: 10px;
-            border-radius: 5px;
-            margin: 1rem 0 0.5rem;
-            position: relative;
-        }
-        .progress-bar {
-            height: 100%;
-            border-radius: 5px;
-            background: var(--accent);
-            width: 0%;
-            transition: width 1s ease;
-        }
-        .progress-labels {
+        .donate-hub-header {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
-            opacity: 0.6;
-        }
-        .cost-list {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .cost-list li {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .cost-list li:last-child { border: none; }
-
-        .donor-modal {
-            position: fixed;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 600px;
-            background: #111;
-            padding: 2.5rem;
-            border-radius: 32px;
-            border: 1px solid rgba(255,255,255,0.1);
-            z-index: 2001;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .sort-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 20px;
             flex-wrap: wrap;
         }
-        .sort-btn {
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
+        .hub-controls {
+            display: flex;
+            gap: 15px;
+        }
+        .hub-select {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+        .hub-select option {
+            background: #111;
+        }
+        .donor-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .donor-card:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .donor-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .donor-pfp {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .donor-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .donor-app {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            display: block;
+        }
+        .donor-amount-area {
+            text-align: right;
+        }
+        .donor-amount {
+            color: #25d366;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: block;
+        }
+        .donor-percentage {
+            color: var(--accent);
             font-size: 0.8rem;
-            border: 1px solid transparent;
+            font-weight: 600;
         }
-        .sort-btn.active {
-            border-color: var(--accent);
-            background: rgba(0, 170, 255, 0.1);
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            opacity: 0.5;
         }
-        .refund-notice {
-            font-size: 0.7rem;
-            opacity: 0.3;
-            margin-top: 3rem;
-            transition: opacity 0.3s;
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
         }
-        .refund-notice:hover { opacity: 1; }
+        .hidden { display: none !important; }
+        .cta-hub {
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            display: inline-block;
+        }
     </style>
 </head>
 <body class="engine-body">
@@ -125,98 +122,77 @@
                 </div>
             </a>
             <div class="nav-controls">
-                <a href="cuenta.html" class="icon-btn"><i data-lucide="user"></i></a>
+                <select id="lang-picker" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="cuenta.html" class="icon-btn">
+                    <i data-lucide="user"></i>
+                </a>
             </div>
         </div>
     </header>
 
     <div class="donate-page">
-        <div class="donate-card">
-            <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 1.5rem;" data-i18n="donate-big-title">Tu apoyo vale mucho</h1>
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 1rem;" data-i18n="footer-donations">Donaciones</h1>
             <p class="ce-text" data-i18n="donate-intro-msg">Estás aportando a que otros puedan usar nuestra app y motor de forma gratuita.</p>
-
-            <div class="transparency-section">
-                <h2 class="ce-subtitle" style="margin-top: 0;" data-i18n="transparency-title">Nuestra Misión</h2>
-                <p class="ce-text small" data-i18n="transparency-desc-long">
-                    Queremos que VidSpri sea gratuito para todos, sin modelos freemium ni premium. Queremos que todos tengan el mismo acceso a todas las herramientas para crear animaciones y música. Creative Engine ya es gratuito, y queremos que Carl IA también lo sea, completamente integrado. Para mantener esto, necesitamos cubrir costos de servidores de Hugging Face y Supabase.
-                </p>
-            </div>
-
-            <div class="app-grid">
-                <!-- Creative Engine Goal -->
-                <div class="app-donate-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <img src="carley_foto_web/Logo_C.png" alt="CE" class="app-icon">
-                        <h3 style="margin: 0; font-size: 1.2rem;">Creative Engine</h3>
-                    </div>
-                    <p class="ce-text extra-small" data-i18n="acc-100-free">100% Gratuito</p>
-
-                    <ul class="cost-list">
-                        <li><span>Supabase</span> <span>$1,000</span></li>
-                        <li><span>Emails & Services</span> <span>$1,000</span></li>
-                        <li><span>Marketing/People</span> <span>$4,000</span></li>
-                        <li><span>IA Servers & Devs</span> <span>$20,000</span></li>
-                        <li style="font-weight: 700; color: #fff; border-top: 1px solid #fff;"><span>Meta Mensual</span> <span>$26,000</span></li>
-                    </ul>
-
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 2%;"></div>
-                    </div>
-                    <div class="progress-labels">
-                        <span>Actual: $500</span>
-                        <span>Meta: $26,000</span>
-                    </div>
-
-                    <div style="display: flex; gap: 10px;">
-                        <button class="cta-button primary" style="flex:1; padding: 0.8rem;" onclick="openDonationFlow('CE')">Apoyar</button>
-                        <button class="cta-button outline" style="flex:1; padding: 0.8rem;" onclick="openDonors('CE')">Donantes</button>
-                    </div>
-                </div>
-
-                <!-- Vid Spri Goal -->
-                <div class="app-donate-item">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <img src="carley_foto_web/Logo VidSpri.png" alt="VS" class="app-icon">
-                        <h3 style="margin: 0; font-size: 1.2rem;">Vid Spri & Carl IA</h3>
-                    </div>
-                    <p class="ce-text extra-small" data-i18n="acc-100-free">100% Gratuito</p>
-
-                    <ul class="cost-list">
-                        <li><span>Hugging Face (IA Fixed)</span> <span>$18,000</span></li>
-                        <li><span>VidSpri Servers</span> <span>$2,000</span></li>
-                        <li><span>Devs & Maintenance</span> <span>$5,000</span></li>
-                        <li style="font-weight: 700; color: #fff; border-top: 1px solid #fff;"><span>Meta Mensual</span> <span>$25,000</span></li>
-                    </ul>
-
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 1%;"></div>
-                    </div>
-                    <div class="progress-labels">
-                        <span>Actual: $250</span>
-                        <span>Meta: $25,000</span>
-                    </div>
-
-                    <div style="display: flex; gap: 10px;">
-                        <button class="cta-button primary" style="flex:1; padding: 0.8rem;" onclick="openDonationFlow('VS')">Apoyar</button>
-                        <button class="cta-button outline" style="flex:1; padding: 0.8rem;" onclick="openDonors('VS')">Donantes</button>
-                    </div>
-                </div>
-            </div>
-
-            <p class="refund-notice">
-                Si en todo caso quieres reclamar un reembolso, puedes hacerlo antes de que pasen 7 días; de lo contrario no garantizamos una devolución.
-            </p>
         </div>
 
-        <div style="margin-top: 4rem;">
+        <div class="donate-hub-header" style="position: sticky; top: 70px; background: var(--bg); z-index: 100; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <h2 class="ce-subtitle" style="margin: 0; font-size: 1.5rem;" data-i18n="list-title">Nuestros Colaboradores</h2>
+
+            <div class="hub-controls">
+                <div class="control-group">
+                    <label style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block;">Filtrar App</label>
+                    <select id="filter-app" class="hub-select">
+                        <option value="all">Todas las Apps</option>
+                        <option value="CE">Creative Engine</option>
+                        <option value="VS">Vid Spri</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block;">Ordenar por</label>
+                    <select id="sort-order" class="hub-select">
+                        <option value="desc">Más donó</option>
+                        <option value="asc">Menos donó</option>
+                        <option value="newest">Más reciente</option>
+                        <option value="oldest">Más antiguo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="donors-hub-container">
+            <!-- Donor cards will be rendered here -->
+            <div class="empty-state">Cargando donadores...</div>
+        </div>
+
+        <div style="margin-top: 4rem; text-align: center;">
+            <p class="ce-text small" style="margin-bottom: 2rem;">¿Quieres apoyar uno de nuestros proyectos?</p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <button class="cta-button" onclick="openDonationFlow('CE')">Apoyar Creative Engine</button>
+                <button class="cta-button" onclick="openDonationFlow('VS')">Apoyar Vid Spri</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 4rem; text-align: center;">
             <a href="index.html" class="cta-button outline" style="text-decoration: none;" data-i18n="btn-back-home">Volver al Inicio</a>
         </div>
     </div>
 
-    <!-- Donation Modal -->
+    <!-- Donation Flow Modal (Used when called from project pages via query params or direct triggers) -->
     <div id="donation-flow-modal" class="modal-overlay hidden">
-        <div class="donor-modal" style="text-align: center;">
-            <h2 class="ce-subtitle" style="margin-top: 0;" data-i18n="support-action-title">Apoyar a <span id="app-target-name"></span></h2>
+        <div class="studio-modal" style="text-align: center; padding: 2rem; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h2 class="ce-subtitle" style="margin-top: 0;"><span data-i18n="support-action-title">Apoyar</span> <span id="app-target-name"></span></h2>
             <p class="ce-text small" style="margin-bottom: 2rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
 
             <div id="paypal-button-container" style="margin-bottom: 2rem;"></div>
@@ -228,139 +204,24 @@
                 </label>
             </div>
 
-            <button class="acc-btn outline" onclick="closeDonationFlow()">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- Donors Modal -->
-    <div id="donors-list-modal" class="modal-overlay hidden">
-        <div class="donor-modal">
-            <h2 class="ce-subtitle" style="margin-top: 0;">Donantes - <span id="app-donors-name"></span></h2>
-
-            <div class="sort-controls">
-                <button class="sort-btn active" onclick="sortDonors('desc')">Más donó</button>
-                <button class="sort-btn" onclick="sortDonors('asc')">Menos donó</button>
-                <button class="sort-btn" onclick="sortDonors('oldest')">Primero</button>
-                <button class="sort-btn" onclick="sortDonors('newest')">Último</button>
-            </div>
-
-            <div id="donors-container">
-                <!-- Donor items -->
-            </div>
-
-            <button class="acc-btn primary" style="margin-top: 2rem;" onclick="closeDonors()">Cerrar</button>
+            <button class="modal-btn outline" onclick="closeDonationFlow()">Cerrar</button>
         </div>
     </div>
 
     <script src="https://www.paypal.com/sdk/js?client-id=JZ4KM2VUD6AMQ&currency=USD"></script>
     <script src="js/main.js"></script>
     <script>
-        let currentApp = '';
-        const mockDonors = {
-            'CE': [
-                { name: 'Alpha Dev', amount: 100, date: '2026-03-01' },
-                { name: 'Beta Studio', amount: 50, date: '2026-03-02' },
-                { name: 'Gamer123', amount: 10, date: '2026-03-05' }
-            ],
-            'VS': [
-                { name: 'VideoArt', amount: 200, date: '2026-03-01' },
-                { name: 'SpriteKing', amount: 20, date: '2026-03-03' }
-            ]
-        };
-
-        function openDonationFlow(app) {
-            currentApp = app;
-            document.getElementById('app-target-name').textContent = app === 'CE' ? 'Creative Engine' : 'Vid Spri';
-            document.getElementById('donation-flow-modal').classList.remove('hidden');
-            renderPayPal();
-        }
-
-        function closeDonationFlow() {
-            document.getElementById('donation-flow-modal').classList.add('hidden');
-            document.getElementById('paypal-button-container').innerHTML = '';
-        }
-
-        function openDonors(app) {
-            currentApp = app;
-            document.getElementById('app-donors-name').textContent = app === 'CE' ? 'Creative Engine' : 'Vid Spri';
-            document.getElementById('donors-list-modal').classList.remove('hidden');
-            sortDonors('desc');
-        }
-
-        function closeDonors() {
-            document.getElementById('donors-list-modal').classList.add('hidden');
-        }
-
-        function sortDonors(type) {
-            if (!window.currentDonationStats) return;
-            let list = [...window.currentDonationStats[currentApp].donors];
-
-            // Update active btn
-            if (event && event.target) {
-                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-                event.target.classList.add('active');
-            }
-
-            if (type === 'desc') list.sort((a,b) => b.amount - a.amount);
-            if (type === 'asc') list.sort((a,b) => a.amount - b.amount);
-            if (type === 'oldest') list.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
-            if (type === 'newest') list.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
-            const container = document.getElementById('donors-container');
-            if (list.length === 0) {
-                container.innerHTML = '<p class="ce-text extra-small" style="text-align:center; padding: 2rem; opacity: 0.5;">No hay donaciones aún para este proyecto.</p>';
-                return;
-            }
-
-            container.innerHTML = list.map(d => `
-                <div style="display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <span style="font-weight: 600;">${d.donor_name}</span>
-                    <span style="color: #25d366; font-weight: 700;">$${parseFloat(d.amount).toFixed(2)}</span>
-                </div>
-            `).join('');
-        }
-
-        function renderPayPal() {
-            const isJoinChecked = document.getElementById('join-donor-list').checked;
-            const donorName = (window.currentUser && isJoinChecked)
-                ? (window.currentUser.user_metadata.username || window.currentUser.email.split('@')[0])
-                : 'Anónimo';
-
-            paypal.Buttons({
-                createOrder: (data, actions) => {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: { value: '10.00' },
-                            description: `Donación para ${currentApp} de ${donorName}`,
-                            custom_id: donorName // Passing the donor name to PayPal
-                        }]
-                    });
-                },
-                onApprove: (data, actions) => {
-                    return actions.order.capture().then(async details => {
-                        const amount = details.purchase_units[0].amount.value;
-
-                        // Push to Supabase
-                        const { error } = await window.supabaseClient.from('donations').insert({
-                            donor_name: donorName,
-                            amount: parseFloat(amount),
-                            product_id: currentApp,
-                            paypal_order_id: details.id
-                        });
-
-                        if (error) console.error('Error saving donation:', error);
-
-                        alert('¡Gracias ' + details.payer.name.given_name + ' por tu apoyo! Tu contribución ha sido registrada.');
-                        closeDonationFlow();
-                        if (typeof fetchDonationStats === 'function') fetchDonationStats();
-                    });
-                }
-            }).render('#paypal-button-container');
-        }
-
+        // Check for direct donation trigger from URL
         window.addEventListener('load', () => {
-            lucide.createIcons();
+            const params = new URLSearchParams(window.location.search);
+            const donateTo = params.get('donate');
+            if (donateTo) {
+                if (typeof openDonationFlow === 'function') openDonationFlow(donateTo);
+            }
         });
+
+        // Initialize Lucide
+        lucide.createIcons();
     </script>
 </body>
 </html>

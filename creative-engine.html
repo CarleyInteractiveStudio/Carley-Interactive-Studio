@@ -8,11 +8,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9270161527829251" crossorigin="anonymous"></script>
-    <script>
-        const SUPABASE_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
-        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    </script>
 </head>
 <body class="engine-body fixed-page">
 
@@ -26,6 +21,9 @@
             <nav class="sidebar-nav">
                 <a href="#info" class="nav-item active" data-target="info">
                     <i data-lucide="info"></i> <span data-i18n="ce-nav-info">Información</span>
+                </a>
+                <a href="#tutorials" class="nav-item" data-target="tutorials">
+                    <i data-lucide="play-circle"></i> <span data-i18n="ce-nav-tutorials">Tutoriales</span>
                 </a>
                 <a href="#report" class="nav-item" data-target="report">
                     <i data-lucide="bug"></i> <span data-i18n="ce-nav-report">Reportar</span>
@@ -48,8 +46,11 @@
                 <a href="#donations" class="nav-item" data-target="donations">
                     <i data-lucide="heart"></i> <span data-i18n="ce-nav-donations">Donaciones</span>
                 </a>
+                <a href="colaboradores.html" class="nav-item">
+                    <i data-lucide="award"></i> <span data-i18n="ce-nav-collabs">Colaboradores</span>
+                </a>
                 <a href="#coqui" class="nav-item" data-target="coqui">
-                    <i data-lucide="award"></i> <span data-i18n="ce-nav-credits">Créditos</span>
+                    <i data-lucide="info"></i> <span data-i18n="ce-nav-credits">Créditos</span>
                 </a>
             </nav>
 
@@ -102,6 +103,17 @@
                     <p class="ce-text" data-i18n="ce-info-open">El motor mismo estará disponible en código abierto para todos aquellos que quieran modificarlo a sus gustos.</p>
                     <p class="ce-text" data-i18n="ce-info-team">Creative Engine tiene en desarrollo un sistema que te permitirá crear videojuegos en equipo. Muy bueno para escuelas que quieren enseñar el desarrollo de videojuegos a los estudiantes o pequeños estudios.</p>
                     <p class="ce-text" data-i18n="ce-info-vidspri">Creative Engine tiene integrado a Vid Spri, una herramienta que te permite crear animaciones y sonido para tus videojuegos.</p>
+                </div>
+            </section>
+
+            <section id="tutorials" class="content-section">
+                <h2 class="section-title" data-i18n="ce-nav-tutorials">Tutoriales</h2>
+                <div class="ce-card info-card">
+                    <h3 class="ce-subtitle" data-i18n="ce-tutorial-title">Cómo crear tu primer juego</h3>
+                    <p class="ce-text" data-i18n="ce-tutorial-desc">Aprende los fundamentos de Creative Engine y empieza tu aventura como desarrollador.</p>
+                    <a href="https://www.youtube.com/@CarleyInteractiveStudioOficial" target="_blank">
+                        <img src="carley_foto_web/vidspri_mascot.png" alt="Tutorial Creative Engine" class="tutorial-preview" style="display: block; margin: 0 auto; max-width: 100%; height: auto; border-radius: 15px;">
+                    </a>
                 </div>
             </section>
 
@@ -214,11 +226,31 @@
             <section id="donations" class="content-section">
                 <h2 class="section-title" data-i18n="ce-nav-donations">Donaciones</h2>
                 <div class="ce-card">
-                    <p class="ce-text" data-i18n="ce-donate-1">No necesitas ser un desarrollador para aportar a nuestro motor. Tu apoyo monetario nos ayudará a contratar desarrolladores y pagar servidores para hacer de Vid Spri una herramienta muy útil y gratis.</p>
+                    <p class="ce-text" data-i18n="ce-donate-intro">Tu apoyo es lo que mantiene este proyecto vivo y gratuito para todos. Con total transparencia, te compartimos que mantener Creative Engine requiere cubrir costos de servidores y desarrollo para que siga siendo una herramienta accesible para todos sin barreras económicas. Sus donaciones ayudarán a que otros usen nuestras herramientas gratuitamente.</p>
+
+                    <div class="app-donate-item" style="margin: 2rem 0; padding: 1.5rem; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                        <ul class="cost-list">
+                            <li><span>Supabase</span> <span>$1,000</span></li>
+                            <li><span>Emails & Services</span> <span>$1,000</span></li>
+                            <li><span>Marketing/People</span> <span>$4,000</span></li>
+                            <li><span>IA Servers & Devs</span> <span>$20,000</span></li>
+                            <li style="font-weight: 700; color: #fff; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;"><span>Meta Mensual</span> <span>$26,000</span></li>
+                        </ul>
+
+                        <div class="progress-container" style="background: rgba(255,255,255,0.05); height: 10px; border-radius: 5px; margin: 1.5rem 0 0.5rem; position: relative; overflow: hidden;">
+                            <div id="ce-progress-bar" class="progress-bar" style="height: 100%; background: var(--accent); width: 0%; transition: width 1s ease;"></div>
+                        </div>
+                        <div class="progress-labels" style="display: flex; justify-content: space-between; font-size: 0.8rem; opacity: 0.6;">
+                            <span id="ce-current-amount">Actual: $0</span>
+                            <span>Meta: $26,000</span>
+                        </div>
+                    </div>
+
                     <p class="ce-text" data-i18n="ce-donate-2">Nos financiará a seguir adelante y pagar servidores para que en un futuro puedas usar Carl IA sin depender de API externa de forma gratuita.</p>
 
                     <div class="donation-actions">
-                        <a href="donaciones.html" class="ce-btn primary" style="text-decoration: none;"><i data-lucide="heart"></i> <span data-i18n="btn-support">Apoyar</span></a>
+                        <button class="ce-btn primary" onclick="openDonationFlow('CE')"><i data-lucide="heart"></i> <span data-i18n="btn-support">Apoyar</span></button>
+                        <a href="donaciones.html" class="ce-btn outline" style="text-decoration: none;"><i data-lucide="users"></i> <span data-i18n="btn-see-support">Ver Colaboradores</span></a>
                         <button id="ce-ad-btn" class="ce-btn outline"><i data-lucide="play"></i> <span data-i18n="btn-ad">Ver un anuncio para apoyarnos</span></button>
                     </div>
 
@@ -239,7 +271,27 @@
         </main>
     </div>
 
+    <script src="https://www.paypal.com/sdk/js?client-id=JZ4KM2VUD6AMQ&currency=USD"></script>
     <script src="js/main.js"></script>
+    <!-- Donation Flow Modal -->
+    <div id="donation-flow-modal" class="modal-overlay hidden">
+        <div class="studio-modal" style="text-align: center; padding: 2rem; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h2 class="ce-subtitle" style="margin-top: 0;"><span data-i18n="support-action-title">Apoyar</span> <span id="app-target-name"></span></h2>
+            <p class="ce-text small" style="margin-bottom: 2rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
+
+            <div id="paypal-button-container" style="margin-bottom: 2rem;"></div>
+
+            <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; margin-bottom: 2rem;">
+                <label style="display: flex; gap: 10px; font-size: 0.8rem; align-items: center; cursor: pointer;">
+                    <input type="checkbox" id="join-donor-list" checked>
+                    <span>Unirse a la lista pública de donantes</span>
+                </label>
+            </div>
+
+            <button class="modal-btn outline" onclick="closeDonationFlow()">Cerrar</button>
+        </div>
+    </div>
+
     <script>
         // Specific logic for Creative Engine page
         document.querySelectorAll('.nav-item').forEach(item => {

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colaboradores - Carley Interactive Studio</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+        .collab-page-container {
+            padding: 100px 20px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .collab-header {
+            margin-bottom: 60px;
+        }
+
+        .collab-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to bottom, #ffffff, #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .collab-desc {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .collab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 3rem;
+            padding: 20px;
+        }
+
+        /* Character Card Style */
+        .collab-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .collab-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 170, 255, 0.2);
+            border-color: rgba(0, 170, 255, 0.5);
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+            background: #111;
+        }
+
+        .card-image-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .collab-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .collab-card:hover .collab-photo {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .collab-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .collab-type {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Modal Specific Styles */
+        .collab-modal-body {
+            text-align: left;
+        }
+
+        .collab-modal-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .collab-details-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .empty-collab {
+            grid-column: 1 / -1;
+            padding: 60px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.3);
+            border: 2px dashed rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="engine-body">
+
+    <header class="glass-header">
+        <div class="header-content">
+            <div class="logo-area" onclick="window.location.href='index.html'">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="logo-c">
+                <div class="logo-name-wrapper">
+                    <span class="logo-name">Carley Interactive Studio</span>
+                </div>
+            </div>
+
+            <div class="search-area">
+                <div class="search-input-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="main-search" placeholder="Buscar en Carley..." data-i18n-ph="search-ph">
+                    <div id="search-dropdown" class="search-results-dropdown hidden"></div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <select id="lang-picker" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="cuenta.html" class="icon-btn">
+                    <i data-lucide="user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="collab-page-container">
+        <header class="collab-header">
+            <h1 class="collab-title" data-i18n="collab-page-title">Nuestros Colaboradores</h1>
+            <p class="collab-desc" data-i18n="collab-page-desc">Queremos expresar nuestro más sincero agradecimiento a las mentes brillantes y corazones generosos que han colaborado con Carley Studio, ya sea a través de código, recursos o apoyo material.</p>
+        </header>
+
+        <div id="collab-grid" class="collab-grid">
+            <div class="empty-collab" data-i18n="collab-loading">Cargando colaboradores...</div>
+        </div>
+    </main>
+
+    <footer class="studio-footer">
+        <div class="footer-legal">
+            <p data-i18n="footer-copyright">&copy; 2026 Carley Interactive Studio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+    <div id="collab-detail-modal" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 id="modal-collab-name">Nombre</h2>
+            <button class="close-modal" onclick="closeCollabModal()"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body collab-modal-body">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img id="modal-collab-photo" src="" class="collab-modal-photo">
+                <p id="modal-collab-details" class="collab-details-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Specific Logic for Collaborators Page
+        async function fetchCollaborators() {
+            const grid = document.getElementById('collab-grid');
+            if (!grid || !window.supabaseClient) return;
+
+            const { data, error } = await window.supabaseClient
+                .from('collaborators')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error fetching collaborators:', error);
+                grid.innerHTML = '<div class="empty-collab">Error al cargar colaboradores.</div>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                grid.innerHTML = '<div class="empty-collab">Aún no hay colaboradores registrados.</div>';
+                return;
+            }
+
+            grid.innerHTML = data.map(c => {
+                const name = escapeHTML(c.name);
+                const type = escapeHTML(c.type || 'Colaborador');
+                const photo = c.photo_url || `https://ui-avatars.com/api/?name=${name}&background=00aaff&color=fff&size=512`;
+
+                return `
+                    <div class="collab-card" onclick="openCollabModal(${JSON.stringify(c).replace(/"/g, '&quot;')})">
+                        <div class="card-image-wrapper">
+                            <img src="${photo}" class="collab-photo" alt="${name}">
+                        </div>
+                        <div class="card-content">
+                            <span class="collab-name">${name}</span>
+                            <span class="collab-type">${type}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.openCollabModal = function(collab) {
+            const name = escapeHTML(collab.name);
+            const details = escapeHTML(collab.collaboration_details);
+            const photo = collab.photo_url || `https://ui-avatars.com/api/?name=${name}&background=00aaff&color=fff`;
+
+            document.getElementById('modal-collab-name').textContent = name;
+            document.getElementById('modal-collab-photo').src = photo;
+            document.getElementById('modal-collab-details').textContent = details;
+
+            document.getElementById('collab-detail-modal').classList.remove('hidden');
+            document.getElementById('modal-overlay').classList.remove('hidden');
+        };
+
+        window.closeCollabModal = function() {
+            document.getElementById('collab-detail-modal').classList.add('hidden');
+            document.getElementById('modal-overlay').classList.add('hidden');
+        };
+
+        // Re-run icons for this page
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCollaborators();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
