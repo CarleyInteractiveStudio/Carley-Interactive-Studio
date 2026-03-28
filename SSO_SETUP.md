@@ -67,4 +67,4 @@ window.addEventListener('message', (event) => {
 ```
 
 ---
-**Nota de Seguridad:** Solo los dominios autorizados en `js/sso.js` y `bridge.html` pueden usar este sistema. Si añades un nuevo sitio, asegúrate de actualizar la lista blanca en esos archivos.
+**Nota de Seguridad:** Por razones de privacidad, los códigos de configuración de base de datos no se incluyen en este documento público. Solo los dominios autorizados en `js/sso.js` y `bridge.html` pueden usar este sistema. Si añades un nuevo sitio, asegúrate de actualizar la lista blanca en esos archivos.
