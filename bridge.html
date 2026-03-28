@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carley Studio SSO Bridge</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+    <!--
+      This is an invisible bridge for cross-domain communication.
+      Other Carley sites can embed this in an iframe to:
+      1. Check session status silently.
+      2. Perform authorized Supabase calls via the parent session.
+    -->
+    <script>
+        // Supabase Initialization (Minimal)
+        const SB_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
+        const SB_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        const WHITELISTED_ORIGINS = [
+            'https://carleyengine.com',
+            'https://creativegame.online',
+            'http://localhost:8080',
+            'http://127.0.0.1:8080'
+        ];
+
+        window.addEventListener('message', async (event) => {
+            // Security check: only allow authorized origins
+            const originMatch = WHITELISTED_ORIGINS.some(o => event.origin === o);
+            if (!originMatch) {
+                console.warn('Blocked unauthorized SSO message from:', event.origin);
+                return;
+            }
+
+            const { type, payload, requestId } = event.data;
+
+            if (type === 'CHECK_SESSION') {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                event.source.postMessage({
+                    type: 'SESSION_RESPONSE',
+                    payload: session ? {
+                        user: {
+                            id: session.user.id,
+                            email: session.user.email,
+                            user_metadata: session.user.user_metadata
+                        },
+                        access_token: session.access_token
+                    } : null,
+                    requestId
+                }, event.origin);
+            }
+
+            if (type === 'SUPABASE_CALL') {
+                const { table, method, query, filter } = payload;
+
+                try {
+                    let request = supabaseClient.from(table)[method](query);
+                    if (filter) {
+                        Object.keys(filter).forEach(key => {
+                            request = request.eq(key, filter[key]);
+                        });
+                    }
+
+                    const { data, error } = await request;
+
+                    event.source.postMessage({
+                        type: 'SUPABASE_RESPONSE',
+                        payload: { data, error },
+                        requestId
+                    }, event.origin);
+                } catch (err) {
+                    event.source.postMessage({
+                        type: 'SUPABASE_RESPONSE',
+                        payload: { data: null, error: err.message },
+                        requestId
+                    }, event.origin);
+                }
+            }
+        });
+
+        // Tell parent we are ready
+        window.parent.postMessage({ type: 'BRIDGE_READY' }, '*');
+    </script>
+</body>
+</html>

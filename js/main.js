@@ -181,10 +181,20 @@ async function initializeAuth() {
             const confirm = document.getElementById('reg-pass-confirm').value;
             if (pass !== confirm) return alert('Las contraseñas no coinciden.');
 
-            const { error } = await window.supabaseClient.auth.signUp({
+            const { data, error } = await window.supabaseClient.auth.signUp({
                 email, password: pass
             });
             if (error) return alert(error.message);
+
+            // Create initial profile record if user is new
+            if (data.user) {
+                await window.supabaseClient.from('profiles').upsert({
+                    id: data.user.id,
+                    language: localStorage.getItem('carley-lang') || 'es',
+                    username: email.split('@')[0]
+                });
+            }
+
             closeStudioModal('modal-auth-register');
             alert('Cuenta creada e iniciada con éxito.');
         };
