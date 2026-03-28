@@ -122,7 +122,11 @@
 
     <div id="sso-loading-overlay" class="hidden">
         <div class="spinner"></div>
-        <p>Iniciando sesión segura...</p>
+        <p id="loading-text">Iniciando sesión segura...</p>
+        <div id="manual-redirect-area" class="hidden" style="margin-top: 2rem; color: white; text-align: center;">
+            <p>Si no eres redirigido automáticamente, haz clic aquí:</p>
+            <a id="manual-redirect-link" href="#" style="color: var(--accent); text-decoration: underline; font-weight: bold; display: block; margin-top: 1rem;">Volver al sitio</a>
+        </div>
     </div>
 
     <div class="sso-page">

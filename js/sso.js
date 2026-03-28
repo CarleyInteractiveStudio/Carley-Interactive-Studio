@@ -132,7 +132,10 @@ if (regBtn) {
 
 function handleSSOSuccess(session) {
     if (!returnUrl) {
-        window.location.href = 'index.html';
+        // If no return URL, just go home
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
         return;
     }
 
@@ -145,19 +148,38 @@ function handleSSOSuccess(session) {
 
         if (!isWhitelisted) {
             console.error('Redirección bloqueada: Dominio no autorizado', redirectUrl.hostname);
-            window.location.href = 'index.html';
+            showError('Dominio no autorizado para inicio de sesión seguro.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 3000);
             return;
         }
 
         // Append session token to redirect URL securely via hash to avoid server logs
-        // The client site will read this fragment to initialize its Supabase client
         redirectUrl.hash = `sso_token=${session.access_token}&user_id=${session.user.id}`;
 
-        window.location.href = redirectUrl.toString();
+        const finalUrl = redirectUrl.toString();
+
+        // Automatic redirect
+        window.location.href = finalUrl;
+
+        // Visual backup: Show manual link if automatic fails
+        document.getElementById('loading-text').textContent = "Identidad verificada. Redirigiendo...";
+        const manualArea = document.getElementById('manual-redirect-area');
+        const manualLink = document.getElementById('manual-redirect-link');
+        if (manualArea && manualLink) {
+            manualArea.classList.remove('hidden');
+            manualLink.href = finalUrl;
+        }
+
     } catch (e) {
         console.error('Invalid return URL', e);
-        window.location.href = 'index.html';
+        showError('La URL de retorno no es válida.');
+        setTimeout(() => { window.location.href = 'index.html'; }, 3000);
     }
+}
+
+function showError(msg) {
+    showLoading(false);
+    alert(msg);
 }
 
 function showLoading(show) {
