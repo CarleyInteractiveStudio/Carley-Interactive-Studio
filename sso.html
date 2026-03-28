@@ -122,10 +122,10 @@
 
     <div id="sso-loading-overlay" class="hidden">
         <div class="spinner"></div>
-        <p id="loading-text">Iniciando sesión segura...</p>
+        <p id="loading-text" data-i18n="sso-loading">Iniciando sesión segura...</p>
         <div id="manual-redirect-area" class="hidden" style="margin-top: 2rem; color: white; text-align: center;">
-            <p>Si no eres redirigido automáticamente, haz clic aquí:</p>
-            <a id="manual-redirect-link" href="#" style="color: var(--accent); text-decoration: underline; font-weight: bold; display: block; margin-top: 1rem;">Volver al sitio</a>
+            <p data-i18n="sso-manual-msg">Si no eres redirigido automáticamente, haz clic aquí:</p>
+            <a id="manual-redirect-link" href="#" style="color: var(--accent); text-decoration: underline; font-weight: bold; display: block; margin-top: 1rem;" data-i18n="sso-manual-link">Volver al sitio</a>
         </div>
     </div>
 
@@ -139,41 +139,41 @@
             <p class="sso-subtitle" id="sso-custom-msg">No tomará mucho tiempo, ingresa tus datos aquí.</p>
 
             <div class="sso-tabs">
-                <div class="sso-tab active" onclick="switchTab('login')">Entrar</div>
-                <div class="sso-tab" onclick="switchTab('register')">Crear Cuenta</div>
+                <div class="sso-tab active" onclick="switchTab('login')" data-i18n="sso-tab-login">Entrar</div>
+                <div class="sso-tab" onclick="switchTab('register')" data-i18n="sso-tab-register">Crear Cuenta</div>
             </div>
 
             <!-- Login -->
             <div id="section-login" class="form-section active">
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" id="sso-email" class="sso-input" placeholder="correo@ejemplo.com">
+                    <input type="email" id="sso-email" class="sso-input" placeholder="correo@ejemplo.com" data-i18n-ph="ph-email">
                 </div>
                 <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="sso-pass" class="sso-input" placeholder="••••••••">
+                    <label data-i18n="ph-pass">Contraseña</label>
+                    <input type="password" id="sso-pass" class="sso-input" placeholder="••••••••" data-i18n-ph="ph-pass">
                 </div>
-                <button id="btn-sso-login" class="sso-btn primary">Continuar</button>
+                <button id="btn-sso-login" class="sso-btn primary" data-i18n="sso-btn-continue">Continuar</button>
             </div>
 
             <!-- Register -->
             <div id="section-register" class="form-section">
                 <div class="input-group">
-                    <label>Nombre de Usuario</label>
-                    <input type="text" id="reg-username" class="sso-input" placeholder="Tu nombre">
+                    <label data-i18n="field-username">Nombre de Usuario</label>
+                    <input type="text" id="reg-username" class="sso-input" placeholder="Tu nombre" data-i18n-ph="ph-reg-user">
                 </div>
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" id="reg-email" class="sso-input" placeholder="correo@ejemplo.com">
+                    <input type="email" id="reg-email" class="sso-input" placeholder="correo@ejemplo.com" data-i18n-ph="ph-email">
                 </div>
                 <div class="input-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="reg-pass" class="sso-input" placeholder="Mínimo 6 caracteres">
+                    <label data-i18n="ph-pass">Contraseña</label>
+                    <input type="password" id="reg-pass" class="sso-input" placeholder="Mínimo 6 caracteres" data-i18n-ph="ph-pass">
                 </div>
-                <button id="btn-sso-register" class="sso-btn primary">Crear Cuenta y Continuar</button>
+                <button id="btn-sso-register" class="sso-btn primary" data-i18n="sso-btn-reg-continue">Crear Cuenta y Continuar</button>
             </div>
 
-            <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.4;">
+            <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.4;" data-i18n="sso-footer">
                 Seguridad proporcionada por Carley Interactive Studio SSO
             </div>
         </div>

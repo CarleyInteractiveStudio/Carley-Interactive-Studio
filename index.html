@@ -247,6 +247,31 @@
     </div>
 
     <!-- Auth Sub-modals -->
+    <div id="modal-recovery" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="recovery-title">Recuperar Acceso</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-recovery')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-text" data-i18n="recovery-desc">Introduce tu correo para recibir un enlace de recuperación.</p>
+            <input type="email" id="recovery-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <button id="do-recovery" class="modal-btn primary" data-i18n="btn-recovery-action">Enviar Instrucciones</button>
+        </div>
+    </div>
+
+    <div id="modal-reset-password" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="reset-pass-title">Nueva Contraseña</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-reset-password')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-text" data-i18n="reset-pass-desc">Ingresa tu nueva contraseña para tu cuenta Carley Studio.</p>
+            <input type="password" id="new-password" placeholder="Nueva Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <input type="password" id="confirm-new-password" placeholder="Confirmar Contraseña" class="modal-input" data-i18n-ph="ph-pass-confirm">
+            <button id="do-reset-password" class="modal-btn primary" data-i18n="btn-reset-pass">Cambiar Contraseña</button>
+        </div>
+    </div>
+
     <div id="modal-auth-login" class="studio-modal hidden">
         <div class="modal-header">
             <h2 data-i18n="login-title">Iniciar Sesión</h2>
@@ -255,6 +280,7 @@
         <div class="modal-body">
             <input type="email" id="login-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
             <input type="password" id="login-pass" placeholder="Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <a href="#" class="recovery-link" onclick="openStudioModal('modal-recovery'); closeStudioModal('modal-auth-login'); return false;" data-i18n="forgot-pass-link">¿Olvidaste tu contraseña?</a>
             <button id="do-login" class="modal-btn primary" data-i18n="btn-login-action">Entrar</button>
         </div>
     </div>

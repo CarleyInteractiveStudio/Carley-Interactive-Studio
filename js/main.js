@@ -97,6 +97,18 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initializeAuth() {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
 
+    // Check for password recovery link in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('type') === 'recovery' || window.location.hash.includes('access_token')) {
+        // If we are on a recovery flow, show the reset password modal
+        // Supabase automatically logs in the user when they click the recovery link
+        if (session) {
+            setTimeout(() => {
+                if (typeof openStudioModal === 'function') openStudioModal('modal-reset-password');
+            }, 500);
+        }
+    }
+
     if (session) {
         // Fetch real-time language and avatar from profile
         const { data: profile } = await window.supabaseClient
@@ -170,6 +182,47 @@ async function initializeAuth() {
             if (error) return alert(error.message);
             closeStudioModal('modal-auth-login');
             alert('¡Bienvenido de nuevo!');
+        };
+    }
+
+    // Password Recovery Handler
+    const recoverySubmit = document.getElementById('do-recovery');
+    if (recoverySubmit) {
+        recoverySubmit.onclick = async () => {
+            const email = document.getElementById('recovery-email').value;
+            if (!email) return alert("Por favor, ingresa tu correo.");
+
+            const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + window.location.pathname + '?type=recovery',
+            });
+
+            if (error) alert("Error: " + error.message);
+            else {
+                alert("Instrucciones enviadas a tu correo.");
+                closeStudioModal('modal-recovery');
+            }
+        };
+    }
+
+    // Reset Password Handler
+    const resetPassSubmit = document.getElementById('do-reset-password');
+    if (resetPassSubmit) {
+        resetPassSubmit.onclick = async () => {
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-new-password').value;
+
+            if (newPass !== confirmPass) return alert("Las contraseñas no coinciden.");
+            if (newPass.length < 6) return alert("La contraseña debe tener al menos 6 caracteres.");
+
+            const { error } = await window.supabaseClient.auth.updateUser({ password: newPass });
+
+            if (error) alert("Error: " + error.message);
+            else {
+                alert("Contraseña actualizada con éxito.");
+                closeStudioModal('modal-reset-password');
+                // Limpiar URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         };
     }
 
@@ -469,6 +522,14 @@ const translations = {
         "field-username": "Nombre de Usuario",
         "btn-update": "Actualizar Perfil",
         "btn-logout": "Cerrar Sesión",
+        "sso-loading": "Iniciando sesión segura...",
+        "sso-manual-msg": "Si no eres redirigido automáticamente, haz clic aquí:",
+        "sso-manual-link": "Volver al sitio",
+        "sso-tab-login": "Entrar",
+        "sso-tab-register": "Crear Cuenta",
+        "sso-btn-continue": "Continuar",
+        "sso-btn-reg-continue": "Crear Cuenta y Continuar",
+        "sso-footer": "Seguridad proporcionada por Carley Interactive Studio SSO",
         "modal-hint": "Inicia sesión para gestionar tus proyectos.",
         "btn-login": "Entrar",
         "btn-register": "Crear Cuenta",
@@ -476,6 +537,13 @@ const translations = {
         "ph-email": "Correo Electrónico",
         "ph-pass": "Contraseña",
         "ph-pass-confirm": "Confirmar Contraseña",
+        "forgot-pass-link": "¿Olvidaste tu contraseña?",
+        "recovery-title": "Recuperar Acceso",
+        "recovery-desc": "Introduce tu correo para recibir un enlace de recuperación.",
+        "btn-recovery-action": "Enviar Instrucciones",
+        "reset-pass-title": "Nueva Contraseña",
+        "reset-pass-desc": "Ingresa tu nueva contraseña para tu cuenta Carley Studio.",
+        "btn-reset-pass": "Cambiar Contraseña",
         "btn-login-action": "Entrar",
         "register-title": "Crear Cuenta",
         "ph-reg-user": "Nombre de Usuario",
@@ -827,6 +895,14 @@ const translations = {
         "btn-delete-acc": "Delete Account",
         "btn-update": "Update Profile",
         "btn-logout": "Log Out",
+        "sso-loading": "Starting secure session...",
+        "sso-manual-msg": "If you are not redirected automatically, click here:",
+        "sso-manual-link": "Return to site",
+        "sso-tab-login": "Login",
+        "sso-tab-register": "Create Account",
+        "sso-btn-continue": "Continue",
+        "sso-btn-reg-continue": "Create Account and Continue",
+        "sso-footer": "Security provided by Carley Interactive Studio SSO",
         "acc-personal-info": "Personal Information",
         "acc-support-simple-desc": "Our applications are free thanks to your support.",
         "acc-100-free": "100% Free",
@@ -843,6 +919,13 @@ const translations = {
         "ph-email": "Email",
         "ph-pass": "Password",
         "ph-pass-confirm": "Confirm Password",
+        "forgot-pass-link": "Forgot your password?",
+        "recovery-title": "Recover Access",
+        "recovery-desc": "Enter your email to receive a recovery link.",
+        "btn-recovery-action": "Send Instructions",
+        "reset-pass-title": "New Password",
+        "reset-pass-desc": "Enter your new password for your Carley Studio account.",
+        "btn-reset-pass": "Change Password",
         "btn-login-action": "Enter",
         "register-title": "Create Account",
         "btn-register-action": "Register",

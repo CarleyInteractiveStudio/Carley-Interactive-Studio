@@ -7,66 +7,80 @@
 </head>
 <body>
     <!--
-      This is an invisible bridge for cross-domain communication.
-      Other Carley sites can embed this in an iframe to:
-      1. Check session status silently.
-      2. Perform authorized Supabase calls via the parent session.
+      Bridge Seguro de Carley Interactive Studio.
+      Este archivo permite que sitios autorizados (carleyengine.com, creativegame.online)
+      soliciten datos a Supabase usando la sesión activa del sitio principal.
     -->
     <script>
-        // Supabase Initialization (Minimal)
+        // Inicialización de Supabase
         const SB_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
         const SB_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
+        // Lista blanca estricta de dominios autorizados
         const WHITELISTED_ORIGINS = [
             'https://carleyengine.com',
+            'https://www.carleyengine.com',
             'https://creativegame.online',
+            'https://www.creativegame.online',
             'http://localhost:8080',
             'http://127.0.0.1:8080'
         ];
 
         window.addEventListener('message', async (event) => {
-            // Security check: only allow authorized origins
-            const originMatch = WHITELISTED_ORIGINS.some(o => event.origin === o);
+            // Verificación de seguridad: solo permitir orígenes autorizados
+            const originMatch = WHITELISTED_ORIGINS.includes(event.origin);
             if (!originMatch) {
-                console.warn('Blocked unauthorized SSO message from:', event.origin);
+                console.warn('⚠️ Bloqueado mensaje SSO de origen no autorizado:', event.origin);
                 return;
             }
 
             const { type, payload, requestId } = event.data;
 
             if (type === 'CHECK_SESSION') {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                event.source.postMessage({
-                    type: 'SESSION_RESPONSE',
-                    payload: session ? {
-                        user: {
-                            id: session.user.id,
-                            email: session.user.email,
-                            user_metadata: session.user.user_metadata
-                        },
-                        access_token: session.access_token
-                    } : null,
-                    requestId
-                }, event.origin);
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    event.source.postMessage({
+                        type: 'SESSION_RESPONSE',
+                        payload: session ? {
+                            user: {
+                                id: session.user.id,
+                                email: session.user.email,
+                                user_metadata: session.user.user_metadata,
+                                app_metadata: session.user.app_metadata
+                            },
+                            access_token: session.access_token
+                        } : null,
+                        requestId
+                    }, event.origin);
+                } catch (err) {
+                    event.source.postMessage({ type: 'ERROR', payload: err.message, requestId }, event.origin);
+                }
             }
 
             if (type === 'SUPABASE_CALL') {
-                const { table, method, query, filter } = payload;
+                const { table, method, query, filter, rpc, params } = payload;
 
                 try {
-                    let request = supabaseClient.from(table)[method](query);
-                    if (filter) {
-                        Object.keys(filter).forEach(key => {
-                            request = request.eq(key, filter[key]);
-                        });
+                    let result;
+                    if (rpc) {
+                        // Soporte para llamadas a funciones (RPC) para mayor seguridad y lógica compleja
+                        result = await supabaseClient.rpc(rpc, params);
+                    } else if (table && method) {
+                        // Consultas directas a tablas (sujetas a RLS de Supabase)
+                        let request = supabaseClient.from(table)[method](query);
+                        if (filter && typeof filter === 'object') {
+                            Object.keys(filter).forEach(key => {
+                                // Soporta filtros básicos de igualdad
+                                request = request.eq(key, filter[key]);
+                            });
+                        }
+                        result = await request;
                     }
-
-                    const { data, error } = await request;
 
                     event.source.postMessage({
                         type: 'SUPABASE_RESPONSE',
-                        payload: { data, error },
+                        payload: { data: result.data, error: result.error },
                         requestId
                     }, event.origin);
                 } catch (err) {
@@ -79,7 +93,9 @@
             }
         });
 
-        // Tell parent we are ready
+        // Notificar al padre que el bridge está listo y escuchando
+        // Se usa '*' aquí porque al cargar inicialmente el bridge no conocemos el origen del padre,
+        // pero las respuestas subsecuentes son estrictamente validadas por event.origin.
         window.parent.postMessage({ type: 'BRIDGE_READY' }, '*');
     </script>
 </body>
