@@ -36,11 +36,11 @@ function showCopyFeedback(btn) {
     const originalContent = btn.innerHTML;
     btn.classList.add('copied');
     btn.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i>';
-    if (window.lucide) window.lucide.createIcons();
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
     setTimeout(() => {
         btn.classList.remove('copied');
         btn.innerHTML = originalContent;
-        if (window.lucide) window.lucide.createIcons();
+        if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
     }, 2000);
 }
 
@@ -74,7 +74,7 @@ window.uploadFile = async function(bucket, file, path) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
     initializeAuth();
     initializeSearch();
     initializeTranslations();
@@ -375,6 +375,10 @@ function initializeSearch() {
 
     if (!searchInput || !dropdown) return;
 
+    // Ensure we don't add listeners twice
+    if (searchInput.dataset.searchInitialized) return;
+    searchInput.dataset.searchInitialized = "true";
+
     const searchMap = [
         { name: 'Creative Engine', id: 'info', url: 'creative-engine.html', keywords: ['motor', 'videojuegos', '2d', 'ia'], available: true },
         { name: 'AppCraft', id: 'app-craft-home', keywords: ['motor', 'app', 'aplicaciones', 'web', 'desarrollo'], available: false },
@@ -504,6 +508,7 @@ const translations = {
         "btn-visit": "Visitar",
         "vidspri-home-desc": "Crea animaciones a partir de vídeos para tus juegos. Genera un vídeo en cualquier página y nuestra herramienta lo convierte en una hoja de sprites para tus videojuegos.",
         "app-craft-desc": "AppCraft es un motor de aplicaciones que te permitirá crear aplicaciones de forma fácil y sencilla, empezando desde la web. Actualmente se encuentra en desarrollo.",
+        "carley-os-desc": "Carley OS es un sistema operativo de alto rendimiento con un kernel personalizado, diseñado específicamente para gaming y desarrollo en laptops modernas. Optimización extrema y fluidez sin precedentes.",
         "carl-ia-desc": "Nuestra IA actualmente en desarrollo. Muy pronto estará disponible para ayudarte en todo lo que necesites. Nuestro modelo será completo: tendrá visión, podrá hablar, generar texto y escuchar. Lo estamos entrenando para ser el compañero integral definitivo.",
         "learn-more": "Saber más",
         "traspilador-desc": "Diseñado para desarrolladores. Un modelo de codificación capaz de convertir proyectos de un lenguaje a otro (ejemplo: de JS a C++). Simplifica la migración de tus proyectos y acelera tu flujo de trabajo.",
@@ -736,6 +741,11 @@ const translations = {
         "vs-os-crop-desc": "Una librería de JavaScript para la funcionalidad de recorte de imágenes en el frontend.",
         "acc-100-free": "100% Gratuito",
         "acc-personal-info": "Información Personal",
+        "acc-my-games": "Tus Juegos",
+        "acc-security": "Seguridad de la Cuenta",
+        "acc-security-desc": "Gestiona el acceso a tu cuenta desde otros dispositivos.",
+        "acc-logout-others": "Cerrar sesión en otros dispositivos",
+        "acc-no-games": "No tienes juegos publicados aún.",
         "acc-support-simple-desc": "Nuestras aplicaciones son gratuitas gracias a tu apoyo.",
         "support-ce": "Soporte Creative Engine",
         "support-vs": "Soporte Vid Spri",
@@ -848,6 +858,7 @@ const translations = {
         "btn-visit": "Visit",
         "vidspri-home-desc": "Create animations from videos for your games. Generate a video on any page and our tool converts it into a sprite sheet for your video games.",
         "app-craft-desc": "AppCraft is an app engine that will allow you to create apps easily and simply, starting from the web. It is currently under development.",
+        "carley-os-desc": "Carley OS is a high-performance operating system with a custom kernel, specifically designed for gaming and development on modern laptops. Extreme optimization and unprecedented fluidity.",
         "carl-ia-desc": "Our AI currently under development. Very soon it will be available to help you with everything you need. Our model will be complete: it will have vision, be able to speak, generate text, and listen. We are training it to be the ultimate integral companion.",
         "learn-more": "Learn more",
         "traspilador-desc": "Designed for developers. A coding model capable of converting projects from one language to another (example: from JS to C++). Simplify your project migration and speed up your workflow.",
@@ -912,6 +923,11 @@ const translations = {
         "sso-switch-account": "Switch account",
         "sso-footer": "Security provided by Carley Interactive Studio SSO",
         "acc-personal-info": "Personal Information",
+        "acc-my-games": "Your Games",
+        "acc-security": "Account Security",
+        "acc-security-desc": "Manage your account access from other devices.",
+        "acc-logout-others": "Logout from other devices",
+        "acc-no-games": "You don't have any published games yet.",
         "acc-support-simple-desc": "Our applications are free thanks to your support.",
         "acc-100-free": "100% Free",
         "support-ce": "Support Creative Engine",
@@ -1250,7 +1266,26 @@ const translations = {
         "hero-desc": "Avez-vous déjà pensé à développer votre propre jeu vidéo ? Eh bien, nous avons conçu Creative Engine pour vous, un moteur de jeu vidéo 2D qui facilite tout. Que vous ayez de l'expérience dans la création de jeux ou non, Creative Engine est fait pour vous. Quelle que soit votre idée, Creative Engine vous aide à la concrétiser.",
         "hero-cta": "Commencer à créer",
         "app-craft-desc": "AppCraft est un moteur d'applications qui vous permettra de créer des applications facilement et simplement, en commençant par le web. Il est actuellement en cours de développement.",
+        "carley-os-desc": "Carley OS est un système d'exploitation haute performance avec un noyau personnalisé, conçu spécifiquement pour le jeu et le développement sur les ordinateurs portables modernes. Optimisation extrême et fluidité sans précédent.",
         "carl-ia-desc": "Notre IA actuellement en développement. Très bientôt, elle sera disponible pour vous aider dans tout ce dont vous avez besoin. Notre modèle sera complet : il aura une vision, pourra parler, générer du texte et écouter. Nous l'entraînons pour être le compagnon intégral ultime.",
+        "sso-loading": "Démarrage d'une session sécurisée...",
+        "sso-manual-msg": "Si vous n'êtes pas redirigé automatiquement, cliquez ici :",
+        "sso-manual-link": "Retour au site",
+        "sso-tab-login": "Connexion",
+        "sso-tab-register": "Créer un compte",
+        "sso-btn-continue": "Continuer",
+        "sso-btn-reg-continue": "Créer un compte et continuer",
+        "sso-welcome-back": "Content de vous revoir !",
+        "sso-continue-as": "Continuer en tant que",
+        "sso-not-you": "Ce n'est pas vous ?",
+        "sso-switch-account": "Changer de compte",
+        "sso-footer": "Sécurité assurée par Carley Interactive Studio SSO",
+        "acc-personal-info": "Informations personnelles",
+        "acc-my-games": "Vos jeux",
+        "acc-security": "Sécurité du compte",
+        "acc-security-desc": "Gérez l'accès à votre compte depuis d'autres appareils.",
+        "acc-logout-others": "Se déconnecter des autres appareils",
+        "acc-no-games": "Vous n'avez pas encore de jeux publiés.",
         "learn-more": "En savoir plus",
         "traspilador-desc": "Conçu pour les développeurs. Un modèle de codage capable de convertir des projets d'un langage à un autre (exemple : de JS à C++). Simplifiez la migration de vos projets et accélérez votre flux de travail.",
         "explore-docs": "Explorer la documentation",
@@ -1489,7 +1524,26 @@ const translations = {
         "hero-desc": "Já pensou em desenvolver seu próprio videogame? Bem, projetamos o Creative Engine para você, um motor de videogame 2D que facilita tudo. Não importa se você tem experiência na criação de jogos ou não, o Creative Engine foi feito para você. Qualquer ideia que você tenha, o Creative Engine ajuda a torná-la realidade.",
         "hero-cta": "Começar a criar",
         "app-craft-desc": "AppCraft é um motor de aplicativos que permitirá criar aplicativos de forma fácil e simples, começando pela web. Atualmente está em desenvolvimento.",
+        "carley-os-desc": "Carley OS é um sistema operacional de alto desempenho com um kernel personalizado, projetado especificamente para jogos e desenvolvimento em laptops modernos. Otimização extrema e fluidez sem precedentes.",
         "carl-ia-desc": "Nossa IA atualmente em desenvolvimento. Muito em breve estará disponível para ajudá-lo em tudo o que você precisar. Nosso modelo será completo: terá visão, poderá falar, gerar texto e ouvir. Estamos treinando para ser o companheiro integral definitivo.",
+        "sso-loading": "Iniciando sessão segura...",
+        "sso-manual-msg": "Se você não for redirecionado automaticamente, clique aqui:",
+        "sso-manual-link": "Voltar ao site",
+        "sso-tab-login": "Entrar",
+        "sso-tab-register": "Criar Conta",
+        "sso-btn-continue": "Continuar",
+        "sso-btn-reg-continue": "Criar Conta e Continuar",
+        "sso-welcome-back": "Bem-vindo de volta!",
+        "sso-continue-as": "Continuar como",
+        "sso-not-you": "Não é você?",
+        "sso-switch-account": "Trocar de conta",
+        "sso-footer": "Segurança fornecida por Carley Interactive Studio SSO",
+        "acc-personal-info": "Informações Pessoais",
+        "acc-my-games": "Seus Jogos",
+        "acc-security": "Segurança da Conta",
+        "acc-security-desc": "Gerencie o acesso à sua conta de outros dispositivos.",
+        "acc-logout-others": "Sair de outros dispositivos",
+        "acc-no-games": "Você ainda não tem jogos publicados.",
         "learn-more": "Saber mais",
         "traspilador-desc": "Projetado para desenvolvedores. Um modelo de codificação capaz de converter projetos de uma linguagem para outra (exemplo: de JS para C++). Simplifique a migração de seus projetos e acelere seu fluxo de trabalho.",
         "explore-docs": "Explorar documentação",
@@ -1816,7 +1870,26 @@ const translations = {
         "hero-desc": "Вы когда-нибудь задумывались о разработке собственной видеоигры? Что ж, мы разработали для вас Creative Engine — движок для 2D-видеоигр, который упрощает все. Неважно, есть ли у вас опыт создания игр или нет, Creative Engine создан для вас. Любую вашу идею Creative Engine поможет воплотить в реальность.",
         "hero-cta": "Начать создание",
         "app-craft-desc": "AppCraft — это движок приложений, который позволит вам легко и просто создавать приложения, начиная с веб-интерфейса. В настоящее время он находится в разработке.",
+        "carley-os-desc": "Carley OS — это высокопроизводительная операционная система с кастомным ядром, разработанная специально для гейминга и разработки на современных ноутбуках. Экстремальная оптимизация и беспрецедентная плавность.",
         "carl-ia-desc": "Наш ИИ в настоящее время находится в разработке. Совсем скоро он будет доступен, чтобы помочь вам во всем, что вам нужно. Наша модель будет полноценной: у нее будет зрение, она сможет говорить, генерировать текст и слушать. Мы обучаем его, чтобы он стал идеальным всесторонним компаньоном.",
+        "sso-loading": "Запуск безопасного сеанса...",
+        "sso-manual-msg": "Если вы не перенаправлены автоматически, нажмите здесь:",
+        "sso-manual-link": "Вернуться на сайт",
+        "sso-tab-login": "Войти",
+        "sso-tab-register": "Создать аккаунт",
+        "sso-btn-continue": "Продолжить",
+        "sso-btn-reg-continue": "Создать аккаунт и продолжить",
+        "sso-welcome-back": "С возвращением!",
+        "sso-continue-as": "Продолжить как",
+        "sso-not-you": "Это не вы?",
+        "sso-switch-account": "Сменить аккаунт",
+        "sso-footer": "Безопасность обеспечивается Carley Interactive Studio SSO",
+        "acc-personal-info": "Личная информация",
+        "acc-my-games": "Ваши игры",
+        "acc-security": "Безопасность аккаунта",
+        "acc-security-desc": "Управляйте доступом к своему аккаунту с других устройств.",
+        "acc-logout-others": "Выйти на других устройствах",
+        "acc-no-games": "У вас еще нет опубликованных игр.",
         "learn-more": "Узнать больше",
         "traspilador-desc": "Создан для разработчиков. Модель кодирования, способная преобразовывать проекты с одного языка на другой (например, с JS на C++). Упростите миграцию ваших проектов и ускорьте рабочий процесс.",
         "explore-docs": "Изучить документацию",
@@ -2110,7 +2183,26 @@ const translations = {
         "hero-desc": "您是否想过开发自己的视频游戏？ 那么，我们为您设计了 Creative Engine，这是一款让一切变得简单的 2D 视频游戏引擎。 无论您是否有游戏创作经验，Creative Engine 都是为您量身定制的。 无论您有什么想法，Creative Engine 都能帮助您将其变为现实。",
         "hero-cta": "开始创作",
         "app-craft-desc": "AppCraft 是一个应用程序引擎，可让您从 Web 开始轻松简单地创建应用程序。目前正在开发中。",
+        "carley-os-desc": "Carley OS 是一款具有自定义内核的高性能操作系统，专门为现代笔记本电脑上的游戏和开发而设计。极致优化和前所未有的流畅度。",
         "carl-ia-desc": "我们的 AI 目前正在开发中。 很快它就能为您提供所需的一切帮助。 我们的模型将是完整的：它将具有视觉，能够说话，生成文本和收听。 我们正在训练它成为最终的全方位伴侣。",
+        "sso-loading": "启动安全会话...",
+        "sso-manual-msg": "如果没有自动重定向，请点击这里：",
+        "sso-manual-link": "返回网站",
+        "sso-tab-login": "登录",
+        "sso-tab-register": "创建账户",
+        "sso-btn-continue": "继续",
+        "sso-btn-reg-continue": "创建账户并继续",
+        "sso-welcome-back": "欢迎回来！",
+        "sso-continue-as": "继续身份为",
+        "sso-not-you": "不是你？",
+        "sso-switch-account": "切换账户",
+        "sso-footer": "由 Carley Interactive Studio SSO 提供安全保障",
+        "acc-personal-info": "个人信息",
+        "acc-my-games": "你的游戏",
+        "acc-security": "账户安全",
+        "acc-security-desc": "管理其他设备对你账户的访问。",
+        "acc-logout-others": "在其他设备上退出登录",
+        "acc-no-games": "你还没有发布任何游戏。",
         "learn-more": "了解更多",
         "traspilador-desc": "专为开发人员设计。 一种能够将项目从一种语言转换为另一种语言（例如：从 JS 到 C++）的编码模型。 简化您的项目迁移并加快您的工作流程。",
         "explore-docs": "浏览文档",
@@ -2399,7 +2491,26 @@ const translations = {
         "hero-desc": "Hai mai pensato di sviluppare il tuo videogioco? Bene, abbiamo progettato per te Creative Engine, un motore di videogioco 2D che semplifica tutto. Non importa se hai esperienza nella creazione di giochi o meno, Creative Engine è fatto per te. Qualunque idea tu abbia, Creative Engine ti aiuta a trasformarla in realtà.",
         "hero-cta": "Inizia a creare",
         "app-craft-desc": "AppCraft è un motore di applicazioni che ti permetterà di creare applicazioni in modo facile e semplice, partendo dal web. Attualmente è in fase di sviluppo.",
+        "carley-os-desc": "Carley OS è un sistema operativo ad alte prestazioni con un kernel personalizzato, progettato specificamente per il gaming e lo sviluppo su laptop moderni. Ottimizzazione estrema e fluidità senza precedenti.",
         "carl-ia-desc": "La nostra IA attualmente in fase di sviluppo. Molto presto sarà disponibile per aiutarti in tutto ciò di cui hai bisogno. Il nostro modello sarà completo: avrà visione, potrà parlare, generare testo e ascoltare. Lo stiamo addestrando per essere il compagno integrale definitivo.",
+        "sso-loading": "Avvio sessione sicura...",
+        "sso-manual-msg": "Se non vieni reindirizzato automaticamente, clicca qui:",
+        "sso-manual-link": "Torna al sito",
+        "sso-tab-login": "Accedi",
+        "sso-tab-register": "Crea Account",
+        "sso-btn-continue": "Continua",
+        "sso-btn-reg-continue": "Crea Account e Continua",
+        "sso-welcome-back": "Bentornato!",
+        "sso-continue-as": "Continua come",
+        "sso-not-you": "Non sei tu?",
+        "sso-switch-account": "Cambia account",
+        "sso-footer": "Sicurezza fornita da Carley Interactive Studio SSO",
+        "acc-personal-info": "Informazioni personali",
+        "acc-my-games": "I tuoi giochi",
+        "acc-security": "Sicurezza dell'account",
+        "acc-security-desc": "Gestisci l'accesso al tuo account da altri dispositivi.",
+        "acc-logout-others": "Disconnetti da altri dispositivi",
+        "acc-no-games": "Non hai ancora pubblicato giochi.",
         "learn-more": "Saperne di più",
         "traspilador-desc": "Progettato per gli sviluppatori. Un modello di codifica in grado di convertire progetti da un linguaggio all'altro (esempio: da JS a C++). Semplifica la migrazione dei tuoi progetti e accelera il tuo flusso di lavoro.",
         "explore-docs": "Esplora la documentazione",
@@ -2487,7 +2598,26 @@ const translations = {
         "hero-desc": "自分のビデオゲームを開発したいと思ったことはありませんか？ 私たちは、すべてを簡単にする2Dビデオゲームエンジン「Creative Engine」をあなたのために設計しました。 ゲーム制作の経験があるかないかにかかわらず、Creative Engineはあなたのために作られています。 どんなアイデアでも、Creative Engineがそれを現実に変えるお手伝いをします。",
         "hero-cta": "制作を開始する",
         "app-craft-desc": "AppCraftは、ウェブから始めて簡単にアプリを作成できるアプリエンジンです。現在開発中です。",
+        "carley-os-desc": "Carley OSは、カスタムカーネルを備えた高性能オペレーティングシステムであり、最新のラップトップでのゲーミングと開発向けに特別に設計されています。究極の最適化と前例のない流動性。",
         "carl-ia-desc": "現在開発中の当社のAI。 近い将来、あなたが必要なすべてのことをサポートできるようになります。 当社のモデルは完全なものになります。視覚を持ち、話し、テキストを生成し、聞くことができます。 私たちは、それが究極の統合的なパートナーとなるようトレーニングしています。",
+        "sso-loading": "安全なセッションを開始しています...",
+        "sso-manual-msg": "自動的にリダイレクトされない場合は、ここをクリックしてください：",
+        "sso-manual-link": "サイトに戻る",
+        "sso-tab-login": "ログイン",
+        "sso-tab-register": "アカウント作成",
+        "sso-btn-continue": "続行",
+        "sso-btn-reg-continue": "アカウントを作成して続行",
+        "sso-welcome-back": "おかえりなさい！",
+        "sso-continue-as": "として続行",
+        "sso-not-you": "あなたではありませんか？",
+        "sso-switch-account": "アカウントを切り替える",
+        "sso-footer": "Carley Interactive Studio SSOによるセキュリティ保護",
+        "acc-personal-info": "個人情報",
+        "acc-my-games": "あなたのゲーム",
+        "acc-security": "アカウントのセキュリティ",
+        "acc-security-desc": "他のデバイスからのアカウントへのアクセスを管理します。",
+        "acc-logout-others": "他のデバイスからログアウトする",
+        "acc-no-games": "まだ公開されたゲームはありません。",
         "learn-more": "詳細はこちら",
         "traspilador-desc": "開発者向けに設計。 ある言語から別の言語（例：JSからC++）へプロジェクトを変換できるコーディングモデル。 プロジェクトの移行を簡素化し、ワークフローを加速します。",
         "explore-docs": "ドキュメントを探索する",
@@ -2575,7 +2705,26 @@ const translations = {
         "hero-desc": "Je, umewahi kufikiria kukuza mchezo wako wa video? Naam, tumekuandalia Creative Engine, injini ya mchezo wa video wa 2D inayofanya kila kitu kuwa rahisi. Haijalishi kama una uzoefu katika uundaji wa mchezo au la, Creative Engine imeundwa kwa ajili yako. Wazo lolote ulilonalo, Creative Engine inakusaidia kulifanya kuwa kweli.",
         "hero-cta": "Anza Kuunda",
         "app-craft-desc": "AppCraft ni injini ya programu ambayo itakuruhusu kuunda programu kwa urahisi na kwa urahisi, kuanzia kwenye wavuti. Kwa sasa inatengenezwa.",
+        "carley-os-desc": "Carley OS ni mfumo wa uendeshaji wa utendaji wa juu wenye kernel maalum, iliyoundwa mahususi kwa ajili ya michezo na maendeleo kwenye laptop za kisasa. Uboreshaji wa hali ya juu na ulaini usio na kifani.",
         "carl-ia-desc": "AI yetu inayotengenezwa sasa. Hivi karibuni itapatikana ili kukusaidia kwa kila kitu unachohitaji. Mfano wetu utakuwa kamili: utakuwa na maono, uwezo wa kuzungumza, kutoa maandishi na kusikiliza. Tunaiandaa kuwa mshirika kamili wa mwisho.",
+        "sso-loading": "Inaanza kipindi salama...",
+        "sso-manual-msg": "Ikiwa hauelekezwi upya kiotomatiki, bofya hapa:",
+        "sso-manual-link": "Rudi kwenye tovuti",
+        "sso-tab-login": "Ingia",
+        "sso-tab-register": "Fungua Akaunti",
+        "sso-btn-continue": "Endelea",
+        "sso-btn-reg-continue": "Fungua Akaunti na Uendelee",
+        "sso-welcome-back": "Karibu tena!",
+        "sso-continue-as": "Endelea kama",
+        "sso-not-you": "Sio wewe?",
+        "sso-switch-account": "Badilisha akaunti",
+        "sso-footer": "Usalama umetolewa na Carley Interactive Studio SSO",
+        "acc-personal-info": "Habari za Kibinafsi",
+        "acc-my-games": "Michezo Yako",
+        "acc-security": "Usalama wa Akaunti",
+        "acc-security-desc": "Dhibiti ufikiaji wa akaunti yako kutoka kwa vifaa vingine.",
+        "acc-logout-others": "Ondoka kwenye vifaa vingine",
+        "acc-no-games": "Bado huna michezo iliyochapishwa.",
         "learn-more": "Jifunze zaidi",
         "traspilador-desc": "Imeundwa kwa ajili ya watengenezaji. Mfumo wa usimbaji wenye uwezo wa kubadilisha miradi kutoka lugha moja hadi nyingine (mfano: kutoka JS hadi C++). Rahisisha uhamishaji wa mradi wako na uongeze kasi ya utendaji wako.",
         "explore-docs": "Gundua nyaraka",
@@ -3059,25 +3208,26 @@ window.handleTutorialClick = function(url) {
             if (bar) bar.style.width = '0%';
         }, 10);
 
-        const closeToast = () => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(20px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        };
+    function closeToast() {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }
 
-        const timer = setTimeout(closeToast, 10000);
+    const timer = setTimeout(closeToast, 10000);
 
-        document.getElementById('toast-yes').onclick = () => {
-            clearTimeout(timer);
-            window.open('https://www.youtube.com/@CarleyInteractiveStudioOficial', '_blank');
-            closeToast();
-        };
-
-        document.getElementById('toast-no').onclick = () => {
-            clearTimeout(timer);
-            closeToast();
-        };
+    const iconYes = document.getElementById('toast-yes');
+    const iconNo = document.getElementById('toast-no');
+    if (iconYes) iconYes.onclick = () => {
+        clearTimeout(timer);
+        window.open('https://www.youtube.com/@CarleyInteractiveStudioOficial', '_blank');
+        closeToast();
+    };
+    if (iconNo) iconNo.onclick = () => {
+        clearTimeout(timer);
+        closeToast();
+    };
     }
 };
 

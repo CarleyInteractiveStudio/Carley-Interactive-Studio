@@ -37,6 +37,12 @@
 
             const { type, payload, requestId } = event.data;
 
+            // Health check for clients to verify bridge is responsive
+            if (type === 'PING') {
+                event.source.postMessage({ type: 'PONG', requestId }, event.origin);
+                return;
+            }
+
             if (type === 'CHECK_SESSION') {
                 try {
                     const { data: { session } } = await supabaseClient.auth.getSession();
