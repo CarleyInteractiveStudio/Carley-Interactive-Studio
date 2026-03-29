@@ -60,23 +60,52 @@ function updateSSOUI(client) {
 }
 
 function switchTab(type) {
-    document.querySelectorAll('.sso-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
 
-    if (type === 'login') {
-        document.querySelector('.sso-tab:first-child').classList.add('active');
-        document.getElementById('section-login').classList.add('active');
+    if (type === 'active') {
+        document.getElementById('auth-forms-container').classList.add('hidden');
+        document.getElementById('section-active-session').classList.add('active');
     } else {
-        document.querySelector('.sso-tab:last-child').classList.add('active');
-        document.getElementById('section-register').classList.add('active');
+        document.getElementById('auth-forms-container').classList.remove('hidden');
+        document.getElementById('section-active-session').classList.remove('active');
+
+        document.querySelectorAll('.sso-tab').forEach(t => t.classList.remove('active'));
+        if (type === 'login') {
+            document.querySelector('.sso-tab:first-child').classList.add('active');
+            document.getElementById('section-login').classList.add('active');
+        } else {
+            document.querySelector('.sso-tab:last-child').classList.add('active');
+            document.getElementById('section-register').classList.add('active');
+        }
     }
 }
 
 async function checkExistingSession() {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
     if (session) {
-        // If already logged in, redirect immediately back with session info
-        handleSSOSuccess(session);
+        // Fetch full profile info for display
+        const { data: profile } = await window.supabaseClient
+            .from('profiles')
+            .select('username, avatar_url')
+            .eq('id', session.user.id)
+            .single();
+
+        const username = (profile && profile.username) || session.user.email.split('@')[0];
+        const avatar = (profile && profile.avatar_url) || `https://ui-avatars.com/api/?name=${username}&background=random`;
+
+        document.getElementById('active-username').textContent = username;
+        document.getElementById('active-email').textContent = session.user.email;
+        document.getElementById('active-pfp').src = avatar;
+        document.getElementById('continue-name-hint').textContent = username;
+
+        // Show active session UI
+        switchTab('active');
+
+        // Setup continue button
+        const continueBtn = document.getElementById('btn-sso-continue');
+        if (continueBtn) {
+            continueBtn.onclick = () => handleSSOSuccess(session);
+        }
     }
 }
 

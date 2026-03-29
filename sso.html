@@ -71,6 +71,28 @@
         .form-section { display: none; text-align: left; }
         .form-section.active { display: block; }
 
+        /* Active session profile */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+        }
+        .sso-pfp {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .profile-info h3 { font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .profile-info p { font-size: 0.8rem; opacity: 0.5; }
+
         .input-group { margin-bottom: 1.2rem; }
         .input-group label { display: block; font-size: 0.8rem; opacity: 0.6; margin-bottom: 0.5rem; }
         .sso-input {
@@ -138,12 +160,31 @@
 
             <p class="sso-subtitle" id="sso-custom-msg">No tomará mucho tiempo, ingresa tus datos aquí.</p>
 
-            <div class="sso-tabs">
-                <div class="sso-tab active" onclick="switchTab('login')" data-i18n="sso-tab-login">Entrar</div>
-                <div class="sso-tab" onclick="switchTab('register')" data-i18n="sso-tab-register">Crear Cuenta</div>
+            <!-- Active Session (Already logged in) -->
+            <div id="section-active-session" class="form-section">
+                <h2 class="sso-title" data-i18n="sso-welcome-back" style="margin-bottom: 1.5rem;">¡Hola de nuevo!</h2>
+                <div class="profile-card">
+                    <img id="active-pfp" src="" class="sso-pfp">
+                    <div class="profile-info">
+                        <h3 id="active-username">Username</h3>
+                        <p id="active-email">email@example.com</p>
+                    </div>
+                </div>
+                <button id="btn-sso-continue" class="sso-btn primary" style="margin-bottom: 1rem;">
+                    <span data-i18n="sso-continue-as">Continuar como</span> <span id="continue-name-hint"></span>
+                </button>
+                <div style="text-align: center;">
+                    <button class="modal-btn outline small" onclick="switchTab('login')" data-i18n="sso-switch-account" style="opacity: 0.6; font-size: 0.8rem;">Cambiar de cuenta</button>
+                </div>
             </div>
 
-            <!-- Login -->
+            <div id="auth-forms-container">
+                <div class="sso-tabs">
+                    <div class="sso-tab active" onclick="switchTab('login')" data-i18n="sso-tab-login">Entrar</div>
+                    <div class="sso-tab" onclick="switchTab('register')" data-i18n="sso-tab-register">Crear Cuenta</div>
+                </div>
+
+                <!-- Login -->
             <div id="section-login" class="form-section active">
                 <div class="input-group">
                     <label>Email</label>
@@ -172,6 +213,7 @@
                 </div>
                 <button id="btn-sso-register" class="sso-btn primary" data-i18n="sso-btn-reg-continue">Crear Cuenta y Continuar</button>
             </div>
+            </div> <!-- end auth-forms-container -->
 
             <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.4;" data-i18n="sso-footer">
                 Seguridad proporcionada por Carley Interactive Studio SSO
