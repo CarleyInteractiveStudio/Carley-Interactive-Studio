@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+:root {
+    --background-color: #111;
+    --text-color: #f0f0f0;
+    --primary-color: #007aff;
+    --card-background: #1c1c1e;
+    --glass-background: rgba(28, 28, 30, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- Header and Navigation --- */
+#main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+#main-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 5%;
+    transition: all 0.3s ease-in-out;
+}
+
+#main-header.scrolled #main-nav {
+    background-color: var(--glass-background);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    margin: 1rem auto;
+    max-width: 90%;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* --- Main Content --- */
+main {
+    padding-top: 80px;
+}
+
+.product-section {
+    padding: 6rem 5%;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.text-content {
+    flex: 1;
+}
+
+.image-content {
+    flex: 1;
+    text-align: center;
+}
+
+.image-content img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+}
+
+/* Alternating Layout */
+.product-section.alt-layout .section-content {
+    flex-direction: row-reverse;
+}
+
+.product-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.product-section p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    color: #a0a0a0;
+}
+
+/* --- Buttons and Links --- */
+.text-button {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+.text-button:hover {
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+#more-products {
+    text-align: center;
+    padding: 6rem 5%;
+}
+
+/* --- Footer --- */
+#main-footer {
+    background-color: #000;
+    color: #777;
+    padding: 4rem 5% 2rem;
+    text-align: center;
+}
+
+.footer-links {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: #a0a0a0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+.footer-copyright {
+    font-size: 0.9rem;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .section-content {
+        flex-direction: column !important;
+        gap: 2rem;
+    }
+
+    .product-section h2 {
+        font-size: 2rem;
+    }
+
+    .image-content {
+        order: -1; /* Move image to the top on mobile */
+    }
+
+    .product-section.alt-layout .image-content {
+       order: -1;
+    }
+
+    #main-header.scrolled #main-nav {
+        max-width: 95%;
+    }
+}
