@@ -178,7 +178,15 @@
 
             <section id="opinions" class="content-section">
                 <h2 class="section-title" data-i18n="ce-nav-opinions">Opiniones</h2>
-                <div class="ce-card">
+
+                <div style="margin-bottom: 2rem; text-align: center;">
+                    <button id="toggle-opinion-form" class="ce-btn primary" style="display: flex; align-items: center; gap: 0.5rem; margin: 0 auto;">
+                        <i data-lucide="plus-circle"></i>
+                        <span data-i18n="btn-write-opinion">Escribir una Opinión</span>
+                    </button>
+                </div>
+
+                <div id="opinion-form-container" class="ce-card" style="display: none; margin-bottom: 2rem; animation: slideDown 0.3s ease-out;">
                     <div class="form-group">
                         <label data-i18n="field-email">Email</label>
                         <input type="email" id="opinion-email" class="ce-input" readonly>
@@ -190,6 +198,7 @@
                     <button id="send-opinion" class="ce-btn primary" data-i18n="btn-send-opinion">Publicar Opinión</button>
                     <p class="opinion-hint" data-i18n="opinion-hint">Leeremos sus opiniones y consideraremos todas aquellas con más me gusta en futuras actualizaciones.</p>
                 </div>
+
                 <div id="opinions-feed" class="opinions-feed">
                     <!-- Dynamic content -->
                 </div>

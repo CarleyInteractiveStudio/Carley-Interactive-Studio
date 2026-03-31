@@ -691,6 +691,7 @@ const translations = {
         "field-opinion": "Tu Opinión",
         "ph-opinion": "¿Qué piensas de Creative Engine?",
         "btn-send-opinion": "Publicar Opinión",
+        "btn-write-opinion": "Escribir una Opinión",
         "opinion-hint": "Leeremos sus opiniones y consideraremos todas aquellas con más me gusta en futuras actualizaciones.",
         "ce-license-1": "Los juegos hechos están disponibles bajo la licencia CLG1 (Carley Gratuito).",
         "ce-license-2": "El licenciatario tiene todo derecho de usar como le dé la gana en todo su producto. No reclamamos ningún porcentaje.",
@@ -1162,6 +1163,7 @@ const translations = {
         "field-opinion": "Your Opinion",
         "ph-opinion": "What do you think of Creative Engine?",
         "btn-send-opinion": "Publish Opinion",
+        "btn-write-opinion": "Write an Opinion",
         "opinion-hint": "We will read your opinions and consider all those with more likes in future updates.",
         "ce-license-1": "Games made are available under the CLG1 license (Carley Free).",
         "ce-license-2": "The licensee has every right to use it however they want in their entire product. We do not claim any percentage.",
@@ -1800,6 +1802,7 @@ const translations = {
         "btn-send": "Enviar Reporte",
         "btn-send-claim": "Enviar Reclamação",
         "btn-send-opinion": "Publicar Opinião",
+        "btn-write-opinion": "Escrever uma Opinião",
         "btn-support": "Apoiar",
         "ce-ces-desc": "Projetado para quem já é especialista na criação de videogames e gosta de programar com código puro. Feito com JS e inspirado em C#, JS e Python. Permite programar completamente em espanhol, inglês, português, russo e chinês (e será estendido a mais idiomas).",
         "ce-claim-reason": "Razão da reclamação",
@@ -2059,6 +2062,7 @@ const translations = {
         "btn-send": "Отправить отчет",
         "btn-send-claim": "Отправить претензию",
         "btn-send-opinion": "Опубликовать отзыв",
+        "btn-write-opinion": "Написать отзыв",
         "btn-support": "Поддержать",
         "ce-ces-desc": "Предназначен для тех, кто уже является экспертом в создании видеоигр и любит программировать на чистом коде. Создан на JS и вдохновлен C#, JS и Python. Позволяет программировать полностью на испанском, английском, португальском, русском и китайском языках (и будет расширен на другие языки).",
         "ce-claim-reason": "Причина претензии",
@@ -2372,6 +2376,7 @@ const translations = {
         "btn-send": "发送报告",
         "btn-send-claim": "发送索赔",
         "btn-send-opinion": "发表意见",
+        "btn-write-opinion": "发表意见",
         "btn-support": "支持",
         "ce-ces-desc": "专为那些已经是视频游戏创作专家并喜欢使用纯代码编程的人设计。使用 JS 制作，灵感来自 C#、JS 和 Python。允许完全使用西班牙语、英语、葡萄牙语、俄语和中文（并将扩展到更多语言）进行编程。",
         "ce-claim-reason": "索赔原因",
@@ -3175,6 +3180,24 @@ function renderDonorsList() {
     }).join('');
 }
 
+// Toggle for Opinion Form
+const toggleOpinionBtn = document.getElementById('toggle-opinion-form');
+const opinionFormContainer = document.getElementById('opinion-form-container');
+
+if (toggleOpinionBtn && opinionFormContainer) {
+    toggleOpinionBtn.onclick = () => {
+        const isHidden = opinionFormContainer.style.display === 'none';
+        opinionFormContainer.style.display = isHidden ? 'block' : 'none';
+
+        // Change icon based on state
+        const icon = toggleOpinionBtn.querySelector('i');
+        if (icon) {
+            icon.setAttribute('data-lucide', isHidden ? 'minus-circle' : 'plus-circle');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    };
+}
+
 // Handler for Submitting Opinions
 const sendOpinionBtn = document.getElementById('send-opinion');
 if (sendOpinionBtn) {
@@ -3196,6 +3219,17 @@ if (sendOpinionBtn) {
         else {
             alert('¡Gracias por tu opinión!');
             document.getElementById('opinion-text').value = '';
+
+            // Hide form after successful submission
+            if (opinionFormContainer) opinionFormContainer.style.display = 'none';
+            if (toggleOpinionBtn) {
+                const icon = toggleOpinionBtn.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'plus-circle');
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                }
+            }
+
             fetchOpinions();
         }
     };
