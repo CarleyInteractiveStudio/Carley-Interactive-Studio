@@ -73,16 +73,16 @@ window.uploadFile = async function(bucket, file, path) {
     return { publicUrl };
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-    initializeAuth();
+    await initializeAuth();
     initializeSearch();
     initializeTranslations();
     initializeDonations();
     initializeAnimations();
 
     // Global data fetchers
-    if (document.getElementById('opinions-feed')) fetchOpinions();
+    if (document.getElementById('opinions-feed')) await fetchOpinions();
     if (window.location.pathname.includes('donaciones.html')) {
         fetchDonationStats();
         setupHubListeners();
@@ -2998,33 +2998,64 @@ async function fetchOpinions() {
     const feed = document.getElementById('opinions-feed');
     if (!feed) return;
 
-    // Detect if we are on CE or VS page
-    const productId = window.location.pathname.includes('creative-engine.html') ? 'CE' : 'VS';
+    // Mostrar estado de carga
+    feed.innerHTML = '<p style="text-align:center; opacity:0.5; padding: 2rem;">Cargando opiniones...</p>';
 
-    const { data, error } = await window.supabaseClient
-        .from('opinions')
-        .select('*, profiles(username, avatar_url)')
-        .eq('product_id', productId)
-        .order('created_at', { ascending: false });
+    try {
+        // Detect if we are on CE or VS page
+        const productId = window.location.pathname.includes('creative-engine.html') ? 'CE' : 'VS';
 
-    if (error) return console.error('Error fetching opinions:', error);
+        // Intenta obtener las opiniones. Si falla la relación con profiles, intenta sin ella.
+        let { data, error } = await window.supabaseClient
+            .from('opinions')
+            .select('*, profiles(username, avatar_url)')
+            .eq('product_id', productId)
+            .order('created_at', { ascending: false });
 
-    feed.innerHTML = data.map(op => {
-        const username = escapeHTML(op.profiles?.username || op.user_email.split('@')[0]);
-        const content = escapeHTML(op.content);
-        const avatar = op.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${username}`;
+        if (error && error.code === 'PGRST200') {
+            console.warn('Relationship with profiles not found, falling back to direct email split');
+            const fallback = await window.supabaseClient
+                .from('opinions')
+                .select('*')
+                .eq('product_id', productId)
+                .order('created_at', { ascending: false });
+            data = fallback.data;
+            error = fallback.error;
+        }
 
-        return `
-            <div class="opinion-item product-reveal active">
-                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem;">
-                    <img src="${avatar}" style="width: 32px; height: 32px; border-radius: 50%;">
-                    <span style="font-weight: 600;">${username}</span>
-                    <span style="font-size: 0.8rem; opacity: 0.4;">${new Date(op.created_at).toLocaleDateString()}</span>
+        if (error) {
+            console.error('Error fetching opinions:', error);
+            feed.innerHTML = '<p style="text-align:center; color:#ff4d4d; padding: 2rem;">Error al cargar opiniones.</p>';
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            feed.innerHTML = '<p style="text-align:center; opacity:0.5; padding: 2rem;" data-i18n="ce-no-opinions">No hay opiniones todavía. ¡Sé el primero en opinar!</p>';
+            return;
+        }
+
+        feed.innerHTML = data.map(op => {
+            const username = escapeHTML(op.profiles?.username || (op.user_email ? op.user_email.split('@')[0] : 'Usuario'));
+            const content = escapeHTML(op.content);
+            const avatar = op.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${username}`;
+
+            return `
+                <div class="opinion-item active" style="margin-bottom: 1rem; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); animation: fadeIn 0.5s ease-out forwards;">
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem;">
+                        <img src="${avatar}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(126, 217, 87, 0.3);" onerror="this.src='https://ui-avatars.com/api/?name=${username}'">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; color: #fff;">${username}</span>
+                            <span style="font-size: 0.75rem; opacity: 0.5;">${new Date(op.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <p style="opacity: 0.9; font-size: 0.95rem; line-height: 1.6; color: #eee; white-space: pre-wrap;">${content}</p>
                 </div>
-                <p style="opacity: 0.8; font-size: 0.95rem;">${content}</p>
-            </div>
-        `;
-    }).join('');
+            `;
+        }).join('');
+    } catch (e) {
+        console.error('Unexpected error in fetchOpinions:', e);
+        feed.innerHTML = '<p style="text-align:center; color:#ff4d4d; padding: 2rem;">Error inesperado.</p>';
+    }
 }
 
 async function fetchDonationStats() {
@@ -3238,15 +3269,14 @@ if (sendReportBtn) {
         const msg = document.getElementById('report-message').value;
         if (!msg) return alert('Describe el fallo.');
 
-        const { error } = await window.supabaseClient.from('reports').insert({
-            user_email: window.currentUser ? window.currentUser.email : 'anon@carley.com',
-            message: msg
-        });
+        // Replaced Supabase logging with direct mailto link as requested by user
+        const subject = encodeURIComponent("Bug Report - Carley Interactive Studio");
+        const body = encodeURIComponent(msg);
+        const mailtoUrl = `mailto:CarleyInterctiveStudio@gmail.com?subject=${subject}&body=${body}`;
 
-        if (error) alert(error.message);
-        else {
-            alert('Reporte enviado con éxito.');
-            document.getElementById('report-message').value = '';
-        }
+        window.location.href = mailtoUrl;
+
+        alert('Se ha abierto tu gestor de correo para enviar el reporte.');
+        document.getElementById('report-message').value = '';
     };
 }
