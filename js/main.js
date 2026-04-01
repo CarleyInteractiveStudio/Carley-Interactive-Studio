@@ -1,284 +1,261 @@
-// js/main.js
-window.addEventListener('DOMContentLoaded', () => {
-  // 1) Inicializar Supabase
-  const SUPABASE_URL = 'https://rblftfzbqllnuadqtufb.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJibGZ0ZnpicWxsbnVhZHF0dWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5NjQyMzQsImV4cCI6MjA2ODU0MDIzNH0.cH-KJG2k43dKQaVccQDkw7t6m0sf1zIOLWPADdmKLt8';
-  const { createClient } = window.supabase;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // 2) Panels de feedback
-  const errorPanel   = document.getElementById('error-panel');
-  const successPanel = document.getElementById('success-panel');
-  function mostrarError(msg) {
-    errorPanel.textContent = msg;
-    errorPanel.classList.remove('oculto');
-    setTimeout(() => errorPanel.classList.add('oculto'), 4000);
-  }
-  function mostrarExito(msg) {
-    successPanel.textContent = msg;
-    successPanel.classList.remove('oculto');
-    setTimeout(() => successPanel.classList.add('oculto'), 4000);
-  }
-
-  // 3) Menú de configuración ⚙️
-  const settingsBtn  = document.getElementById('settings-btn');
-  const settingsMenu = document.getElementById('settings-menu');
-  settingsBtn.onclick = () => {
-    settingsMenu.style.display =
-      settingsMenu.style.display === 'flex' ? 'none' : 'flex';
-  };
-  document.getElementById('back-btn').onclick = () => {
-    settingsMenu.style.display = 'none';
-  };
-
-  // 4) Modales y backdrop
-  const backDrop  = document.getElementById('modal-backdrop');
-  const mLogin    = document.getElementById('modal-login');
-  const mRegister = document.getElementById('modal-register');
-  const mForgot   = document.getElementById('modal-forgot');
-  const mChange   = document.getElementById('modal-change');
-  function toggleModal(modal) {
-    const show = modal.classList.contains('oculto');
-    [modal, backDrop].forEach(el =>
-      el.classList.toggle('oculto', !show)
-    );
-  }
-  document.getElementById('login-btn').onclick    = () => toggleModal(mLogin);
-  document.getElementById('register-btn').onclick = () => toggleModal(mRegister);
-  backDrop.onclick = () =>
-    [mLogin, mRegister, mForgot, mChange, backDrop].forEach(el =>
-      el.classList.add('oculto')
-    );
-
-  // 5) Botón “Cerrar sesión” dinámico
-  const logoutBtn = document.createElement('button');
-  logoutBtn.id          = 'logout-btn-menu';
-  logoutBtn.textContent = 'Cerrar sesión';
-  logoutBtn.classList.add('boton-juego');
-  logoutBtn.style.display = 'none';
-  settingsMenu.appendChild(logoutBtn);
-  logoutBtn.onclick = async () => {
-    await supabase.auth.signOut();
-    logoutBtn.style.display = 'none';
-    document.getElementById('login-btn').style.display    = 'block';
-    document.getElementById('register-btn').style.display = 'block';
-    mostrarExito('Has cerrado sesión.');
-  };
-
-  // 6) Verificar sesión al cargar
-  async function showLogoutOption() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      logoutBtn.style.display = 'inline-block';
-      document.getElementById('login-btn').style.display    = 'none';
-      document.getElementById('register-btn').style.display = 'none';
-      document.querySelectorAll('.formulario-soporte input[type="email"]')
-        .forEach(el => el.style.display = 'none');
+const translations = {
+    'es': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Convirtiendo ideas en realidad',
+        'about-text': 'Somos un pequeño estudio con el objetivo de ser su marca favorita con múltiples productos en todas las áreas. Empezamos en software, luego nos extenderemos al hardware y mucho más.',
+        'products-title': 'Nuestras Producciones',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'Es tu motor de videojuego. Crea con facilidad, no importa si no tienes experiencia; el motor está diseñado para todos. Crea juegos para todo tipo de dispositivos que tengan acceso a un navegador y publícalos con orgullo.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'Una página web para jugar juegos sin tener que descargarlos. Compatible con múltiples dispositivos, incluso con mandos de consola.',
+        'games-link': 'Explorar Juegos',
+        'social': 'Redes sociales',
+        'help': 'Ayuda',
+        'support': 'Soporte',
+        'feedback': 'Opinar',
+        'donations': 'Donaciones',
+        'policies': 'Políticas',
+        'licenses': 'Licencias',
+        'docs': 'Documentación',
+        'apps': 'Apps',
+        'collaborators': 'Colaboradores'
+    },
+    'en': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Turning ideas into reality',
+        'about-text': 'We are a small studio with the goal of being your favorite brand with multiple products in all areas. We started in software, then we will extend to hardware and much more.',
+        'products-title': 'Our Productions',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'It is your game engine. Create with ease, no matter if you have no experience; the engine is designed for everyone. Create games for all types of devices that have access to a browser and publish them with pride.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'A website to play games without having to download them. Compatible with multiple devices, even console controllers.',
+        'games-link': 'Explore Games',
+        'social': 'Social Media',
+        'help': 'Help',
+        'support': 'Support',
+        'feedback': 'Feedback',
+        'donations': 'Donations',
+        'policies': 'Policies',
+        'licenses': 'Licenses',
+        'docs': 'Documentation',
+        'apps': 'Apps',
+        'collaborators': 'Collaborators'
+    },
+    'fr': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Transformer les idées en réalité',
+        'about-text': 'Nous sommes un petit studio dont l\'objectif est d\'être votre marque préférée avec de multiples produits dans tous les domaines. Nous avons commencé par le logiciel, puis nous nous étendrons au matériel et bien plus encore.',
+        'products-title': 'Nos Productions',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'C\'est votre moteur de jeu. Créez en toute simplicité, peu importe si vous n\'avez pas d\'expérience ; le moteur est conçu pour tout le monde. Créez des jeux pour tous types d\'appareils ayant accès à un navigateur et publiez-les avec fierté.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'Un site web pour jouer à des jeux sans avoir à les télécharger. Compatible avec de multiples appareils, même les manettes de console.',
+        'games-link': 'Explorer les Jeux',
+        'social': 'Réseaux sociaux',
+        'help': 'Aide',
+        'support': 'Support',
+        'feedback': 'Avis',
+        'donations': 'Dons',
+        'policies': 'Politiques',
+        'licenses': 'Licences',
+        'docs': 'Documentation',
+        'apps': 'Apps',
+        'collaborators': 'Collaborateurs'
+    },
+    'pt': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Transformando ideias em realidade',
+        'about-text': 'Somos um pequeno estúdio com o objetivo de ser a sua marca favorita com múltiplos produtos em todas as áreas. Começamos no software, depois estender-nos-emos ao hardware e muito mais.',
+        'products-title': 'Nossas Produções',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'É o seu motor de jogo. Crie com facilidade, não importa se não tem experiência; o motor foi concebido para todos. Crie jogos para todos os tipos de dispositivos que tenham acesso a um navegador e publique-os com orgulho.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'Um sítio web para jogar jogos sem ter de os descarregar. Compatível com múltiplos dispositivos, mesmo comandos de consola.',
+        'games-link': 'Explorar Jogos',
+        'social': 'Redes sociais',
+        'help': 'Ajuda',
+        'support': 'Suporte',
+        'feedback': 'Opinar',
+        'donations': 'Doações',
+        'policies': 'Políticas',
+        'licenses': 'Licenças',
+        'docs': 'Documentação',
+        'apps': 'Apps',
+        'collaborators': 'Colaboradores'
+    },
+    'ru': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Превращаем идеи в реальность',
+        'about-text': 'Мы — небольшая студия, стремящаяся стать вашим любимым брендом с множеством продуктов во всех областях. Мы начали с программного обеспечения, затем перейдем к аппаратному обеспечению и многому другому.',
+        'products-title': 'Наши Проекты',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'Это ваш игровой движок. Создавайте с легкостью, даже если у вас нет опыта; движок разработан для всех. Создавайте игры для всех типов устройств, имеющих доступ к браузеру, и публикуйте их с гордостью.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'Веб-сайт для игр без необходимости их скачивания. Совместим с множеством устройств, даже с консольными контроллерами.',
+        'games-link': 'Играть',
+        'social': 'Соцсети',
+        'help': 'Помощь',
+        'support': 'Поддержка',
+        'feedback': 'Отзывы',
+        'donations': 'Пожертвования',
+        'policies': 'Политика',
+        'licenses': 'Лицензии',
+        'docs': 'Документация',
+        'apps': 'Приложения',
+        'collaborators': 'Партнеры'
+    },
+    'it': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Trasformare le idee in realtà',
+        'about-text': 'Siamo un piccolo studio con l\'obiettivo di essere il vostro marchio preferito con molteplici prodotti in tutti i settori. Abbiamo iniziato con il software, poi ci estenderemo all\'hardware e molto altro ancora.',
+        'products-title': 'Le Nostre Produzioni',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'È il tuo motore di gioco. Crea con facilità, non importa se non hai esperienza; il motore è progettato per tutti. Crea giochi per tutti i tipi di dispositivi che hanno accesso a un browser e pubblicali con orgoglio.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'Un sito web per giocare senza dover scaricare nulla. Compatibile con molteplici dispositivi, anche con i controller delle console.',
+        'games-link': 'Esplora Giochi',
+        'social': 'Social',
+        'help': 'Aiuto',
+        'support': 'Supporto',
+        'feedback': 'Opinioni',
+        'donations': 'Donazioni',
+        'policies': 'Policy',
+        'licenses': 'Licenze',
+        'docs': 'Documentazione',
+        'apps': 'App',
+        'collaborators': 'Collaboratori'
+    },
+    'zh': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': '将创意变为现实',
+        'about-text': '我们是一家小型工作室，目标是成为您在所有领域拥有多种产品的最喜爱品牌。我们从软件开始，然后将扩展到硬件等等。',
+        'products-title': '我们的产品',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': '这是您的游戏引擎。无论您是否拥有经验，都能轻松创作；该引擎专为所有人设计。为所有可以访问浏览器的设备类型创建游戏，并自豪地发布它们。',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': '无需下载即可玩游戏的网站。兼容多种设备，甚至包括游戏手柄。',
+        'games-link': '探索游戏',
+        'social': '社交媒体',
+        'help': '帮助',
+        'support': '支持',
+        'feedback': '反馈',
+        'donations': '捐赠',
+        'policies': '政策',
+        'licenses': '许可',
+        'docs': '文档',
+        'apps': '应用',
+        'collaborators': '合作伙伴'
+    },
+    'ja': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'アイデアを現実に',
+        'about-text': '私たちは、あらゆる分野で複数の製品を展開する、皆様のお気に入りのブランドになることを目指している小さなスタジオです。ソフトウェアから始まり、今後はハードウェアなどにも広げていく予定です。',
+        'products-title': '私たちの制作物',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'これはあなたのためのゲームエンジンです。経験がなくても簡単に作成できます。エンジンはすべての人のために設計されています。ブラウザにアクセスできるあらゆる種類のデバイス向けのゲームを作成し、誇りを持って公開しましょう。',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'ダウンロードせずにゲームをプレイできるウェブサイト。コンソールコントローラーを含む複数のデバイスに対応しています。',
+        'games-link': 'ゲームを探索',
+        'social': 'ソーシャル',
+        'help': 'ヘルプ',
+        'support': 'サポート',
+        'feedback': 'フィードバック',
+        'donations': '寄付',
+        'policies': 'ポリシー',
+        'licenses': 'ライセンス',
+        'docs': 'ドキュメント',
+        'apps': 'アプリ',
+        'collaborators': '協力者'
+    },
+    'sw': {
+        'hero-title': 'Carley Interactive Studio',
+        'hero-tagline': 'Kugeuza mawazo kuwa ukweli',
+        'about-text': 'Sisi ni studio ndogo yenye lengo la kuwa chapa unayoipenda zaidi tukiwa na bidhaa nyingi katika maeneo yote. Tulianza na programu, kisha tutapanuka hadi kwenye vifaa na mengine mengi.',
+        'products-title': 'Uzalishaji Wetu',
+        'engine-title': 'Creative Engine',
+        'engine-desc-long': 'Ni injini yako ya mchezo. Unda kwa urahisi, haijalishi kama huna uzoefu; injini imeundwa kwa ajili ya kila mtu. Unda michezo kwa aina zote za vifaa vinavyoweza kufikia kivinjari na uichapishe kwa fahari.',
+        'engine-link': 'Creative Engine Beta',
+        'games-title': 'Creative Games',
+        'games-desc': 'Tovuti ya kucheza michezo bila kulazimika kuipakua. Inaoana na vifaa vingi, hata vidhibiti vya konsole.',
+        'games-link': 'Chunguza Michezo',
+        'social': 'Mitandao ya Kijamii',
+        'help': 'Msaada',
+        'support': 'Usaidizi',
+        'feedback': 'Maoni',
+        'donations': 'Michango',
+        'policies': 'Sera',
+        'licenses': 'Leseni',
+        'docs': 'Nyaraka',
+        'apps': 'Programu',
+        'collaborators': 'Washiriki'
     }
-  }
-  showLogoutOption();
+};
 
-  // 7) Registro
-  document.getElementById('register-submit').onclick = async () => {
-    const username = document.getElementById('reg-username').value.trim();
-    const email    = document.getElementById('reg-email').value.trim();
-    const pass     = document.getElementById('reg-password').value;
-    const confirm  = document.getElementById('reg-confirm-password').value;
-    const phone    = document.getElementById('reg-phone').value.trim() || null;
+const langNames = {
+    'es': '🇪🇸 Español',
+    'en': '🇺🇸 English',
+    'fr': '🇫🇷 Français',
+    'pt': '🇵🇹 Português',
+    'ru': '🇷🇺 Русский',
+    'it': '🇮🇹 Italiano',
+    'zh': '🇨🇳 中文',
+    'ja': '🇯🇵 日本語',
+    'sw': '🌍 Kiswahili'
+};
 
-    if (!username) return mostrarError('Nombre de usuario obligatorio.');
-    if (pass !== confirm) return mostrarError('Las contraseñas no coinciden.');
+function changeLanguage(lang) {
+    document.documentElement.lang = lang;
+    localStorage.setItem('preferredLang', lang);
 
-    const { data: existing, error: fetchErr } = await supabase
-      .from('profiles')
-      .select('email')
-      .eq('email', email)
-      .single();
+    document.getElementById('current-lang').textContent = langNames[lang];
 
-    if (fetchErr && fetchErr.code !== 'PGRST116') {
-      console.error(fetchErr);
-      return mostrarError('Error al comprobar el correo.');
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+    });
+
+    document.getElementById('lang-dropdown').classList.add('hidden');
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('preferredLang') || 'es';
+    changeLanguage(savedLang);
+
+    // Dropdown toggle
+    const btn = document.getElementById('lang-menu-btn');
+    const dropdown = document.getElementById('lang-dropdown');
+
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+        dropdown.classList.add('hidden');
+    });
+
+    dropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Donation link trigger
+    const donationLink = document.querySelector('[data-i18n="donations"]').closest('.footer-link');
+    if (donationLink) {
+        donationLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('paypal-form').submit();
+        });
     }
-    if (existing) return mostrarError('Este correo ya está registrado.');
-
-    const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
-      email,
-      password: pass,
-      options: {
-        data: { username, phone },
-        emailRedirectTo: `${location.origin}/bienvenida.html`
-      }
-    });
-    if (signUpErr) return mostrarError(signUpErr.message);
-
-    const { error: profileErr } = await supabase
-      .from('profiles')
-      .insert([{ id: signUpData.user.id, email, username, phone }]);
-
-    if (profileErr) {
-      console.error(profileErr);
-      return mostrarError('Error al crear tu perfil. Contacta soporte.');
-    }
-
-    toggleModal(mRegister);
-    mostrarExito('¡Cuenta creada! Revisa tu correo para confirmar.');
-  };
-
-  // 8) Inicio de sesión
-  document.getElementById('login-submit').onclick = async () => {
-    const email = document.getElementById('login-email').value.trim();
-    const pass  = document.getElementById('login-password').value;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
-    if (error) return mostrarError('Inicio fallido: ' + error.message);
-
-    toggleModal(mLogin);
-    showLogoutOption();
-    mostrarExito('Sesión iniciada.');
-
-    // Enviar notificación (serverless)
-    fetch('/send-login-notice', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-  };
-
-  // 9) Recuperar contraseña
-  document.getElementById('open-forgot').onclick = () => {
-    toggleModal(mLogin);
-    toggleModal(mForgot);
-  };
-  document.getElementById('fog-request-code').onclick = async () => {
-    const email = document.getElementById('fog-email').value.trim();
-    const phone = document.getElementById('fog-phone').value.trim();
-
-    const { data: user } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('email', email)
-      .eq('phone', phone)
-      .single();
-    if (!user) return mostrarError('Email o teléfono no coinciden.');
-
-    await fetch('/.netlify/functions/send-reset-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, phone })
-    });
-    document.getElementById('fog-step2').classList.remove('oculto');
-    mostrarExito('Código enviado. Revisa tu correo/SMS.');
-  };
-  document.getElementById('fog-verify-code').onclick = async () => {
-    const email = document.getElementById('fog-email').value.trim();
-    const code  = document.getElementById('fog-code').value.trim();
-    const res   = await fetch('/.netlify/functions/verify-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code })
-    });
-    const { valid } = await res.json();
-    if (!valid) return mostrarError('Código incorrecto.');
-
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: location.origin + '/reset-password.html'
-    });
-    toggleModal(mForgot);
-    mostrarExito('Revisa tu correo para cambiar tu contraseña.');
-  };
-
-  // 10) Cambiar contraseña
-  document.getElementById('change-password-btn').onclick = async () => {
-    const oldPass = document.getElementById('old-password').value;
-    const newPass = document.getElementById('new-password').value;
-    const { data: { session } } = await supabase.auth.getSession();
-    const email = session.user.email;
-
-    const res = await supabase.auth.signInWithPassword({ email, password: oldPass });
-    if (res.error) return mostrarError('Contraseña actual incorrecta.');
-
-    const change = await supabase.auth.updateUser({ password: newPass });
-    if (change.error) return mostrarError('No se pudo cambiar la contraseña.');
-
-    toggleModal(mChange);
-    mostrarExito('Contraseña actualizada con éxito.');
-  };
-
-  // 11) Descargas placeholder
-  document.querySelectorAll('.descargar').forEach(btn => {
-    btn.onclick = e => {
-      e.preventDefault();
-      mostrarExito('Próximamente disponibles en 2025.');
-    };
-  });
-
-  // 12) Toggle formularios de soporte
-  window.toggleForm = id => {
-    document.getElementById(id).classList.toggle('mostrar');
-  };
-
-  // 13) Chat Carley Bot — referencias DOM
-  const chatWidget = document.getElementById('chat-widget');
-  const openBtn    = document.getElementById('chat-open-btn');
-  const closeBtn   = document.getElementById('chat-close-btn');
-  const sendBtn    = document.getElementById('chat-send-btn');
-  const inputField = document.getElementById('chat-input-field');
-  const messagesEl = document.getElementById('chat-messages');
-  let respuestas   = [];
-
-  // 14) Abrir / cerrar chat
-  openBtn.onclick  = () => chatWidget.classList.remove('oculto');
-  closeBtn.onclick = () => chatWidget.classList.add('oculto');
-
-  // 15) Cargar respuestas JSON
-  async function cargarRespuestas() {
-    const res = await fetch('data/respuestas.json');
-    return res.json();
-  }
-  async function initBot() {
-    try {
-      respuestas = await cargarRespuestas();
-    } catch (err) {
-      console.error('Error cargando respuestas.json', err);
-      appendMessage('No pude cargar mis respuestas. Revisa la ruta.', true);
-    }
-  }
-  initBot();
-
-  // 16) Funciones de chat
-  function appendMessage(text, isBot = false) {
-    const msg = document.createElement('div');
-    msg.className = isBot ? 'msg bot' : 'msg user';
-    msg.textContent = text;
-    messagesEl.appendChild(msg);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-  function mostrarBotonesRedes() {
-    const html = `
-      <div class="redes-botones">
-        <a href="https://youtube.com/@carleyinteractivestudio" target="_blank">📺 YouTube</a>
-        <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20" target="_blank">📱 WhatsApp</a>
-        <a href="https://www.facebook.com/groups/carleyJuego" target="_blank">📘 Facebook</a>
-      </div>`;
-    messagesEl.insertAdjacentHTML('beforeend', html);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-  sendBtn.onclick = () => {
-    const txt = inputField.value.trim();
-    if (!txt) return;
-    appendMessage(txt, false);
-    inputField.value = '';
-    setTimeout(() => {
-      const match = respuestas.find(r =>
-        r.intents.some(i => txt.toLowerCase().includes(i))
-      );
-      if (match) appendMessage(match.respuesta, true);
-      else {
-        appendMessage('Lo siento, no entendí. Te dejo mis redes:', true);
-        mostrarBotonesRedes();
-      }
-    }, 300);
-  };
-  inputField.addEventListener('keypress', e => {
-    if (e.key === 'Enter') sendBtn.click();
-  });
 });
