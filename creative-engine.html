@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creative Engine - Carley Interactive Studio</title>
+    <meta name="description" content="Creative Engine: El motor de videojuegos 2D diseñado para todos. Crea tus juegos de forma gratuita.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carleystudio.com/creative-engine.html">
+    <meta property="og:title" content="Creative Engine - Carley Studio">
+    <meta property="og:description" content="Motor 2D gratuito, intuitivo y potente. ¡Empieza a crear hoy mismo!">
+    <meta property="og:image" content="https://carleystudio.com/carley_foto_web/Creative%20Engine%20beta.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carleystudio.com/creative-engine.html">
+    <meta property="twitter:title" content="Creative Engine - Carley Studio">
+    <meta property="twitter:description" content="Motor 2D gratuito, intuitivo y potente. ¡Empieza a crear hoy mismo!">
+    <meta property="twitter:image" content="https://carleystudio.com/carley_foto_web/Creative%20Engine%20beta.png">
+
     <link rel="stylesheet" href="estilos.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9270161527829251" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
 </head>
 <body class="engine-body fixed-page">
 
@@ -271,13 +288,19 @@
         </main>
     </div>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=JZ4KM2VUD6AMQ&currency=USD"></script>
+    <!-- PayPal SDK con Client ID de Producción -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AfVIjGK6iO9MzwSlWUfTfE7ghjq-U0lnwPE9qHHXf0WBaqFEz-5xE39MlQKZIMwkjYt37SlnUKiT-mDW&currency=USD"></script>
     <script src="js/main.js"></script>
     <!-- Donation Flow Modal -->
     <div id="donation-flow-modal" class="modal-overlay hidden">
         <div class="studio-modal" style="text-align: center; padding: 2rem; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <h2 class="ce-subtitle" style="margin-top: 0;"><span data-i18n="support-action-title">Apoyar</span> <span id="app-target-name"></span></h2>
-            <p class="ce-text small" style="margin-bottom: 2rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
+            <p class="ce-text small" style="margin-bottom: 1.5rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; opacity: 0.7;">Monto (USD)</label>
+                <input type="number" id="donation-amount" value="10.00" min="1" step="0.01" class="acc-input" style="text-align: center; max-width: 150px; margin: 0 auto; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.5rem;">
+            </div>
 
             <div id="paypal-button-container" style="margin-bottom: 2rem;"></div>
 

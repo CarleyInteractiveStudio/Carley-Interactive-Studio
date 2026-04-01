@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Cuenta - Carley Interactive Studio</title>
+    <meta name="description" content="Gestiona tu cuenta de Carley Studio, personaliza tu perfil y accede a tus proyectos.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carleystudio.com/cuenta.html">
+    <meta property="og:title" content="Mi Cuenta - Carley Studio">
+    <meta property="og:description" content="Panel de control de usuario para herramientas de Carley Studio.">
+    <meta property="og:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carleystudio.com/cuenta.html">
+    <meta property="twitter:title" content="Mi Cuenta - Carley Studio">
+    <meta property="twitter:description" content="Panel de control de usuario para herramientas de Carley Studio.">
+    <meta property="twitter:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
     <link rel="stylesheet" href="estilos.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
     <style>
         .account-page {
             min-height: 100vh;
@@ -333,6 +350,11 @@
                         <p id="profile-email" style="font-size: 0.9rem; opacity: 0.6; margin-bottom: 1rem;">correo@ejemplo.com</p>
                         <p id="profile-usage-display" style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem;"></p>
 
+                            <div class="input-group">
+                                <label data-i18n="field-username">Nombre de Usuario</label>
+                                <input type="text" id="profile-username-edit" class="acc-input" placeholder="Tu nombre">
+                            </div>
+
                         <div class="input-group">
                             <label data-i18n="field-language">Idioma</label>
                             <select id="profile-lang" class="acc-input acc-select">
@@ -378,21 +400,17 @@
                         <i data-lucide="chevron-down" style="width: 18px;"></i>
                     </button>
                     <div id="bubble-support" class="bubble-content hidden">
-                        <div style="margin-bottom: 1.5rem; text-align: center;">
-                            <a href="donaciones.html" class="inline-link" style="font-size: 0.85rem; font-weight: 600;" data-i18n="footer-donate-info">¿Qué hacemos con sus donaciones?</a>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <a href="creative-engine.html#donations" class="bubble-btn" style="background: rgba(255,255,255,0.02); border-bottom: none; border-radius: 12px; padding: 1rem;">
+                                <span data-i18n="support-ce">Apoyar a Creative Engine</span>
+                                <i data-lucide="external-link" style="width: 14px;"></i>
+                            </a>
+                            <a href="vid-spri.html#donations" class="bubble-btn" style="background: rgba(255,255,255,0.02); border-bottom: none; border-radius: 12px; padding: 1rem;">
+                                <span data-i18n="support-vs">Apoyar a Vid Spri</span>
+                                <i data-lucide="external-link" style="width: 14px;"></i>
+                            </a>
+                            <a href="donaciones.html" class="acc-btn primary" style="display: block; text-align: center; text-decoration: none; margin-top: 1rem;" data-i18n="footer-see-donors">Ver donantes</a>
                         </div>
-                        <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 1.5rem;" data-i18n="acc-support-simple-desc">Nuestras aplicaciones son gratuitas gracias a tu apoyo.</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
-                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                <span>Creative Engine</span>
-                                <span style="color: #25d366;" data-i18n="acc-100-free">100% Gratuito</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                                <span>Vid Spri</span>
-                                <span style="color: #25d366;" data-i18n="acc-100-free">100% Gratuito</span>
-                            </div>
-                        </div>
-                        <a href="donaciones.html" class="acc-btn primary" style="display: block; text-align: center; text-decoration: none;" data-i18n="btn-go-donate-page">Ir a Donaciones</a>
                     </div>
 
                     <!-- Soporte Bubble -->
@@ -422,12 +440,12 @@
                         </p>
                         <div class="input-group">
                             <label data-i18n="field-claim-photo">Foto de confirmación de donación</label>
-                            <input type="file" id="claim-photo" class="acc-input" accept="image/*">
+                            <input type="file" id="claim-photo-file" class="acc-input" accept="image/*">
                         </div>
                         <div class="input-group">
-                            <textarea class="acc-input" style="height: 100px;" placeholder="Explica el motivo..." data-i18n-ph="ph-claim-desc"></textarea>
+                            <textarea id="claim-reason" class="acc-input" style="height: 100px;" placeholder="Explica el motivo..." data-i18n-ph="ph-claim-desc"></textarea>
                         </div>
-                        <button class="acc-btn primary" data-i18n="btn-send-claim">Enviar Reclamación</button>
+                        <button id="btn-submit-claim" class="acc-btn primary" data-i18n="btn-send-claim">Enviar Reclamación</button>
                     </div>
 
                     <!-- Borrar Cuenta Bubble -->
@@ -475,13 +493,8 @@
         function toggleBubble(id) {
             const content = document.getElementById(id);
             const isHidden = content.classList.contains('hidden');
-
-            // Close all others first (optional, for accordion effect)
-            // document.querySelectorAll('.bubble-content').forEach(c => c.classList.add('hidden'));
-
             if (isHidden) {
                 content.classList.remove('hidden');
-                // Rotate icon if we had one but we use Lucide so we'll just toggle
             } else {
                 content.classList.add('hidden');
             }
@@ -518,7 +531,6 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-
                 btn.classList.add('active');
                 document.getElementById(`${btn.dataset.tab}-section`).classList.add('active');
             });
@@ -531,14 +543,15 @@
             document.getElementById('policy-modal').classList.add('hidden');
         }
 
-        // Wait for main.js to initialize then sync UI
-        const checkAuth = setInterval(async () => {
-            if (window.supabaseClient) {
-                const { data: { session } } = await window.supabaseClient.auth.getSession();
-                updatePageUI(session);
-                clearInterval(checkAuth);
-            }
-        }, 100);
+        // Sincronizar con el estado de autenticación global de main.js
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkUser = setInterval(() => {
+                if (window.currentUser !== undefined) {
+                    updatePageUI(window.currentUser ? { user: window.currentUser } : null);
+                    clearInterval(checkUser);
+                }
+            }, 100);
+        });
 
         function updatePageUI(session) {
             const authCont = document.getElementById('auth-container');
@@ -554,6 +567,9 @@
                 const avatarUrl = meta.avatar_url;
 
                 document.getElementById('profile-username').textContent = username;
+                const usernameEdit = document.getElementById('profile-username-edit');
+                if (usernameEdit) usernameEdit.value = username;
+
                 document.getElementById('profile-email').textContent = user.email;
                 document.getElementById('profile-gender').textContent = meta.gender || '---';
 
@@ -588,41 +604,58 @@
             }
         }
 
+        // Helper to add async handlers with guards and loading state
+        const setHandler = (id, fn) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.onclick = async (e) => {
+                const originalText = el.textContent;
+                const isButton = el.tagName === 'BUTTON';
+                if (isButton) {
+                    el.disabled = true;
+                    el.textContent = "Procesando...";
+                }
+                try {
+                    await fn(e);
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    if (isButton) {
+                        el.disabled = false;
+                        el.textContent = originalText;
+                    }
+                }
+            };
+        };
+
         // Local Auth Handlers
-        document.getElementById('btn-do-login').onclick = async () => {
+        setHandler('btn-do-login', async () => {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
             const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password: pass });
             if (error) alert(error.message);
             else window.location.reload();
-        };
-
-        // Conditional institution field
-        document.getElementById('reg-usage').addEventListener('change', (e) => {
-            const group = document.getElementById('institution-group');
-            if (e.target.value === 'educativo' || e.target.value === 'empresa') {
-                group.classList.remove('hidden');
-            } else {
-                group.classList.add('hidden');
-            }
         });
 
-        document.getElementById('btn-do-register').onclick = async () => {
+        // Conditional institution field
+        const regUsage = document.getElementById('reg-usage');
+        if (regUsage) {
+            regUsage.addEventListener('change', (e) => {
+                const group = document.getElementById('institution-group');
+                if (e.target.value === 'educativo' || e.target.value === 'empresa') {
+                    group.classList.remove('hidden');
+                } else {
+                    group.classList.add('hidden');
+                }
+            });
+        }
+
+        setHandler('btn-do-register', async () => {
             const username = document.getElementById('reg-username').value;
             const email = document.getElementById('reg-email').value;
             const pass = document.getElementById('reg-pass').value;
             const confirm = document.getElementById('reg-pass-confirm').value;
             const recovery = document.getElementById('reg-recovery-email').value;
-
-            // Handle profile picture (simplified for this demo, would normally upload to Supabase Storage)
-            const pfpFile = document.getElementById('reg-pfp-file').files[0];
-            let pfpUrl = '';
-            if (pfpFile) {
-                // For now we'll use a placeholder or local URL if possible,
-                // but real app needs Storage. We'll store a mock URL for now.
-                pfpUrl = "https://ui-avatars.com/api/?name=" + username;
-            }
-
             const gender = document.getElementById('reg-gender').value;
             const usage = document.getElementById('reg-usage').value;
             const institution = document.getElementById('reg-institution').value;
@@ -639,7 +672,6 @@
                     data: {
                         username: username,
                         recovery_email: recovery,
-                        avatar_url: pfpUrl,
                         gender: gender,
                         usage_type: usage,
                         institution: (usage !== 'personal') ? institution : '',
@@ -648,51 +680,56 @@
                 }
             });
 
-            if (error) alert(error.message);
-            else {
+            if (error) {
+                alert(error.message);
+            } else {
+                const pfpFile = document.getElementById('reg-pfp-file').files[0];
+                if (pfpFile && data.user) {
+                    const { publicUrl, error: uploadError } = await window.uploadFile('avatars', pfpFile, `${data.user.id}/profile.jpg`);
+                    if (!uploadError) {
+                        await window.supabaseClient.auth.updateUser({ data: { avatar_url: publicUrl } });
+                        await window.supabaseClient.from('profiles').update({ avatar_url: publicUrl }).eq('id', data.user.id);
+                    }
+                }
                 alert("Cuenta creada con éxito. Verifica tu correo si es necesario.");
                 window.location.reload();
             }
-        };
+        });
 
-        document.getElementById('btn-logout').onclick = async () => {
+        setHandler('btn-logout', async () => {
             await window.supabaseClient.auth.signOut();
             window.location.reload();
-        };
+        });
 
-        document.getElementById('btn-update-profile').onclick = async () => {
+        setHandler('btn-update-profile', async () => {
+            const newUsername = document.getElementById('profile-username-edit').value;
             const pfpFile = document.getElementById('profile-pfp-file').files[0];
             const lang = document.getElementById('profile-lang').value;
-
             let avatarUrl = '';
             if (pfpFile) {
-                // Mock logic: In a real app we'd upload to Supabase Storage
-                // For this studio version, we'll simulate a saved URL
-                avatarUrl = "https://ui-avatars.com/api/?background=random&name=" + document.getElementById('profile-username').textContent;
+                const { publicUrl, error: uploadError } = await window.uploadFile('avatars', pfpFile, `${window.currentUser.id}/profile_${Date.now()}.jpg`);
+                if (uploadError) alert("Error subiendo imagen: " + uploadError.message);
+                else avatarUrl = publicUrl;
             }
-
-            const updateData = { language: lang };
+            const updateData = { language: lang, username: newUsername };
             if (avatarUrl) updateData.avatar_url = avatarUrl;
-
-            const { error } = await window.supabaseClient
-                .from('profiles')
-                .update(updateData)
-                .eq('id', window.currentUser.id);
-
-            if (error) alert(error.message);
-            else {
+            const { error } = await window.supabaseClient.from('profiles').update(updateData).eq('id', window.currentUser.id);
+            if (error) {
+                alert(error.message);
+            } else {
+                const authData = { username: newUsername };
+                if (avatarUrl) authData.avatar_url = avatarUrl;
+                await window.supabaseClient.auth.updateUser({ data: authData });
                 alert("Perfil actualizado correctamente.");
                 window.location.reload();
             }
-        };
+        });
 
-        document.getElementById('btn-update-pass').onclick = async () => {
+        setHandler('btn-update-pass', async () => {
             const newPass = document.getElementById('pass-new').value;
             const confirm = document.getElementById('pass-confirm').value;
-
             if (newPass !== confirm) return alert("Las contraseñas no coinciden.");
             if (newPass.length < 6) return alert("La contraseña debe tener al menos 6 caracteres.");
-
             const { error } = await window.supabaseClient.auth.updateUser({ password: newPass });
             if (error) alert(error.message);
             else {
@@ -701,34 +738,67 @@
                 document.getElementById('pass-new').value = "";
                 document.getElementById('pass-confirm').value = "";
             }
-        };
+        });
 
-        document.getElementById('btn-delete-account').onclick = async () => {
-            const confirmDel = confirm("¿ESTÁS SEGURO? Esta acción borrará tu cuenta permanentemente y no se puede deshacer.");
+        setHandler('btn-delete-account', async () => {
+            const pass = document.getElementById('delete-confirm-pass').value;
+            if (!pass) return alert("Por favor, introduce tu contraseña para confirmar.");
+            const confirmDel = confirm("¿ESTÁS SEGURO? Esta acción enviará una solicitud de borrado de cuenta permanente.");
             if (confirmDel) {
-                // Supabase doesn't allow users to delete themselves directly via client SDK for security.
-                // Usually requires a Edge Function. For now, we sign out and tell the user.
-                alert("Para completar la eliminación de datos, por favor contacta a soporte o usa el formulario de Reclamos indicando tu deseo de borrar la cuenta. Por ahora, cerraremos tu sesión.");
-                await window.supabaseClient.auth.signOut();
-                window.location.href = 'index.html';
+                const { error } = await window.supabaseClient.from('deletion_requests').insert({
+                    user_id: window.currentUser.id,
+                    user_email: window.currentUser.email,
+                    reason: "User requested deletion via account page"
+                });
+                if (error) alert("Error al enviar solicitud: " + error.message);
+                else {
+                    alert("Solicitud de borrado enviada. Recibirás un correo de confirmación pronto. Por seguridad, cerraremos tu sesión.");
+                    await window.supabaseClient.auth.signOut();
+                    window.location.href = 'index.html';
+                }
             }
-        };
+        });
 
-        document.getElementById('btn-profile-recovery').onclick = async () => {
+        setHandler('btn-submit-claim', async () => {
+            const reason = document.getElementById('claim-reason').value;
+            const photoFile = document.getElementById('claim-photo-file').files[0];
+            if (!reason) return alert("Por favor explica el motivo del reclamo.");
+            let photoUrl = '';
+            if (photoFile) {
+                const { publicUrl, error: uploadError } = await window.uploadFile('claims', photoFile, `${window.currentUser.id}/claim_${Date.now()}.jpg`);
+                if (!uploadError) photoUrl = publicUrl;
+            }
+            const { error } = await window.supabaseClient.from('claims').insert({
+                user_id: window.currentUser.id,
+                user_email: window.currentUser.email,
+                reason: reason,
+                photo_url: photoUrl
+            });
+            if (error) alert("Error al enviar el reclamo: " + error.message);
+            else {
+                alert("Reclamo enviado correctamente. Lo revisaremos pronto.");
+                document.getElementById('claim-reason').value = '';
+                document.getElementById('claim-photo-file').value = '';
+            }
+        });
+
+        setHandler('btn-profile-recovery', async () => {
             const { data: { user } } = await window.supabaseClient.auth.getUser();
             if (user) {
                 const { error } = await window.supabaseClient.auth.resetPasswordForEmail(user.email);
                 if (error) alert(error.message);
                 else alert("Instrucciones enviadas a tu correo.");
             }
-        };
+        });
 
-        document.getElementById('btn-do-recovery').onclick = async () => {
-            const email = document.getElementById('recovery-email').value;
+        setHandler('btn-do-recovery', async () => {
+            const emailInput = document.getElementById('recovery-email');
+            const email = emailInput ? emailInput.value : '';
+            if (!email) return alert("Ingresa tu correo.");
             const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email);
             if (error) alert(error.message);
             else alert("Instrucciones enviadas a tu correo.");
-        };
+        });
     </script>
 </body>
 </html>

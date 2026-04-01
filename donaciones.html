@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donaciones - Carley Interactive Studio</title>
+    <meta name="description" content="Apoya a Carley Interactive Studio. Ayúdanos a mantener nuestras herramientas gratuitas para todos.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carleystudio.com/donaciones.html">
+    <meta property="og:title" content="Donaciones - Carley Studio">
+    <meta property="og:description" content="Tu apoyo nos ayuda a seguir creando herramientas gratuitas para la comunidad.">
+    <meta property="og:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carleystudio.com/donaciones.html">
+    <meta property="twitter:title" content="Donaciones - Carley Studio">
+    <meta property="twitter:description" content="Tu apoyo nos ayuda a seguir creando herramientas gratuitas para la comunidad.">
+    <meta property="twitter:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
     <link rel="stylesheet" href="estilos.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
     <style>
         .donate-page {
             max-width: 1000px;
@@ -193,7 +210,12 @@
     <div id="donation-flow-modal" class="modal-overlay hidden">
         <div class="studio-modal" style="text-align: center; padding: 2rem; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%);">
             <h2 class="ce-subtitle" style="margin-top: 0;"><span data-i18n="support-action-title">Apoyar</span> <span id="app-target-name"></span></h2>
-            <p class="ce-text small" style="margin-bottom: 2rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
+            <p class="ce-text small" style="margin-bottom: 1.5rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; opacity: 0.7;">Monto de donación (USD)</label>
+                <input type="number" id="donation-amount" value="10.00" min="1" step="0.01" class="acc-input" style="text-align: center; max-width: 150px; margin: 0 auto;">
+            </div>
 
             <div id="paypal-button-container" style="margin-bottom: 2rem;"></div>
 
@@ -208,7 +230,8 @@
         </div>
     </div>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=JZ4KM2VUD6AMQ&currency=USD"></script>
+    <!-- PayPal SDK con Client ID de Producción -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AfVIjGK6iO9MzwSlWUfTfE7ghjq-U0lnwPE9qHHXf0WBaqFEz-5xE39MlQKZIMwkjYt37SlnUKiT-mDW&currency=USD"></script>
     <script src="js/main.js"></script>
     <script>
         // Check for direct donation trigger from URL
