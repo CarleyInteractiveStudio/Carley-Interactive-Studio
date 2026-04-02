@@ -2,16 +2,40 @@
 
 This document contains the localized English HTML templates for Supabase Auth emails, optimized for the Supabase Studio dashboard to avoid saving errors.
 
-### ❓ Why was I getting a "Save Error"?
-The Supabase Studio editor has a built-in validator and adds its own invisible wrapper to emails. Common causes for the error include:
-1. **Wrapper Conflict:** Including `<html>`, `<head>`, or `<body>` tags. Supabase already provides these, so adding them manually causes a conflict.
-2. **XHTML Validation:** Tags like `<img>` must be self-closing (e.g., `<img ... />`).
-3. **CSS Restrictions:** Some complex CSS properties or external fonts are not allowed by their validator.
+---
 
-### ✅ Solution
-The code blocks below are already "stripped" of problematic tags. **Copy the code exactly as it is and paste it into the "Body" field of your Supabase Email Template settings.**
+### 🚨 SI SIGUE DANDO ERROR: "MODO SEGURO"
+Si Supabase sigue rechazando el código anterior, usa este **CÓDIGO ULTRA-MINIMALISTA**. No tiene imágenes ni estilos complejos, lo que debería permitir que se guarde sin problemas. Una vez que este se guarde, podemos ir añadiendo el logo y los colores poco a poco.
+
+**Copia y pega exactamente esto para probar:**
+
+```html
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #000000; color: #ffffff; padding: 40px;">
+    <tr>
+        <td align="center">
+            <h1 style="color: #00aaff;">Welcome to Carley Interactive Studio!</h1>
+            <p style="color: #aaaaaa;">Please confirm your email by clicking the link below:</p>
+            <p><a href="{{ .ConfirmationURL }}" style="color: #00aaff; font-weight: bold;">Confirm My Account</a></p>
+            <br />
+            <p style="color: #555555; font-size: 12px;">© 2026 Carley Interactive Studio</p>
+        </td>
+    </tr>
+</table>
+```
 
 ---
+
+### ❓ ¿Cómo ver por qué falla exactamente?
+Si el error persiste, abre la **Consola de Desarrollador** de tu navegador (F12 o Clic Derecho > Inspeccionar) antes de darle a "Save".
+1. Ve a la pestaña **Network** (Red).
+2. Dale a **Save** en Supabase.
+3. Busca una línea roja que diga `auth` o `settings`.
+4. Haz clic en ella y mira en la pestaña **Response** o **Preview**. Ahí suele decir el mensaje de error real de por qué lo rechaza.
+
+---
+
+### ✅ Plantillas Estándar (Si el Modo Seguro funciona)
+*Usa estas si el "Modo Seguro" se guarda correctamente.*
 
 ## 1. Signup Confirmation
 **Subject:** Welcome to our community! Confirm your email
