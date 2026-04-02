@@ -2,8 +2,14 @@
 
 This document contains the localized English HTML templates for Supabase Auth emails, optimized for the Supabase Studio dashboard to avoid saving errors.
 
-### ⚠️ IMPORTANT: How to Save in Supabase
-If you get an error when saving, try copying **ONLY** the code inside the `<body>` tags (between `<body>` and `</body>`) and pasting it into the Supabase editor.
+### ❓ Why was I getting a "Save Error"?
+The Supabase Studio editor has a built-in validator and adds its own invisible wrapper to emails. Common causes for the error include:
+1. **Wrapper Conflict:** Including `<html>`, `<head>`, or `<body>` tags. Supabase already provides these, so adding them manually causes a conflict.
+2. **XHTML Validation:** Tags like `<img>` must be self-closing (e.g., `<img ... />`).
+3. **CSS Restrictions:** Some complex CSS properties or external fonts are not allowed by their validator.
+
+### ✅ Solution
+The code blocks below are already "stripped" of problematic tags. **Copy the code exactly as it is and paste it into the "Body" field of your Supabase Email Template settings.**
 
 ---
 
