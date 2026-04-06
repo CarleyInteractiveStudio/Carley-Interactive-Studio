@@ -12,45 +12,6 @@ window.docsTranslations = {
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Optimización",
         "ce-docs-nav-cap11": "Cap 11: Bajo el Capó",
-        "ce-docs-nav-cap12": "Cap 12: Alias",
-        "ce-docs-nav-cap13": "Cap 13: Depuración",
-        "ce-docs-nav-cap14": "Cap 14: CELIB",
-        "ce-docs-nav-cap15": "Cap 15: Matemáticas",
-        "ce-docs-nav-cap16": "Cap 16: UI",
-        "ce-docs-nav-cap17": "Cap 17: Capas y Tags",
-        "ce-docs-nav-cap18": "Cap 18: Prefabs",
-        "ce-docs-nav-cap19": "Cap 19: Acceso Scripts",
-        "ce-docs-nav-cap20": "Cap 20: Plataformas",
-        "ce-docs-nav-cap21": "Cap 21: RPG",
-        "ce-docs-nav-cap22": "Cap 22: Top-Down",
-        "ce-docs-nav-cap23": "Cap 23: Puzzle",
-        "ce-docs-nav-cap24": "Cap 24: IA Avanzada",
-        "ce-docs-nav-cap25": "Cap 25: Inventario",
-        "ce-docs-nav-cap26": "Cap 26: Diálogos",
-        "ce-docs-nav-cap27": "Cap 27: Efectos Visuales",
-        "ce-docs-nav-cap28": "Cap 28: Físicas Pro",
-        "ce-docs-nav-cap29": "Cap 29: Multijugador",
-        "ce-docs-nav-cap30": "Cap 30: Procedural",
-        "ce-docs-nav-cap31": "Cap 31: Agua",
-        "ce-docs-nav-cap32": "Cap 32: Shooter",
-        "ce-docs-nav-cap33": "Cap 33: Carreras",
-        "ce-docs-nav-cap34": "Cap 34: Día/Noche",
-        "ce-docs-nav-cap35": "Cap 35: Vehículos",
-        "ce-docs-nav-cap36": "Cap 36: Tycoon",
-        "ce-docs-nav-cap37": "Cap 37: Estados",
-        "ce-docs-nav-cap38": "Cap 38: Cinemáticas",
-        "ce-docs-nav-cap39": "Cap 39: Match-3",
-        "ce-docs-nav-cap40": "Cap 40: Escenas Pro",
-        "ce-docs-nav-cap41": "Cap 41: Parry",
-        "ce-docs-nav-cap42": "Cap 42: Minijuegos",
-        "ce-docs-nav-cap43": "Cap 43: Crafteo",
-        "ce-docs-nav-cap44": "Cap 44: Parkour",
-        "ce-docs-nav-cap45": "Cap 45: Compañero IA",
-        "ce-docs-nav-cap46": "Cap 46: Clima",
-        "ce-docs-nav-cap47": "Cap 47: Cartas",
-        "ce-docs-nav-cap48": "Cap 48: Pooling",
-        "ce-docs-nav-cap49": "Cap 49: Leaderboard",
-        "ce-docs-nav-cap50": "Cap 50: Espacio",
 
         "ce-nav-docs-masterbook": "Libro Maestro",
         "ce-docs-master-title": "Libro Maestro Ultra-Detallado",
@@ -120,134 +81,8 @@ window.docsTranslations = {
         "ce-docs-scripting-cap10-title": "Capítulo 10: Optimización y Mejores Prácticas",
         "ce-docs-scripting-cap10-tips": "1. Usa delta: Asegura velocidad constante en cualquier PC.\n2. Evita buscar() en alActualizar: Hazlo en alEmpezar.\n3. Pooling: Reutiliza balas en lugar de crear/destruir.\n4. Capas de Colisión: Optimiza choques en ajustes.",
 
-        "ce-docs-scripting-cap11-title": "Capítulo 11: Bajo el Capó (El Proceso)",
-        "ce-docs-scripting-cap11-content": "Cuando guardas un script .ces, ocurre este proceso en milisegundos:\n1. Analizador Léxico: Identifica palabras clave (si, ve, publico).\n2. Mapeador de Alias: Traduce los términos (ej: fisica -> Rigidbody2D).\n3. Generación de JS: Se crea un archivo de JavaScript puro que el motor carga en la escena.",
-
-        "ce-docs-scripting-cap12-title": "Capítulo 12: Glosario de Alias (API)",
-        "ce-docs-scripting-cap12-content": "El motor permite usar términos en español e inglés indistintamente:\n• vida / health\n• fisica / physics\n• posicion / transform\n• reproducir / play\n• imprimir / log\n• esperar / wait\n• si / if\n• sino / else",
-
-        "ce-docs-scripting-cap13-title": "Capítulo 13: Depuración (Debugging)",
-        "ce-docs-scripting-cap13-content": "Usa imprimir(\"mensaje\") para ver qué pasa internamente. Los errores aparecerán en la Consola del Editor. Si ves 'Variable no definida', revisa que hayas usado 'variable' o 'publico'.",
-
-        "ce-docs-scripting-cap14-title": "Capítulo 14: Scripting Avanzado con CELIB",
-        "ce-docs-scripting-cap14-content": "Si necesitas funciones que el motor no tiene, puedes crear librerías en JS puro (.celib). Ejemplo:\nexport function miFuncion() { ... }",
-
-        "ce-docs-scripting-cap15-title": "Capítulo 15: Referencia de Funciones Matemáticas",
-        "ce-docs-scripting-cap15-content": "• azar(min, max): Número aleatorio.\n• absoluto(n): Convierte negativo a positivo.\n• redondear(n): Quita decimales.\n• seno/coseno: Para movimientos circulares.\n• limitar(val, min, max): Mantén un valor en un rango.",
-
-        "ce-docs-scripting-cap16-title": "Capítulo 16: Interacción con la UI",
-        "ce-docs-scripting-cap16-content": "Puedes cambiar textos de la interfaz así:\npuntajeUI.textoContenido = \"Puntos: \" + puntos;\nO barras de vida:\nbarraVida.porcentaje = vidaActual / vidaMaxima;",
-
-        "ce-docs-scripting-cap17-title": "Capítulo 17: Gestión de Capas y Tags",
-        "ce-docs-scripting-cap17-content": "Usa Tags para identificar grupos (si (otro.tieneTag(\"Enemigo\"))). Las Capas (Layers) sirven para que objetos específicos no choquen entre sí.",
-
-        "ce-docs-scripting-cap18-title": "Capítulo 18: El Sistema de Prefabs",
-        "ce-docs-scripting-cap18-content": "Crea objetos desde código con instanciar(miPrefab, x, y). Ideal para disparos o spawn de oleadas.",
-
-        "ce-docs-scripting-cap19-title": "Capítulo 19: Acceso a Otros Scripts",
-        "ce-docs-scripting-cap19-content": "Puedes llamar funciones de otros scripts:\nobjeto.obtenerScript(\"Nombre\").funcionPublica();",
-
-        "ce-docs-scripting-cap20-title": "Capítulo 20: MECÁNICAS DE PLATAFORMAS",
-        "ce-docs-scripting-cap20-content": "Para un buen movimiento, usa fuerzas graduales en lugar de cambiar la posición directamente. No olvides el Coyote Time y el salto en pared para mejorar el 'feel'.",
-        "ce-docs-scripting-cap20-code": "si (teclaPresionada(\"d\")) fisica.applyForce(500, 0);\nsi (teclaRecienPresionada(\"Space\") y enSuelo) fisica.applyImpulse(0, -800);",
-
-        "ce-docs-scripting-cap21-title": "Capítulo 21: MECÁNICAS DE RPG",
-        "ce-docs-scripting-cap21-content": "Gestiona nivel, XP y estadísticas. Usa subirNivel() para aumentar vida máxima y curar al jugador automáticamente.",
-        "ce-docs-scripting-cap21-code": "funcion ganarXP(cant) {\n    xpActual += cant;\n    si (xpActual >= xpSig) subirNivel();\n}",
-
-        "ce-docs-scripting-cap22-title": "Capítulo 22: MECÁNICAS DE TOP-DOWN",
-        "ce-docs-scripting-cap22-content": "Movimiento en 8 direcciones. Normaliza el vector (multiplica por 0.707 en diagonales) para que no camine más rápido de lado.",
-        "ce-docs-scripting-cap22-code": "x += movX * velocidad * delta;\ny += movY * velocidad * delta;",
-
-        "ce-docs-scripting-cap23-title": "Capítulo 23: MECÁNICAS DE PUZZLE",
-        "ce-docs-scripting-cap23-content": "Usa estados booleanos (abierta/cerrada) y detecta colisiones con etiquetas como 'Caja' o 'Boton' para activar puertas.",
-        "ce-docs-scripting-cap23-code": "alEntrarEnColision(otro) {\n    si (otro.tieneTag(\"Boton\")) abrirPuerta();\n}",
-
-        "ce-docs-scripting-cap24-title": "Capítulo 24: INTELIGENCIA ARTIFICIAL AVANZADA",
-        "ce-docs-scripting-cap24-content": "Usa distancias y ángulos para crear conos de visión. Si el jugador entra en el rango y ángulo, el enemigo empieza la persecución.",
-        "ce-docs-scripting-cap24-code": "variable dist = distancia(x, y, jug.x, jug.y);\nsi (dist < rango) perseguir();",
-
-        "ce-docs-scripting-cap25-title": "Capítulo 25: SISTEMAS DE INVENTARIO",
-        "ce-docs-scripting-cap25-content": "Usa listas (arrays) para guardar nombres de objetos. Limita el tamaño de la lista para crear un inventario con slots limitados.",
-        "ce-docs-scripting-cap25-code": "variable inventario = [];\ninventario.push(\"Pocion\");",
-
-        "ce-docs-scripting-cap26-title": "Capítulo 26: DIÁLOGOS Y NARRATIVA",
-        "ce-docs-scripting-cap26-content": "Crea una lista de frases y un índice. Cada vez que el jugador interactúa, muestra la frase actual y aumenta el índice.",
-
-        "ce-docs-scripting-cap27-title": "Capítulo 27: EFECTOS VISUALES",
-        "ce-docs-scripting-cap27-content": "Sacudida de cámara (Screen Shake) y parpadeo de daño (Hit Flash) para dar impacto a los golpes.",
-
-        "ce-docs-scripting-cap28-title": "Capítulo 28: FÍSICAS PRO",
-        "ce-docs-scripting-cap28-content": "Gravedad inversa con 'fisica.escalaGravedad = -1' o ganchos de agarre usando Raycasts para detectar puntos de anclaje.",
-        "ce-docs-scripting-cap28-code": "si (teclaPresionada(\"g\")) fisica.escalaGravedad *= -1;",
-
-        "ce-docs-scripting-cap29-title": "Capítulo 29: MULTIJUGADOR LOCAL",
-        "ce-docs-scripting-cap29-content": "Asigna distintos sets de teclas según el ID del jugador (WASD para P1, Flechas para P2).",
-
-        "ce-docs-scripting-cap30-title": "Capítulo 30: GENERACIÓN PROCEDURAL",
-        "ce-docs-scripting-cap30-content": "Crea mundos infinitos usando bucles 'mientras' e instanciando salas aleatoriamente una tras otra.",
-
-        "ce-docs-scripting-cap31-title": "Capítulo 31: MECÁNICAS DE AGUA",
-        "ce-docs-scripting-cap31-content": "Aplica fuerzas hacia arriba (Buoyancy) cuando un objeto esté dentro de un Trigger con la etiqueta 'Agua'.",
-
-        "ce-docs-scripting-cap32-title": "Capítulo 32: SISTEMA DE SHOOTER",
-        "ce-docs-scripting-cap32-content": "Añade retroceso (empuje hacia atrás) y dispersión aleatoria al ángulo de las balas para más realismo.",
-
-        "ce-docs-scripting-cap33-title": "Capítulo 33: SISTEMA DE CARRERAS",
-        "ce-docs-scripting-cap33-content": "Usa cronómetros y guarda el 'Mejor Tiempo' en la memoria del navegador para crear récords.",
-
-        "ce-docs-scripting-cap34-title": "Capítulo 34: DÍA Y NOCHE",
-        "ce-docs-scripting-cap34-content": "Modifica la intensidad y el color de la Luz Global en un bucle según el tiempo transcurrido.",
-
-        "ce-docs-scripting-cap35-title": "Capítulo 35: VEHÍCULOS",
-        "ce-docs-scripting-cap35-content": "Usa rotación y vectores frontales (coseno/seno) para mover coches en la dirección en la que apuntan.",
-
-        "ce-docs-scripting-cap36-title": "Capítulo 36: TYCOON",
-        "ce-docs-scripting-cap36-content": "Ajuste a la rejilla (Grid Snapping) dividiendo y redondeando la posición del ratón por el tamaño de celda.",
-
-        "ce-docs-scripting-cap37-title": "Capítulo 37: ESTADOS (DEBUFFS)",
-        "ce-docs-scripting-cap37-content": "Usa bucles 'cada(1)' para aplicar daño por veneno o cambiar el color del personaje temporalmente.",
-
-        "ce-docs-scripting-cap38-title": "Capítulo 38: CINEMÁTICAS",
-        "ce-docs-scripting-cap38-content": "Bloquea el control del jugador y usa 'esperar(segundos)' para coordinar movimientos de cámaras y NPCs.",
-
-        "ce-docs-scripting-cap39-title": "Capítulo 39: MATCH-3",
-        "ce-docs-scripting-cap39-content": "Detecta vecinos en las 4 direcciones y comprueba si comparten el mismo color para destruirlos.",
-
-        "ce-docs-scripting-cap40-title": "Capítulo 40: ESCENAS PRO",
-        "ce-docs-scripting-cap40-content": "Pantallas de carga con fundidos a negro (Fade Out) animando la opacidad de una imagen de UI.",
-
-        "ce-docs-scripting-cap41-title": "Capítulo 41: PARRY",
-        "ce-docs-scripting-cap41-content": "Crea una pequeña ventana de tiempo (0.2s) tras presionar bloqueo donde el jugador es invulnerable.",
-
-        "ce-docs-scripting-cap42-title": "Capítulo 42: MINIJUEGOS",
-        "ce-docs-scripting-cap42-content": "Crea mecánicas de ganzúa comparando el ángulo del ratón con un ángulo objetivo secreto.",
-
-        "ce-docs-scripting-cap43-title": "Capítulo 43: CRAFTEO",
-        "ce-docs-scripting-cap43-content": "Comprueba si una lista de ingredientes contiene los elementos necesarios para crear un Prefab nuevo.",
-
-        "ce-docs-scripting-cap44-title": "Capítulo 44: PARKOUR",
-        "ce-docs-scripting-cap44-content": "Detección de bordes lanzando rayos (Raycast) frontales a la altura de las manos del personaje.",
-
-        "ce-docs-scripting-cap45-title": "Capítulo 45: COMPAÑERO IA",
-        "ce-docs-scripting-cap45-content": "Usa 'moverHacia' si la distancia con el líder es mayor a un límite, para que te siga orgánicamente.",
-
-        "ce-docs-scripting-cap46-title": "Capítulo 46: CLIMA",
-        "ce-docs-scripting-cap46-content": "Instancia gotas de lluvia sobre el jugador y usa destellos blancos en pantalla para simular rayos.",
-
-        "ce-docs-scripting-cap47-title": "Capítulo 47: CARTAS",
-        "ce-docs-scripting-cap47-content": "Usa 'mazo.pop()' para sacar la última carta y 'mano.push()' para añadirla a las opciones del jugador.",
-
-        "ce-docs-scripting-cap48-title": "Capítulo 48: OPTIMIZACIÓN (POOLING)",
-        "ce-docs-scripting-cap48-content": "Crea 100 balas al inicio y desactívalas. En lugar de crear nuevas, activa las que ya existen.",
-        "ce-docs-scripting-cap48-code": "variable pool = []; // Pre-crea y reutiliza",
-
-        "ce-docs-scripting-cap49-title": "Capítulo 49: LEADERBOARD",
-        "ce-docs-scripting-cap49-content": "Guarda una lista de récords y ordénala de mayor a menor para mostrar el Top 5 local.",
-
-        "ce-docs-scripting-cap50-title": "Capítulo 50: VIAJES ESPACIALES",
-        "ce-docs-scripting-cap50-content": "En el espacio no hay rozamiento. Usa 'applyForce' para acelerar y la velocidad se mantendrá constante.",
-        "ce-docs-scripting-cap50-code": "variable rad = rotacion * (3.14 / 180);\nfisica.applyForce(coseno(rad) * fuerza, seno(rad) * fuerza);",
+        "ce-docs-scripting-cap11-title": "Capítulo 11: Bajo el Capó y FAQ",
+        "ce-docs-scripting-cap11-content": "Cuando guardas un script .ces, el motor realiza un proceso de transpilación instantáneo para convertir tu código humano en instrucciones de alto rendimiento.\n\nPreguntas Frecuentes:\n• ¿Puedo usar JavaScript puro? Sí, CES es una capa sobre JS.\n• ¿Cómo destruyo un objeto? Usa la función destruir(materia);\n• ¿Es seguro para web? Absolutamente, todo corre en el cliente local.",
 
         "ce-docs-sceneloader-desc": "Permite viajar entre distintos niveles del juego (.ceScene). Puedes activarlo al chocar o por código.",
         "ce-docs-sceneloader-name": "SceneLoader (Niveles)",
@@ -329,7 +164,7 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Cap 8: Coroutines",
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Optimization",
-        "ce-docs-nav-cap11": "Cap 11: FAQ",
+        "ce-docs-nav-cap11": "Cap 11: Under the Hood",
 
         "ce-docs-scripting-cap0-title": "Chapter 0: Your First Script in 60 Seconds",
         "ce-docs-scripting-cap0-desc": "Want to see results now? Follow these steps:\n1. In the Asset Browser, right-click and select New > Script (CES). Name it HelloWorld.ces.\n2. Double-click to open and paste the code below.\n3. Drag that file from the library onto any object in your scene.\n4. Hit Play!",
@@ -369,8 +204,8 @@ window.docsTranslations = {
         "ce-docs-scripting-cap10-title": "Chapter 10: Optimization and Best Practices",
         "ce-docs-scripting-cap10-tips": "1. Use delta: Ensures constant speed on any PC.\n2. Avoid find() in update: Do it in start.\n3. Pooling: Reuse bullets instead of create/destroy.\n4. Collision Layers: Optimize crashes in settings.",
 
-        "ce-docs-scripting-cap11-title": "Chapter 11: Troubleshooting and FAQ",
-        "ce-docs-scripting-cap11-content": "Q: Can I use normal JS?\nA: Yes! CES is a layer over JS (Math.random(), etc).\nQ: How do I destroy the object?\nA: destroy(mtr); or destroy(materia);",
+        "ce-docs-scripting-cap11-title": "Chapter 11: Under the Hood and FAQ",
+        "ce-docs-scripting-cap11-content": "When you save a .ces script, the engine performs an instant transpilation process to convert your human-readable code into high-performance instructions.\n\nFrequently Asked Questions:\n• Can I use pure JavaScript? Yes, CES is a layer over JS.\n• How do I destroy an object? Use the destroy(matter); function.\n• Is it safe for the web? Absolutely, everything runs on the local client.",
 
         "ce-docs-nav-vehicles": "Vehicles",
         "ce-docs-vehicles-title": "Vehicles and Advanced Controllers",
@@ -424,7 +259,7 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Cap 8: Corrotinas",
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Otimização",
-        "ce-docs-nav-cap11": "Cap 11: FAQ",
+        "ce-docs-nav-cap11": "Cap 11: Sob o Capô",
 
         "ce-docs-scripting-cap0-title": "Capítulo 0: Seu Primeiro Script em 60 Segundos",
         "ce-docs-scripting-cap0-desc": "Quer ver resultados agora? Siga estes passos:\n1. No Navegador de Assets, clique com o botão direito e selecione Novo > Script (CES). Nomeie como OlaMundo.ces.\n2. Clique duas vezes para abrir e cole o código abaixo.\n3. Arraste esse arquivo da biblioteca para qualquer objeto na sua cena.\n4. Clique em Play!",
@@ -464,8 +299,8 @@ window.docsTranslations = {
         "ce-docs-scripting-cap10-title": "Capítulo 10: Otimização e Melhores Práticas",
         "ce-docs-scripting-cap10-tips": "1. Use delta: Velocidade constante em qualquer PC.\n2. Evite buscar() em atualizar: Faça em começar.\n3. Pooling: Reutilize balas.\n4. Camadas de Colisão: Otimize choques.",
 
-        "ce-docs-scripting-cap11-title": "Capítulo 11: Solução de Problemas e FAQ",
-        "ce-docs-scripting-cap11-content": "P: Posso usar JS normal?\nR: Sim! O CES é uma camada sobre JS.\nP: Como destruo o objeto?\nR: destruir(mtr); ou destruir(materia);",
+        "ce-docs-scripting-cap11-title": "Capítulo 11: Sob o Capô e FAQ",
+        "ce-docs-scripting-cap11-content": "Quando você salva um script .ces, o motor realiza um processo de transpilação instantânea para converter seu código humano em instruções de alto desempenho.\n\nPerguntas Frequentes:\n• Posso usar JavaScript puro? Sim, o CES é uma camada sobre o JS.\n• Como destruo um objeto? Use a função destruir(materia);\n• É seguro para a web? Com certeza, tudo roda no cliente local.",
 
         "ce-docs-nav-vehicles": "Veículos",
         "ce-docs-vehicles-title": "Veículos e Controladores Avanzados",
@@ -519,7 +354,7 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Гл 8: Корутины",
         "ce-docs-nav-cap9": "Гл 9: Рецепты",
         "ce-docs-nav-cap10": "Гл 10: Оптимизация",
-        "ce-docs-nav-cap11": "Гл 11: FAQ",
+        "ce-docs-nav-cap11": "Гл 11: Под капотом",
 
         "ce-docs-scripting-cap0-title": "Глава 0: Твой первый скрипт за 60 секунд",
         "ce-docs-scripting-cap0-desc": "Хочешь результат? Следуй шагам:\n1. В Asset Browser: ПКМ > Новый > Скрипт (CES). Имя HelloWorld.ces.\n2. Вставь код ниже.\n3. Перетащи файл на любой объект.\n4. Нажми Play!",
@@ -559,8 +394,8 @@ window.docsTranslations = {
         "ce-docs-scripting-cap10-title": "Глава 10: Оптимизация и лучшие практики",
         "ce-docs-scripting-cap10-tips": "1. Используй delta: Одинаковая скорость на всех ПК.\n2. Избегай find() в обновить: Делай в начать.\n3. Пулинг: Используй повторно пули.\n4. Слои коллизий: Экономь ресурсы.",
 
-        "ce-docs-scripting-cap11-title": "Глава 11: Решение проблем и FAQ",
-        "ce-docs-scripting-cap11-content": "В: Можно JS?\nО: Да! CES — слой над JS.\nВ: Как удалить объект?\nО: destruir(mtr); или destruir(materia);",
+        "ce-docs-scripting-cap11-title": "Глава 11: Под капотом и FAQ",
+        "ce-docs-scripting-cap11-content": "Когда вы сохраняете скрипт .ces, движок выполняет мгновенный процесс транспиляции, чтобы преобразовать ваш человекочитаемый код в высокопроизводительные инструкции.\n\nЧасто задаваемые вопросы:\n• Можно ли использовать чистый JavaScript? Да, CES — это слой поверх JS.\n• Как уничтожить объект? Используйте функцию destruir(materia);\n• Безопасно ли это для интернета? Безусловно, все работает на локальном клиенте.",
 
         "ce-docs-nav-vehicles": "Транспорт",
         "ce-docs-vehicles-title": "Транспорт и контроллеры",
@@ -614,7 +449,7 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "第 8 章：时间魔法",
         "ce-docs-nav-cap9": "第 9 章：解决方案食谱",
         "ce-docs-nav-cap10": "第 10 章：优化",
-        "ce-docs-nav-cap11": "第 11 章：FAQ",
+        "ce-docs-nav-cap11": "第 11 章：深入底层",
 
         "ce-docs-scripting-cap0-title": "第零章：60 秒完成你的第一个脚本",
         "ce-docs-scripting-cap0-desc": "想看效果？步骤如下：\n1. 资源浏览器：右键 > 新建 > 脚本 (CES)。命名 HelloWorld.ces。\n2. 粘贴下方代码。\n3. 拖到场景对象上。\n4. 点击播放！",
@@ -654,8 +489,8 @@ window.docsTranslations = {
         "ce-docs-scripting-cap10-title": "第十章：优化与最佳实践",
         "ce-docs-scripting-cap10-tips": "1. 使用 delta: 确保各 PC 速度一致。\n2. 避免在更新中使用搜索: 在开始中做。\n3. 对象池: 重用子弹。\n4. 碰撞层: 优化性能。",
 
-        "ce-docs-scripting-cap11-title": "第十一章：故障排除与常见问题",
-        "ce-docs-scripting-cap11-content": "问：可以用普通 JS 吗？\n答：可以！CES 是 JS 上的层。\n问：如何销毁对象？\n答：destruir(mtr); 或 destruir(materia);",
+        "ce-docs-scripting-cap11-title": "第十一章：深入底层与常见问题",
+        "ce-docs-scripting-cap11-content": "当您保存 .ces 脚本时，引擎会执行即时转译过程，将您的人类可读代码转换为高性能指令。\n\n常见问题：\n• 可以使用纯 JavaScript 吗？是的，CES 是 JS 之上的一层。\n• 如何销毁物体？使用 destruir(matter); 函数。\n• 网页版安全吗？绝对安全，一切都在本地客户端运行。",
 
         "ce-docs-nav-vehicles": "载具",
         "ce-docs-vehicles-title": "载具与高级控制器",
