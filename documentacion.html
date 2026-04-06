@@ -28,10 +28,11 @@
                     <i data-lucide="book"></i> <span data-i18n="ce-nav-docs">Documentación</span>
                 </a>
                 <div class="sidebar-subnav">
-                    <a href="#masterbook" class="subnav-item" data-target="masterbook" data-i18n="ce-nav-docs-masterbook">Libro Maestro</a>
-                    <a href="#leyes" class="subnav-item active" data-target="leyes" data-i18n="ce-nav-docs-leyes">Leyes</a>
+                    <a href="#masterbook" class="subnav-item active" data-target="masterbook" data-i18n="ce-nav-docs-masterbook">Libro Maestro</a>
+                    <a href="#leyes" class="subnav-item" data-target="leyes" data-i18n="ce-nav-docs-leyes">Leyes</a>
 
                     <div class="nav-group">
+                        <a href="#masterbook" class="subnav-item mini" data-target="masterbook" data-i18n="ce-nav-docs-masterbook">Master Book</a>
                         <a href="#scripting" class="subnav-item" data-target="scripting" data-i18n="ce-nav-docs-scripting">Scripting CES</a>
                         <div class="sub-menu">
                             <a href="#cap0" class="subnav-item mini" data-target="cap0" data-i18n="ce-docs-nav-cap0">Cap 0</a>
@@ -85,7 +86,7 @@
         </aside>
 
         <main class="engine-content">
-            <section id="masterbook" class="content-section">
+            <section id="masterbook" class="content-section active">
                 <div class="doc-container">
                     <h1 class="doc-title" data-i18n="ce-docs-master-title">Libro Maestro Ultra-Detallado</h1>
                     <p class="ce-text" data-i18n="ce-docs-master-intro"></p>
@@ -126,9 +127,6 @@
                     <h2 class="ce-subtitle" data-i18n="ce-docs-master-cap12-title"></h2>
                     <p class="ce-text" data-i18n="ce-docs-master-cap12-content" style="white-space: pre-wrap;"></p>
 
-                    <h2 class="ce-subtitle" data-i18n="ce-docs-master-cap13-title"></h2>
-                    <p class="ce-text" data-i18n="ce-docs-master-cap13-content" style="white-space: pre-wrap;"></p>
-
                     <!-- Ad Unit -->
                     <div style="margin: 2rem 0; text-align: center;">
                         <ins class="adsbygoogle"
@@ -141,7 +139,7 @@
                 </div>
             </section>
 
-            <section id="leyes" class="content-section active">
+            <section id="leyes" class="content-section">
                 <div class="doc-container">
                     <h1 class="doc-title" data-i18n="ce-docs-leyes-title">Guía de Componentes (Leyes) - Creative Engine</h1>
                     <p class="ce-text" data-i18n="ce-docs-leyes-intro">En Creative Engine, las Materias (objetos) cobran vida a través de las Leyes (components). Cada Ley añade una funcionalidad específica, como gravedad, renderizado de imagen o lógica de IA. Esta guía detalla el uso de los componentes tanto en el Inspector como en los Scripts (.ces) utilizando la sintaxis moderna (sin prefijos como this. o motor.).</p>
