@@ -1,12 +1,12 @@
 # Carley Interactive Studio
 
-**Sitio temporal oficial** de soporte y descarga para los juegos desarrollados por *Carley Interactive Studio*. Aquí los jugadores pueden:
+**Sitio oficial** de soporte y descarga para los juegos desarrollados por *Carley Interactive Studio*. Aquí los jugadores pueden:
 
 🎮 Descargar títulos como *The Battle of the Capsurers* y *Fire at Will*  
 🛠️ Enviar reportes o solicitudes de soporte técnico  
 ❤️ Apoyar el proyecto con donaciones vía PayPal
 
-Este sitio está alojado públicamente mediante GitHub Pages, como una solución temporal mientras desarrollamos nuestra plataforma oficial completa.
+Este sitio está alojado públicamente mediante GitHub Pages, sirviendo como el centro de recursos principal del estudio.
 
 ## Juegos disponibles
 

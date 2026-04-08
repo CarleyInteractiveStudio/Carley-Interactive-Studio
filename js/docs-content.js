@@ -12,310 +12,88 @@ window.docsTranslations = {
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Optimización",
         "ce-docs-nav-cap11": "Cap 11: Bajo el Capó",
-        "ce-docs-nav-cap12": "Cap 12: Alias",
-        "ce-docs-nav-cap13": "Cap 13: Depuración",
-        "ce-docs-nav-cap14": "Cap 14: CELIB",
-        "ce-docs-nav-cap15": "Cap 15: Matemáticas",
-        "ce-docs-nav-cap16": "Cap 16: UI",
-        "ce-docs-nav-cap17": "Cap 17: Capas y Tags",
-        "ce-docs-nav-cap18": "Cap 18: Prefabs",
-        "ce-docs-nav-cap19": "Cap 19: Acceso Scripts",
-        "ce-docs-nav-cap20": "Cap 20: Plataformas",
-        "ce-docs-nav-cap21": "Cap 21: RPG",
-        "ce-docs-nav-cap22": "Cap 22: Top-Down",
-        "ce-docs-nav-cap23": "Cap 23: Puzzle",
-        "ce-docs-nav-cap24": "Cap 24: IA Avanzada",
-        "ce-docs-nav-cap25": "Cap 25: Inventario",
-        "ce-docs-nav-cap26": "Cap 26: Diálogos",
-        "ce-docs-nav-cap27": "Cap 27: Efectos Visuales",
-        "ce-docs-nav-cap28": "Cap 28: Físicas Pro",
-        "ce-docs-nav-cap29": "Cap 29: Multijugador",
-        "ce-docs-nav-cap30": "Cap 30: Procedural",
-        "ce-docs-nav-cap31": "Cap 31: Agua",
-        "ce-docs-nav-cap32": "Cap 32: Shooter",
-        "ce-docs-nav-cap33": "Cap 33: Carreras",
-        "ce-docs-nav-cap34": "Cap 34: Día/Noche",
-        "ce-docs-nav-cap35": "Cap 35: Vehículos",
-        "ce-docs-nav-cap36": "Cap 36: Tycoon",
-        "ce-docs-nav-cap37": "Cap 37: Estados",
-        "ce-docs-nav-cap38": "Cap 38: Cinemáticas",
-        "ce-docs-nav-cap39": "Cap 39: Match-3",
-        "ce-docs-nav-cap40": "Cap 40: Escenas Pro",
-        "ce-docs-nav-cap41": "Cap 41: Parry",
-        "ce-docs-nav-cap42": "Cap 42: Minijuegos",
-        "ce-docs-nav-cap43": "Cap 43: Crafteo",
-        "ce-docs-nav-cap44": "Cap 44: Parkour",
-        "ce-docs-nav-cap45": "Cap 45: Compañero IA",
-        "ce-docs-nav-cap46": "Cap 46: Clima",
-        "ce-docs-nav-cap47": "Cap 47: Cartas",
-        "ce-docs-nav-cap48": "Cap 48: Pooling",
-        "ce-docs-nav-cap49": "Cap 49: Leaderboard",
-        "ce-docs-nav-cap50": "Cap 50: Espacio",
 
         "ce-nav-docs-masterbook": "Libro Maestro",
-        "ce-docs-master-title": "Libro Maestro Ultra-Detallado",
-        "ce-docs-master-intro": "¡Bienvenido a la cumbre absoluta del conocimiento en Creative Engine! Este manual ha sido redactado para explicarte hasta el último tornillo del motor de la forma más sencilla, detallada, humana y extensa posible.",
-        "ce-docs-master-cap1-title": "Capítulo 1: El Actor y su Guion",
-        "ce-docs-master-cap1-content": "Imagina que estás en un teatro inmenso. Una Materia es cualquier cosa en el escenario. Por sí misma es 'aire'. Tiene ubicación (X e Y) y es jerárquica (Padres e Hijos).\n\nSi la Materia es el actor, la Ley es el guion. Las leyes son acumulables (Gravedad + Imagen + Caminar = ¡Personaje!) y modulares.",
-        "ce-docs-master-cap2-title": "Capítulo 2: El Catálogo de Materias",
-        "ce-docs-master-cap2-content": "• Materia Vacía: Como ancla, cerebro de script o punto de spawn.\n• Materia Sprite: Dibuja imágenes en pantalla.\n• Materias Geométricas: Rectángulos y círculos para diseño rápido (Blockout).\n• Materia Cámara: Tus ojos en el mundo (Zoom, Culling Mask).\n• Materia Luz: Sombras dinámicas y atmósfera.\n• Materia Audio: Música 2D y Sonido Espacial 3D.\n• Materia Tilemap: Fábrica de niveles eficiente.",
-        "ce-docs-master-cap3-title": "Capítulo 3: El Universo de la UI",
-        "ce-docs-master-cap3-content": "La UI debe ser hija de un Canva.\n• Screen Space: Fijo en el cristal de tu monitor (HUD, Inventario).\n• World Space: Dentro del mundo (diálogos de NPCs).\n• Anclajes (Anchors): Asegura que tus botones no se muevan en distintas pantallas.",
-        "ce-docs-master-cap4-title": "Capítulo 4: Físicas y Tacto",
-        "ce-docs-master-cap4-content": "• Rigidbody 2D: Dynamic (vive), Static (suelo), Kinematic (ascensor).\n• Colisionadores: Box, Circle y Capsule. Usa 'Is Trigger' para monedas o zonas de detección.",
-        "ce-docs-master-cap5-title": "Capítulo 5: El Ciclo de Vida",
-        "ce-docs-master-cap5-content": "• Start: Configuración inicial (una vez).\n• Update: 60 veces por segundo (movimiento).\n• FixedUpdate: Latido constante para físicas estables.",
-        "ce-docs-master-cap6-title": "Capítulo 6: El Taller del Artista",
-        "ce-docs-master-cap6-content": "• Slicer: Corta hojas de sprites automáticamente con Carl IA.\n• Editor de Animación: Crea la ilusión de vida con líneas de tiempo.\n• AnimatorController: El cerebro visual de tus animaciones. Usa 'Smart Mode' para animar según el movimiento automáticamente.",
-        "ce-docs-master-cap7-title": "Capítulo 7: Organización Maestra",
-        "ce-docs-master-cap7-content": "• Tags: Marca grupos de objetos (ej: 'Enemigo') para que la bala sepa con qué chocar.\n• Capas (Layers): Control total de choques (ej: Agua no choca con Fuego).",
-        "ce-docs-master-cap8-title": "Capítulo 8: Taller Práctico",
-        "ce-docs-master-cap8-content": "1. Crea Suelo (Static + BoxCollider).\n2. Crea Héroe (Dynamic + Fixed Rotation + Movement).\n3. Configura Cámara (Camera Follow).\n4. Crea Meta (Trigger + Scene Loader).",
-        "ce-docs-master-cap9-title": "Capítulo 9: Psicología del Diseño",
-        "ce-docs-master-cap9-content": "• Regla de los 3 segundos: El jugador debe entender qué hacer rápido.\n• Feedback: Añade sonidos y destellos para cada acción.\n• Curva de Aprendizaje: Enseña antes de presionar.",
-        "ce-docs-master-cap10-title": "Capítulo 10: Construcción de Mundos",
-        "ce-docs-master-cap10-content": "• Parallax: Crea capas de fondo a distintas velocidades para dar profundidad real.\n• Iluminación Dinámica: Usa Point Lights en la oscuridad para crear tensión.",
-        "ce-docs-master-cap11-title": "Capítulo 11: El Secreto de los Prefabs",
-        "ce-docs-master-cap11-content": "Un molde maestro. Si cambias el Prefab, cambias todas sus copias en todos los niveles a la vez.",
-        "ce-docs-master-cap12-title": "Capítulo 12: Glosario Técnico",
-        "ce-docs-master-cap12-content": "• DeltaTime: Tiempo entre frames.\n• Vector2: Par de números (X, Y).\n• Draw Call: Petición de dibujo a la tarjeta gráfica (¡Manténlas bajas!).",
-        "ce-docs-master-cap13-title": "Capítulo 13: El Médico del Motor",
-        "ce-docs-master-cap13-content": "Si atraviesas el suelo, revisa que no sea Dynamic. Si no ves nada, revisa la Cámara. Si va lento, usa Tilemaps.",
+        "ce-docs-master-title": "Libro Maestro del Motor",
+        "ce-docs-master-intro": "Bienvenido a la guía definitiva. Aquí aprenderás a dominar Creative Engine desde los cimientos hasta las técnicas más avanzadas. Estos 12 capítulos contienen todo el conocimiento necesario para crear mundos profesionales.",
 
-        "ce-docs-scripting-cap0-title": "Capítulo 0: Tu Primer Script en 60 Segundos",
-        "ce-docs-scripting-cap0-desc": "¿Quieres ver resultados ya? Sigue estos pasos:\n1. En el Navegador de Assets, haz clic derecho y selecciona Nuevo > Script (CES). Ponle de nombre HolaMundo.ces.\n2. Haz doble clic para abrirlo y pega el código de abajo.\n3. Arrastra ese archivo desde la biblioteca hacia cualquier objeto en tu escena.\n4. ¡Dale a Play!",
-        "ce-docs-scripting-cap0-code": "ve motor;\n\nalEmpezar() {\n    imprimir(\"¡El motor está vivo!\");\n}\n\nalActualizar(delta) {\n    rotacion += 100 * delta; // ¡Hará que el objeto gire!\n}",
+        "ce-docs-master-cap1-title": "Capítulo 1: El Actor, el Guion y la Jerarquía",
+        "ce-docs-master-cap1-content": "<b>¿Qué es una Materia?</b>\nUna Materia es el átomo de tu juego. Puede ser un jugador, una luz, o incluso un punto invisible en el espacio. Por sí sola, una Materia no hace nada; es simplemente un punto con posición (X, Y), rotación y escala.\n\n<b>El Sistema de Leyes (Componentes):</b>\nSi la Materia es el actor, la <b>Ley</b> es el guion. Las leyes son modulares y acumulables:\n• <b>SpriteRenderer:</b> Permite que la Materia sea visible.\n• <b>Rigidbody2D:</b> Le otorga masa y respuesta a la gravedad.\n• <b>Script:</b> Le da inteligencia personalizada.\n\n<b>Jerarquía (Padres e Hijos):</b>\nLas Materias pueden anidarse. Si mueves a un Padre, todos sus Hijos se mueven con él, manteniendo su posición relativa. Esto es vital para crear personajes con partes separadas (brazos, armas, mochilas).",
 
-        "ce-docs-scripting-cap1-title": "Capítulo 1: La Filosofía del Motor",
-        "ce-docs-scripting-cap1-content": "Creative Engine nació bajo una premisa: El código debe ser legible para humanos y potente para máquinas. Hemos eliminado la necesidad de usar this., mtr. o prefijos redundantes. Si un objeto tiene vida, simplemente escribe 'vida'. Si quieres moverlo, escribe 'posicion'. La meta es que tu código parezca una descripción de lo que quieres que pase.",
+        "ce-docs-master-cap2-title": "Capítulo 2: El Catálogo Maestro de Materias",
+        "ce-docs-master-cap2-content": "Creative Engine ofrece tipos predefinidos para acelerar tu flujo de trabajo:\n\n• <b>Materia Vacía:</b> Ideal como contenedores, puntos de spawn o cámaras.\n• <b>Materia Sprite:</b> Viene con un renderizador listo para recibir texturas.\n• <b>Materia Luz:</b> Emiten luz dinámica que genera sombras en tiempo real.\n• <b>Materia Audio:</b> Fuentes de sonido que pueden ser globales o espaciales (el volumen baja si te alejas).\n• <b>Materia UI:</b> Diseñadas para vivir en el Canva, perfectas para botones y barras de vida.\n• <b>Materia Tilemap:</b> Un lienzo optimizado para pintar niveles gigantes con miles de bloques sin que el rendimiento caiga.",
 
-        "ce-docs-scripting-cap2-title": "Capítulo 2: Anatomía de un Script",
-        "ce-docs-scripting-cap2-content": "Todo script en Creative Engine comienza con una declaración de intención: 've motor;'. Esta línea no es opcional; es el puente que conecta tu archivo de texto con el corazón del motor. A partir de aquí, tu script se convierte en una 'Ley' que rige el comportamiento de una 'Materia' (objeto).",
+        "ce-docs-master-cap3-title": "Capítulo 3: El Universo de la Interfaz (UI)",
+        "ce-docs-master-cap3-content": "La UI en Creative Engine es potente y flexible. Todo debe ser hijo de un <b>Canva</b>.\n\n<b>Modos de Visualización:</b>\n• <b>Screen Space:</b> La UI se pega al cristal de tu monitor (HUD, Inventario). No se mueve aunque la cámara sí.\n• <b>World Space:</b> La UI vive 'dentro' del mundo. Útil para diálogos que flotan sobre personajes o carteles indicadores.\n\n<b>Anclajes (Anchors):</b>\nSon el secreto de la UI responsiva. Definen cómo se estira un botón cuando cambias el tamaño de la ventana del navegador. Siempre ancla tu HUD a las esquinas y tu inventario al centro.",
 
-        "ce-docs-scripting-cap3-title": "Capítulo 3: Variables y el Inspector Dinámico",
-        "ce-docs-scripting-cap3-content": "El poder de Creative Engine reside en su Inspector. Al declarar variables como 'publico', estas aparecen mágicamente en la interfaz del editor, permitiéndote ajustar el juego mientras corre.",
-        "ce-docs-scripting-cap3-types": "Tipos Soportados:\n- numero: Velocidades, fuerzas, salud.\n- texto: Nombres, diálogos o IDs.\n- booleano: verdadero o falso.\n- Materia: Referencia otros objetos.\n- Prefab: Crea objetos nuevos (balas, enemigos).\n- Audio / Sprite / Scene: Recursos del proyecto.",
-        "ce-docs-scripting-cap3-code": "publico numero fuerzaSalto = 12;\npublico booleano puedeVolar = falso;\npublico Materia camaraObjetivo;",
+        "ce-docs-master-cap4-title": "Capítulo 4: Físicas, Colisiones y Raycast",
+        "ce-docs-master-cap4-content": "<b>Rigidbody 2D:</b>\n• <b>Dinámico:</b> Reacciona a todo (gravedad, golpes).\n• <b>Estático:</b> Inamovible (suelo, paredes).\n• <b>Cinemático:</b> Se mueve solo por código, ignorando la gravedad pero empujando a otros.\n\n<b>Triggers (Sensores):</b>\nSi activas 'Is Trigger' en un colisionador, este se vuelve 'fantasma'. No chocará físicamente, pero enviará una señal cuando algo lo atraviese. Perfecto para monedas, portales o áreas de veneno.\n\n<b>Raycasting:</b>\nEs lanzar un 'láser invisible' desde un punto. Si el láser toca algo, te devuelve qué tocó y a qué distancia. Útil para que los enemigos 'vean' al jugador o para detectar el suelo con precisión quirúrgica.",
 
-        "ce-docs-scripting-cap4-title": "Capítulo 4: El Ritmo del Juego (Ciclo de Vida)",
-        "ce-docs-scripting-cap4-events": "1. alEmpezar(): Configuración inicial. Una sola vez.\n2. alActualizar(delta): 60 veces por segundo. Lógica constante.\n3. actualizarFijo(delta): Para cálculos físicos constantes.\n4. alHacerClick(): Respuesta al toque del jugador.",
+        "ce-docs-master-cap5-title": "Capítulo 5: El Ritmo de la Vida (Ciclo de Vida)",
+        "ce-docs-master-cap5-content": "Los scripts siguen un orden estricto de ejecución:\n\n1. <b>alEmpezar():</b> Se ejecuta una sola vez cuando la Materia nace. Aquí debes configurar variables e hijos.\n2. <b>alActualizar(delta):</b> Se ejecuta cada frame (60 veces por segundo). Aquí va el movimiento y la lógica del jugador.\n3. <b>actualizarFijo(delta):</b> Ideal para físicas. Se ejecuta a intervalos constantes, asegurando que tu personaje no atraviese paredes si los FPS bajan.\n4. <b>alHacerClick():</b> Evento directo cuando el usuario toca la Materia.",
 
-        "ce-docs-scripting-cap5-title": "Capítulo 5: Interacción Total (Input y Físicas)",
-        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    // Teclado\n    si (teclaPresionada(\"w\")) {\n        fisica.applyForce(0, -100);\n    }\n    // Mouse\n    si (botonMouseRecienPresionado(0)) {\n        variable pos = obtenerPosicionMouse();\n        imprimir(\"Clic en: \" + pos.x + \",\" + pos.y);\n    }\n}",
+        "ce-docs-master-cap6-title": "Capítulo 6: Animación y El Cerebro Visual",
+        "ce-docs-master-cap6-content": "<b>AnimatorController:</b>\nEs una máquina de estados. Imagina un diagrama de flujo: Si el jugador corre, pasa del estado 'Quieto' a 'Correr'.\n\n<b>Smart Mode:</b>\nUna función exclusiva de Creative Engine. Si la activas, el motor detecta la velocidad de la Materia y cambia las animaciones automáticamente. ¡No tienes que escribir ni una línea de código para que tu personaje camine y salte!\n\n<b>Línea de Tiempo:</b>\nPuedes animar cualquier cosa: la opacidad de una imagen, el color de una luz o la escala de un objeto, creando efectos de respiración o parpadeo.",
 
-        "ce-docs-scripting-cap6-title": "Capítulo 6: El Diccionario de Componentes (Referencia API)",
-        "ce-docs-scripting-cap6-content": "Accesos directos comunes:\n- posicion (Transform): Controla x, y, rotacion y escala.\n- fisica (Rigidbody2D): Newton. Usa applyImpulse y velocity.\n- vida (Health): damage(10) o heal(5).\n- animacion (Animator): play(\"Correr\").\n- audio (AudioSource): play() o stop().",
+        "ce-docs-master-cap7-title": "Capítulo 7: Organización y Arquitectura Maestra",
+        "ce-docs-master-cap7-content": "Un juego desordenado es un juego que falla. Usa estas herramientas:\n\n• <b>Tags (Etiquetas):</b> Clasifica objetos. Las balas deben buscar el tag 'Enemigo'.\n• <b>Capas (Layers):</b> Controlan qué se ve y qué choca. Puedes hacer que el Agua no choque con la Decoración para ganar rendimiento.\n• <b>Sorting Layers:</b> Controlan el orden de dibujo. El Jugador siempre debe estar en una capa superior al Fondo.\n• <b>Estructura de Carpetas:</b> Mantén tus scripts en /Scripts y tus imágenes en /Sprites. Carl IA trabaja mejor si el proyecto está organizado.",
 
-        "ce-docs-scripting-cap7-title": "Capítulo 7: Comunicación entre Objetos (Mensajería)",
-        "ce-docs-scripting-cap7-emisor": "Emisor:\ndifundir(\"NivelCompletado\", { tiempo: 45 });",
-        "ce-docs-scripting-cap7-receptor": "Receptor:\nalRecibir(\"NivelCompletado\", (datos) => {\n    imprimir(\"¡Logrado en \" + datos.tiempo + \" s!\");\n});",
+        "ce-docs-master-cap8-title": "Capítulo 8: Psicología del Diseño y Jugabilidad",
+        "ce-docs-master-cap8-content": "<b>Feedback (Retroalimentación):</b>\nEl jugador debe SENTIR el juego. Si salta, añade un pequeño sonido. Si golpea una pared, añade un leve temblor de cámara (Screenshake).\n\n<b>Curva de Dificultad:</b>\nIntroduce mecánicas de forma segura. Primero enseña a saltar sin peligro, luego añade un pozo, y finalmente añade enemigos mientras salta.\n\n<b>Regla de los 3 Segundos:</b>\nEn los primeros 3 segundos, el jugador debe saber quién es y qué debe hacer. Usa la UI y el diseño de niveles para guiar el ojo del jugador hacia el objetivo.",
 
-        "ce-docs-scripting-cap8-title": "Capítulo 8: Magia Temporal (Corrutinas y Bucles)",
-        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    imprimir(\"3...\");\n    esperar(1);\n    imprimir(\"¡FUEGO!\");\n}",
-        "ce-docs-scripting-cap8-code2": "alEmpezar() {\n    cada(5) {\n        crear monedaPrefab;\n    }\n}",
+        "ce-docs-master-cap9-title": "Capítulo 9: Efectos Visuales y 'Juice'",
+        "ce-docs-master-cap9-content": "El 'Juice' es lo que hace que un juego sea adictivo. En Creative Engine puedes usar:\n\n• <b>Sistemas de Partículas:</b> Explosiones, polvo al correr o chispas de metal. Usa prefabs para que cada impacto cree partículas dinámicas.\n• <b>Post-Procesado:</b> Aplica efectos globales. El <b>Bloom</b> hace que las luces brillen, la <b>Viñeta</b> oscurece los bordes para mayor inmersión, y la <b>Corrección de Color</b> da el tono cinematográfico final.\n• <b>Interpolación (Lerp):</b> No muevas las cosas bruscamente. Usa Lerp para que la cámara siga al jugador con suavidad.",
 
-        "ce-docs-scripting-cap9-title": "Capítulo 9: El Recetario de Soluciones (Cookbook)",
-        "ce-docs-scripting-cap9-mov": "Movimiento Pro:\nve motor;\npublico numero velocidad = 300;\npublico numero fuerzaSalto = 15;\n\nalActualizar(delta) {\n    variable horizontal = 0;\n    si (teclaPresionada(\"d\")) horizontal = 1;\n    si (teclaPresionada(\"a\")) horizontal = -1;\n    fisica.velocity.x = horizontal * (velocidad * delta);\n    si (horizontal != 0) {\n        voltearH = (horizontal < 0);\n        reproducir.Caminar();\n    } sino { reproducir.Idle(); }\n    si (teclaRecienPresionada(\"Space\") y estaTocandoTag(\"Suelo\")) {\n        fisica.applyImpulse(nuevo Vector2(0, -fuerzaSalto));\n    }\n}",
+        "ce-docs-master-cap10-title": "Capítulo 10: Construcción de Mundos Dinámicos",
+        "ce-docs-master-cap10-content": "<b>Parallax:</b>\nCrea capas de fondo que se muevan a distintas velocidades. El fondo lejano (montañas) se mueve lento, el cercano (árboles) se mueve rápido. Esto genera una ilusión de profundidad 3D impresionante.\n\n<b>Iluminación Ambiental:</b>\nPuedes cambiar el color global del mundo. Pasa de un mediodía brillante a una medianoche azulada con un solo comando. Usa <b>Point Lights</b> para iluminar solo el camino del jugador en niveles oscuros, creando tensión y atmósfera.",
 
-        "ce-docs-scripting-cap10-title": "Capítulo 10: Optimización y Mejores Prácticas",
-        "ce-docs-scripting-cap10-tips": "1. Usa delta: Asegura velocidad constante en cualquier PC.\n2. Evita buscar() en alActualizar: Hazlo en alEmpezar.\n3. Pooling: Reutiliza balas en lugar de crear/destruir.\n4. Capas de Colisión: Optimiza choques en ajustes.",
+        "ce-docs-master-cap11-title": "Capítulo 11: Prefabs y El Poder de los Moldes",
+        "ce-docs-master-cap11-content": "Un <b>Prefab</b> es un 'molde' de una Materia. Imagina que diseñas un Enemigo perfecto con animaciones, sonidos y scripts.\n\n<b>Por qué usarlos:</b>\n1. <b>Edición Maestra:</b> Si cambias el color del Prefab del Enemigo, ¡TODOS los enemigos en TODOS los niveles cambiarán al instante!\n2. <b>Instanciación Dinámica:</b> Usa scripts para 'crear' enemigos o balas en tiempo real. El motor simplemente saca una copia del molde (Prefab) y la lanza al mundo.\n3. <b>Optimización:</b> El motor ahorra memoria al tratar a las copias como una sola referencia técnica.",
 
-        "ce-docs-scripting-cap11-title": "Capítulo 11: Bajo el Capó (El Proceso)",
-        "ce-docs-scripting-cap11-content": "Cuando guardas un script .ces, ocurre este proceso en milisegundos:\n1. Analizador Léxico: Identifica palabras clave (si, ve, publico).\n2. Mapeador de Alias: Traduce los términos (ej: fisica -> Rigidbody2D).\n3. Generación de JS: Se crea un archivo de JavaScript puro que el motor carga en la escena.",
+        "ce-docs-master-cap12-title": "Capítulo 12: Glosario Técnico y FAQ",
+        "ce-docs-master-cap12-content": "• <b>DeltaTime:</b> Es el tiempo que pasó entre el frame anterior y el actual. Multiplica tu velocidad por delta para que el juego corra igual en una PC lenta y una PC gamer.\n• <b>Vector2:</b> Un par de coordenadas (X, Y).\n• <b>Draw Calls:</b> Cuántas veces el motor le pide a la tarjeta gráfica que dibuje algo. Manténlas bajas usando Tilemaps.\n\n<b>Preguntas Frecuentes:</b>\n- <i>¿Por qué atravieso el suelo?</i> Revisa que el suelo sea Estático y tenga un Collider.\n- <i>¿Por qué no se mueve mi script?</i> Asegúrate de que empiece con 've motor;'.\n- <i>¿Cómo optimizo?</i> No uses 'buscar()' dentro de alActualizar; hazlo una sola vez en alEmpezar().",
 
-        "ce-docs-scripting-cap12-title": "Capítulo 12: Glosario de Alias (API)",
-        "ce-docs-scripting-cap12-content": "El motor permite usar términos en español e inglés indistintamente:\n• vida / health\n• fisica / physics\n• posicion / transform\n• reproducir / play\n• imprimir / log\n• esperar / wait\n• si / if\n• sino / else",
+        "ce-docs-scripting-cap0-title": "Capítulo 0: Tu Primer Script (El Despertar)",
+        "ce-docs-scripting-cap0-desc": "En Creative Engine, el código es el alma de la Materia. Sigue estos pasos:\n1. Crea un nuevo Script (.ces) en el navegador de activos.\n2. Ábrelo y escribe: <b>ve motor;</b> (esto conecta el script al corazón del sistema).\n3. Arrastra el script a una Materia y dale a Play.\n\n<b>Reto 0:</b> Haz que una Materia gire sin parar sumando 100 * delta a la rotación.",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nalActualizar(delta) {\n    rotacion += 100 * delta;\n}",
 
-        "ce-docs-scripting-cap13-title": "Capítulo 13: Depuración (Debugging)",
-        "ce-docs-scripting-cap13-content": "Usa imprimir(\"mensaje\") para ver qué pasa internamente. Los errores aparecerán en la Consola del Editor. Si ves 'Variable no definida', revisa que hayas usado 'variable' o 'publico'.",
+        "ce-docs-scripting-cap1-title": "Capítulo 1: La Filosofía de CES",
+        "ce-docs-scripting-cap1-content": "Creative Engine Script (CES) nació para ser humano. Hemos eliminado el exceso de sintaxis. \n• No uses <b>this.posicion</b>, solo escribe <b>posicion</b>.\n• No uses <b>motor.fisica</b>, solo escribe <b>fisica</b>.\nEl objetivo es que tu código parezca una oración: 'Si la tecla es Espacio, fisica aplica impulso'. CES es una capa sobre JavaScript, lo que significa que es increíblemente rápido pero fácil de leer.",
 
-        "ce-docs-scripting-cap14-title": "Capítulo 14: Scripting Avanzado con CELIB",
-        "ce-docs-scripting-cap14-content": "Si necesitas funciones que el motor no tiene, puedes crear librerías en JS puro (.celib). Ejemplo:\nexport function miFuncion() { ... }",
+        "ce-docs-scripting-cap2-title": "Capítulo 2: Anatomía de un Archivo .ces",
+        "ce-docs-scripting-cap2-content": "Un script profesional tiene 3 zonas:\n1. <b>Cabecera:</b> Siempre empieza con 've motor;'.\n2. <b>Variables:</b> Aquí defines la velocidad o la vida usando 'publico' o 'variable'.\n3. <b>Eventos:</b> Las funciones que el motor llama automáticamente.\n\n<b>Reto 2:</b> Declara una variable llamada 'nombreHeroe' y muéstrala en la consola usando imprimir() al empezar.",
 
-        "ce-docs-scripting-cap15-title": "Capítulo 15: Referencia de Funciones Matemáticas",
-        "ce-docs-scripting-cap15-content": "• azar(min, max): Número aleatorio.\n• absoluto(n): Convierte negativo a positivo.\n• redondear(n): Quita decimales.\n• seno/coseno: Para movimientos circulares.\n• limitar(val, min, max): Mantén un valor en un rango.",
+        "ce-docs-scripting-cap3-title": "Capítulo 3: Variables y El Inspector Mágico",
+        "ce-docs-scripting-cap3-content": "<b>Tipos de Datos:</b>\n• <b>numero:</b> 10, -5.2, 0.\n• <b>texto:</b> \"¡Hola!\"\n• <b>booleano:</b> verdadero, falso.\n• <b>Materia:</b> Referencia a otro objeto.\n• <b>Prefab:</b> Referencia a un molde.\n\n<b>Palabra clave 'publico':</b>\nSi escribes 'publico numero velocidad = 10;', esa variable aparecerá en el editor. Podrás cambiar la velocidad de tu jugador mientras el juego corre sin tocar el código.\n\n<b>Reto 3:</b> Crea una variable pública de tipo Materia llamada 'enemigo' y una pública de tipo numero llamada 'daño'.",
 
-        "ce-docs-scripting-cap16-title": "Capítulo 16: Interacción con la UI",
-        "ce-docs-scripting-cap16-content": "Puedes cambiar textos de la interfaz así:\npuntajeUI.textoContenido = \"Puntos: \" + puntos;\nO barras de vida:\nbarraVida.porcentaje = vidaActual / vidaMaxima;",
+        "ce-docs-scripting-cap4-title": "Capítulo 4: Ciclo de Vida y Eventos Pro",
+        "ce-docs-scripting-cap4-events": "Dominar los eventos es dominar el tiempo:\n• <b>alEmpezar():</b> Configuración. (Ej: obtener la vida inicial).\n• <b>alActualizar(delta):</b> Entrada del usuario y lógica de IA.\n• <b>actualizarFijo(delta):</b> Cálculos físicos constantes.\n• <b>alEntrarColision(otro):</b> Se llama cuando chocas. 'otro' te dice con qué chocaste.\n• <b>alHacerClick():</b> Detección de toque en móviles o clics en PC.\n\n<b>Reto 4:</b> Usa alEntrarColision para imprimir el nombre del objeto que acabas de tocar.",
 
-        "ce-docs-scripting-cap17-title": "Capítulo 17: Gestión de Capas y Tags",
-        "ce-docs-scripting-cap17-content": "Usa Tags para identificar grupos (si (otro.tieneTag(\"Enemigo\"))). Las Capas (Layers) sirven para que objetos específicos no choquen entre sí.",
+        "ce-docs-scripting-cap5-title": "Capítulo 5: Entrada de Usuario y Control Total",
+        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    // Control con flechas o WASD\n    variable horizontal = 0;\n    si (teclaPresionada(\"d\")) horizontal = 1;\n    si (teclaPresionada(\"a\")) horizontal = -1;\n    \n    posicion.x += horizontal * (300 * delta);\n    \n    // Salto con detección de suelo\n    si (teclaRecienPresionada(\"Space\") y estaTocandoTag(\"Suelo\")) {\n        fisica.applyImpulse(nuevo Vector2(0, -15));\n    }\n}\n\n// Reto 5: Haz que el personaje se haga más grande (escala) mientras presionas la tecla 'e'.",
 
-        "ce-docs-scripting-cap18-title": "Capítulo 18: El Sistema de Prefabs",
-        "ce-docs-scripting-cap18-content": "Crea objetos desde código con instanciar(miPrefab, x, y). Ideal para disparos o spawn de oleadas.",
+        "ce-docs-scripting-cap6-title": "Capítulo 6: El Diccionario API (Atajos Maestros)",
+        "ce-docs-scripting-cap6-content": "Creative Engine traduce tus intenciones en acciones:\n• <b>posicion:</b> Controla x, y, rotacion, escala.\n• <b>fisica:</b> Acceso a velocidad, masa, fuerzas.\n• <b>animacion:</b> Controla el Animator (ej: animacion.play(\"Caminar\")).\n• <b>audio:</b> Reproduce sonidos (ej: audio.play()).\n• <b>reproducir:</b> Un atajo inteligente. Escribir 'reproducir.Explosion();' buscará automáticamente un sonido o animación con ese nombre.\n\n<b>Reto 6:</b> Cambia el color del renderizador de sprite a rojo cuando el jugador tenga poca vida.",
 
-        "ce-docs-scripting-cap19-title": "Capítulo 19: Acceso a Otros Scripts",
-        "ce-docs-scripting-cap19-content": "Puedes llamar funciones de otros scripts:\nobjeto.obtenerScript(\"Nombre\").funcionPublica();",
+        "ce-docs-scripting-cap7-title": "Capítulo 7: Mensajería y Eventos Globales",
+        "ce-docs-scripting-cap7-emisor": "Emisor:\ndifundir(\"GameOver\", { puntuacion: 100 });",
+        "ce-docs-scripting-cap7-receptor": "Receptor:\nalRecibir(\"GameOver\", (datos) => {\n    imprimir(\"Juego terminado. Puntos: \" + datos.puntuacion);\n});\n\n<b>¿Para qué sirve?</b>\nPara que objetos que no se conocen hablen entre sí. Cuando el jugador muere, envía un mensaje global.",
 
-        "ce-docs-scripting-cap20-title": "Capítulo 20: MECÁNICAS DE PLATAFORMAS",
-        "ce-docs-scripting-cap20-content": "Para un buen movimiento, usa fuerzas graduales en lugar de cambiar la posición directamente. No olvides el Coyote Time y el salto en pared para mejorar el 'feel'.",
-        "ce-docs-scripting-cap20-code": "si (teclaPresionada(\"d\")) fisica.applyForce(500, 0);\nsi (teclaRecienPresionada(\"Space\") y enSuelo) fisica.applyImpulse(0, -800);",
+        "ce-docs-scripting-cap8-title": "Capítulo 8: Corrutinas (El Poder de la Espera)",
+        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    imprimir(\"Cargando escudo...\");\n    esperar(3); // Pausa el script sin congelar el juego\n    imprimir(\"¡Escudo activado!\");\n}",
+        "ce-docs-scripting-cap8-code2": "// Bucles infinitos seguros\nalEmpezar() {\n    cada(5) {\n        instanciar(enemigoPrefab, posicion);\n    }\n}\n\n<b>Reto 8:</b> Crea una corrutina que cambie el color del jugador cada 1 segundo entre 3 colores diferentes.",
 
-        "ce-docs-scripting-cap21-title": "Capítulo 21: MECÁNICAS DE RPG",
-        "ce-docs-scripting-cap21-content": "Gestiona nivel, XP y estadísticas. Usa subirNivel() para aumentar vida máxima y curar al jugador automáticamente.",
-        "ce-docs-scripting-cap21-code": "funcion ganarXP(cant) {\n    xpActual += cant;\n    si (xpActual >= xpSig) subirNivel();\n}",
+        "ce-docs-scripting-cap9-title": "Capítulo 9: Cookbook (Recetas de Éxito)",
+        "ce-docs-scripting-cap9-mov": "<b>Seguimiento de Cámara Suave:</b>\nve motor;\npublico Materia objetivo;\n\nalActualizar(delta) {\n    si (objetivo) {\n        posicion.x = interpolar(posicion.x, objetivo.posicion.x, 0.1);\n        posicion.y = interpolar(posicion.y, objetivo.posicion.y, 0.1);\n    }\n}\n\n<b>Reto 9:</b> Crea un script para una bala que se destruya automáticamente después de 2 segundos.",
 
-        "ce-docs-scripting-cap22-title": "Capítulo 22: MECÁNICAS DE TOP-DOWN",
-        "ce-docs-scripting-cap22-content": "Movimiento en 8 direcciones. Normaliza el vector (multiplica por 0.707 en diagonales) para que no camine más rápido de lado.",
-        "ce-docs-scripting-cap22-code": "x += movX * velocidad * delta;\ny += movY * velocidad * delta;",
+        "ce-docs-scripting-cap10-title": "Capítulo 10: Optimización para Navegadores",
+        "ce-docs-scripting-cap10-tips": "Los juegos web tienen límites. Sigue estas reglas:\n1. <b>No abuses de buscar():</b> Es lento. Hazlo en alEmpezar y guarda en variable.\n2. <b>Object Pooling:</b> Reutiliza balas en lugar de crear/destruir.\n3. <b>Física Simple:</b> Usa colisionadores de círculo siempre que puedas.",
 
-        "ce-docs-scripting-cap23-title": "Capítulo 23: MECÁNICAS DE PUZZLE",
-        "ce-docs-scripting-cap23-content": "Usa estados booleanos (abierta/cerrada) y detecta colisiones con etiquetas como 'Caja' o 'Boton' para activar puertas.",
-        "ce-docs-scripting-cap23-code": "alEntrarEnColision(otro) {\n    si (otro.tieneTag(\"Boton\")) abrirPuerta();\n}",
+        "ce-docs-scripting-cap11-title": "Capítulo 11: Bajo el Capó y JavaScript Puro",
+        "ce-docs-scripting-cap11-content": "<b>Transpilación:</b>\nTu script .ces se convierte en JS altamente optimizado. \n\n<b>Acceso a JS:</b>\nPuedes usar funciones nativas de JS como <b>Math.random()</b> o <b>fetch()</b> para conectar tu juego con internet.\n\n<b>Reto 11:</b> Genera un número aleatorio entre 1 y 100 y muéstralo al empezar el juego.",
 
-        "ce-docs-scripting-cap24-title": "Capítulo 24: INTELIGENCIA ARTIFICIAL AVANZADA",
-        "ce-docs-scripting-cap24-content": "Usa distancias y ángulos para crear conos de visión. Si el jugador entra en el rango y ángulo, el enemigo empieza la persecución.",
-        "ce-docs-scripting-cap24-code": "variable dist = distancia(x, y, jug.x, jug.y);\nsi (dist < rango) perseguir();",
-
-        "ce-docs-scripting-cap25-title": "Capítulo 25: SISTEMAS DE INVENTARIO",
-        "ce-docs-scripting-cap25-content": "Usa listas (arrays) para guardar nombres de objetos. Limita el tamaño de la lista para crear un inventario con slots limitados.",
-        "ce-docs-scripting-cap25-code": "variable inventario = [];\ninventario.push(\"Pocion\");",
-
-        "ce-docs-scripting-cap26-title": "Capítulo 26: DIÁLOGOS Y NARRATIVA",
-        "ce-docs-scripting-cap26-content": "Crea una lista de frases y un índice. Cada vez que el jugador interactúa, muestra la frase actual y aumenta el índice.",
-
-        "ce-docs-scripting-cap27-title": "Capítulo 27: EFECTOS VISUALES",
-        "ce-docs-scripting-cap27-content": "Sacudida de cámara (Screen Shake) y parpadeo de daño (Hit Flash) para dar impacto a los golpes.",
-
-        "ce-docs-scripting-cap28-title": "Capítulo 28: FÍSICAS PRO",
-        "ce-docs-scripting-cap28-content": "Gravedad inversa con 'fisica.escalaGravedad = -1' o ganchos de agarre usando Raycasts para detectar puntos de anclaje.",
-        "ce-docs-scripting-cap28-code": "si (teclaPresionada(\"g\")) fisica.escalaGravedad *= -1;",
-
-        "ce-docs-scripting-cap29-title": "Capítulo 29: MULTIJUGADOR LOCAL",
-        "ce-docs-scripting-cap29-content": "Asigna distintos sets de teclas según el ID del jugador (WASD para P1, Flechas para P2).",
-
-        "ce-docs-scripting-cap30-title": "Capítulo 30: GENERACIÓN PROCEDURAL",
-        "ce-docs-scripting-cap30-content": "Crea mundos infinitos usando bucles 'mientras' e instanciando salas aleatoriamente una tras otra.",
-
-        "ce-docs-scripting-cap31-title": "Capítulo 31: MECÁNICAS DE AGUA",
-        "ce-docs-scripting-cap31-content": "Aplica fuerzas hacia arriba (Buoyancy) cuando un objeto esté dentro de un Trigger con la etiqueta 'Agua'.",
-
-        "ce-docs-scripting-cap32-title": "Capítulo 32: SISTEMA DE SHOOTER",
-        "ce-docs-scripting-cap32-content": "Añade retroceso (empuje hacia atrás) y dispersión aleatoria al ángulo de las balas para más realismo.",
-
-        "ce-docs-scripting-cap33-title": "Capítulo 33: SISTEMA DE CARRERAS",
-        "ce-docs-scripting-cap33-content": "Usa cronómetros y guarda el 'Mejor Tiempo' en la memoria del navegador para crear récords.",
-
-        "ce-docs-scripting-cap34-title": "Capítulo 34: DÍA Y NOCHE",
-        "ce-docs-scripting-cap34-content": "Modifica la intensidad y el color de la Luz Global en un bucle según el tiempo transcurrido.",
-
-        "ce-docs-scripting-cap35-title": "Capítulo 35: VEHÍCULOS",
-        "ce-docs-scripting-cap35-content": "Usa rotación y vectores frontales (coseno/seno) para mover coches en la dirección en la que apuntan.",
-
-        "ce-docs-scripting-cap36-title": "Capítulo 36: TYCOON",
-        "ce-docs-scripting-cap36-content": "Ajuste a la rejilla (Grid Snapping) dividiendo y redondeando la posición del ratón por el tamaño de celda.",
-
-        "ce-docs-scripting-cap37-title": "Capítulo 37: ESTADOS (DEBUFFS)",
-        "ce-docs-scripting-cap37-content": "Usa bucles 'cada(1)' para aplicar daño por veneno o cambiar el color del personaje temporalmente.",
-
-        "ce-docs-scripting-cap38-title": "Capítulo 38: CINEMÁTICAS",
-        "ce-docs-scripting-cap38-content": "Bloquea el control del jugador y usa 'esperar(segundos)' para coordinar movimientos de cámaras y NPCs.",
-
-        "ce-docs-scripting-cap39-title": "Capítulo 39: MATCH-3",
-        "ce-docs-scripting-cap39-content": "Detecta vecinos en las 4 direcciones y comprueba si comparten el mismo color para destruirlos.",
-
-        "ce-docs-scripting-cap40-title": "Capítulo 40: ESCENAS PRO",
-        "ce-docs-scripting-cap40-content": "Pantallas de carga con fundidos a negro (Fade Out) animando la opacidad de una imagen de UI.",
-
-        "ce-docs-scripting-cap41-title": "Capítulo 41: PARRY",
-        "ce-docs-scripting-cap41-content": "Crea una pequeña ventana de tiempo (0.2s) tras presionar bloqueo donde el jugador es invulnerable.",
-
-        "ce-docs-scripting-cap42-title": "Capítulo 42: MINIJUEGOS",
-        "ce-docs-scripting-cap42-content": "Crea mecánicas de ganzúa comparando el ángulo del ratón con un ángulo objetivo secreto.",
-
-        "ce-docs-scripting-cap43-title": "Capítulo 43: CRAFTEO",
-        "ce-docs-scripting-cap43-content": "Comprueba si una lista de ingredientes contiene los elementos necesarios para crear un Prefab nuevo.",
-
-        "ce-docs-scripting-cap44-title": "Capítulo 44: PARKOUR",
-        "ce-docs-scripting-cap44-content": "Detección de bordes lanzando rayos (Raycast) frontales a la altura de las manos del personaje.",
-
-        "ce-docs-scripting-cap45-title": "Capítulo 45: COMPAÑERO IA",
-        "ce-docs-scripting-cap45-content": "Usa 'moverHacia' si la distancia con el líder es mayor a un límite, para que te siga orgánicamente.",
-
-        "ce-docs-scripting-cap46-title": "Capítulo 46: CLIMA",
-        "ce-docs-scripting-cap46-content": "Instancia gotas de lluvia sobre el jugador y usa destellos blancos en pantalla para simular rayos.",
-
-        "ce-docs-scripting-cap47-title": "Capítulo 47: CARTAS",
-        "ce-docs-scripting-cap47-content": "Usa 'mazo.pop()' para sacar la última carta y 'mano.push()' para añadirla a las opciones del jugador.",
-
-        "ce-docs-scripting-cap48-title": "Capítulo 48: OPTIMIZACIÓN (POOLING)",
-        "ce-docs-scripting-cap48-content": "Crea 100 balas al inicio y desactívalas. En lugar de crear nuevas, activa las que ya existen.",
-        "ce-docs-scripting-cap48-code": "variable pool = []; // Pre-crea y reutiliza",
-
-        "ce-docs-scripting-cap49-title": "Capítulo 49: LEADERBOARD",
-        "ce-docs-scripting-cap49-content": "Guarda una lista de récords y ordénala de mayor a menor para mostrar el Top 5 local.",
-
-        "ce-docs-scripting-cap50-title": "Capítulo 50: VIAJES ESPACIALES",
-        "ce-docs-scripting-cap50-content": "En el espacio no hay rozamiento. Usa 'applyForce' para acelerar y la velocidad se mantendrá constante.",
-        "ce-docs-scripting-cap50-code": "variable rad = rotacion * (3.14 / 180);\nfisica.applyForce(coseno(rad) * fuerza, seno(rad) * fuerza);",
-
-        "ce-docs-sceneloader-desc": "Permite viajar entre distintos niveles del juego (.ceScene). Puedes activarlo al chocar o por código.",
-        "ce-docs-sceneloader-name": "SceneLoader (Niveles)",
-
-        "ce-docs-solutions-title": "Guía de Solución Rápida (FAQ)",
-        "ce-docs-solutions-intro": "Más de 50 soluciones a problemas comunes en Creative Engine.",
-        "ce-docs-solutions-scripting": "💻 1. Errores de Scripting (CES)",
-        "ce-docs-solutions-physics": "🌍 2. Físicas y Colisiones",
-        "ce-docs-solutions-ui": "🎨 3. Interfaz de Usuario (UI)",
-        "ce-docs-solutions-audio": "🎬 4. Audio y Animaciones",
-        "ce-docs-solutions-editor": "🛠️ 5. Errores del Editor",
-
-        "ce-sol-1": "<b>Variable no definida:</b> Revisa que usaste 'publico' o 'variable'.",
-        "ce-sol-2": "<b>El script no corre:</b> Asegúrate de que empiece con 've motor;'.",
-        "ce-sol-3": "<b>Error de llave:</b> Revisa que cada '{' tenga su '}'.",
-        "ce-sol-4": "<b>delta no funciona:</b> Asegúrate de que alActualizar reciba '(delta)'.",
-        "ce-sol-5": "<b>Objeto nulo:</b> Revisa que buscar(\"Nombre\") esté escrito exacto.",
-        "ce-sol-21": "<b>Atraviesa el suelo:</b> Cambia el suelo a Rigidbody 'Static'.",
-        "ce-sol-23": "<b>Gira sin parar:</b> Activa 'Fixed Rotation' en el Rigidbody.",
-        "ce-sol-27": "<b>No choca:</b> Revisa que ambos tengan un Collider (Box/Circle).",
-        "ce-sol-31": "<b>Botón no clickable:</b> Revisa que sea hijo de un Canva.",
-        "ce-sol-34": "<b>Texto no cambia:</b> Asegúrate de usar '.textoContenido' en el script.",
-        "ce-sol-36": "<b>UI invisible:</b> Revisa que el Canva tenga el modo 'Screen Space'.",
-        "ce-sol-41": "<b>No se oye:</b> Revisa el volumen y que 'Play on Awake' esté marcado.",
-        "ce-sol-42": "<b>Animación no cambia:</b> Revisa que el nombre en play(\"...\") sea exacto.",
-        "ce-sol-46": "<b>Sonido 3D lejos:</b> Sube el radio de audición en el Inspector.",
-        "ce-sol-51": "<b>No guarda:</b> No uses caracteres raros (ñ, á) en el nombre del proyecto.",
-        "ce-sol-55": "<b>Pantalla negra:</b> Revisa que tengas una Cámara en la escena.",
-
-        "ce-docs-nav-vehicles": "Vehículos",
-        "ce-docs-vehicles-title": "Vehículos y Controladores Avanzados",
-        "ce-docs-helicopter-name": "HelicopterController (Helicóptero)",
-        "ce-docs-helicopter-desc": "Simulación de vuelo lateral para helicópteros.",
-        "ce-docs-helicopter-code": "controladorDeHelicoptero.potencia = 2500;\ncontroladorDeHelicoptero.vDespegue = 1200;",
-        "ce-docs-plane-name": "PlaneController (Avión)",
-        "ce-docs-plane-desc": "Física de sustentación aerodinámica y vuelo lateral.",
-        "ce-docs-topdown-name": "VehicleTopDown (Vehículo Cenital)",
-        "ce-docs-topdown-desc": "Control arcade para coches en vista desde arriba (Drift, Potencia).",
-
-        "ce-docs-nav-anim-adv": "Animación Pro",
-        "ce-docs-anim-adv-title": "Animación, Esqueleto e Iluminación",
-        "ce-docs-skeleton-name": "SkeletonRenderer e IK",
-        "ce-docs-skeleton-desc": "SkeletonRenderer: Mallas deformadas por huesos. IKManager2D: Cinemática inversa para que manos/pies sigan objetivos.",
-        "ce-docs-light-name": "Iluminación 2D (Lights)",
-        "ce-docs-light-desc": "PointLight2D (Puntual), SpotLight2D (Focal) y SpriteLight2D (Forma personalizada).",
-
-        "ce-docs-carl-deep-title": "Modo de Planeación Profunda",
-        "ce-docs-carl-deep-desc": "Carl analiza tareas complejas: Pregunta para aclarar metas, genera un [PLAN] estructurado y muestra el progreso en la pestaña Actividad.",
-        "ce-docs-carl-autonomy-title": "Comandos Autónomos",
-        "ce-docs-carl-autonomy-list": "- create_materia: Crea objetos.\n- add_component: Añade Leyes.\n- set_property: Modifica el Inspector.\n- download_file: Importa activos de internet.",
-        "ce-docs-carl-chc-title": "CHC (Code Helper)",
-        "ce-docs-carl-chc-desc": "Escribe en lenguaje humano y Carl lo traduce a código .ces válido al instante.",
-
-        "ce-docs-libs-cap1-title": "Capítulo 1: El Poder de la Extensibilidad",
-        "ce-docs-libs-cap1-content": "¿Por qué usar librerías?\n- Automatización: Crea botones que generen niveles.\n- APIs Propias: Añade funciones que se sientan nativas en CES.\n- Personalización: Cambia el flujo de trabajo del editor.",
-        "ce-docs-libs-cap4-title": "Capítulo 4: Referencia API UI",
-        "ce-docs-libs-cap4-content": "Elementos que puedes crear en tus paneles:\n- texto(contenido, opciones)\n- boton(etiqueta, callback)\n- input(etiqueta, callback)\n- slider(etiqueta, opciones, callback)\n- fila/columna: Para organizar la interfaz.",
-        "ce-docs-libs-cap5-title": "Capítulo 5: Extensiones de Runtime",
-        "ce-docs-libs-cap5-content": "Añade funciones que tus scripts .ces pueden usar mediante CreativeEngine.API.registrarRuntimeAPI.",
-        "ce-docs-libs-cap8-title": "Capítulo 8: Instalación",
-        "ce-docs-libs-cap8-content": "1. Arrastra el archivo .js o .celib al panel de Assets.\n2. El motor lo moverá a /lib.\n3. Actívala desde el menú Librerías.",
-
-        "ce-docs-terminal-files-title": "Gestión de Archivos",
-        "ce-docs-terminal-files-list": "- ls: Lista el contenido.\n- cd: Cambia de directorio.\n- mkdir: Crea una carpeta.\n- cat: Muestra contenido de archivos.",
-        "ce-docs-terminal-inspect-title": "Inspección de Objetos",
-        "ce-docs-terminal-inspect-list": "- find [nombre]: Busca por nombre y devuelve ID.\n- inspect [id]: Muestra propiedades JSON.\n- log [msj]: Imprime en consola.",
-        "ce-docs-terminal-control-title": "Control de Juego",
-        "ce-docs-terminal-control-list": "- play/stop/pause: Controla la ejecución.\n- scene [ruta]: Carga una escena inmediata."
+        "ce-docs-sceneloader-desc": "Permite viajar entre niveles (.ceScene). Actívalo al chocar o por código.",
+        "ce-docs-sceneloader-name": "SceneLoader (Niveles)"
     },
     en: {
         "ce-docs-nav-cap0": "Cap 0: First Script",
@@ -329,88 +107,85 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Cap 8: Coroutines",
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Optimization",
-        "ce-docs-nav-cap11": "Cap 11: FAQ",
+        "ce-docs-nav-cap11": "Cap 11: Under the Hood",
 
-        "ce-docs-scripting-cap0-title": "Chapter 0: Your First Script in 60 Seconds",
-        "ce-docs-scripting-cap0-desc": "Want to see results now? Follow these steps:\n1. In the Asset Browser, right-click and select New > Script (CES). Name it HelloWorld.ces.\n2. Double-click to open and paste the code below.\n3. Drag that file from the library onto any object in your scene.\n4. Hit Play!",
-        "ce-docs-scripting-cap0-code": "ve motor;\n\nonStart() {\n    print(\"The engine is alive!\");\n}\n\nonUpdate(delta) {\n    rotation += 100 * delta; // This will make the object spin!\n}",
+        "ce-nav-docs-masterbook": "Master Book",
+        "ce-docs-master-title": "Engine Master Book",
+        "ce-docs-master-intro": "Welcome to the ultimate guide. Master Creative Engine from foundations to advanced techniques in these 12 robust chapters.",
 
-        "ce-docs-scripting-cap1-title": "Chapter 1: The Engine's Philosophy",
-        "ce-docs-scripting-cap1-content": "Creative Engine was born under one premise: Code must be human-readable and machine-powerful. We've removed the need for this., mtr. or redundant prefixes. If an object has health, simply write 'health'. If you want to move it, write 'position'. The goal is for your code to look like a description of what you want to happen.",
+        "ce-docs-master-cap1-title": "Chapter 1: The Actor, Script, and Hierarchy",
+        "ce-docs-master-cap1-content": "<b>What is a Matter?</b>\nA Matter is the atom of your game. It's a point with position (X, Y), rotation, and scale.\n\n<b>The Laws System:</b>\nIf Matter is the actor, <b>Law</b> is the script. Laws are modular: SpriteRenderer for vision, Rigidbody2D for gravity.\n\n<b>Hierarchy:</b>\nMatters can be nested. Moving a Parent moves all Children, vital for limbs or weapon attachments.",
 
-        "ce-docs-scripting-cap2-title": "Chapter 2: Anatomy of a Script",
-        "ce-docs-scripting-cap2-content": "Every script in Creative Engine begins with a declaration of intent: 've motor;'. This line is not optional; it is the bridge that connects your text file to the heart of the engine. From here, your script becomes a 'Law' that governs the behavior of a 'Materia' (object).",
+        "ce-docs-master-cap2-title": "Chapter 2: Master Matter Catalog",
+        "ce-docs-master-cap2-content": "• <b>Empty Matter:</b> Containers or spawn points.\n• <b>Sprite Matter:</b> 2D rendering.\n• <b>Light Matter:</b> Dynamic shadows.\n• <b>Audio Matter:</b> Spatial sound.\n• <b>Tilemap:</b> Optimized for massive level design.",
 
-        "ce-docs-scripting-cap3-title": "Chapter 3: Variables and the Dynamic Inspector",
-        "ce-docs-scripting-cap3-content": "The power of Creative Engine lies in its Inspector. By declaring variables as 'publico' (public), they magically appear in the editor interface, allowing you to adjust the game while it's running.",
-        "ce-docs-scripting-cap3-types": "Supported Types:\n- number: Speeds, forces, health.\n- text: Names, dialogues or IDs.\n- boolean: true or false.\n- Materia: Reference other objects.\n- Prefab: Create new objects (bullets, enemies).\n- Audio / Sprite / Scene: Project resources.",
-        "ce-docs-scripting-cap3-code": "publico number jumpForce = 12;\npublico boolean canFly = false;\npublico Materia targetCamera;",
+        "ce-docs-master-cap3-title": "Chapter 3: The UI Universe",
+        "ce-docs-master-cap3-content": "Everything UI must be a child of <b>Canva</b>.\n• <b>Screen Space:</b> UI sticks to the monitor (HUD).\n• <b>World Space:</b> UI lives in the world (speech bubbles).\n<b>Anchors:</b> Ensure buttons scale correctly on different browser sizes.",
 
-        "ce-docs-scripting-cap4-title": "Chapter 4: The Game's Rhythm (Lifecycle)",
-        "ce-docs-scripting-cap4-events": "1. onStart(): Initial config. Runs once.\n2. onUpdate(delta): 60 times per second. Constant logic.\n3. fixedUpdate(delta): For constant physical calculations.\n4. onClick(): Response to player touch.",
+        "ce-docs-master-cap4-title": "Chapter 4: Physics, Collisions, and Raycast",
+        "ce-docs-master-cap4-content": "<b>Rigidbody 2D:</b> Dynamic, Static, or Kinematic.\n<b>Triggers:</b> Non-physical detection areas (coins, portals).\n<b>Raycasting:</b> Invisible lasers for IA 'vision' or surgical ground detection.",
 
-        "ce-docs-scripting-cap5-title": "Chapter 5: Total Interaction (Input and Physics)",
-        "ce-docs-scripting-cap5-code": "onUpdate(delta) {\n    // Keyboard\n    if (isKeyPressed(\"w\")) {\n        physics.applyForce(0, -100);\n    }\n    // Mouse\n    if (isMouseButtonJustPressed(0)) {\n        variable pos = getMousePosition();\n        print(\"Click at: \" + pos.x + \",\" + pos.y);\n    }\n}",
+        "ce-docs-master-cap5-title": "Chapter 5: The Rhythm of Life (Lifecycle)",
+        "ce-docs-master-cap5-content": "1. <b>onStart():</b> Initial setup.\n2. <b>onUpdate(delta):</b> Logic every frame.\n3. <b>fixedUpdate(delta):</b> Deterministic physics.\n4. <b>onClick():</b> User interaction event.",
 
-        "ce-docs-scripting-cap6-title": "Chapter 6: The Component Dictionary (API Reference)",
-        "ce-docs-scripting-cap6-content": "Common shortcuts:\n- position (Transform): Controls x, y, rotation and scale.\n- physics (Rigidbody2D): Newton. Use applyImpulse and velocity.\n- health (Health): damage(10) or heal(5).\n- animation (Animator): play(\"Run\").\n- audio (AudioSource): play() or stop().",
+        "ce-docs-master-cap6-title": "Chapter 6: Animation and Visual Brain",
+        "ce-docs-master-cap6-content": "<b>AnimatorController:</b> State machine. <b>Smart Mode</b> automatically swaps animations based on velocity. <b>Timeline</b> animates properties like opacity or scale.",
 
-        "ce-docs-scripting-cap7-title": "Chapter 7: Object Communication (Messaging)",
-        "ce-docs-scripting-cap7-emisor": "Emitter:\nbroadcast(\"LevelCompleted\", { time: 45 });",
-        "ce-docs-scripting-cap7-receptor": "Receiver:\nonReceive(\"LevelCompleted\", (data) => {\n    print(\"Achieved in \" + data.time + \" s!\");\n});",
+        "ce-docs-master-cap7-title": "Chapter 7: Master Organization",
+        "ce-docs-master-cap7-content": "Use <b>Tags</b> to identify objects, <b>Layers</b> for collision control, and <b>Sorting Layers</b> for visual depth (Player above Background).",
 
-        "ce-docs-scripting-cap8-title": "Chapter 8: Temporal Magic (Coroutines and Loops)",
-        "ce-docs-scripting-cap8-code1": "async onStart() {\n    print(\"3...\");\n    wait(1);\n    print(\"FIRE!\");\n}",
-        "ce-docs-scripting-cap8-code2": "onStart() {\n    every(5) {\n        create coinPrefab;\n    }\n}",
+        "ce-docs-master-cap8-title": "Chapter 8: Design Psychology",
+        "ce-docs-master-cap8-content": "<b>Feedback:</b> Add sounds and screenshakes. <b>Difficulty Curve:</b> Introduce mechanics safely. <b>3-Second Rule:</b> Player must understand goals immediately.",
 
-        "ce-docs-scripting-cap9-title": "Chapter 9: The Cookbook (Solutions Recipe Book)",
-        "ce-docs-scripting-cap9-mov": "Pro Movement:\nve motor;\npublico number speed = 300;\npublico number jumpForce = 15;\n\nonUpdate(delta) {\n    variable horizontal = 0;\n    if (isKeyPressed(\"d\")) horizontal = 1;\n    if (isKeyPressed(\"a\")) horizontal = -1;\n    physics.velocity.x = horizontal * (speed * delta);\n    if (horizontal != 0) {\n        flipH = (horizontal < 0);\n        play.Walk();\n    } else { play.Idle(); }\n    if (isKeyJustPressed(\"Space\") && isTouchingTag(\"Floor\")) {\n        physics.applyImpulse(new Vector2(0, -jumpForce));\n    }\n}",
+        "ce-docs-master-cap9-title": "Chapter 9: Effects and 'Juice'",
+        "ce-docs-master-cap9-content": "<b>Particles:</b> Explosions and dust. <b>Post-Processing:</b> Bloom and color grading. <b>Lerp:</b> Smooth transitions for camera or UI.",
 
-        "ce-docs-scripting-cap10-title": "Chapter 10: Optimization and Best Practices",
-        "ce-docs-scripting-cap10-tips": "1. Use delta: Ensures constant speed on any PC.\n2. Avoid find() in update: Do it in start.\n3. Pooling: Reuse bullets instead of create/destroy.\n4. Collision Layers: Optimize crashes in settings.",
+        "ce-docs-master-cap10-title": "Chapter 10: Dynamic World Building",
+        "ce-docs-master-cap10-content": "<b>Parallax:</b> Layers moving at different speeds for 3D illusion. <b>Ambient Light:</b> Global color changes (day/night).",
 
-        "ce-docs-scripting-cap11-title": "Chapter 11: Troubleshooting and FAQ",
-        "ce-docs-scripting-cap11-content": "Q: Can I use normal JS?\nA: Yes! CES is a layer over JS (Math.random(), etc).\nQ: How do I destroy the object?\nA: destroy(mtr); or destroy(materia);",
+        "ce-docs-master-cap11-title": "Chapter 11: Prefabs and Master Templates",
+        "ce-docs-master-cap11-content": "<b>Prefabs</b> are master molds. Edit the mold, and every instance in every level updates. Vital for bullets and repetitive enemies.",
 
-        "ce-docs-nav-vehicles": "Vehicles",
-        "ce-docs-vehicles-title": "Vehicles and Advanced Controllers",
-        "ce-docs-helicopter-name": "HelicopterController",
-        "ce-docs-helicopter-desc": "Side-scrolling flight simulation for helicopters.",
-        "ce-docs-helicopter-code": "helicopterController.power = 2500;\nhelicopterController.vDespegue = 1200;",
-        "ce-docs-plane-name": "PlaneController",
-        "ce-docs-plane-desc": "Aerodynamic lift physics and side-scrolling flight.",
-        "ce-docs-topdown-name": "VehicleTopDown",
-        "ce-docs-topdown-desc": "Arcade control for cars in top-down view (Drift, Power).",
+        "ce-docs-master-cap12-title": "Chapter 12: Technical FAQ",
+        "ce-docs-master-cap12-content": "Use <b>DeltaTime</b> for frame-independence. Keep <b>Draw Calls</b> low via Tilemaps.",
 
-        "ce-docs-nav-anim-adv": "Pro Animation",
-        "ce-docs-anim-adv-title": "Animation, Skeleton, and Lighting",
-        "ce-docs-skeleton-name": "SkeletonRenderer and IK",
-        "ce-docs-skeleton-desc": "SkeletonRenderer: Meshes deformed by bones. IKManager2D: Inverse kinematics for hands/feet to follow targets.",
-        "ce-docs-light-name": "2D Lighting (Lights)",
-        "ce-docs-light-desc": "PointLight2D, SpotLight2D, and SpriteLight2D (Custom shape).",
+        "ce-docs-scripting-cap0-title": "Chapter 0: Your First Script (The Awakening)",
+        "ce-docs-scripting-cap0-desc": "Code is the soul. Use <b>engine motor;</b>. \n\n<b>Challenge 0:</b> Spin a Matter using 100 * delta.",
+        "ce-docs-scripting-cap0-code": "engine motor;\n\nonUpdate(delta) {\n    rotation += 100 * delta;\n}",
 
-        "ce-docs-carl-deep-title": "Deep Planning Mode",
-        "ce-docs-carl-deep-desc": "Carl analyzes complex tasks: Asks clarifying questions, generates a structured [PLAN], and shows progress in the Activity tab.",
-        "ce-docs-carl-autonomy-title": "Autonomous Commands",
-        "ce-docs-carl-autonomy-list": "- create_materia: Create objects.\n- add_component: Add Laws.\n- set_property: Modify Inspector.\n- download_file: Import internet assets.",
-        "ce-docs-carl-chc-title": "CHC (Code Helper)",
-        "ce-docs-carl-chc-desc": "Write in human language and Carl translates it to valid .ces code instantly.",
+        "ce-docs-scripting-cap1-title": "Chapter 1: CES Philosophy",
+        "ce-docs-scripting-cap1-content": "Human-readable syntax. Use <b>position</b> instead of <b>this.position</b>. CES is a fast JS layer.",
 
-        "ce-docs-libs-cap1-title": "Chapter 1: The Power of Extensibility",
-        "ce-docs-libs-cap1-content": "Why use libraries?\n- Automation: Create buttons that generate entire levels.\n- Custom APIs: Add functions that feel native in CES.\n- Customization: Change the editor workflow.",
-        "ce-docs-libs-cap4-title": "Chapter 4: UI Generator API Reference",
-        "ce-docs-libs-cap4-content": "Elements you can create in your panels:\n- text(content, options)\n- button(label, callback)\n- input(label, callback)\n- slider(label, options, callback)\n- row/column: To organize the interface.",
-        "ce-docs-libs-cap5-title": "Chapter 5: Runtime Extensions",
-        "ce-docs-libs-cap5-content": "Add functions that your .ces scripts can use via CreativeEngine.API.registerRuntimeAPI.",
-        "ce-docs-libs-cap8-title": "Chapter 8: Installation",
-        "ce-docs-libs-cap8-content": "1. Drag the .js or .celib file to the Assets panel.\n2. The engine will move it to /lib.\n3. Activate it from the Libraries menu.",
+        "ce-docs-scripting-cap2-title": "Chapter 2: Anatomy of a .ces File",
+        "ce-docs-scripting-cap2-content": "3 main zones: Header (engine motor;), Variables, and Events.",
 
-        "ce-docs-terminal-files-title": "File Management",
-        "ce-docs-terminal-files-list": "- ls: List content.\n- cd: Change directory.\n- mkdir: Create a folder.\n- cat: Show file content.",
-        "ce-docs-terminal-inspect-title": "Object Inspection",
-        "ce-docs-terminal-inspect-list": "- find [name]: Search by name and return ID.\n- inspect [id]: Show JSON properties.\n- log [msg]: Print to console.",
-        "ce-docs-terminal-control-title": "Game Control",
-        "ce-docs-terminal-control-list": "- play/stop/pause: Control execution.\n- scene [path]: Load a scene immediately."
+        "ce-docs-scripting-cap3-title": "Chapter 3: Variables and Magic Inspector",
+        "ce-docs-scripting-cap3-content": "Use <b>public</b> keyword to show variables in the editor for real-time tweaking.\n\n<b>Challenge 3:</b> Create a public speed variable.",
+
+        "ce-docs-scripting-cap4-title": "Chapter 4: Lifecycle Pro",
+        "ce-docs-scripting-cap4-events": "onStart for setup, onUpdate for frame logic, fixedUpdate for physics.",
+
+        "ce-docs-scripting-cap5-title": "Chapter 5: User Input and Control",
+        "ce-docs-scripting-cap5-code": "onUpdate(delta) {\n    variable horizontal = 0;\n    if (isKeyPressed(\"d\")) horizontal = 1;\n    position.x += horizontal * (300 * delta);\n    \n    if (isKeyJustPressed(\"Space\") && isTouchingTag(\"Floor\")) {\n        physics.applyImpulse(new Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "Chapter 6: API Dictionary",
+        "ce-docs-scripting-cap6-content": "Direct access: position, physics, animation, audio, play.Explosion().",
+
+        "ce-docs-scripting-cap7-title": "Chapter 7: Global Messaging",
+        "ce-docs-scripting-cap7-emisor": "broadcast(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "onReceive(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "Chapter 8: Coroutines",
+        "ce-docs-scripting-cap8-code1": "async onStart() {\n    wait(3);\n    print(\"Activated!\");\n}",
+
+        "ce-docs-scripting-cap9-title": "Chapter 9: Cookbook",
+        "ce-docs-scripting-cap9-mov": "Smooth camera follow using lerp().",
+
+        "ce-docs-scripting-cap10-title": "Chapter 10: Optimization",
+        "ce-docs-scripting-cap10-tips": "Don't abuse find(). Use pooling for bullets.",
+
+        "ce-docs-scripting-cap11-title": "Chapter 11: Under the Hood",
+        "ce-docs-scripting-cap11-content": "CES transpiles to optimized JS. Access native JS via Math.random() or fetch()."
     },
     pt: {
         "ce-docs-nav-cap0": "Cap 0: Primeiro Script",
@@ -424,88 +199,177 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Cap 8: Corrotinas",
         "ce-docs-nav-cap9": "Cap 9: Cookbook",
         "ce-docs-nav-cap10": "Cap 10: Otimização",
-        "ce-docs-nav-cap11": "Cap 11: FAQ",
+        "ce-docs-nav-cap11": "Cap 11: Sob o Capô",
 
-        "ce-docs-scripting-cap0-title": "Capítulo 0: Seu Primeiro Script em 60 Segundos",
-        "ce-docs-scripting-cap0-desc": "Quer ver resultados agora? Siga estes passos:\n1. No Navegador de Assets, clique com o botão direito e selecione Novo > Script (CES). Nomeie como OlaMundo.ces.\n2. Clique duas vezes para abrir e cole o código abaixo.\n3. Arraste esse arquivo da biblioteca para qualquer objeto na sua cena.\n4. Clique em Play!",
-        "ce-docs-scripting-cap0-code": "ve motor;\n\nalEmpezar() {\n    imprimir(\"O motor está vivo!\");\n}\n\nalActualizar(delta) {\n    rotacao += 100 * delta; // Fará o objeto girar!\n}",
+        "ce-nav-docs-masterbook": "Livro Mestre",
+        "ce-docs-master-title": "Livro Mestre do Motor",
+        "ce-docs-master-intro": "Bem-vindo ao guia definitivo. Domine o Creative Engine nestes 12 capítulos detalhados, cobrindo desde a lógica básica até a arquitetura de sistemas profissionais.",
 
-        "ce-docs-scripting-cap1-title": "Capítulo 1: A Filosofia do Motor",
-        "ce-docs-scripting-cap1-content": "O Creative Engine nasceu sob uma premissa: O código deve ser legível para humanos e potente para máquinas. Eliminamos a necessidade de usar this., mtr. ou prefixos redundantes. Se um objeto tem vida, basta escrever 'vida'. Se quiser movê-lo, escreva 'posicao'. A meta é que o seu código pareça uma descrição do que você quer que aconteça.",
+        "ce-docs-master-cap1-title": "Capítulo 1: O Ator, o Roteiro e a Hierarquia",
+        "ce-docs-master-cap1-content": "<b>O que é uma Matéria?</b>\nUma Matéria é o átomo do seu jogo. Pode ser um jogador, uma luz, ou mesmo um ponto invisível no espaço. Por si só, uma Matéria não faz nada; é simplesmente um ponto com posição (X, Y), rotação e escala.\n\n<b>O Sistema de Leis (Componentes):</b>\nSe a Matéria é o ator, a <b>Lei</b> é o roteiro. As leis são modulares e acumuláveis:\n• <b>SpriteRenderer:</b> Permite que a Matéria seja visível.\n• <b>Rigidbody2D:</b> Dá massa e resposta à gravidade.\n• <b>Script:</b> Dá inteligência personalizada.\n\n<b>Hierarquia (Pais e Filhos):</b>\nAs Matérias podem ser aninhadas. Se mover um Pai, todos os seus Filhos movem-se com ele, mantendo a sua posição relativa. Isto é vital para criar personagens com partes separadas (braços, armas, mochilas).",
+
+        "ce-docs-master-cap2-title": "Capítulo 2: Catálogo Mestre de Matérias",
+        "ce-docs-master-cap2-content": "O Creative Engine oferece tipos predefinidos para acelerar o seu fluxo de trabalho:\n\n• <b>Matéria Vazia:</b> Ideal como contentores, pontos de spawn ou câmaras.\n• <b>Matéria Sprite:</b> Vem com um renderizador pronto para receber texturas.\n• <b>Matéria Luz:</b> Emitem luz dinâmica que gera sombras em tempo real.\n• <b>Matéria Áudio:</b> Fontes de som que podem ser globais ou espaciais (o volume baixa se se afastar).\n• <b>Matéria UI:</b> Desenhadas para viver no Canva, perfeitas para botões e barras de vida.\n• <b>Matéria Tilemap:</b> Uma tela otimizada para pintar níveis gigantes com milhares de blocos sem que o rendimento caia.",
+
+        "ce-docs-master-cap3-title": "Capítulo 3: O Universo da Interface (UI)",
+        "ce-docs-master-cap3-content": "A UI no Creative Engine é potente e flexível. Tudo deve ser filho de um <b>Canva</b>.\n\n<b>Modos de Visualização:</b>\n• <b>Screen Space:</b> A UI cola-se ao vidro do seu monitor (HUD, Inventário). Não se move mesmo que a câmara sim.\n• <b>World Space:</b> A UI vive 'dentro' do mundo. Útil para diálogos que flutuam sobre personagens ou cartazes indicadores.\n\n<b>Âncoras (Anchors):</b>\nSão o segredo da UI responsiva. Definem como se estica um botão quando muda o tamanho da janela do navegador. Sempre ancore o seu HUD aos cantos e o seu inventário ao centro.",
+
+        "ce-docs-master-cap4-title": "Capítulo 4: Físicas, Colisões e Raycast",
+        "ce-docs-master-cap4-content": "<b>Rigidbody 2D:</b>\n• <b>Dinâmico:</b> Reage a tudo (gravidade, golpes).\n• <b>Estático:</b> Inamovível (chão, paredes).\n• <b>Cinemático:</b> Move-se apenas por código, ignorando a gravidade mas empurrando outros.\n\n<b>Triggers (Sensores):</b>\nSe ativar 'Is Trigger' num colisor, este torna-se 'fantasma'. Não chocará fisicamente, mas enviará um sinal quando algo o atravessar. Perfeito para moedas, portais ou áreas de veneno.\n\n<b>Raycasting:</b>\nÉ lançar um 'laser invisível' de um ponto. Se o laser tocar em algo, devolve o que tocou e a que distância. Útil para que os inimigos 'vejam' o jogador ou para detetar o solo com precisão cirúrgica.",
+
+        "ce-docs-master-cap5-title": "Capítulo 5: O Ritmo da Vida (Ciclo de Vida)",
+        "ce-docs-master-cap5-content": "Os scripts seguem uma ordem estrita de execução:\n\n1. <b>aoComecar():</b> Executa-se uma única vez quando a Matéria nasce. Aqui deve configurar variáveis e filhos.\n2. <b>aoAtualizar(delta):</b> Executa-se a cada frame (60 vezes por segundo). Aqui vai o movimento e a lógica do jogador.\n3. <b>atualizarFixo(delta):</b> Ideal para físicas. Executa-se a intervalos constantes, assegurando que o seu personagem não atravesse paredes se os FPS baixarem.\n4. <b>aoClicar():</b> Evento direto quando o utilizador toca na Matéria.",
+
+        "ce-docs-master-cap6-title": "Capítulo 6: Animação e O Cérebro Visual",
+        "ce-docs-master-cap6-content": "<b>AnimatorController:</b>\nÉ uma máquina de estados. Imagine um fluxograma: Se o jogador corre, passa do estado 'Parado' para 'Correr'.\n\n<b>Smart Mode:</b>\nUma função exclusiva do Creative Engine. Se a ativar, o motor deteta a velocidade da Matéria e muda as animações automaticamente. Não tem de escrever nem uma linha de código para que o seu personagem caminhe e salte!\n\n<b>Linha de Tempo:</b>\nPode animar qualquer coisa: a opacidade de uma imagem, a cor de uma luz ou a escala de um objeto, criando efeitos de respiração ou piscar.",
+
+        "ce-docs-master-cap7-title": "Capítulo 7: Organização e Arquitetura Maestra",
+        "ce-docs-master-cap7-content": "Um jogo desordenado é um jogo que falha. Use estas ferramentas:\n\n• <b>Tags (Etiquetas):</b> Classifica objetos. As balas devem procurar a tag 'Inimigo'.\n• <b>Capas (Layers):</b> Controlam o que se vê e o que choca. Pode fazer com que a Água não choque com a Decoração para ganhar rendimento.\n• <b>Sorting Layers:</b> Controlam a ordem de desenho. O Jogador deve estar sempre numa camada superior ao Fundo.\n• <b>Estrutura de Pastas:</b> Mantenha os seus scripts em /Scripts e as suas imagens em /Sprites. Carl IA trabalha melhor se o projeto estiver organizado.",
+
+        "ce-docs-master-cap8-title": "Capítulo 8: Psicologia do Design e Jogabilidade",
+        "ce-docs-master-cap8-content": "<b>Feedback (Retroalimentação):</b>\nO jogador deve SENTIR o jogo. Se salta, adicione um pequeno som. Se atinge uma parede, adicione um leve tremor de câmara (Screenshake).\n\n<b>Curva de Dificuldade:</b>\nIntroduza mecânicas de forma segura. Primeiro ensine a saltar sem perigo, depois adicione um poço, e finalmente adicione inimigos enquanto salta.\n\n<b>Regra dos 3 Segundos:</b>\nNos primeiros 3 segundos, o jogador deve saber quem é e o que deve fazer. Use a UI e o design de níveis para guiar o olho do jogador para o objetivo.",
+
+        "ce-docs-master-cap9-title": "Capítulo 9: Efeitos Visuais e 'Juice'",
+        "ce-docs-master-cap9-content": "O 'Juice' é o que faz com que um jogo seja viciante. No Creative Engine pode usar:\n\n• <b>Sistemas de Partículas:</b> Explosões, pó ao correr ou faíscas de metal. Use prefabs para que cada impacto crie partículas dinâmicas.\n• <b>Pós-Processamento:</b> Aplica efeitos globais. O <b>Bloom</b> faz com que as luzes brilhem, a <b>Vinheta</b> escurece os bordos para maior imersão, e a <b>Correção de Cor</b> dá o tom cinematográfico final.\n• <b>Interpolação (Lerp):</b> Não mova as coisas bruscamente. Use Lerp para que a câmara siga o jogador com suavidade.",
+
+        "ce-docs-master-cap10-title": "Capítulo 10: Construção de Mundos Dinâmicos",
+        "ce-docs-master-cap10-content": "<b>Parallax:</b>\nCrie camadas de fundo que se movam a diferentes velocidades. O fundo distante (montanhas) move-se lento, o próximo (árvores) move-se rápido. Isto gera uma ilusão de profundidade 3D impressionante.\n\n<b>Iluminação Ambiental:</b>\nPode mudar a cor global do mundo. Passe de um meio-dia brilhante para uma meia-noite azulada com um único comando. Use <b>Point Lights</b> para iluminar apenas o caminho do jogador em níveis escuros, criando tensão e atmosfera.",
+
+        "ce-docs-master-cap11-title": "Capítulo 11: Prefabs e O Poder dos Moldes",
+        "ce-docs-master-cap11-content": "Um <b>Prefab</b> é um 'molde' de uma Matéria. Imagine que desenha um Inimigo perfeito com animações, sons e scripts.\n\n<b>Por que usá-los:</b>\n1. <b>Edição Maestra:</b> Se mudar a cor do Prefab do Inimigo, TODOS os inimigos em TODOS os níveis mudarão instantaneamente!\n2. <b>Instanciação Dinâmica:</b> Use scripts para 'criar' inimigos ou balas em tempo real. O motor simplesmente tira uma cópia do molde (Prefab) e lança-a ao mundo.\n3. <b>Otimização:</b> O motor poupa memória ao tratar as cópias como uma única referência técnica.",
+
+        "ce-docs-master-cap12-title": "Capítulo 12: Glossário Técnico e FAQ",
+        "ce-docs-master-cap12-content": "• <b>DeltaTime:</b> É o tempo que passou entre o frame anterior e o atual. Multiplique a sua velocidade por delta para que o jogo corra igual num PC lento e num PC gamer.\n• <b>Vector2:</b> Um par de coordenadas (X, Y).\n• <b>Draw Calls:</b> Quantas vezes o motor pede à placa gráfica para desenhar algo. Mantenha-as baixas usando Tilemaps.\n\n<b>Perguntas Frequentes:</b>\n- <i>Por que atravesso o chão?</i> Verifique se o chão é Estático e tem um Collider.\n- <i>Por que não se move o meu script?</i> Certifique-se de que começa com 've motor;'.\n- <i>Como otimizo?</i> Não use 'buscar()' dentro de aoAtualizar; faça-o uma única vez em aoComecar().",
+
+        "ce-docs-scripting-cap0-title": "Capítulo 0: Seu Primeiro Script (O Despertar)",
+        "ce-docs-scripting-cap0-desc": "No Creative Engine, o código é a alma. Comece com <b>ve motor;</b>.\n\n<b>Desafio 0:</b> Faça uma Matéria girar somando 100 * delta à rotação.",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\naoAtualizar(delta) {\n    rotacao += 100 * delta;\n}",
+
+        "ce-docs-scripting-cap1-title": "Capítulo 1: Filosofia CES",
+        "ce-docs-scripting-cap1-content": "Eliminamos o excesso. Use <b>posicao</b> em vez de <b>this.posicao</b>. O CES é uma camada sobre JS, rápido e legível.",
 
         "ce-docs-scripting-cap2-title": "Capítulo 2: Anatomia de um Script",
-        "ce-docs-scripting-cap2-content": "Todo script no Creative Engine começa com uma declaração de intenção: 've motor;'. Esta linha não é opcional; é a ponte que conecta o seu arquivo de texto ao coração do motor.",
+        "ce-docs-scripting-cap2-content": "Um script profissional tem 3 zonas: Cabeçalho (ve motor;), Variáveis e Eventos.",
 
-        "ce-docs-scripting-cap3-title": "Capítulo 3: Variáveis e o Inspetor Dinâmico",
-        "ce-docs-scripting-cap3-content": "O poder do Creative Engine reside no seu Inspetor. Ao declarar variáveis como 'publico', elas aparecem magicamente na interface do editor.",
-        "ce-docs-scripting-cap3-types": "Tipos Suportados:\n- numero: Velocidades, forças, saúde.\n- texto: Nomes, diálogos.\n- booleano: verdadeiro ou falso.\n- Materia: Referência outros objetos.\n- Prefab: Cria objetos novos.\n- Audio / Sprite / Scene: Recursos.",
-        "ce-docs-scripting-cap3-code": "publico numero forçaSalto = 12;\npublico booleano podeVoar = falso;\npublico Materia camaraObjetivo;",
+        "ce-docs-scripting-cap3-title": "Capítulo 3: Variáveis e Inspetor",
+        "ce-docs-scripting-cap3-content": "Use <b>publico</b> para ver variáveis no editor e ajustá-las em tempo real enquanto o jogo corre.\n\n<b>Desafio 3:</b> Crie uma variável pública para a velocidade.",
 
-        "ce-docs-scripting-cap4-title": "Capítulo 4: O Ritmo do Jogo (Ciclo de Vida)",
-        "ce-docs-scripting-cap4-events": "1. alEmpezar(): Configuração inicial.\n2. alActualizar(delta): 60 vezes por segundo.\n3. actualizarFijo(delta): Cálculos físicos.\n4. alHacerClick(): Toque do jogador.",
+        "ce-docs-scripting-cap4-title": "Capítulo 4: Ciclo de Vida Pro",
+        "ce-docs-scripting-cap4-events": "aoEmpezar para configuração, aoAtualizar para lógica constante.",
 
-        "ce-docs-scripting-cap5-title": "Capítulo 5: Interacción Total (Input e Físicas)",
-        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    // Teclado\n    se (teclaPresionada(\"w\")) {\n        fisica.applyForce(0, -100);\n    }\n    // Mouse\n    se (botonMouseRecienPresionado(0)) {\n        variavel pos = obterPosicionMouse();\n        imprimir(\"Clique em: \" + pos.x + \",\" + pos.y);\n    }\n}",
+        "ce-docs-scripting-cap5-title": "Capítulo 5: Entrada e Controlo",
+        "ce-docs-scripting-cap5-code": "aoAtualizar(delta) {\n    variavel horizontal = 0;\n    se (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    se (teclaRecienPresionada(\"Space\") e estaTocandoTag(\"Chao\")) {\n        fisica.applyImpulse(novo Vector2(0, -15));\n    }\n}",
 
-        "ce-docs-scripting-cap6-title": "Capítulo 6: O Dicionário de Componentes (Referencia API)",
-        "ce-docs-scripting-cap6-content": "Atalhos comuns:\n- posicion (Transform): x, y, rotacao, escala.\n- fisica (Rigidbody2D): Newton. applyImpulse e velocity.\n- saude (Health): damage(10) ou heal(5).\n- animador (Animator): play(\"Correr\").\n- audio (AudioSource): play() ou stop().",
+        "ce-docs-scripting-cap6-title": "Capítulo 6: Dicionário API",
+        "ce-docs-scripting-cap6-content": "Aceda a componentes diretamente: posicao, fisica, animacao, audio.",
 
-        "ce-docs-scripting-cap7-title": "Capítulo 7: Comunicação entre Objetos (Mensagens)",
-        "ce-docs-scripting-cap7-emisor": "Emissor:\ndifundir(\"NivelCompletado\", { tiempo: 45 });",
-        "ce-docs-scripting-cap7-receptor": "Recetor:\nalRecibir(\"NivelCompletado\", (dados) => {\n    imprimir(\"Parabéns! \" + dados.tiempo + \" s!\");\n});",
+        "ce-docs-scripting-cap7-title": "Capítulo 7: Mensagens Globais",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { pontos: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (dados) => { ... });",
 
-        "ce-docs-scripting-cap8-title": "Capítulo 8: Magia Temporal (Corrotinas e Loops)",
-        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    imprimir(\"3...\");\n    aguardar(1);\n    imprimir(\"FOGO!\");\n}",
-        "ce-docs-scripting-cap8-code2": "alEmpezar() {\n    cada(5) {\n        criar moedaPrefab;\n    }\n}",
+        "ce-docs-scripting-cap8-title": "Capítulo 8: Corrotinas",
+        "ce-docs-scripting-cap8-code1": "async aoComecar() {\n    esperar(3);\n    imprimir(\"Ativado!\");\n}",
 
-        "ce-docs-scripting-cap9-title": "Capítulo 9: O Receituário de Soluções (Cookbook)",
-        "ce-docs-scripting-cap9-mov": "Movimento Pro:\nve motor;\npublico numero velocidade = 300;\npublico numero forçaSalto = 15;\n\natualizar(delta) {\n    variavel horizontal = 0;\n    se (teclaPresionada(\"d\")) horizontal = 1;\n    se (teclaPresionada(\"a\")) horizontal = -1;\n    fisica.velocity.x = horizontal * (velocidade * delta);\n    se (horizontal != 0) {\n        inverterH = (horizontal < 0);\n        reproducir.Caminhar();\n    } senao { reproducir.Idle(); }\n    se (teclaRecienPresionada(\"Space\") e estaTocandoTag(\"Chão\")) {\n        fisica.applyImpulse(novo Vector2(0, -forçaSalto));\n    }\n}",
+        "ce-docs-scripting-cap9-title": "Capítulo 9: Cookbook",
+        "ce-docs-scripting-cap9-mov": "Seguimento de câmara suave usando interpolar().",
 
-        "ce-docs-scripting-cap10-title": "Capítulo 10: Otimização e Melhores Práticas",
-        "ce-docs-scripting-cap10-tips": "1. Use delta: Velocidade constante em qualquer PC.\n2. Evite buscar() em atualizar: Faça em começar.\n3. Pooling: Reutilize balas.\n4. Camadas de Colisão: Otimize choques.",
+        "ce-docs-scripting-cap10-title": "Capítulo 10: Otimização Pro",
+        "ce-docs-scripting-cap10-tips": "Não abuse de buscar(). Use Object Pooling para balas.",
 
-        "ce-docs-scripting-cap11-title": "Capítulo 11: Solução de Problemas e FAQ",
-        "ce-docs-scripting-cap11-content": "P: Posso usar JS normal?\nR: Sim! O CES é uma camada sobre JS.\nP: Como destruo o objeto?\nR: destruir(mtr); ou destruir(materia);",
+        "ce-docs-scripting-cap11-title": "Capítulo 11: Sob o Capô",
+        "ce-docs-scripting-cap11-content": "O CES é transpilado para JS otimizado. Suporta Math.random() e fetch()."
+    },
+    fr: {
+        "ce-docs-nav-cap0": "Cap 0: Premier Script",
+        "ce-docs-nav-cap1": "Cap 1: Philosophie",
+        "ce-docs-nav-cap2": "Cap 2: Anatomie",
+        "ce-docs-nav-cap3": "Cap 3: Variables",
+        "ce-docs-nav-cap4": "Cap 4: Cycle de Vie",
+        "ce-docs-nav-cap5": "Cap 5: Input & Physique",
+        "ce-docs-nav-cap6": "Cap 6: Dictionnaire API",
+        "ce-docs-nav-cap7": "Cap 7: Messagerie",
+        "ce-docs-nav-cap8": "Cap 8: Coroutines",
+        "ce-docs-nav-cap9": "Cap 9: Cookbook",
+        "ce-docs-nav-cap10": "Cap 10: Optimisation",
+        "ce-docs-nav-cap11": "Cap 11: Sous le Capot",
 
-        "ce-docs-nav-vehicles": "Veículos",
-        "ce-docs-vehicles-title": "Veículos e Controladores Avanzados",
-        "ce-docs-helicopter-name": "HelicopterController (Helicóptero)",
-        "ce-docs-helicopter-desc": "Simulação de voo lateral para helicópteros.",
-        "ce-docs-helicopter-code": "controladorDeHelicoptero.potencia = 2500;\ncontroladorDeHelicoptero.vDespegue = 1200;",
-        "ce-docs-plane-name": "PlaneController (Avião)",
-        "ce-docs-plane-desc": "Física de sustentação aerodinâmica e voo lateral.",
-        "ce-docs-topdown-name": "VehicleTopDown (Vehículo Cenital)",
-        "ce-docs-topdown-desc": "Controle arcade para carros em vista superior.",
+        "ce-nav-docs-masterbook": "Livre Maître",
+        "ce-docs-master-title": "Livre Maître du Moteur",
+        "ce-docs-master-intro": "Bienvenue dans le guide ultime. Maîtrisez le moteur à travers ces 12 chapitres détaillés, couvrant tout, des bases à l'architecture de systèmes professionnels.",
 
-        "ce-docs-nav-anim-adv": "Animação Pro",
-        "ce-docs-anim-adv-title": "Animação, Esqueleto e Iluminação",
-        "ce-docs-skeleton-name": "SkeletonRenderer e IK",
-        "ce-docs-skeleton-desc": "SkeletonRenderer: Malhas deformadas por ossos. IKManager2D: Cinemática inversa.",
-        "ce-docs-light-name": "Iluminação 2D (Lights)",
-        "ce-docs-light-desc": "PointLight2D, SpotLight2D e SpriteLight2D.",
+        "ce-docs-master-cap1-title": "Chapitre 1 : L'Acteur, le Script et la Hiérarchie",
+        "ce-docs-master-cap1-content": "Une <b>Matière</b> est l'atome de votre jeu. Les <b>Lois</b> sont des composants. La hiérarchie (Parent/Enfant) permet de créer des objets complexes comme des bras articulés ou des systèmes d'armes.",
 
-        "ce-docs-carl-deep-title": "Modo de Planeamento Profundo",
-        "ce-docs-carl-deep-desc": "Carl analisa tarefas complexas: gera um [PLAN] e mostra o progresso na aba Atividade.",
-        "ce-docs-carl-autonomy-title": "Comandos Autónomos",
-        "ce-docs-carl-autonomy-list": "- create_materia: Cria objetos.\n- add_component: Adiciona Leis.\n- set_property: Modifica Inspetor.\n- download_file: Importa ativos.",
-        "ce-docs-carl-chc-title": "CHC (Code Helper)",
-        "ce-docs-carl-chc-desc": "Escreva em linguagem humana e Carl traduz para código .ces instantaneamente.",
+        "ce-docs-master-cap2-title": "Chapitre 2 : Catalogue des Matières",
+        "ce-docs-master-cap2-content": "• <b>Matière Vide :</b> Conteneurs ou points de spawn.\n• <b>Matière Sprite :</b> Rendu 2D prêt à l'emploi.\n• <b>Matière Lumière :</b> Ombres dynamiques en temps réel.\n• <b>Matière Audio :</b> Sons spatiaux (le volume baisse avec la distance).\n• <b>Matière Tilemap :</b> Pour dessiner des niveaux massifs sans perte de performance.",
 
-        "ce-docs-libs-cap1-title": "Capítulo 1: O Poder da Extensibilidade",
-        "ce-docs-libs-cap1-content": "Por que usar livrarias?\n- Automatização: Crie botões que gerem níveis inteiros.\n- APIs Próprias: Adicione funções que pareçam nativas em CES.\n- Personalização: Altere o fluxo de trabalho do editor.",
-        "ce-docs-libs-cap4-title": "Capítulo 4: Referência API UI",
-        "ce-docs-libs-cap4-content": "Elementos que pode criar nos seus painéis:\n- texto(conteúdo, opções)\n- botao(etiqueta, callback)\n- input(etiqueta, callback)\n- slider(etiqueta, opções, callback)\n- fila/coluna: Para organizar a interface.",
-        "ce-docs-libs-cap5-title": "Capítulo 5: Extensões de Runtime",
-        "ce-docs-libs-cap5-content": "Adicione funções que os seus scripts .ces podem usar através de CreativeEngine.API.registrarRuntimeAPI.",
-        "ce-docs-libs-cap8-title": "Capítulo 8: Instalação",
-        "ce-docs-libs-cap8-content": "1. Arraste o arquivo .js ou .celib para o painel de Assets.\n2. O motor irá movê-lo para /lib.\n3. Ative-a a partir do menu Livrarias.",
+        "ce-docs-master-cap3-title": "Chapitre 3 : L'Univers de l'Interface (UI)",
+        "ce-docs-master-cap3-content": "L'UI doit être enfant d'un <b>Canva</b>.\n• <b>Screen Space :</b> L'UI est fixée sur l'écran (HUD).\n• <b>World Space :</b> L'UI vit dans le monde (bulles de dialogue).\n<b>Ancres :</b> Assurez-vous que les boutons s'adaptent à toutes les tailles de fenêtre.",
 
-        "ce-docs-terminal-files-title": "Gestão de Arquivos",
-        "ce-docs-terminal-files-list": "- ls: Lista o conteúdo.\n- cd: Altera diretório.\n- mkdir: Cria uma pasta.\n- cat: Mostra conteúdo de arquivos.",
-        "ce-docs-terminal-inspect-title": "Inspeção de Objetos",
-        "ce-docs-terminal-inspect-list": "- find [nome]: Procura por nome e devolve ID.\n- inspect [id]: Mostra propriedades JSON.\n- log [msj]: Imprime na consola.",
-        "ce-docs-terminal-control-title": "Controle de Jogo",
-        "ce-docs-terminal-control-list": "- play/stop/pause: Controla a execução.\n- scene [caminho]: Carrega uma cena imediatamente."
+        "ce-docs-master-cap4-title": "Chapitre 4 : Physique, Collisions et Raycast",
+        "ce-docs-master-cap4-content": "<b>Rigidbody 2D :</b> Dynamique (réagit), Statique (sol), Cinématique (par code).\n<b>Triggers :</b> Détection sans collision physique.\n<b>Raycasting :</b> Lasers invisibles pour donner une 'vue' à l'IA ou détecter le sol avec précision.",
+
+        "ce-docs-master-cap5-title": "Chapitre 5 : Le Rythme de la Vie (Cycle de Vie)",
+        "ce-docs-master-cap5-content": "1. <b>auDemarrage() :</b> Une fois à la naissance.\n2. <b>auMiseAJour(delta) :</b> 60 fois par seconde.\n3. <b>miseAJourFixe(delta) :</b> Physique stable.\n4. <b>auClic() :</b> Événement d'interaction utilisateur.",
+
+        "ce-docs-master-cap6-title": "Chapitre 6 : Animation et Cerveau Visuel",
+        "ce-docs-master-cap6-content": "L'<b>AnimatorController</b> est une machine à états. Le <b>Smart Mode</b> détecte la vitesse et change les animations automatiquement.",
+
+        "ce-docs-master-cap7-title": "Chapitre 7 : Organisation et Tags",
+        "ce-docs-master-cap7-content": "Utilisez des <b>Tags</b> pour identifier les objets et des <b>Layers</b> pour contrôler les collisions.",
+
+        "ce-docs-master-cap8-title": "Chapitre 8 : Psychologie et Gameplay",
+        "ce-docs-master-cap8-content": "Le <b>Feedback</b> est crucial : sons, screenshakes et effets visuels pour chaque action.",
+
+        "ce-docs-master-cap9-title": "Chapitre 9 : Juice et Effets",
+        "ce-docs-master-cap9-content": "Ajoutez du 'Juice' avec des systèmes de particules et du post-traitement (Bloom, Vignette).",
+
+        "ce-docs-master-cap10-title": "Chapitre 10 : Mondes Dynamiques et Parallax",
+        "ce-docs-master-cap10-content": "Utilisez le Parallax pour créer une illusion de profondeur 3D en 2D. La lumière ambiante change l'atmosphère globale du jour à la nuit en une commande.",
+
+        "ce-docs-master-cap11-title": "Chapitre 11 : Prefabs et Modèles",
+        "ce-docs-master-cap11-content": "Les <b>Prefabs</b> sont des modèles maîtres. Modifiez-en un, et toutes les instances du jeu sont mises à jour.",
+
+        "ce-docs-master-cap12-title": "Chapitre 12 : FAQ Technique",
+        "ce-docs-master-cap12-content": "Utilisez <b>DeltaTime</b> pour la fluidité sur tous les PC. Optimisez avec les Tilemaps.",
+
+        "ce-docs-scripting-cap0-title": "Chapitre 0 : Votre Premier Script (L'Éveil)",
+        "ce-docs-scripting-cap0-desc": "Le code est l'âme de la Matière. Commencez par <b>ve motor;</b>.\n\n<b>Défi 0 :</b> Faites tourner un objet en ajoutant 100 * delta à la rotation.",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nauMiseAJour(delta) {\n    rotation += 100 * delta;\n}",
+
+        "ce-docs-scripting-cap1-title": "Chapitre 1 : Philosophie CES",
+        "ce-docs-scripting-cap1-content": "Syntaxe lisible par l'homme. Utilisez <b>posicion</b> au lieu de <b>this.posicion</b>. CES est une couche rapide sur JS.",
+
+        "ce-docs-scripting-cap2-title": "Chapitre 2 : Anatomie d'un Script",
+        "ce-docs-scripting-cap2-content": "3 zones : En-tête (ve motor;), Variables (publico) et Événements.",
+
+        "ce-docs-scripting-cap3-title": "Chapitre 3 : Variables et Inspecteur",
+        "ce-docs-scripting-cap3-content": "Utilisez <b>publico</b> pour voir les variables dans l'éditeur et les ajuster en temps réel pendant que le jeu tourne.\n\n<b>Défi 3 :</b> Créez une variable publique pour la vitesse.",
+
+        "ce-docs-scripting-cap4-title": "Chapitre 4 : Cycle de Vie Pro",
+        "ce-docs-scripting-cap4-events": "auDemarrage pour l'initialisation, auMiseAJour pour la logique frame par frame.",
+
+        "ce-docs-scripting-cap5-title": "Chapitre 5 : Entrée et Contrôle",
+        "ce-docs-scripting-cap5-code": "auMiseAJour(delta) {\n    variable horizontal = 0;\n    si (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    si (teclaRecienPresionada(\"Space\") && estaTocandoTag(\"Sol\")) {\n        fisica.applyImpulse(nuevo Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "Chapitre 6 : Dictionnaire API",
+        "ce-docs-scripting-cap6-content": "Accès direct : posicion, fisica, animacion, audio, reproducir.",
+
+        "ce-docs-scripting-cap7-title": "Chapitre 7 : Messagerie Globale",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "Chapitre 8 : Coroutines",
+        "ce-docs-scripting-cap8-code1": "async auDemarrage() {\n    attendre(3);\n    imprimer(\"Activé !\");\n}",
+
+        "ce-docs-scripting-cap9-title": "Chapitre 9 : Cookbook",
+        "ce-docs-scripting-cap9-mov": "Suivi de caméra fluide avec lerp().",
+
+        "ce-docs-scripting-cap10-title": "Chapitre 10 : Optimisation Pro",
+        "ce-docs-scripting-cap10-tips": "Évitez buscar() dans Update. Utilisez le Pooling.",
+
+        "ce-docs-scripting-cap11-title": "Chapitre 11 : Sous le Capot",
+        "ce-docs-scripting-cap11-content": "CES est transpilé en JS optimisé. Accédez aux fonctions JS natives."
     },
     ru: {
         "ce-docs-nav-cap0": "Гл 0: Первый скрипт",
@@ -519,88 +383,85 @@ window.docsTranslations = {
         "ce-docs-nav-cap8": "Гл 8: Корутины",
         "ce-docs-nav-cap9": "Гл 9: Рецепты",
         "ce-docs-nav-cap10": "Гл 10: Оптимизация",
-        "ce-docs-nav-cap11": "Гл 11: FAQ",
+        "ce-docs-nav-cap11": "Гл 11: Под капотом",
 
-        "ce-docs-scripting-cap0-title": "Глава 0: Твой первый скрипт за 60 секунд",
-        "ce-docs-scripting-cap0-desc": "Хочешь результат? Следуй шагам:\n1. В Asset Browser: ПКМ > Новый > Скрипт (CES). Имя HelloWorld.ces.\n2. Вставь код ниже.\n3. Перетащи файл на любой объект.\n4. Нажми Play!",
-        "ce-docs-scripting-cap0-code": "ve motor;\n\nalEmpezar() {\n    imprimir(\"Движок ожил!\");\n}\n\nalActualizar(delta) {\n    rotacion += 100 * delta; // Объект будет вращаться!\n}",
+        "ce-nav-docs-masterbook": "Мастер-книга",
+        "ce-docs-master-title": "Мастер-книга Движка",
+        "ce-docs-master-intro": "Добро пожаловать в полное руководство. Станьте профессионалом Creative Engine за 12 глав.",
 
-        "ce-docs-scripting-cap1-title": "Глава 1: Философия движка",
-        "ce-docs-scripting-cap1-content": "Creative Engine: код должен быть читаемым для людей и мощным для машин. Мы убрали this., mtr. и префиксы. Хочешь двигать? Пиши 'posicion'. Цель: код как описание твоей идеи.",
+        "ce-docs-master-cap1-title": "Глава 1: Актер, Скрипт и Иерархия",
+        "ce-docs-master-cap1-content": "<b>Материя</b> — это атом вашей игры. <b>Закон (Закон)</b> — это скрипт. Иерархия позволяет связывать объекты: Родитель и Ребенок. Если вы двигаете Родителя, Ребенок следует за ним.",
 
-        "ce-docs-scripting-cap2-title": "Глава 2: Анатомия скрипта",
-        "ce-docs-scripting-cap2-content": "Каждый скрипт начинается с 've motor;'. Это мост к сердцу движка. Твой скрипт — это 'Закон' для 'Материи' (объекта).",
+        "ce-docs-master-cap2-title": "Глава 2: Каталог Материй",
+        "ce-docs-master-cap2-content": "• <b>Пустая Материя:</b> Точки спавна.\n• <b>Спрайт:</b> 2D рендеринг.\n• <b>Свет:</b> Динамические тени.\n• <b>Звук:</b> Пространственное аудио.\n• <b>Тайлсет:</b> Огромные уровни.",
 
-        "ce-docs-scripting-cap3-title": "Глава 3: Переменные и динамический инспектор",
-        "ce-docs-scripting-cap3-content": "Сила в Инспекторе. Переменные 'publico' магически появляются в редакторе.",
-        "ce-docs-scripting-cap3-types": "Типы:\n- number: Скорость, здоровье.\n- text: Имена, диалоги.\n- boolean: истина/ложь.\n- Materia: Ссылка на объекты.\n- Prefab: Создание новых объектов.\n- Audio/Sprite/Scene: Ресурсы.",
-        "ce-docs-scripting-cap3-code": "publico число силаПрыжка = 12;\npublico булево можетЛетать = ложь;\npublico Материя целеваяКамера;",
+        "ce-docs-master-cap3-title": "Глава 3: Интерфейс (UI)",
+        "ce-docs-master-cap3-content": "Все элементы UI должны быть детьми <b>Canva</b>. Используйте <b>Anchors</b> для адаптивности под разные размеры экрана.",
 
-        "ce-docs-scripting-cap4-title": "Глава 4: Ритм игры (Жизненный цикл)",
-        "ce-docs-scripting-cap4-events": "1. alEmpezar(): Один раз при старте.\n2. alActualizar(delta): 60 раз в сек. Постоянная логика.\n3. actualizarFijo(delta): Физика.\n4. alHacerClick(): Клик игрока.",
+        "ce-docs-master-cap4-title": "Глава 4: Физика и Raycast",
+        "ce-docs-master-cap4-content": "Rigidbody 2D для массы. <b>Triggers</b> для детекции без столкновения. <b>Raycasting</b> — невидимые лучи для 'зрения' ИИ.",
 
-        "ce-docs-scripting-cap5-title": "Глава 5: Полное взаимодействие (Ввод и физика)",
-        "ce-docs-scripting-cap5-code": "обновить(delta) {\n    если (teclaPresionada(\"w\")) {\n        физика.applyForce(0, -100);\n    }\n    если (botonMouseRecienPresionado(0)) {\n        variable поз = obtenerPosicionMouse();\n        imprimir(\"Клик в: \" + поз.x + \",\" + поз.y);\n    }\n}",
+        "ce-docs-master-cap5-title": "Глава 5: Жизненный цикл",
+        "ce-docs-master-cap5-content": "1. <b>alEmpezar():</b> На старте.\n2. <b>alActualizar(delta):</b> Каждый кадр.\n3. <b>actualizarFijo(delta):</b> Для физики.\n4. <b>alHacerClick():</b> При нажатии.",
 
-        "ce-docs-scripting-cap6-title": "Глава 6: Словарь компонентов (Справочник API)",
-        "ce-docs-scripting-cap6-content": "Ярлыки:\n- posicion (Transform): x, y, вращение.\n- физика (Rigidbody2D): Newton. applyImpulse и velocity.\n- zdorovye (Health): damage(10) или heal(5).\n- аниматор (Animator): play(\"Run\").\n- аудио (AudioSource): play() или stop().",
+        "ce-docs-master-cap6-title": "Глава 6: Анимация",
+        "ce-docs-master-cap6-content": "<b>AnimatorController</b> управляет состояниями. <b>Smart Mode</b> автоматически меняет анимации в зависимости от скорости.",
 
-        "ce-docs-scripting-cap7-title": "Глава 7: Связь между объектами (Сообщения)",
-        "ce-docs-scripting-cap7-emisor": "Отправитель:\nbroadcast(\"LevelCompleted\", { time: 45 });",
-        "ce-docs-scripting-cap7-receptor": "Получатель:\nonReceive(\"LevelCompleted\", (данные) => {\n    imprimir(\"Пройдено за \" + данные.time + \" с!\");\n});",
+        "ce-docs-master-cap7-title": "Глава 7: Организация",
+        "ce-docs-master-cap7-content": "Используйте <b>Tags</b> для идентификации и <b>Layers</b> для контроля столкновений.",
 
-        "ce-docs-scripting-cap8-title": "Глава 8: Магия времени (Корутины и циклы)",
-        "ce-docs-scripting-cap8-code1": "async начать() {\n    imprimir(\"3...\");\n    ждать(1);\n    imprimir(\"ОГОНЬ!\");\n}",
-        "ce-docs-scripting-cap8-code2": "начать() {\n    cada(5) {\n        create coinPrefab;\n    }\n}",
+        "ce-docs-master-cap8-title": "Глава 8: Психология дизайна",
+        "ce-docs-master-cap8-content": "Обратная связь (Feedback): звуки и тряска камеры (screenshake) делают игру 'живой'.",
 
-        "ce-docs-scripting-cap9-title": "Глава 9: Книга рецептов (Cookbook)",
-        "ce-docs-scripting-cap9-mov": "Движение Про:\nve motor;\npublico число скорость = 300;\npublico число силаПрыжка = 15;\n\nобновить(delta) {\n    variable horizontal = 0;\n    если (teclaPresionada(\"d\")) horizontal = 1;\n    если (teclaPresionada(\"a\")) horizontal = -1;\n    физика.velocity.x = horizontal * (скорость * delta);\n    если (horizontal != 0) {\n        отразитьГ = (horizontal < 0);\n        воспроизвести.Walk();\n    } иначе { воспроизвести.Idle(); }\n    если (teclaRecienPresionada(\"Space\") и estaTocandoTag(\"Ground\")) {\n        физика.applyImpulse(новый Vector2(0, -силаПрыжка));\n    }\n}",
+        "ce-docs-master-cap9-title": "Глава 9: Эффекты и Сок",
+        "ce-docs-master-cap9-content": "Частицы (Particles) и Пост-обработка (Post-Processing) добавляют финальный лоск вашей игре.",
 
-        "ce-docs-scripting-cap10-title": "Глава 10: Оптимизация и лучшие практики",
-        "ce-docs-scripting-cap10-tips": "1. Используй delta: Одинаковая скорость на всех ПК.\n2. Избегай find() в обновить: Делай в начать.\n3. Пулинг: Используй повторно пули.\n4. Слои коллизий: Экономь ресурсы.",
+        "ce-docs-master-cap10-title": "Глава 10: Миры и Параллакс",
+        "ce-docs-master-cap10-content": "Параллакс создает иллюзию 3D глубины в 2D. Окружающее освещение меняет время суток.",
 
-        "ce-docs-scripting-cap11-title": "Глава 11: Решение проблем и FAQ",
-        "ce-docs-scripting-cap11-content": "В: Можно JS?\nО: Да! CES — слой над JS.\nВ: Как удалить объект?\nО: destruir(mtr); или destruir(materia);",
+        "ce-docs-master-cap11-title": "Глава 11: Префабы",
+        "ce-docs-master-cap11-content": "<b>Prefabs</b> — это шаблоны. Измените один, и все копии в игре обновятся автоматически.",
 
-        "ce-docs-nav-vehicles": "Транспорт",
-        "ce-docs-vehicles-title": "Транспорт и контроллеры",
-        "ce-docs-helicopter-name": "HelicopterController (Вертолет)",
-        "ce-docs-helicopter-desc": "Полет вертолета (вид сбоку).",
-        "ce-docs-helicopter-code": "controladorDeHelicoptero.potencia = 2500;\ncontroladorDeHelicoptero.vDespegue = 1200;",
-        "ce-docs-plane-name": "PlaneController (Самолет)",
-        "ce-docs-plane-desc": "Аэродинамика и полет самолета.",
-        "ce-docs-topdown-name": "VehicleTopDown (Автомобиль)",
-        "ce-docs-topdown-desc": "Аркадное управление авто (вид сверху, дрифт).",
+        "ce-docs-master-cap12-title": "Глава 12: Технический FAQ",
+        "ce-docs-master-cap12-content": "Используйте <b>DeltaTime</b> для стабильной скорости на любых ПК. Оптимизируйте отрисовку через тайлсеты.",
 
-        "ce-docs-nav-anim-adv": "Про-анимация",
-        "ce-docs-anim-adv-title": "Анимация, Скелет и Свет",
-        "ce-docs-skeleton-name": "SkeletonRenderer и IK",
-        "ce-docs-skeleton-desc": "SkeletonRenderer: Деформация мешей костями. IKManager2D: Инверсная кинематика.",
-        "ce-docs-light-name": "2D Освещение (Lights)",
-        "ce-docs-light-desc": "PointLight2D, SpotLight2D и SpriteLight2D.",
+        "ce-docs-scripting-cap0-title": "Глава 0: Ваш первый скрипт (Пробуждение)",
+        "ce-docs-scripting-cap0-desc": "Код — это душа Материи. Начните с <b>ve motor;</b>.\n\n<b>Задание 0:</b> Заставьте объект вращаться, прибавляя 100 * delta к ротации.",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nalActualizar(delta) {\n    rotacion += 100 * delta;\n}",
 
-        "ce-docs-carl-deep-title": "Глубокое планирование",
-        "ce-docs-carl-deep-desc": "Карл анализирует задачи: задает вопросы, создает [ПЛАН] и показывает прогресс в 'Активности'.",
-        "ce-docs-carl-autonomy-title": "Автономные команды",
-        "ce-docs-carl-autonomy-list": "- create_materia: Создает объекты.\n- add_component: Добавляет Законы.\n- set_property: Меняет Инспектор.\n- download_file: Импорт из сети.",
-        "ce-docs-carl-chc-title": "CHC (Code Helper)",
-        "ce-docs-carl-chc-desc": "Пиши на человеческом языке — Карл переведет в .ces код.",
+        "ce-docs-scripting-cap1-title": "Глава 1: Философия CES",
+        "ce-docs-scripting-cap1-content": "Понятный синтаксис. Пишите <b>posicion</b> вместо <b>this.posicion</b>. CES — это быстрый слой над JavaScript.",
 
-        "ce-docs-libs-cap1-title": "Глава 1: Сила расширяемости",
-        "ce-docs-libs-cap1-content": "Зачем использовать библиотеки?\n- Автоматизация: Создавайте кнопки для генерации уровней.\n- Свои API: Добавляйте функции, которые ощущаются как родные в CES.\n- Кастомизация: Меняйте рабочий процесс редактора.",
-        "ce-docs-libs-cap4-title": "Глава 4: Справочник API UI",
-        "ce-docs-libs-cap4-content": "Элементы, которые можно создать в панелях:\n- texto(контент, опции)\n- boton(метка, callback)\n- input(метка, callback)\n- slider(метка, опции, callback)\n- fila/columna: Для организации интерфейса.",
-        "ce-docs-libs-cap5-title": "Глава 5: Расширения Runtime",
-        "ce-docs-libs-cap5-content": "Добавляйте функции для использования в .ces скриптах через CreativeEngine.API.registrarRuntimeAPI.",
-        "ce-docs-libs-cap8-title": "Глава 8: Установка",
-        "ce-docs-libs-cap8-content": "1. Перетащите .js или .celib файл в панель Assets.\n2. Движок переместит его в /lib.\n3. Активируйте в меню 'Библиотеки'.",
+        "ce-docs-scripting-cap2-title": "Глава 2: Анатомия файла .ces",
+        "ce-docs-scripting-cap2-content": "3 зоны: Заголовок (ve motor;), Переменные и События.",
 
-        "ce-docs-terminal-files-title": "Управление файлами",
-        "ce-docs-terminal-files-list": "- ls: Список содержимого.\n- cd: Смена директории.\n- mkdir: Создать папку.\n- cat: Показать содержимое файла.",
-        "ce-docs-terminal-inspect-title": "Инспекция объектов",
-        "ce-docs-terminal-inspect-list": "- find [имя]: Поиск по имени, возвращает ID.\n- inspect [id]: Показать свойства JSON.\n- log [сообщение]: Печать в консоль.",
-        "ce-docs-terminal-control-title": "Управление игрой",
-        "ce-docs-terminal-control-list": "- play/stop/pause: Управление выполнением.\n- scene [путь]: Немедленная загрузка сцены."
+        "ce-docs-scripting-cap3-title": "Глава 3: Переменные и Инспектор",
+        "ce-docs-scripting-cap3-content": "Используйте <b>publico</b>, чтобы менять значения прямо в редакторе в реальном времени.\n\n<b>Задание 3:</b> Создайте публичную переменную скорости.",
+
+        "ce-docs-scripting-cap4-title": "Глава 4: Профессиональный цикл",
+        "ce-docs-scripting-cap4-events": "alEmpezar для настройки, alActualizar для логики кадров.",
+
+        "ce-docs-scripting-cap5-title": "Глава 5: Ввод и управление",
+        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    variable horizontal = 0;\n    si (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    si (teclaRecienPresionada(\"Space\") && estaTocandoTag(\"Suelo\")) {\n        fisica.applyImpulse(nuevo Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "Глава 6: Словарь API",
+        "ce-docs-scripting-cap6-content": "Прямой доступ: posicion, fisica, animacion, audio, reproducir.",
+
+        "ce-docs-scripting-cap7-title": "Глава 7: Глобальные сообщения",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "Глава 8: Корутины",
+        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    esperar(3);\n    imprimir(\"Активировано!\");\n}",
+
+        "ce-docs-scripting-cap9-title": "Глава 9: Рецепты",
+        "ce-docs-scripting-cap9-mov": "Плавное следование камеры через lerp().",
+
+        "ce-docs-scripting-cap10-title": "Глава 10: Оптимизация",
+        "ce-docs-scripting-cap10-tips": "Не используйте buscar() в Update. Применяйте Pooling для пуль.",
+
+        "ce-docs-scripting-cap11-title": "Глава 11: Под капотом",
+        "ce-docs-scripting-cap11-content": "CES транслируется в оптимизированный JS. Доступны Math.random() и fetch()."
     },
     zh: {
         "ce-docs-nav-cap0": "第 0 章：首个脚本",
@@ -611,90 +472,363 @@ window.docsTranslations = {
         "ce-docs-nav-cap5": "第 5 章：输入与物理",
         "ce-docs-nav-cap6": "第 6 章：API 词典",
         "ce-docs-nav-cap7": "第 7 章：全局消息",
-        "ce-docs-nav-cap8": "第 8 章：时间魔法",
+        "ce-docs-nav-cap8": "第 8 章：协程",
         "ce-docs-nav-cap9": "第 9 章：解决方案食谱",
         "ce-docs-nav-cap10": "第 10 章：优化",
-        "ce-docs-nav-cap11": "第 11 章：FAQ",
+        "ce-docs-nav-cap11": "第 11 章：深入底层",
 
-        "ce-docs-scripting-cap0-title": "第零章：60 秒完成你的第一个脚本",
-        "ce-docs-scripting-cap0-desc": "想看效果？步骤如下：\n1. 资源浏览器：右键 > 新建 > 脚本 (CES)。命名 HelloWorld.ces。\n2. 粘贴下方代码。\n3. 拖到场景对象上。\n4. 点击播放！",
-        "ce-docs-scripting-cap0-code": "ve motor;\n\nalEmpezar() {\n    imprimir(\"引擎已激活！\");\n}\n\nalActualizar(delta) {\n    旋转 += 100 * delta; // 对象将旋转！\n}",
+        "ce-nav-docs-masterbook": "大师之书",
+        "ce-docs-master-title": "引擎大师之书",
+        "ce-docs-master-intro": "欢迎阅读终极指南。通过这 12 章深度技术指南，从零基础成长为 Creative Engine 专家。",
 
-        "ce-docs-scripting-cap1-title": "第一章：引擎哲学",
-        "ce-docs-scripting-cap1-content": "Creative Engine：代码必须人类可读且机器强大。无需 this. 或前缀。想移动？写 'posicion'。目标：代码即描述。",
+        "ce-docs-master-cap1-title": "第 1 章：物质、法律与层级结构",
+        "ce-docs-master-cap1-content": "<b>什么是物质 (Matter)？</b>\n物质是游戏的原子。它只是一个具有位置 (X, Y)、旋转和缩放的点。\n\n<b>层级 (Hierarchy)：</b>\n父子关系是核心。移动父物体，子物体会随之移动。对于角色肢体或武器挂载至关重要。",
 
-        "ce-docs-scripting-cap2-title": "第二章：脚本解剖",
-        "ce-docs-scripting-cap2-content": "脚本以 've motor;' 开始。它是连接引擎核心的桥梁。脚本是对象的“法律”。",
+        "ce-docs-master-cap2-title": "第 2 章：物质目录",
+        "ce-docs-master-cap2-content": "• <b>空物质：</b> 生成点。\n• <b>精灵：</b> 2D 渲染。\n• <b>光照：</b> 实时阴影。\n• <b>音频：</b> 空间音效。\n• <b>瓦片地图：</b> 超大规模关卡优化。",
 
-        "ce-docs-scripting-cap3-title": "第三章：变量与动态检查器",
-        "ce-docs-scripting-cap3-content": "检查器是核心。'publico' 变量会自动出现在编辑器界面。",
-        "ce-docs-scripting-cap3-types": "支持类型：\n- number: 速度、生命值。\n- text: 名称、对话。\n- boolean: 真/假。\n- Materia: 引用对象。\n- Prefab: 创建新对象。\n- Audio/Sprite/Scene: 资源。",
-        "ce-docs-scripting-cap3-code": "publico 数字 跳跃力 = 12;\npublico 布尔值 可以飞行 = 假;\npublico 物质 目标摄像机;",
+        "ce-docs-master-cap3-title": "第 3 章：UI 宇宙",
+        "ce-docs-master-cap3-content": "所有 UI 必须是 <b>Canva</b> 的子物体。使用 <b>Anchors</b> (锚点) 确保界面在不同分辨率下都能正确缩放。",
 
-        "ce-docs-scripting-cap4-title": "第四章：游戏节奏（生命周期）",
-        "ce-docs-scripting-cap4-events": "1. 开始(): 运行一次。\n2. 更新(delta): 每秒 60 次。持续逻辑。\n3. actualizarFijo(delta): 物理计算。\n4. alHacerClick(): 玩家点击。",
+        "ce-docs-master-cap4-title": "第 4 章：物理、碰撞与射线检测",
+        "ce-docs-master-cap4-content": "Rigidbody 2D 处理质量。使用<b>触发器 (Triggers)</b> 进行区域检测。使用<b>射线检测 (Raycast)</b> 为 AI 提供“视力”。",
 
-        "ce-docs-scripting-cap5-title": "第五章：全方位交互（输入与物理）",
-        "ce-docs-scripting-cap5-code": "更新(delta) {\n    如果 (teclaPresionada(\"w\")) {\n        物理.applyForce(0, -100);\n    }\n    如果 (botonMouseRecienPresionado(0)) {\n        变量 位置 = 获取鼠标位置();\n        打印(\"点击位置：\" + 位置.x + \",\" + 位置.y);\n    }\n}",
+        "ce-docs-master-cap5-title": "第 5 章：生命周期",
+        "ce-docs-master-cap5-content": "1. <b>alEmpezar():</b> 初始化。\n2. <b>alActualizar(delta):</b> 逻辑循环。\n3. <b>actualizarFijo(delta):</b> 物理步长。\n4. <b>alHacerClick():</b> 交互事件。",
 
-        "ce-docs-scripting-cap6-title": "第六章：组件词典 (API 参考)",
-        "ce-docs-scripting-cap6-content": "常用捷径：\n- posicion (变换): x, y, 旋转, 缩放。\n- fisica (刚体): 跳跃 applyImpulse, 速度 velocity。\n- vida (生命值): damage(10) 或 heal(5)。\n- animacion (动画器): play(\"Run\")。\n- audio (音频源): play() 或 stop()。",
+        "ce-docs-master-cap6-title": "第 6 章：动画系统",
+        "ce-docs-master-cap6-content": "<b>AnimatorController</b> 是状态机。<b>Smart Mode</b> 可根据速度自动切换动画。",
 
-        "ce-docs-scripting-cap7-title": "第七章：对象通信（全局消息）",
-        "ce-docs-scripting-cap7-emisor": "发送者：\nbroadcast(\"LevelCompleted\", { time: 45 });",
-        "ce-docs-scripting-cap7-receptor": "接收者：\nonReceive(\"LevelCompleted\", (数据) => {\n    打印(\"完成耗时：\" + 数据.time + \" 秒！\");\n});",
+        "ce-docs-master-cap7-title": "第 7 章：项目组织",
+        "ce-docs-master-cap7-content": "使用 <b>Tags</b> 识别物体，使用 <b>Layers</b> 控制碰撞层级，以及 <b>Sorting Layers</b> 控制渲染深度。",
 
-        "ce-docs-scripting-cap8-title": "第八章：时间魔法（协程与循环）",
-        "ce-docs-scripting-cap8-code1": "async 开始() {\n    打印(\"3...\");\n    等待(1);\n    打印(\"开火！\");\n}",
-        "ce-docs-scripting-cap8-code2": "开始() {\n    cada(5) {\n        创建 金币预制件;\n    }\n}",
+        "ce-docs-master-cap8-title": "第 8 章：游戏设计心理学",
+        "ce-docs-master-cap8-content": "反馈 (Feedback) 是关键。通过音效和屏幕抖动 (screenshake) 让玩家感受到每一次交互。",
 
-        "ce-docs-scripting-cap9-title": "第九章：解决方案食谱 (Cookbook)",
-        "ce-docs-scripting-cap9-mov": "专业移动：\nve motor;\npublico 数字 速度 = 300;\npublico 数字 跳跃力 = 15;\n\n更新(delta) {\n    变量 水平 = 0;\n    如果 (teclaPresionada(\"d\")) 水平 = 1;\n    如果 (teclaPresionada(\"a\")) 水平 = -1;\n    物理.velocity.x = 水平 * (速度 * delta);\n    如果 (水平 != 0) {\n        水平翻转 = (水平 < 0);\n        播放.Walk();\n    } 否则 { 播放.Idle(); }\n    如果 (teclaRecienPresionada(\"Space\") && 正在触摸标签(\"Ground\")) {\n        物理.applyImpulse(新建 Vector2(0, -跳跃力));\n    }\n}",
+        "ce-docs-master-cap9-title": "第 9 章：特效与细节磨砺",
+        "ce-docs-master-cap9-content": "使用粒子系统 (Particles) 和后期处理 (Post-Processing) 如 Bloom 效果来提升游戏画质。",
 
-        "ce-docs-scripting-cap10-title": "第十章：优化与最佳实践",
-        "ce-docs-scripting-cap10-tips": "1. 使用 delta: 确保各 PC 速度一致。\n2. 避免在更新中使用搜索: 在开始中做。\n3. 对象池: 重用子弹。\n4. 碰撞层: 优化性能。",
+        "ce-docs-master-cap10-title": "第 10 章：动态世界与视差滚动",
+        "ce-docs-master-cap10-content": "使用 <b>Parallax</b> 创建 3D 深度感。动态环境光照可以改变世界氛围。",
 
-        "ce-docs-scripting-cap11-title": "第十一章：故障排除与常见问题",
-        "ce-docs-scripting-cap11-content": "问：可以用普通 JS 吗？\n答：可以！CES 是 JS 上的层。\n问：如何销毁对象？\n答：destruir(mtr); 或 destruir(materia);",
+        "ce-docs-master-cap11-title": "第 11 章：预制体 (Prefabs)",
+        "ce-docs-master-cap11-content": "预制体是主模板。修改预制体，场景中所有的实例都会同步更新。非常适合子弹和敌人。",
 
-        "ce-docs-nav-vehicles": "载具",
-        "ce-docs-vehicles-title": "载具与高级控制器",
-        "ce-docs-helicopter-name": "HelicopterController (直升机)",
-        "ce-docs-helicopter-desc": "横向飞行模拟。",
-        "ce-docs-helicopter-code": "helicopterController.power = 2500;\nhelicopterController.vDespegue = 1200;",
-        "ce-docs-plane-name": "PlaneController (飞机)",
-        "ce-docs-plane-desc": "空气动力学升力物理。",
-        "ce-docs-topdown-name": "VehicleTopDown (顶视载具)",
-        "ce-docs-topdown-desc": "赛车控制 (漂移, 动力)。",
+        "ce-docs-master-cap12-title": "第 12 章：技术问答",
+        "ce-docs-master-cap12-content": "使用 <b>DeltaTime</b> 确保帧率无关性。通过瓦片地图减少渲染批次 (Draw Calls)。",
 
-        "ce-docs-nav-anim-adv": "高级动画",
-        "ce-docs-anim-adv-title": "动画、骨骼与光照",
-        "ce-docs-skeleton-name": "SkeletonRenderer 与 IK",
-        "ce-docs-skeleton-desc": "SkeletonRenderer: 骨骼变形。IKManager2D: 逆向动力学。",
-        "ce-docs-light-name": "2D 光照 (Lights)",
-        "ce-docs-light-desc": "点光源、聚光灯与自定义精灵光源。",
+        "ce-docs-scripting-cap0-title": "第 0 章：您的第一个脚本 (觉醒)",
+        "ce-docs-scripting-cap0-desc": "代码是灵魂。从 <b>ve motor;</b> 开始。\n\n<b>挑战 0：</b> 让物体持续旋转。",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nalActualizar(delta) {\n    rotacion += 100 * delta;\n}",
 
-        "ce-docs-carl-deep-title": "深度规划模式",
-        "ce-docs-carl-deep-desc": "Carl 分析复杂任务：提问、生成 [PLAN] 并在“活动”选项卡显示进度。",
-        "ce-docs-carl-autonomy-title": "自主命令",
-        "ce-docs-carl-autonomy-list": "- create_materia: 创建对象。\n- add_component: 添加法律。\n- set_property: 修改检查器。\n- download_file: 导入网络资产。",
-        "ce-docs-carl-chc-title": "CHC (代码助手)",
-        "ce-docs-carl-chc-desc": "输入人类语言，Carl 立即翻译为 .ces 代码。",
+        "ce-docs-scripting-cap1-title": "第 1 章：CES 哲学",
+        "ce-docs-scripting-cap1-content": "极简语法。直接使用 <b>posicion</b> 而不需要 this。CES 是 JavaScript 的高性能抽象。",
 
-        "ce-docs-libs-cap1-title": "第一章：扩展的力量",
-        "ce-docs-libs-cap1-content": "为什么要使用库？\n- 自动化：创建可生成整个关卡的按钮。\n- 自定义 API：添加在 CES 中感觉像原生一样的函数。\n- 个性化：更改编辑器工作流程。",
-        "ce-docs-libs-cap4-title": "第四章：UI 生成器 API 参考",
-        "ce-docs-libs-cap4-content": "您可以在面板中创建的元素：\n- texto(内容, 选项)\n- boton(标签, 回调)\n- input(标签, 回调)\n- slider(标签, 选项, 回调)\n- fila/columna：用于组织界面。",
-        "ce-docs-libs-cap5-title": "第五章：运行时扩展",
-        "ce-docs-libs-cap5-content": "通过 CreativeEngine.API.registrarRuntimeAPI 添加您的 .ces 脚本可以使用的函数。",
-        "ce-docs-libs-cap8-title": "第八章：安装",
-        "ce-docs-libs-cap8-content": "1. 将 .js 或 .celib 文件拖到资源 (Assets) 面板。\n2. 引擎会将其移动到 /lib。\n3. 从“库 (Libraries)”菜单激活它。",
+        "ce-docs-scripting-cap2-title": "第 2 章：脚本结构",
+        "ce-docs-scripting-cap2-content": "分为：头文件、变量定义区 (publico) 和事件区。",
 
-        "ce-docs-terminal-files-title": "文件管理",
-        "ce-docs-terminal-files-list": "- ls：列出内容。\n- cd：更改目录。\n- mkdir：创建文件夹。\n- cat：显示文件内容。",
-        "ce-docs-terminal-inspect-title": "对象检查",
-        "ce-docs-terminal-inspect-list": "- find [名称]：按名称搜索并返回 ID。\n- inspect [id]：显示 JSON 属性。\n- log [消息]：打印到控制台。",
-        "ce-docs-terminal-control-title": "游戏控制",
-        "ce-docs-terminal-control-list": "- play/stop/pause：控制执行。\n- scene [路径]：立即加载场景。"
+        "ce-docs-scripting-cap3-title": "第 3 章：变量与编辑器交互",
+        "ce-docs-scripting-cap3-content": "使用 <b>publico</b> 关键字将变量暴露给编辑器，实现零代码调优。\n\n<b>挑战 3：</b> 创建一个公共速度变量并在编辑器中修改它。",
+
+        "ce-docs-scripting-cap4-title": "第 4 章：专业生命周期",
+        "ce-docs-scripting-cap4-events": "alEmpezar 用于获取组件，alActualizar 用于实时控制。",
+
+        "ce-docs-scripting-cap5-title": "第 5 章：输入控制",
+        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    bianliang horizontal = 0;\n    ruguo (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    ruguo (teclaRecienPresionada(\"Space\") && 正在触摸标签(\"地面\")) {\n        wuli.applyImpulse(xin Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "第 6 章：API 词典",
+        "ce-docs-scripting-cap6-content": "快速访问：posicion, fisica, animacion, audio, reproducir。",
+
+        "ce-docs-scripting-cap7-title": "第 7 章：全局消息通信",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "第 8 章：协程与异步",
+        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    esperar(3);\n    imprimir(\"已激活！\");\n}",
+
+        "ce-docs-scripting-cap9-title": "第 9 章：实用方案集",
+        "ce-docs-scripting-cap9-mov": "使用 lerp() 实现平滑的摄像机跟随。",
+
+        "ce-docs-scripting-cap10-title": "第 10 章：Web 端优化",
+        "ce-docs-scripting-cap10-tips": "避免在 Update 中频繁调用 buscar()。使用对象池技术。",
+
+        "ce-docs-scripting-cap11-title": "第 11 章：深入底层",
+        "ce-docs-scripting-cap11-content": "CES 会转译为高度优化的 JavaScript。支持所有原生 JS 函数。"
+    },
+    it: {
+        "ce-docs-nav-cap0": "Cap 0: Primo Script",
+        "ce-docs-nav-cap1": "Cap 1: Filosofia",
+        "ce-docs-nav-cap2": "Cap 2: Anatomia",
+        "ce-docs-nav-cap3": "Cap 3: Variabili",
+        "ce-docs-nav-cap4": "Cap 4: Ciclo di Vita",
+        "ce-docs-nav-cap5": "Cap 5: Input & Fisica",
+        "ce-docs-nav-cap6": "Cap 6: Dizionario API",
+        "ce-docs-nav-cap7": "Cap 7: Messaggistica",
+        "ce-docs-nav-cap8": "Cap 8: Coroutine",
+        "ce-docs-nav-cap9": "Cap 9: Cookbook",
+        "ce-docs-nav-cap10": "Cap 10: Ottimizzazione",
+        "ce-docs-nav-cap11": "Cap 11: Sotto il Cofano",
+
+        "ce-nav-docs-masterbook": "Libro Mastro",
+        "ce-docs-master-title": "Libro Mastro del Motore",
+        "ce-docs-master-intro": "Benvenuto nella guida definitiva. Domina Creative Engine dalle fondamenta alle tecniche più avanzate in questi 12 capitoli tecnici.",
+
+        "ce-docs-master-cap1-title": "Capitolo 1: L'Attore, lo Script e la Gerarchia",
+        "ce-docs-master-cap1-content": "<b>Cos'è una Materia?</b>\nUna Materia è l'atomo del tuo gioco. È semplicemente un punto con posizione (X, Y), rotazione e scala.\n\n<b>Gerarchia (Padre e Figlio):</b>\nLe Materie possono essere annidate. Se muovi un Padre, tutti i suoi Figli si muovono con lui. Essenziale per braccia di personaggi o armi.",
+
+        "ce-docs-master-cap2-title": "Capitolo 2: Catalogo Materie",
+        "ce-docs-master-cap2-content": "• <b>Materia Vuota:</b> Spawn point.\n• <b>Materia Sprite:</b> Rendering 2D.\n• <b>Materia Luce:</b> Ombre dinamiche.\n• <b>Materia Audio:</b> Suoni spaziali.\n• <b>Materia Tilemap:</b> Ottimizzata per livelli giganti.",
+
+        "ce-docs-master-cap3-title": "Capitolo 3: L'Universo dell'Interface (UI)",
+        "ce-docs-master-cap3-content": "Tutta la UI deve essere figlia di un <b>Canva</b>. Usa gli <b>Anchor</b> per assicurare che i pulsanti si adattino a ogni schermo.",
+
+        "ce-docs-master-cap4-title": "Capitolo 4: Fisica, Collisioni e Raycast",
+        "ce-docs-master-cap4-content": "Rigidbody 2D per la fisica. <b>Trigger</b> per zone di rilevamento. <b>Raycasting</b> per dare 'vista' all'IA o rilevamento preciso del terreno.",
+
+        "ce-docs-master-cap5-title": "Capitolo 5: Il Ritmo della Vita (Ciclo di Vita)",
+        "ce-docs-master-cap5-content": "1. <b>alEmpezar():</b> Alla creazione.\n2. <b>alActualizar(delta):</b> Logica ogni frame.\n3. <b>actualizarFijo(delta):</b> Fisica stabile.\n4. <b>alHacerClick():</b> Interazione utente.",
+
+        "ce-docs-master-cap6-title": "Capitolo 6: Animazione",
+        "ce-docs-master-cap6-content": "L'<b>AnimatorController</b> gestisce gli stati. Il <b>Smart Mode</b> cambia animazione in base alla velocità senza codice.",
+
+        "ce-docs-master-cap7-title": "Capitolo 7: Organizzazione Maestra",
+        "ce-docs-master-cap7-content": "Usa i <b>Tag</b> per identificare oggetti e i <b>Layer</b> per il controllo delle collisioni.",
+
+        "ce-docs-master-cap8-title": "Capitolo 8: Psicologia del Design",
+        "ce-docs-master-cap8-content": "Il <b>Feedback</b> è vitale. Usa suoni e vibrazioni della camera (screenshake) per rendere l'azione soddisfacente.",
+
+        "ce-docs-master-cap9-title": "Capitolo 9: Effetti e 'Juice'",
+        "ce-docs-master-cap9-content": "Aggiungi stile con sistemi di particelle e post-processing come il Bloom per luci brillanti.",
+
+        "ce-docs-master-cap10-title": "Capitolo 10: Mondi Dinamici e Parallax",
+        "ce-docs-master-cap10-content": "Usa il Parallax per la profondità 3D in 2D. L'illuminazione ambientale cambia l'atmosfera globale.",
+
+        "ce-docs-master-cap11-title": "Capitolo 11: Prefab",
+        "ce-docs-master-cap11-content": "I <b>Prefab</b> sono modelli. Modifica il Prefab e ogni istanza nel gioco si aggiornerà all'istante.",
+
+        "ce-docs-master-cap12-title": "Capitolo 12: FAQ Tecnica",
+        "ce-docs-master-cap12-content": "Usa <b>DeltaTime</b> per la velocità costante. Ottimizza con le Tilemap per ridurre le Draw Call.",
+
+        "ce-docs-scripting-cap0-title": "Capitolo 0: Il Tuo Primo Script (Il Risveglio)",
+        "ce-docs-scripting-cap0-desc": "Il codice è l'anima. Inizia con <b>ve motor;</b>.\n\n<b>Sfida 0:</b> Fai ruotare un oggetto.",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nalActualizar(delta) {\n    rotazione += 100 * delta;\n}",
+
+        "ce-docs-scripting-cap1-title": "Capitolo 1: Filosofia CES",
+        "ce-docs-scripting-cap1-content": "Sintassi umana. Usa <b>posicion</b> invece di this. CES è uno strato veloce costruito su JavaScript.",
+
+        "ce-docs-scripting-cap2-title": "Capitolo 2: Anatomia di un .ces",
+        "ce-docs-scripting-cap2-content": "Diviso in: Intestazione, Variabili (publico) ed Eventi.",
+
+        "ce-docs-scripting-cap3-title": "Capitolo 3: Variabili e Ispettore",
+        "ce-docs-scripting-cap3-content": "Usa <b>publico</b> per mostrare le variabili nell'editor e regolarle in tempo reale.\n\n<b>Sfida 3:</b> Crea una variabile di velocità pubblica.",
+
+        "ce-docs-scripting-cap4-title": "Capitolo 4: Ciclo di Vita Pro",
+        "ce-docs-scripting-cap4-events": "alEmpezar per il setup, alActualizar per la logica di gioco.",
+
+        "ce-docs-scripting-cap5-title": "Capitolo 5: Input e Controllo",
+        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    variable horizontal = 0;\n    si (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    si (teclaRecienPresionada(\"Space\") && estaTocandoTag(\"Suolo\")) {\n        fisica.applyImpulse(nuevo Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "Capitolo 6: Dizionario API",
+        "ce-docs-scripting-cap6-content": "Accesso rapido: posicion, fisica, animacion, audio, reproducir.",
+
+        "ce-docs-scripting-cap7-title": "Capitolo 7: Messaggistica Globale",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "Capitolo 8: Coroutine",
+        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    esperar(3);\n    imprimir(\"Attivato!\");\n}",
+
+        "ce-docs-scripting-cap9-title": "Capitolo 9: Cookbook",
+        "ce-docs-scripting-cap9-mov": "Camera follow fluida usando lerp().",
+
+        "ce-docs-scripting-cap10-title": "Capitolo 10: Ottimizzazione Web",
+        "ce-docs-scripting-cap10-tips": "Evita buscar() in Update. Usa l'Object Pooling per i proiettili.",
+
+        "ce-docs-scripting-cap11-title": "Capitolo 11: Sotto il Cofano",
+        "ce-docs-scripting-cap11-content": "CES viene transpilato in JS ottimizzato. Supporta le funzioni native di JS."
+    },
+    ja: {
+        "ce-docs-nav-cap0": "第 0 章: 初めてのスクリプト",
+        "ce-docs-nav-cap1": "第 1 章: 哲学",
+        "ce-docs-nav-cap2": "第 2 章: 解剖学",
+        "ce-docs-nav-cap3": "第 3 章: 変数",
+        "ce-docs-nav-cap4": "第 4 章: ライフサイクル",
+        "ce-docs-nav-cap5": "第 5 章: 入力と物理",
+        "ce-docs-nav-cap6": "第 6 章: API 辞書",
+        "ce-docs-nav-cap7": "第 7 章: メッセージング",
+        "ce-docs-nav-cap8": "第 8 章: コルーチン",
+        "ce-docs-nav-cap9": "第 9 章: クックブック",
+        "ce-docs-nav-cap10": "第 10 章: 最適化",
+        "ce-docs-nav-cap11": "第 11 章: 内部構造",
+
+        "ce-nav-docs-masterbook": "マスターブック",
+        "ce-docs-master-title": "エンジン・マスターブック",
+        "ce-docs-master-intro": "究極のガイドへようこそ。この12章でCreative Engineのプロフェッショナルになりましょう。",
+
+        "ce-docs-master-cap1-title": "第 1 章: アクター、スクリプト、階層",
+        "ce-docs-master-cap1-content": "<b>マテリア</b>はゲームの原子です。階層構造により、腕や武器などの親子関係を構築できます。親を動かすと子が追従します。",
+
+        "ce-docs-master-cap2-title": "第 2 章: マテリア・カタログ",
+        "ce-docs-master-cap2-content": "• <b>空のマテリア:</b> 生成点。\n• <b>スプライト:</b> 2D描画。\n• <b>ライト:</b> 動的な影。\n• <b>オーディオ:</b> 立体音響。\n• <b>タイルマップ:</b> 巨大ステージの最適化。",
+
+        "ce-docs-master-cap3-title": "第 3 章: UI 宇宙",
+        "ce-docs-master-cap3-content": "UIは<b>Canva</b>の子要素である必要があります。<b>Anchors</b>を使用して、あらゆる画面サイズに対応させます。",
+
+        "ce-docs-master-cap4-title": "第 4 章: 物理、衝突、レイキャスト",
+        "ce-docs-master-cap4-content": "Rigidbody 2Dで物理を適用します。<b>Triggers</b>で接触検知、<b>Raycasting</b>でAIの視覚を実装します。",
+
+        "ce-docs-master-cap5-title": "第 5 章: ライフサイクル",
+        "ce-docs-master-cap5-content": "1. <b>alEmpezar():</b> 開始時。\n2. <b>alActualizar(delta):</b> 毎フレーム。\n3. <b>actualizarFijo(delta):</b> 物理演算用。\n4. <b>alHacerClick():</b> クリック時。",
+
+        "ce-docs-master-cap6-title": "第 6 章: アニメーション",
+        "ce-docs-master-cap6-content": "<b>AnimatorController</b>で状態を管理。<b>Smart Mode</b>は速度に応じて自動でアニメーションを切り替えます。",
+
+        "ce-docs-master-cap7-title": "第 7 章: プロジェクト構成",
+        "ce-docs-master-cap7-content": "<b>Tags</b>でオブジェクトを識別し、<b>Layers</b>で衝突を制御します。",
+
+        "ce-docs-master-cap8-title": "第 8 章: デザイン心理学",
+        "ce-docs-master-cap8-content": "<b>フィードバック</b>が重要です。効果音や画面の揺れ（screenshake）で、操作に心地よさを与えます。",
+
+        "ce-docs-master-cap9-title": "第 9 章: エフェクトと仕上げ",
+        "ce-docs-master-cap9-content": "パーティクルシステムとポストプロセッシング（Bloomなど）で、ゲームの質を向上させます。",
+
+        "ce-docs-master-cap10-title": "第 10 章: 動的な世界とパララックス",
+        "ce-docs-master-cap10-content": "パララックスで奥行きを演出します。環境光で昼夜の雰囲気を一瞬で切り替えられます。",
+
+        "ce-docs-master-cap11-title": "第 11 章: プレハブ (Prefabs)",
+        "ce-docs-master-cap11-content": "プレハブは金型です。一つ変更すれば、ゲーム内の全コピーが更新されます。弾丸や敵に最適です。",
+
+        "ce-docs-master-cap12-title": "第 12 章: 技術FAQ",
+        "ce-docs-master-cap12-content": "<b>DeltaTime</b>でPC間の速度を同期。タイルマップで描画負荷（Draw Calls）を軽減します。",
+
+        "ce-docs-scripting-cap0-title": "第 0 章: 初めてのスクリプト (目覚め)",
+        "ce-docs-scripting-cap0-desc": "コードは魂です。<b>ve motor;</b>から始めましょう。\n\n<b>チャレンジ 0:</b> オブジェクトを回転させます。",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nalActualizar(delta) {\n    rotacion += 100 * delta;\n}",
+
+        "ce-docs-scripting-cap1-title": "第 1 章: CES 哲学",
+        "ce-docs-scripting-cap1-content": "人間が読みやすい構文。thisは不要です。CESはJavaScript上の高速なレイヤーです。",
+
+        "ce-docs-scripting-cap2-title": "第 2 章: スクリプトの構造",
+        "ce-docs-scripting-cap2-content": "ヘッダー、変数定義（publico）、イベントの3つのエリアに分かれます。",
+
+        "ce-docs-scripting-cap3-title": "第 3 章: 変数とエディター",
+        "ce-docs-scripting-cap3-content": "<b>publico</b> を使ってエディターから値を直接調整できるようにします。\n\n<b>チャレンジ 3:</b> 公開速度変数を作成してください。",
+
+        "ce-docs-scripting-cap4-title": "第 4 章: プロのライフサイクル",
+        "ce-docs-scripting-cap4-events": "alEmpezarで初期設定、alActualizarでフレーム毎の処理を行います。",
+
+        "ce-docs-scripting-cap5-title": "第 5 章: 入力制御",
+        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    variable horizontal = 0;\n    if (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    if (teclaRecienPresionada(\"Space\") && estaTocandoTag(\"Floor\")) {\n        fisica.applyImpulse(new Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "第 6 章: API 辞書",
+        "ce-docs-scripting-cap6-content": "直接アクセス：posicion, fisica, animacion, audio, reproducir。",
+
+        "ce-docs-scripting-cap7-title": "第 7 章: グローバルメッセージ",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "第 8 章: コルーチン",
+        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    esperar(3);\n    imprimir(\"起動！\");\n}",
+
+        "ce-docs-scripting-cap9-title": "第 9 章: クックブック",
+        "ce-docs-scripting-cap9-mov": "lerp()を使用した滑らかなカメラ追従。",
+
+        "ce-docs-scripting-cap10-title": "第 10 章: 最適化",
+        "ce-docs-scripting-cap10-tips": "Update内でbuscar()を多用しないでください。オブジェクトプールを使用しましょう。",
+
+        "ce-docs-scripting-cap11-title": "第 11 章: 内部構造",
+        "ce-docs-scripting-cap11-content": "CESは最適化されたJSに変換されます。ネイティブJS関数を使用可能です。"
+    },
+    sw: {
+        "ce-docs-nav-cap0": "Sura ya 0: Script ya Kwanza",
+        "ce-docs-nav-cap1": "Sura ya 1: Falsafa",
+        "ce-docs-nav-cap2": "Sura ya 2: Anatomia",
+        "ce-docs-nav-cap3": "Sura ya 3: Vigezo",
+        "ce-docs-nav-cap4": "Sura ya 4: Mzunguko wa Maisha",
+        "ce-docs-nav-cap5": "Sura ya 5: Ingizo na Fizikia",
+        "ce-docs-nav-cap6": "Sura ya 6: Kamusi ya API",
+        "ce-docs-nav-cap7": "Sura ya 7: Ujumbe",
+        "ce-docs-nav-cap8": "Sura ya 8: Coroutines",
+        "ce-docs-nav-cap9": "Sura ya 9: Cookbook",
+        "ce-docs-nav-cap10": "Sura ya 10: Uboreshaji",
+        "ce-docs-nav-cap11": "Sura ya 11: Ndani ya Mitambo",
+
+        "ce-nav-docs-masterbook": "Kitabu Mkuu",
+        "ce-docs-master-title": "Kitabu Mkuu cha Injini",
+        "ce-docs-master-intro": "Karibu kwenye mwongozo kamili. Jifunze kutumia Creative Engine kupitia sura hizi 12 za kiufundi, kutoka misingi hadi mifumo ya kitaalamu.",
+
+        "ce-docs-master-cap1-title": "Sura ya 1: Muigizaji, Script, na Uongozi",
+        "ce-docs-master-cap1-content": "<b>Materia ni nini?</b>\nMateria ni atomi ya mchezo wako. Ni nukta yenye nafasi (X, Y), mzunguko, na ukubwa. Uongozi (Hierarchy) unaruhusu Mzazi na Mtoto; Mzazi akisogea, Mtoto anamfuata.",
+
+        "ce-docs-master-cap2-title": "Sura ya 2: Orodha ya Materia",
+        "ce-docs-master-cap2-content": "• <b>Empty Matter:</b> Pointi za spawn.\n• <b>Sprite:</b> Picha za 2D.\n• <b>Mwanga:</b> Vivuli.\n• <b>Sauti:</b> Sauti za anga.\n• <b>Tilemap:</b> Ramani kubwa zilizoboreshwa.",
+
+        "ce-docs-master-cap3-title": "Sura ya 3: Ulimwengu wa UI",
+        "ce-docs-master-cap3-content": "UI lazima iwe mtoto wa <b>Canva</b>. <b>Anchors</b> zinahakikisha UI inakaa sawa kwenye skrini tofauti.",
+
+        "ce-docs-master-cap4-title": "Sura ya 4: Fizikia na Raycast",
+        "ce-docs-master-cap4-content": "Rigidbody 2D kwa uzito. <b>Triggers</b> kwa maeneo ya kugundua. <b>Raycasting</b> kwa 'maono' ya AI au kugundua ardhi kwa usahihi.",
+
+        "ce-docs-master-cap5-title": "Sura ya 5: Mzunguko wa Maisha",
+        "ce-docs-master-cap5-content": "1. <b>alEmpezar():</b> Wakati wa kuanza.\n2. <b>alActualizar(delta):</b> Kila fremu.\n3. <b>actualizarFijo(delta):</b> Kwa fizikia.\n4. <b>alHacerClick():</b> Tukio la kugusa.",
+
+        "ce-docs-master-cap6-title": "Sura ya 6: Uhuishaji",
+        "ce-docs-master-cap6-content": "<b>AnimatorController</b> ni mashine ya hali. <b>Smart Mode</b> inabadilisha uhuishaji kulingana na kasi bila code.",
+
+        "ce-docs-master-cap7-title": "Sura ya 7: Mpangilio wa Miradi",
+        "ce-docs-master-cap7-content": "Tumia <b>Tags</b> kutambua vitu na <b>Layers</b> kudhibiti migongano.",
+
+        "ce-docs-master-cap8-title": "Sura ya 8: Saikolojia ya Ubunifu",
+        "ce-docs-master-cap8-content": "<b>Feedback</b> ni muhimu sana. Sauti na mtikisiko wa kamera (screenshake) hufanya mchezo 'uhisiwe'.",
+
+        "ce-docs-master-cap9-title": "Sura ya 9: Madoido na 'Juice'",
+        "ce-docs-master-cap9-content": "Ongeza madoido kwa kutumia mifumo ya chembe (Particles) na post-processing kama Bloom kwa mwangaza.",
+
+        "ce-docs-master-cap10-title": "Sura ya 10: Ulimwengu na Parallax",
+        "ce-docs-master-cap10-content": "Tumia Parallax kwa muonekano wa 3D. Mwanga wa mazingira unabadilisha anga kwa amri moja.",
+
+        "ce-docs-master-cap11-title": "Sura ya 11: Prefabs",
+        "ce-docs-master-cap11-content": "<b>Prefabs</b> ni kielelezo kikuu. Badilisha kielelezo kimoja, na nakala zote kwenye mchezo zitasasishwa.",
+
+        "ce-docs-master-cap12-title": "Sura ya 12: Maswali ya Kiufundi",
+        "ce-docs-master-cap12-content": "Tumia <b>DeltaTime</b> kwa kasi thabiti. Boresha utendaji kwa kutumia Tilemaps.",
+
+        "ce-docs-scripting-cap0-title": "Sura ya 0: Script Yako ya Kwanza (Uamsho)",
+        "ce-docs-scripting-cap0-desc": "Code ni roho ya Materia. Anza na <b>ve motor;</b>.\n\n<b>Changamoto 0:</b> Fanya kitu kizunguke.",
+        "ce-docs-scripting-cap0-code": "ve motor;\n\nalActualizar(delta) {\n    rotacion += 100 * delta;\n}",
+
+        "ce-docs-scripting-cap1-title": "Sura ya 1: Falsafa ya CES",
+        "ce-docs-scripting-cap1-content": "Syntax rahisi kusoma. Tumia <b>posicion</b> badala ya this. CES ni safu ya haraka juu ya JavaScript.",
+
+        "ce-docs-scripting-cap2-title": "Sura ya 2: Anatomia ya Script",
+        "ce-docs-scripting-cap2-content": "Imegawanywa katika: Kichwa, Vigezo (publico), na Matukio.",
+
+        "ce-docs-scripting-cap3-title": "Sura ya 3: Vigezo na Mkaguzi",
+        "ce-docs-scripting-cap3-content": "Tumia <b>publico</b> ili kuona vigezo kwenye kihariri na kuvibadilisha wakati mchezo unaendelea.\n\n<b>Changamoto 3:</b> Tengeneza kigezo cha kasi cha public.",
+
+        "ce-docs-scripting-cap4-title": "Sura ya 4: Mzunguko wa Pro",
+        "ce-docs-scripting-cap4-events": "alEmpezar kwa mipangilio, alActualizar kwa logiki ya kila fremu.",
+
+        "ce-docs-scripting-cap5-title": "Sura ya 5: Udhibiti wa Ingizo",
+        "ce-docs-scripting-cap5-code": "alActualizar(delta) {\n    variable horizontal = 0;\n    kama (teclaPressionada(\"d\")) horizontal = 1;\n    posicion.x += horizontal * (300 * delta);\n    \n    kama (teclaRecienPresionada(\"Space\") && estaTocandoTag(\"Ardhi\")) {\n        fisica.applyImpulse(nuevo Vector2(0, -15));\n    }\n}",
+
+        "ce-docs-scripting-cap6-title": "Sura ya 6: Kamusi ya API",
+        "ce-docs-scripting-cap6-content": "Ufikiaji wa moja kwa moja: posicion, fisica, animacion, audio, reproducir.",
+
+        "ce-docs-scripting-cap7-title": "Sura ya 7: Ujumbe wa Ulimwengu",
+        "ce-docs-scripting-cap7-emisor": "difundir(\"GameOver\", { score: 100 });",
+        "ce-docs-scripting-cap7-receptor": "alRecibir(\"GameOver\", (data) => { ... });",
+
+        "ce-docs-scripting-cap8-title": "Sura ya 8: Coroutines",
+        "ce-docs-scripting-cap8-code1": "async alEmpezar() {\n    esperar(3);\n    imprimir(\"Imewashwa!\");\n}",
+
+        "ce-docs-scripting-cap9-title": "Sura ya 9: Cookbook",
+        "ce-docs-scripting-cap9-mov": "Kufuata kwa kamera laini kwa kutumia lerp().",
+
+        "ce-docs-scripting-cap10-title": "Sura ya 10: Uboreshaji wa Web",
+        "ce-docs-scripting-cap10-tips": "Epuka kutumia buscar() kwenye Update. Tumia Object Pooling kwa risasi.",
+
+        "ce-docs-scripting-cap11-title": "Sura ya 11: Ndani ya Mitambo",
+        "ce-docs-scripting-cap11-content": "CES inabadilishwa kuwa JS iliyoboreshwa. Inasaidia kazi asilia za JS."
     }
 };

@@ -1,0 +1,17 @@
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /estilos.css HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /carley_foto_web/Logo_C.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /carley_foto_web/Creative_Games_Logo.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /carley_foto_web/VidSpri_Logo_New.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /carley_foto_web/fds.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /carley_foto_web/Logo_3D_App_Craft.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:41] "GET /js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:42] "GET /carley_foto_web/Escena%20de%20videojuego.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:42] "GET /creative-engine.html HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:42] "GET /carley_foto_web/creative-code.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:42] "GET /carley_foto_web/tutorial_interfaz.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:43] "GET /carley_foto_web/fondo_lineas_ce.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:43] "GET /carley_foto_web/vidspri_mascot.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:43] "GET /carley_foto_web/Fondo%20estilo%20videoju.png HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:45] "GET /privacidad.html HTTP/1.1" 200 -
+127.0.0.1 - - [06/Apr/2026 20:55:45] "GET /js/main.js HTTP/1.1" 304 -
