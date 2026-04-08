@@ -153,17 +153,32 @@
             </div>
         </section>
 
-        <section id="app-craft-home" class="product-reveal">
+        <section id="carley-os-home" class="product-reveal">
             <div class="reveal-container">
+                <div class="reveal-text">
+                    <h2 class="reveal-title">Carley OS</h2>
+                    <p class="reveal-p" data-i18n="carley-os-desc">
+                        Carley OS es un sistema operativo de alto rendimiento con un kernel personalizado, diseñado específicamente para gaming y desarrollo en laptops modernas. Optimización extrema y fluidez sin precedentes.
+                    </p>
+                    <span class="status-badge" data-i18n="footer-not-available">No Disponible</span>
+                </div>
+                <div class="reveal-image">
+                    <img src="carley_foto_web/fds.png" alt="Carley OS" onerror="this.src='carley_foto_web/Logo_C.png'">
+                </div>
+            </div>
+        </section>
+
+        <section id="app-craft-home" class="product-reveal alt">
+            <div class="reveal-container">
+                <div class="reveal-image">
+                    <img src="carley_foto_web/Logo_3D_App_Craft.png" alt="AppCraft">
+                </div>
                 <div class="reveal-text">
                     <h2 class="reveal-title"><span class="app-white">App</span><span class="craft-green">Craft</span></h2>
                     <p class="reveal-p" data-i18n="app-craft-desc">
                         AppCraft es un motor de aplicaciones que te permitirá crear aplicaciones de forma fácil y sencilla, empezando desde la web. Actualmente se encuentra en desarrollo.
                     </p>
                     <span class="status-badge" data-i18n="footer-not-available">No Disponible</span>
-                </div>
-                <div class="reveal-image">
-                    <img src="carley_foto_web/Logo_3D_App_Craft.png" alt="AppCraft">
                 </div>
             </div>
         </section>
@@ -206,6 +221,7 @@
                 </ul>
                 <h4 class="footer-sub-h" data-i18n="footer-not-available">No Disponibles</h4>
                 <ul class="footer-links not-available">
+                    <li><a href="#">Carley OS</a></li>
                     <li><a href="#"><span class="app-white">App</span><span class="craft-green">Craft</span></a></li>
                     <li><a href="#">Carl IA</a></li>
                     <li><a href="#">Traspilador</a></li>
@@ -247,6 +263,31 @@
     </div>
 
     <!-- Auth Sub-modals -->
+    <div id="modal-recovery" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="recovery-title">Recuperar Acceso</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-recovery')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-text" data-i18n="recovery-desc">Introduce tu correo para recibir un enlace de recuperación.</p>
+            <input type="email" id="recovery-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <button id="do-recovery" class="modal-btn primary" data-i18n="btn-recovery-action">Enviar Instrucciones</button>
+        </div>
+    </div>
+
+    <div id="modal-reset-password" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="reset-pass-title">Nueva Contraseña</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-reset-password')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-text" data-i18n="reset-pass-desc">Ingresa tu nueva contraseña para tu cuenta Carley Studio.</p>
+            <input type="password" id="new-password" placeholder="Nueva Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <input type="password" id="confirm-new-password" placeholder="Confirmar Contraseña" class="modal-input" data-i18n-ph="ph-pass-confirm">
+            <button id="do-reset-password" class="modal-btn primary" data-i18n="btn-reset-pass">Cambiar Contraseña</button>
+        </div>
+    </div>
+
     <div id="modal-auth-login" class="studio-modal hidden">
         <div class="modal-header">
             <h2 data-i18n="login-title">Iniciar Sesión</h2>
@@ -255,6 +296,7 @@
         <div class="modal-body">
             <input type="email" id="login-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
             <input type="password" id="login-pass" placeholder="Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <a href="#" class="recovery-link" onclick="openStudioModal('modal-recovery'); closeStudioModal('modal-auth-login'); return false;" data-i18n="forgot-pass-link">¿Olvidaste tu contraseña?</a>
             <button id="do-login" class="modal-btn primary" data-i18n="btn-login-action">Entrar</button>
         </div>
     </div>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carley Studio SSO Bridge</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+    <!--
+      Bridge Seguro de Carley Interactive Studio.
+      Este archivo permite que sitios autorizados (carleyengine.com, creativegame.online)
+      soliciten datos a Supabase usando la sesión activa del sitio principal.
+    -->
+    <script>
+        // Inicialización de Supabase
+        const SB_URL = 'https://tladrluezsmmhjbhupgb.supabase.co';
+        const SB_KEY = 'sb_publishable_zb8TGeURLnafHWDffG9DMg_PtFO_kmv';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        // Lista blanca estricta de dominios autorizados
+        const WHITELISTED_ORIGINS = [
+            'https://carleyengine.com',
+            'https://www.carleyengine.com',
+            'https://creativegame.online',
+            'https://www.creativegame.online',
+            'http://localhost:8080',
+            'http://127.0.0.1:8080'
+        ];
+
+        window.addEventListener('message', async (event) => {
+            // Verificación de seguridad: solo permitir orígenes autorizados
+            const originMatch = WHITELISTED_ORIGINS.includes(event.origin);
+            if (!originMatch) {
+                console.warn('⚠️ Bloqueado mensaje SSO de origen no autorizado:', event.origin);
+                return;
+            }
+
+            const { type, payload, requestId } = event.data;
+
+            // Health check for clients to verify bridge is responsive
+            if (type === 'PING') {
+                event.source.postMessage({ type: 'PONG', requestId }, event.origin);
+                return;
+            }
+
+            if (type === 'CHECK_SESSION') {
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    event.source.postMessage({
+                        type: 'SESSION_RESPONSE',
+                        payload: session ? {
+                            user: {
+                                id: session.user.id,
+                                email: session.user.email,
+                                user_metadata: session.user.user_metadata,
+                                app_metadata: session.user.app_metadata
+                            },
+                            access_token: session.access_token
+                        } : null,
+                        requestId
+                    }, event.origin);
+                } catch (err) {
+                    event.source.postMessage({ type: 'ERROR', payload: err.message, requestId }, event.origin);
+                }
+            }
+
+            if (type === 'SUPABASE_CALL') {
+                const { table, method, query, filter, rpc, params } = payload;
+
+                try {
+                    let result;
+                    if (rpc) {
+                        // Soporte para llamadas a funciones (RPC) para mayor seguridad y lógica compleja
+                        result = await supabaseClient.rpc(rpc, params);
+                    } else if (table && method) {
+                        // Consultas directas a tablas (sujetas a RLS de Supabase)
+                        let request = supabaseClient.from(table)[method](query);
+                        if (filter && typeof filter === 'object') {
+                            Object.keys(filter).forEach(key => {
+                                // Soporta filtros básicos de igualdad
+                                request = request.eq(key, filter[key]);
+                            });
+                        }
+                        result = await request;
+                    }
+
+                    event.source.postMessage({
+                        type: 'SUPABASE_RESPONSE',
+                        payload: { data: result.data, error: result.error },
+                        requestId
+                    }, event.origin);
+                } catch (err) {
+                    event.source.postMessage({
+                        type: 'SUPABASE_RESPONSE',
+                        payload: { data: null, error: err.message },
+                        requestId
+                    }, event.origin);
+                }
+            }
+        });
+
+        // Notificar al padre que el bridge está listo y escuchando
+        // Se usa '*' aquí porque al cargar inicialmente el bridge no conocemos el origen del padre,
+        // pero las respuestas subsecuentes son estrictamente validadas por event.origin.
+        window.parent.postMessage({ type: 'BRIDGE_READY' }, '*');
+    </script>
+</body>
+</html>
