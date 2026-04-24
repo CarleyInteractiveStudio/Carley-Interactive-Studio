@@ -1,19 +1,33 @@
 /* ==============================
    Course Logic System - Professional & Fun
-   Updated with Combat, Multi-Mechanics & Sync
+   Updated with Combat, Multi-Mechanics, Shop & Sync
 ============================== */
 
 let currentProgress = {
     stage: 1,
     course: 1,
-    completed: []
+    completed: [],
+    credits: 0,
+    ownedSkins: ['default'],
+    activeSkin: 'default',
+    achievements: []
 };
 
 let activeStage = null;
 let activeCourse = null;
 let currentStepIndex = 0;
 let userHealth = 3;
-let selectedBlocks = []; // For sorting/completing mechanics
+let selectedBlocks = [];
+let bgmSource = null;
+let isMusicOn = false;
+
+const skins = {
+    'default': { name: 'Carl Original', color: '#7ED957', price: 0 },
+    'ocean': { name: 'Carl Oceánico', color: '#00AAFF', price: 50 },
+    'lava': { name: 'Carl Volcánico', color: '#FF5733', price: 50 },
+    'gold': { name: 'Carl Dorado', color: '#FFD700', price: 150 },
+    'void': { name: 'Carl del Vacío', color: '#8A2BE2', price: 200 }
+};
 
 /* ==============================
    Sound Manager (Web Audio API)
@@ -49,6 +63,11 @@ const SoundManager = {
     gameOver() {
         this.playTone(200, 'sawtooth', 0.5, 0.2);
         setTimeout(() => this.playTone(100, 'sawtooth', 0.8, 0.1), 300);
+    },
+    achievement() {
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+            setTimeout(() => this.playTone(f, 'sine', 0.4, 0.1), i * 150);
+        });
     }
 };
 
@@ -60,6 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await loadProgress();
             renderMap();
             updateUIProgress();
+            updateCreditsUI();
         }
     }, 100);
 
@@ -89,25 +109,30 @@ async function initAuthCheck() {
 }
 
 async function loadProgress() {
-    // Try Supabase first
     const { data: { session } } = await window.supabaseClient.auth.getSession();
     if (session) {
         const { data, error } = await window.supabaseClient
             .from('course_progress')
-            .select('stage, completed_courses')
+            .select('*')
             .eq('user_id', session.user.id)
             .single();
 
         if (data && !error) {
             currentProgress.stage = data.stage;
-            currentProgress.completed = data.completed_courses;
+            currentProgress.completed = data.completed_courses || [];
+            currentProgress.credits = data.credits || 0;
+            currentProgress.ownedSkins = data.owned_skins || ['default'];
+            currentProgress.activeSkin = data.active_skin || 'default';
+            currentProgress.achievements = data.achievements || [];
             return;
         }
     }
 
-    // Fallback to local
     const saved = localStorage.getItem('ces-course-progress');
-    if (saved) currentProgress = JSON.parse(saved);
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        currentProgress = { ...currentProgress, ...parsed };
+    }
 }
 
 async function saveProgress() {
@@ -121,6 +146,10 @@ async function saveProgress() {
                 user_id: session.user.id,
                 stage: currentProgress.stage,
                 completed_courses: currentProgress.completed,
+                credits: currentProgress.credits,
+                owned_skins: currentProgress.ownedSkins,
+                active_skin: currentProgress.activeSkin,
+                achievements: currentProgress.achievements,
                 updated_at: new Date().toISOString()
             }, { onConflict: 'user_id' });
     }
@@ -136,15 +165,20 @@ function updateUIProgress() {
     if (stats) stats.textContent = percent + '%';
 }
 
+function updateCreditsUI() {
+    const el = document.getElementById('user-credits');
+    if (el) el.textContent = currentProgress.credits;
+}
+
+/* ==============================
+   Rendering & Map
+============================== */
 function renderMap() {
     const map = document.getElementById('map-view');
     if (!map || map.classList.contains('hidden')) return;
 
     let mapWidth = map.offsetWidth;
-    if (mapWidth === 0) {
-        // Fallback for initial render or headless
-        mapWidth = Math.min(window.innerWidth, 1000) - 40;
-    }
+    if (mapWidth === 0) mapWidth = Math.min(window.innerWidth, 1000) - 40;
 
     const stages = window.courseData.stages;
     const nodes = map.querySelectorAll('.stage-node, .map-svg');
@@ -159,7 +193,6 @@ function renderMap() {
     map.appendChild(svg);
 
     const positions = [];
-
     stages.forEach((stage, index) => {
         const node = document.createElement('div');
         node.className = 'stage-node';
@@ -175,8 +208,10 @@ function renderMap() {
         node.style.boxShadow = `0 0 30px ${stage.color}44`;
         node.style.position = 'absolute';
 
+        const isStageDone = stage.courses.length > 0 && stage.courses.every(c => currentProgress.completed.includes(c.id));
+
         node.innerHTML = `
-            <i data-lucide="${getStageIcon(index)}" style="color:${stage.color}; width:45px; height:45px;"></i>
+            <i data-lucide="${isStageDone ? 'check-circle' : getStageIcon(index)}" style="color:${isStageDone ? '#7ED957' : stage.color}; width:45px; height:45px;"></i>
             <span class="stage-label">${stage.name}</span>
         `;
 
@@ -209,7 +244,7 @@ function renderMap() {
     const char = document.getElementById('character');
     const currentPos = positions[currentProgress.stage - 1];
     if (currentPos && char) {
-        updateCharacterAccessories(char);
+        updateCharacterVisuals(char);
         char.classList.add('char-walking');
         char.style.left = `${currentPos.x - 30}px`;
         char.style.top = `${currentPos.y - 60}px`;
@@ -308,7 +343,7 @@ function renderSubMap() {
     subChar.style.position = 'absolute';
     subChar.style.zIndex = '10';
     subChar.innerHTML = '<div class="char-eye" style="width:5px; height:5px;"></div><div class="char-eye" style="width:5px; height:5px;"></div>';
-    updateCharacterAccessories(subChar);
+    updateCharacterVisuals(subChar);
 
     let charPos = positions[0];
     for(let i=0; i<positions.length; i++) {
@@ -328,6 +363,9 @@ function renderSubMap() {
     container.style.height = (courses.length * 180 + 200) + 'px';
 }
 
+/* ==============================
+   Lesson & Mechanics
+============================== */
 function startCourse(course) {
     activeCourse = course;
     currentStepIndex = 0;
@@ -362,14 +400,14 @@ function renderStep() {
     selectedBlocks = [];
 
     const bossCont = document.getElementById('boss-container');
-    // Show enemy in all practice steps to fulfill the mini-game requirement
     if (step.type !== 'teoria') {
         bossCont.classList.remove('hidden');
-        // If it's a normal lesson, make the enemy slightly smaller/different if needed
         bossCont.style.transform = isBoss ? 'scale(1.2)' : 'scale(0.8)';
     } else {
         bossCont.classList.add('hidden');
     }
+
+    updateCharacterVisuals(document.getElementById('lesson-character'));
 
     const area = document.getElementById('practice-area');
     area.innerHTML = '';
@@ -395,6 +433,7 @@ function renderStep() {
         if (step.type === 'practica') {
             area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
             document.getElementById('answer-input').focus();
+            document.getElementById('answer-input').onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
         } else if (step.type === 'opcion-multiple') {
             const grid = document.createElement('div');
             grid.className = 'options-grid';
@@ -430,7 +469,7 @@ function renderStep() {
                 blocks.appendChild(item);
             });
             area.appendChild(blocks);
-        } else if (step.type === 'ordenar-blocks' || step.type === 'ordenar-bloques') {
+        } else if (step.type === 'ordenar-bloques') {
             const template = document.createElement('div');
             template.className = 'code-template-view';
             template.id = 'sequence-template';
@@ -456,8 +495,25 @@ function renderStep() {
                 blocks.appendChild(item);
             });
             area.appendChild(blocks);
+        } else if (step.type === 'modo-debug') {
+            const container = document.createElement('div');
+            container.style.background = '#000';
+            container.style.padding = '20px';
+            container.style.borderRadius = '15px';
+            container.style.border = '1px solid #333';
+
+            step.codeLines.forEach((line, i) => {
+                const lineEl = document.createElement('div');
+                lineEl.className = 'debug-line buggy-hover';
+                lineEl.textContent = line;
+                lineEl.onclick = () => checkDebug(i);
+                container.appendChild(lineEl);
+            });
+            area.appendChild(container);
+            checkBtn.classList.add('hidden');
         }
     }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function selectOption(card, opt) {
@@ -466,6 +522,15 @@ function selectOption(card, opt) {
         checkAnswer(true);
     } else {
         card.classList.add('wrong');
+        checkAnswer(false);
+    }
+}
+
+function checkDebug(index) {
+    const step = activeCourse.steps[currentStepIndex];
+    if (index === step.errorLine) {
+        checkAnswer(true);
+    } else {
         checkAnswer(false);
     }
 }
@@ -481,15 +546,12 @@ function checkAnswer(isCorrectOverride = null) {
         isCorrect = val.toLowerCase() === step.answer.toLowerCase();
     } else if (step.type === 'completar-codigo') {
         isCorrect = selectedBlocks[0] === step.answer;
-    } else if (step.type === 'ordenar-blocks' || step.type === 'ordenar-bloques') {
+    } else if (step.type === 'ordenar-bloques') {
         isCorrect = JSON.stringify(selectedBlocks) === JSON.stringify(step.answer);
     }
 
-    if (isCorrect) {
-        handleSuccess();
-    } else {
-        handleFailure();
-    }
+    if (isCorrect) handleSuccess();
+    else handleFailure();
 }
 
 function handleSuccess() {
@@ -500,7 +562,6 @@ function handleSuccess() {
     char.classList.add('char-attack');
     setTimeout(() => {
         char.classList.remove('char-attack');
-        // Hit the enemy in all practice steps
         if (boss) {
             boss.classList.add('boss-hit');
             SoundManager.bossHit();
@@ -509,7 +570,7 @@ function handleSuccess() {
     }, 300);
 
     if (typeof confetti !== 'undefined') {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#7ED957', '#00AAFF'] });
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: [skins[currentProgress.activeSkin].color, '#fff'] });
     }
     showFeedback(true);
 }
@@ -522,7 +583,6 @@ function handleFailure() {
     const char = document.getElementById('lesson-character');
     const boss = document.querySelector('.boss-bug');
 
-    // Enemy attacks the character
     if (boss) {
         const originalTransform = boss.style.transform;
         boss.style.transform = 'translateX(-50px) scale(1.1)';
@@ -538,18 +598,12 @@ function handleFailure() {
 
     if (userHealth <= 0) {
         SoundManager.gameOver();
-        alert("¡Oh no! Te has quedado sin corazones. Inténtalo de nuevo.");
+        alert("¡Has caído en batalla! Recupérate y vuelve a intentarlo.");
         startCourse(activeCourse);
         return;
     }
 
-    let hint = "Algo no está bien. ¡Inténtalo de nuevo!";
-    const step = activeCourse.steps[currentStepIndex];
-    if (step.type === 'practica') {
-        const val = document.getElementById('answer-input').value;
-        if (val === "") hint = "No dejes el campo vacío.";
-        else if (step.answer.toLowerCase().includes(val.toLowerCase()) && val.length > 2) hint = "¡Casi! Revisa bien la sintaxis.";
-    }
+    let hint = "Revisa bien el código. ¡Tú puedes!";
     showFeedback(false, hint);
 }
 
@@ -573,16 +627,11 @@ function showFeedback(correct, hint = "") {
         card.classList.remove('bounce');
         card.classList.add('shake');
         setTimeout(() => card.classList.remove('shake'), 600);
-        status.textContent = '¡CUIDADO! TE GOLPEARON';
+        status.textContent = '¡GOLPE RECIBIDO!';
         status.style.background = '#ff4d4d';
         feedback.innerHTML = hint;
         feedback.classList.remove('hidden');
-
-        // Reset blocks for sequence mechanics on fail
-        const step = activeCourse.steps[currentStepIndex];
-        if (step.type.includes('ordenar')) {
-            setTimeout(() => renderStep(), 1000);
-        }
+        if (activeCourse.steps[currentStepIndex].type.includes('ordenar')) setTimeout(() => renderStep(), 1000);
     }
 }
 
@@ -591,11 +640,16 @@ async function nextStep() {
         currentStepIndex++;
         renderStep();
     } else {
-        if (!currentProgress.completed.includes(activeCourse.id)) {
+        const isFirstTime = !currentProgress.completed.includes(activeCourse.id);
+        if (isFirstTime) {
             currentProgress.completed.push(activeCourse.id);
+            currentProgress.credits += activeCourse.isBoss ? 25 : 10;
+            updateCreditsUI();
+
             const ids = activeStage.courses.map(c => c.id);
             if (ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
                 currentProgress.stage++;
+                unlockAchievement(activeStage.name);
             }
         }
         await saveProgress();
@@ -603,28 +657,129 @@ async function nextStep() {
 
         const all = window.courseData.stages.flatMap(s => s.courses);
         const idx = all.findIndex(c => c.id === activeCourse.id);
-        if (idx < all.length - 1) {
-            startCourse(all[idx + 1]);
-        } else {
-            alert("¡INCREÍBLE! HAS COMPLETADO EL CAMINO DISPONIBLE.");
+        if (idx < all.length - 1) startCourse(all[idx + 1]);
+        else {
+            alert("¡MAESTRÍA ALCANZADA! Por ahora no hay más niveles.");
             backToMap();
         }
     }
 }
 
-window.speakContent = () => {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const step = activeCourse.steps[currentStepIndex];
-    const text = step.type === 'teoria' ? step.content : step.question;
-    const ut = new SpeechSynthesisUtterance(text);
-    ut.lang = 'es-ES';
+/* ==============================
+   Gamification: Shop & Achievements
+============================== */
+function openShop() {
+    const container = document.getElementById('shop-items-container');
+    container.innerHTML = '';
 
-    const lessonChar = document.getElementById('lesson-character');
-    ut.onstart = () => { if (lessonChar) lessonChar.classList.add('char-talking'); };
-    ut.onend = () => { if (lessonChar) lessonChar.classList.remove('char-talking'); };
-    window.speechSynthesis.speak(ut);
-};
+    Object.entries(skins).forEach(([id, skin]) => {
+        const isOwned = currentProgress.ownedSkins.includes(id);
+        const isActive = currentProgress.activeSkin === id;
+
+        const card = document.createElement('div');
+        card.className = `shop-item ${isOwned ? 'owned' : ''} ${isActive ? 'active' : ''}`;
+        card.innerHTML = `
+            <div class="skin-preview" style="background:${skin.color}; box-shadow: 0 0 15px ${skin.color}66;"></div>
+            <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${skin.name}</div>
+            <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : skin.price + ' Créditos'}</div>
+        `;
+        card.onclick = () => handleShopAction(id, skin);
+        container.appendChild(card);
+    });
+
+    document.getElementById('shop-modal').classList.remove('hidden');
+}
+
+function closeShop() {
+    document.getElementById('shop-modal').classList.add('hidden');
+    renderMap();
+}
+
+async function handleShopAction(id, skin) {
+    if (currentProgress.ownedSkins.includes(id)) {
+        currentProgress.activeSkin = id;
+    } else {
+        if (currentProgress.credits >= skin.price) {
+            currentProgress.credits -= skin.price;
+            currentProgress.ownedSkins.push(id);
+            currentProgress.activeSkin = id;
+            SoundManager.ding();
+            updateCreditsUI();
+        } else {
+            alert("No tienes suficientes créditos.");
+            return;
+        }
+    }
+    await saveProgress();
+    openShop();
+}
+
+function unlockAchievement(stageName) {
+    const name = `Maestro de ${stageName}`;
+    if (currentProgress.achievements.includes(name)) return;
+
+    currentProgress.achievements.push(name);
+    const popup = document.getElementById('achievement-popup');
+    document.getElementById('achievement-name').textContent = name;
+    popup.classList.remove('hidden');
+    SoundManager.achievement();
+
+    setTimeout(() => popup.classList.add('hidden'), 5000);
+}
+
+function updateCharacterVisuals(char) {
+    if (!char) return;
+    const body = char.classList.contains('char-body') ? char : char.querySelector('.char-body');
+    if (!body) return;
+
+    const skin = skins[currentProgress.activeSkin] || skins.default;
+    body.style.background = skin.color;
+    body.style.boxShadow = `0 0 25px ${skin.color}`;
+
+    const existing = char.querySelectorAll('.char-accessory');
+    existing.forEach(e => e.remove());
+    if (currentProgress.stage > 1) {
+        const hat = document.createElement('div');
+        hat.className = 'char-accessory hat-expert';
+        char.appendChild(hat);
+    }
+}
+
+/* ==============================
+   Audio & Utilities
+============================== */
+function toggleMusic() {
+    isMusicOn = !isMusicOn;
+    const btn = document.getElementById('bgm-toggle');
+    btn.style.color = isMusicOn ? 'var(--primary)' : '#fff';
+
+    if (isMusicOn) {
+        // In a real browser we need a user gesture, which this click is.
+        // For static hosting, we use procedural tones to simulate BGM loops
+        startAmbientBGM();
+    } else {
+        stopAmbientBGM();
+    }
+}
+
+function startAmbientBGM() {
+    SoundManager.init();
+    if (bgmSource) return;
+    // Real loops would use Audio files, but let's use some cool oscillator patterns
+    bgmLoop();
+}
+
+function stopAmbientBGM() {
+    bgmSource = false;
+}
+
+function bgmLoop() {
+    if (!isMusicOn) return;
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C Major
+    const note = notes[Math.floor(Math.random() * notes.length)];
+    SoundManager.playTone(note, 'sine', 1.5, 0.02);
+    setTimeout(bgmLoop, 1000);
+}
 
 function backToMap() {
     document.getElementById('map-view').classList.remove('hidden');
@@ -677,12 +832,15 @@ function showSorryMessage() {
     document.body.appendChild(modal);
 }
 
-function updateCharacterAccessories(char) {
-    const existing = char.querySelectorAll('.char-accessory');
-    existing.forEach(e => e.remove());
-    if (currentProgress.stage > 1) {
-        const hat = document.createElement('div');
-        hat.className = 'char-accessory hat-expert';
-        char.appendChild(hat);
-    }
-}
+window.speakContent = () => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const step = activeCourse.steps[currentStepIndex];
+    const text = step.type === 'teoria' ? step.content : (step.question || "");
+    const ut = new SpeechSynthesisUtterance(text);
+    ut.lang = 'es-ES';
+    const lessonChar = document.getElementById('lesson-character');
+    ut.onstart = () => { if (lessonChar) lessonChar.classList.add('char-talking'); };
+    ut.onend = () => { if (lessonChar) lessonChar.classList.remove('char-talking'); };
+    window.speechSynthesis.speak(ut);
+};

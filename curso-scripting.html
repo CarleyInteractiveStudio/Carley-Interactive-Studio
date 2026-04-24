@@ -47,6 +47,19 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
+        .credits-display {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 15px;
+            border-radius: 12px;
+            border: 1px solid gold;
+            color: gold;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+        }
+
         .progress-wrapper {
             flex: 1;
             height: 14px;
@@ -446,6 +459,74 @@
             background: rgba(126, 217, 87, 0.1);
             color: var(--primary);
         }
+
+        /* Shop Styles */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .shop-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .shop-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+
+        .shop-item.owned { border-color: var(--primary); }
+        .shop-item.active { background: rgba(126, 217, 87, 0.1); border-color: var(--primary); box-shadow: 0 0 20px rgba(126, 217, 87, 0.2); }
+
+        .skin-preview {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 15px;
+            border-radius: 10px;
+        }
+
+        /* Debug Mode Styles */
+        .debug-line {
+            padding: 10px 15px;
+            font-family: monospace;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: background 0.2s;
+            position: relative;
+        }
+
+        .debug-line:hover { background: rgba(255,255,255,0.1); }
+        .debug-line.buggy-hover:hover { background: rgba(255, 77, 77, 0.2); }
+
+        /* Audio Control */
+        .audio-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .audio-toggle:hover { background: var(--secondary); transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -458,9 +539,37 @@
             <div id="main-progress-bar"></div>
         </div>
         <div id="user-stats" style="font-weight:bold; color:var(--primary); font-size: 1.2rem;">0%</div>
+        <div class="credits-display">
+            <i data-lucide="coins"></i> <span id="user-credits">0</span>
+        </div>
+        <button class="icon-btn" onclick="openShop()" style="margin-left: 20px;">
+            <i data-lucide="shopping-bag"></i>
+        </button>
     </div>
 
     <div class="course-container">
+
+        <!-- Shop Modal -->
+        <div id="shop-modal" class="modal-overlay hidden">
+            <div class="course-modal" style="max-width: 600px;">
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h2 style="margin:0; font-weight: 900;">TIENDA DE SKINS</h2>
+                    <button onclick="closeShop()" class="icon-btn"><i data-lucide="x"></i></button>
+                </div>
+                <div class="shop-grid" id="shop-items-container">
+                    <!-- Items injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Popup -->
+        <div id="achievement-popup" class="hidden" style="position: fixed; top: 90px; right: 20px; z-index: 2000; background: #111; border: 2px solid gold; padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+            <div style="font-size: 2.5rem;">🏆</div>
+            <div>
+                <div style="color: gold; font-weight: 900; font-size: 0.8rem; text-transform: uppercase;">Logro Desbloqueado</div>
+                <div id="achievement-name" style="font-weight: bold; font-size: 1.2rem;">Maestro de Arquitectura</div>
+            </div>
+        </div>
 
         <!-- Map View -->
         <div id="map-view">
@@ -548,6 +657,10 @@
             </div>
         </div>
     </div>
+
+    <button class="audio-toggle" id="bgm-toggle" onclick="toggleMusic()">
+        <i data-lucide="music"></i>
+    </button>
 
     <script src="js/main.js"></script>
     <script src="js/course-data.js"></script>
