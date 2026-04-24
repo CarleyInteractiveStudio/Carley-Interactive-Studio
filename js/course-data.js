@@ -165,17 +165,28 @@ window.courseData = {
                 },
                 {
                     id: 10,
-                    title: "Final de Iniciación",
+                    title: "¡JEFE FINAL: El Bug Maestro!",
+                    isBoss: true,
                     steps: [
                         {
                             type: "teoria",
-                            content: "Has completado los fundamentos. Ahora sabes conectar el motor, crear materias, aplicar leyes y manejar el tiempo. Estás listo para crear sistemas complejos. Recuerda: ve motor; es siempre tu primer paso.",
-                            code: "// Todo listo\nve motor;"
+                            content: "¡CUIDADO! Un Bug Maestro ha aparecido para bloquear tu progreso. Para derrotarlo, debes demostrar que dominas los fundamentos. ¡Prepárate para la batalla!",
+                            code: "// MODO BATALLA ACTIVADO"
                         },
                         {
                             type: "practica",
-                            question: "Repite la instrucción más importante para finalizar esta etapa:",
+                            question: "RONDA 1: El Bug intenta desconectarte. ¡Reconecta rápido!",
                             answer: "ve motor;"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 2: El Bug es intangible. ¡Crea una materia 'Espada' para golpearlo!",
+                            answer: "materia Espada;"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 3: ¡El golpe final! Dale físicas a tu espada (ley Solido;)",
+                            answer: "ley Solido;"
                         }
                     ]
                 }

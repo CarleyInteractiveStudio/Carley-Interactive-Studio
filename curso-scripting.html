@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="estilos.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
     <style>
         :root {
@@ -348,14 +349,20 @@
                 </button>
             </div>
 
-            <div style="display:flex; gap:40px; align-items: flex-start; margin-bottom:30px;">
-                <div id="lesson-char-container" style="flex-shrink:0;">
+            <div style="display:flex; flex-direction: column; align-items: center; margin-bottom:30px;">
+                <div id="lesson-char-container" style="display:flex; gap: 60px; align-items: center; justify-content: center; margin-bottom: 30px; width: 100%;">
                     <div id="lesson-character" class="char-body">
                         <div class="char-eye"></div>
                         <div class="char-eye"></div>
                     </div>
+                    <div id="boss-container" class="hidden">
+                        <div class="boss-bug">
+                            <div class="boss-eye left"></div>
+                            <div class="boss-eye right"></div>
+                        </div>
+                    </div>
                 </div>
-                <p id="lesson-text" style="font-size: 1.3rem; line-height:1.7; color:#ccc; margin:0;"></p>
+                <p id="lesson-text" style="font-size: 1.3rem; line-height:1.7; color:#ccc; margin:0; text-align: center; max-width: 700px;"></p>
             </div>
 
             <div id="lesson-code-wrapper" class="code-block">

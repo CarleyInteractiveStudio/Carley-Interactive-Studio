@@ -12,6 +12,39 @@ let activeStage = null;
 let activeCourse = null;
 let currentStepIndex = 0;
 
+/* ==============================
+   Sound Manager (Web Audio API)
+============================== */
+const SoundManager = {
+    ctx: null,
+    init() {
+        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    },
+    playTone(freq, type, duration, volume = 0.1) {
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+    },
+    pop() { this.playTone(600, 'sine', 0.1); },
+    ding() {
+        this.playTone(880, 'sine', 0.1, 0.15);
+        setTimeout(() => this.playTone(1108, 'sine', 0.2, 0.1), 50);
+    },
+    uhoh() {
+        this.playTone(300, 'triangle', 0.2);
+        setTimeout(() => this.playTone(200, 'triangle', 0.3), 150);
+    },
+    bossHit() { this.playTone(150, 'square', 0.1, 0.2); }
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Wait for Supabase (centralized in main.js)
     const checkSupabase = setInterval(async () => {
@@ -153,7 +186,10 @@ function renderMap() {
             <span class="stage-label">${stage.name}</span>
         `;
 
-        node.onclick = () => selectStage(stage);
+        node.onclick = () => {
+            SoundManager.pop();
+            selectStage(stage);
+        };
         map.appendChild(node);
         positions.push({x, y});
     });
@@ -181,6 +217,7 @@ function renderMap() {
     const char = document.getElementById('character');
     const currentPos = positions[currentProgress.stage - 1];
     if (currentPos && char) {
+        updateCharacterAccessories(char);
         char.classList.add('char-walking');
         char.style.left = `${currentPos.x - 30}px`;
         char.style.top = `${currentPos.y - 60}px`;
@@ -250,7 +287,10 @@ function renderSubMap() {
             <span style="font-weight:900; font-size:2rem; color:${isDone ? '#7ED957' : '#fff'}">${index + 1}</span>
         `;
 
-        if (!isLocked) node.onclick = () => startCourse(course);
+        if (!isLocked) node.onclick = () => {
+            SoundManager.pop();
+            startCourse(course);
+        };
         container.appendChild(node);
         positions.push({x, y, isDone, isNext});
     });
@@ -280,6 +320,7 @@ function renderSubMap() {
     subChar.style.position = 'absolute';
     subChar.style.zIndex = '10';
     subChar.innerHTML = '<div class="char-eye" style="width:5px; height:5px;"></div><div class="char-eye" style="width:5px; height:5px;"></div>';
+    updateCharacterAccessories(subChar);
 
     // Find where the character should be
     let charPos = positions[0];
@@ -317,13 +358,26 @@ function startCourse(course) {
 
 function renderStep() {
     const step = activeCourse.steps[currentStepIndex];
+    const isBoss = activeCourse.isBoss;
     document.getElementById('lesson-title').textContent = activeCourse.title;
+
+    // Boss specific background
+    const lessonView = document.getElementById('lesson-view');
+    if (isBoss) {
+        lessonView.style.background = 'radial-gradient(circle at center, #200, #000)';
+    } else {
+        lessonView.style.background = '';
+    }
 
     const status = document.getElementById('practice-status');
     const checkBtn = document.getElementById('check-btn');
     const nextBtn = document.getElementById('next-btn');
     const feedback = document.getElementById('feedback-msg');
     feedback.classList.add('hidden');
+
+    const bossCont = document.getElementById('boss-container');
+    if (isBoss) bossCont.classList.remove('hidden');
+    else bossCont.classList.add('hidden');
 
     if (step.type === 'teoria') {
         document.getElementById('lesson-text').textContent = step.content;
@@ -359,8 +413,30 @@ function checkAnswer() {
     const correctVal = step.answer.trim();
 
     if (val.toLowerCase() === correctVal.toLowerCase()) {
+        if (activeCourse.isBoss) {
+            SoundManager.bossHit();
+            const bug = document.querySelector('.boss-bug');
+            bug.style.transform = 'scale(0.8) rotate(10deg)';
+            setTimeout(() => bug.style.transform = '', 200);
+
+            // Check if it was the last step of the boss
+            if (currentStepIndex === activeCourse.steps.length - 1) {
+                bug.classList.add('boss-defeat');
+            }
+        }
+
+        SoundManager.ding();
+        if (typeof confetti !== 'undefined') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#7ED957', '#00AAFF', '#ffffff']
+            });
+        }
         showFeedback(true);
     } else {
+        SoundManager.uhoh();
         // Intelligent Analysis
         let hint = "";
         const valLower = val.toLowerCase();
@@ -470,6 +546,7 @@ window.speakContent = () => {
     const mapChar = document.getElementById('character');
     const subChar = document.getElementById('sub-character');
     const lessonChar = document.getElementById('lesson-character');
+    if (lessonChar) updateCharacterAccessories(lessonChar);
 
     ut.onstart = () => {
         if (mapChar) mapChar.classList.add('char-talking');
@@ -487,3 +564,21 @@ window.speakContent = () => {
     };
     window.speechSynthesis.speak(ut);
 };
+
+function updateCharacterAccessories(char) {
+    const existing = char.querySelectorAll('.char-accessory');
+    existing.forEach(e => e.remove());
+
+    if (currentProgress.stage > 1) {
+        const hat = document.createElement('div');
+        hat.className = 'char-accessory hat-expert';
+        char.appendChild(hat);
+    }
+
+    if (currentProgress.stage > 5) {
+        const crown = document.createElement('div');
+        crown.className = 'char-accessory crown-master';
+        crown.innerHTML = '👑';
+        char.appendChild(crown);
+    }
+}

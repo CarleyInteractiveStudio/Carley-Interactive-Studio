@@ -1353,3 +1353,109 @@ body::-webkit-scrollbar,
     border-color: var(--primary) !important;
     background: rgba(126, 217, 87, 0.05) !important;
 }
+
+/* --- Gamification & Boss Styles --- */
+.boss-bug {
+    width: 80px;
+    height: 80px;
+    background: #ff4d4d;
+    border-radius: 20% 20% 50% 50%;
+    position: relative;
+    box-shadow: 0 0 30px #ff4d4d;
+    animation: boss-hover 3s ease-in-out infinite;
+}
+
+.boss-bug::before, .boss-bug::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 30px;
+    background: #ff4d4d;
+    top: -15px;
+    border-radius: 50% 50% 0 0;
+}
+
+.boss-bug::before { left: 10px; transform: rotate(-20deg); }
+.boss-bug::after { right: 10px; transform: rotate(20deg); }
+
+.boss-eye {
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+}
+.boss-eye.left { left: 15px; }
+.boss-eye.right { right: 15px; }
+.boss-eye::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+    top: 4px; left: 4px;
+}
+
+@keyframes boss-hover {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.boss-defeat {
+    animation: boss-explode 0.8s forwards !important;
+}
+
+@keyframes boss-explode {
+    0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+    50% { transform: scale(1.5); opacity: 0.8; filter: brightness(3); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+/* Character Evolution Accessories */
+.char-accessory {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.hat-expert {
+    width: 40px;
+    height: 20px;
+    background: #333;
+    border-bottom: 4px solid #00AAFF;
+    border-radius: 5px 5px 0 0;
+}
+
+.crown-master {
+    font-size: 24px;
+    filter: drop-shadow(0 0 5px gold);
+    animation: crown-glow 2s infinite alternate;
+}
+
+@keyframes crown-glow {
+    from { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    to { transform: translateX(-50%) scale(1.2); opacity: 1; }
+}
+
+.xp-badge {
+    background: linear-gradient(135deg, gold, #ffa500);
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    position: absolute;
+    top: -40px;
+    animation: xp-float 1s forwards;
+}
+
+@keyframes xp-float {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+}
