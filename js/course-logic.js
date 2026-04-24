@@ -177,12 +177,14 @@ function renderMap() {
     path.setAttribute("stroke-dasharray", "20, 15");
     svg.appendChild(path);
 
-    // Place Character
+    // Place Character with walking animation
     const char = document.getElementById('character');
     const currentPos = positions[currentProgress.stage - 1];
     if (currentPos && char) {
+        char.classList.add('char-walking');
         char.style.left = `${currentPos.x - 30}px`;
         char.style.top = `${currentPos.y - 60}px`;
+        setTimeout(() => char.classList.remove('char-walking'), 1000);
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -202,23 +204,100 @@ function selectStage(stage) {
     document.getElementById('current-stage-name').textContent = stage.name;
     document.getElementById('current-stage-name').style.color = stage.color;
 
-    const grid = document.getElementById('courses-grid');
-    grid.innerHTML = '';
-    stage.courses.forEach(course => {
-        const card = document.createElement('div');
-        card.className = 'stage-node';
-        card.style.position = 'relative';
-        card.style.left = 'auto'; card.style.top = 'auto';
-        card.style.width = '100px'; card.style.height = '100px';
+    renderSubMap();
+}
+
+function renderSubMap() {
+    const container = document.getElementById('sub-map-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const courses = activeStage.courses;
+    const mapWidth = container.offsetWidth;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "map-svg");
+    svg.style.position = "absolute";
+    svg.style.top = "0"; svg.style.left = "0";
+    svg.style.width = "100%"; svg.style.height = "100%";
+    svg.style.zIndex = "1";
+    container.appendChild(svg);
+
+    const positions = [];
+    courses.forEach((course, index) => {
+        const node = document.createElement('div');
+        node.className = 'stage-node';
+
         const isDone = currentProgress.completed.includes(course.id);
-        card.style.borderColor = isDone ? '#7ED957' : 'rgba(255,255,255,0.1)';
-        card.innerHTML = `
-            <span style="font-weight:900; font-size:1.8rem; color:${isDone ? '#7ED957' : '#fff'}">${course.id}</span>
-            <span style="font-size:0.7rem; margin-top:5px; font-weight:bold; opacity:0.6;">${isDone ? 'LISTO' : 'PENDIENTE'}</span>
+        const isNext = !isDone && (index === 0 || currentProgress.completed.includes(courses[index-1].id));
+        const isLocked = !isDone && !isNext;
+
+        if (isLocked) node.classList.add('locked');
+
+        // Zig-zag
+        const offset = Math.sin(index * 2) * (mapWidth / 5);
+        const x = (mapWidth / 2) + offset;
+        const y = 50 + (index * 180);
+
+        node.style.left = `${x - 50}px`;
+        node.style.top = `${y - 50}px`;
+        node.style.width = '100px';
+        node.style.height = '100px';
+        node.style.borderColor = isDone ? '#7ED957' : (isNext ? activeStage.color : 'rgba(255,255,255,0.1)');
+        node.style.position = 'absolute';
+
+        node.innerHTML = `
+            <span style="font-weight:900; font-size:2rem; color:${isDone ? '#7ED957' : '#fff'}">${index + 1}</span>
         `;
-        card.onclick = () => startCourse(course);
-        grid.appendChild(card);
+
+        if (!isLocked) node.onclick = () => startCourse(course);
+        container.appendChild(node);
+        positions.push({x, y, isDone, isNext});
     });
+
+    // Sub-path
+    let pathD = "";
+    positions.forEach((p, i) => {
+        if (i === 0) pathD += `M ${p.x} ${p.y}`;
+        else {
+            const prev = positions[i-1];
+            pathD += ` L ${p.x} ${p.y}`;
+        }
+    });
+
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", pathD);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "rgba(255,255,255,0.05)");
+    path.setAttribute("stroke-width", "6");
+    svg.appendChild(path);
+
+    // Sub-character
+    const subChar = document.createElement('div');
+    subChar.id = 'sub-character';
+    subChar.className = 'char-body';
+    subChar.style.width = '40px'; subChar.style.height = '40px';
+    subChar.style.position = 'absolute';
+    subChar.style.zIndex = '10';
+    subChar.innerHTML = '<div class="char-eye" style="width:5px; height:5px;"></div><div class="char-eye" style="width:5px; height:5px;"></div>';
+
+    // Find where the character should be
+    let charPos = positions[0];
+    for(let i=0; i<positions.length; i++) {
+        if(positions[i].isNext) {
+            charPos = positions[i];
+            break;
+        }
+        if(positions[i].isDone) charPos = positions[i];
+    }
+
+    subChar.classList.add('char-walking');
+    subChar.style.left = `${charPos.x - 20}px`;
+    subChar.style.top = `${charPos.y - 60}px`;
+    container.appendChild(subChar);
+    setTimeout(() => subChar.classList.remove('char-walking'), 1000);
+
+    container.style.height = (courses.length * 180 + 200) + 'px';
 }
 
 function backToMap() {
@@ -340,16 +419,19 @@ window.speakContent = () => {
     ut.lang = 'es-ES';
 
     const mapChar = document.getElementById('character');
+    const subChar = document.getElementById('sub-character');
     const lessonChar = document.getElementById('lesson-character');
 
     ut.onstart = () => {
         if (mapChar) mapChar.classList.add('char-talking');
+        if (subChar) subChar.classList.add('char-talking');
         if (lessonChar) lessonChar.classList.add('char-talking');
         document.getElementById('speak-btn').style.background = '#7ED957';
         document.getElementById('speak-btn').style.color = '#000';
     };
     ut.onend = () => {
         if (mapChar) mapChar.classList.remove('char-talking');
+        if (subChar) subChar.classList.remove('char-talking');
         if (lessonChar) lessonChar.classList.remove('char-talking');
         document.getElementById('speak-btn').style.background = '';
         document.getElementById('speak-btn').style.color = '';

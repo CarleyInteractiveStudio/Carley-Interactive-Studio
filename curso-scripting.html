@@ -325,13 +325,18 @@
             </div>
         </div>
 
-        <!-- Courses Detail View -->
-         <div id="stage-detail-view" class="hidden">
-            <button class="btn-main outline" onclick="backToMap()" style="margin-bottom:40px;">
-                <i data-lucide="chevron-left"></i> Volver al Mapa
-            </button>
-            <h1 id="current-stage-name" style="font-size: 3rem; margin-bottom:50px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px;"></h1>
-            <div id="courses-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:30px;"></div>
+        <!-- Courses Detail View (Sub-Map) -->
+         <div id="stage-detail-view" class="hidden" style="position: relative;">
+            <div style="position: fixed; top: 90px; left: 20px; z-index: 100;">
+                <button class="btn-main outline" onclick="backToMap()">
+                    <i data-lucide="chevron-left"></i> Volver al Mapa de Etapas
+                </button>
+            </div>
+            <h1 id="current-stage-name" style="font-size: 3rem; margin: 40px 0 60px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; text-align: center;"></h1>
+
+            <div id="sub-map-container" style="position: relative; width: 100%; min-height: 100vh;">
+                <!-- Sub-map SVG and nodes will be injected here -->
+            </div>
          </div>
 
         <!-- Lesson View -->
