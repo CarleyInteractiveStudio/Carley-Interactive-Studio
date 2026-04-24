@@ -341,6 +341,17 @@
                 <!-- Settings BUBBLES -->
                 <div style="text-align: left;">
 
+                    <!-- Insignias de Curso Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-badges')">
+                        <span><i data-lucide="award" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span>Logros de Scripting</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px;"></i>
+                    </button>
+                    <div id="bubble-badges" class="bubble-content hidden">
+                        <div id="user-badges-list" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+                            <p id="no-badges-msg" style="opacity: 0.5; font-size: 0.85rem;">Aún no has ganado insignias. ¡Empieza el curso!</p>
+                        </div>
+                    </div>
+
                     <!-- Tus Juegos Bubble -->
                     <button class="bubble-btn" onclick="toggleBubble('bubble-games')">
                         <span><i data-lucide="gamepad-2" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="acc-my-games">Tus Juegos</span></span>
@@ -619,8 +630,9 @@
                     imgEl.classList.add('hidden');
                 }
 
-                // Fetch User Games
+                // Fetch User Games & Achievements
                 fetchUserGames(user.id);
+                fetchUserAchievements(user.id);
 
             } else {
                 authCont.classList.remove('hidden');
@@ -730,6 +742,29 @@
             if (error) alert(error.message);
             else alert("Se ha cerrado la sesión en todos los demás dispositivos.");
         });
+
+        async function fetchUserAchievements(userId) {
+            const container = document.getElementById('user-badges-list');
+            const msg = document.getElementById('no-badges-msg');
+            if (!container) return;
+
+            const { data, error } = await window.supabaseClient
+                .from('course_progress')
+                .select('achievements')
+                .eq('user_id', userId)
+                .single();
+
+            if (error || !data || !data.achievements || data.achievements.length === 0) return;
+
+            msg.classList.add('hidden');
+            container.innerHTML = data.achievements.map(ach => `
+                <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid gold; padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="medal" style="width: 16px; color: gold;"></i>
+                    <span style="font-size: 0.85rem; font-weight: 700; color: gold;">${ach}</span>
+                </div>
+            `).join('');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
 
         async function fetchUserGames(userId) {
             const container = document.getElementById('user-games-list');

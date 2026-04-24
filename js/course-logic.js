@@ -1,16 +1,37 @@
 /* ==============================
    Course Logic System - Professional & Fun
+   Updated with Combat, Multi-Mechanics, Shop & Sync
 ============================== */
 
 let currentProgress = {
     stage: 1,
     course: 1,
-    completed: []
+    completed: [],
+    credits: 0,
+    ownedSkins: ['default'],
+    activeSkin: 'default',
+    achievements: []
 };
 
 let activeStage = null;
 let activeCourse = null;
 let currentStepIndex = 0;
+let userHealth = 3;
+let selectedBlocks = [];
+let bgmSource = null;
+let isMusicOn = false;
+
+// Certification Metrics
+let examStartTime = 0;
+let examMistakes = 0;
+
+const skins = {
+    'default': { name: 'Carl Original', color: '#7ED957', price: 0 },
+    'ocean': { name: 'Carl Oceánico', color: '#00AAFF', price: 50 },
+    'lava': { name: 'Carl Volcánico', color: '#FF5733', price: 50 },
+    'gold': { name: 'Carl Dorado', color: '#FFD700', price: 150 },
+    'void': { name: 'Carl del Vacío', color: '#8A2BE2', price: 200 }
+};
 
 /* ==============================
    Sound Manager (Web Audio API)
@@ -42,18 +63,27 @@ const SoundManager = {
         this.playTone(300, 'triangle', 0.2);
         setTimeout(() => this.playTone(200, 'triangle', 0.3), 150);
     },
-    bossHit() { this.playTone(150, 'square', 0.1, 0.2); }
+    bossHit() { this.playTone(150, 'square', 0.1, 0.2); },
+    gameOver() {
+        this.playTone(200, 'sawtooth', 0.5, 0.2);
+        setTimeout(() => this.playTone(100, 'sawtooth', 0.8, 0.1), 300);
+    },
+    achievement() {
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+            setTimeout(() => this.playTone(f, 'sine', 0.4, 0.1), i * 150);
+        });
+    }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Wait for Supabase (centralized in main.js)
     const checkSupabase = setInterval(async () => {
         if (window.supabaseClient) {
             clearInterval(checkSupabase);
             await initAuthCheck();
-            loadProgress();
+            await loadProgress();
             renderMap();
             updateUIProgress();
+            updateCreditsUI();
         }
     }, 100);
 
@@ -65,7 +95,6 @@ async function initAuthCheck() {
     const lang = localStorage.getItem('carley-lang') || 'es';
 
     if (session) {
-        // Fetch profile to ensure language is correct
         const { data: profile } = await window.supabaseClient
             .from('profiles')
             .select('language')
@@ -81,6 +110,791 @@ async function initAuthCheck() {
             showLanguageSelection();
         }
     }
+}
+
+async function loadProgress() {
+    const { data: { session } } = await window.supabaseClient.auth.getSession();
+    if (session) {
+        const { data, error } = await window.supabaseClient
+            .from('course_progress')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .single();
+
+        if (data && !error) {
+            currentProgress.stage = data.stage;
+            currentProgress.completed = data.completed_courses || [];
+            currentProgress.credits = data.credits || 0;
+            currentProgress.ownedSkins = data.owned_skins || ['default'];
+            currentProgress.activeSkin = data.active_skin || 'default';
+            currentProgress.achievements = data.achievements || [];
+            return;
+        }
+    }
+
+    const saved = localStorage.getItem('ces-course-progress');
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        currentProgress = { ...currentProgress, ...parsed };
+    }
+}
+
+async function saveProgress() {
+    localStorage.setItem('ces-course-progress', JSON.stringify(currentProgress));
+
+    const { data: { session } } = await window.supabaseClient.auth.getSession();
+    if (session) {
+        await window.supabaseClient
+            .from('course_progress')
+            .upsert({
+                user_id: session.user.id,
+                stage: currentProgress.stage,
+                completed_courses: currentProgress.completed,
+                credits: currentProgress.credits,
+                owned_skins: currentProgress.ownedSkins,
+                active_skin: currentProgress.activeSkin,
+                achievements: currentProgress.achievements,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'user_id' });
+    }
+}
+
+function updateUIProgress() {
+    const total = 100;
+    const completedCount = currentProgress.completed.length;
+    const percent = Math.floor((completedCount / total) * 100);
+    const bar = document.getElementById('main-progress-bar');
+    if (bar) bar.style.width = percent + '%';
+    const stats = document.getElementById('user-stats');
+    if (stats) stats.textContent = percent + '%';
+}
+
+function updateCreditsUI() {
+    const el = document.getElementById('user-credits');
+    if (el) el.textContent = currentProgress.credits;
+}
+
+/* ==============================
+   Rendering & Map
+============================== */
+function renderMap() {
+    const map = document.getElementById('map-view');
+    if (!map || map.classList.contains('hidden')) return;
+
+    let mapWidth = map.offsetWidth;
+    if (mapWidth === 0) mapWidth = Math.min(window.innerWidth, 1000) - 40;
+
+    const stages = window.courseData.stages;
+    const nodes = map.querySelectorAll('.stage-node, .map-svg');
+    nodes.forEach(n => n.remove());
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "map-svg");
+    svg.style.position = "absolute";
+    svg.style.top = "0"; svg.style.left = "0";
+    svg.style.width = "100%"; svg.style.height = "100%";
+    svg.style.zIndex = "1";
+    map.appendChild(svg);
+
+    const positions = [];
+    stages.forEach((stage, index) => {
+        const node = document.createElement('div');
+        node.className = 'stage-node';
+        if (stage.id > currentProgress.stage) node.classList.add('locked');
+
+        const offset = Math.sin(index * 1.5) * (mapWidth / 4);
+        const x = (mapWidth / 2) + offset;
+        const y = 150 + (index * 220);
+
+        node.style.left = `${x - 60}px`;
+        node.style.top = `${y - 60}px`;
+        node.style.borderColor = stage.color;
+        node.style.boxShadow = `0 0 30px ${stage.color}44`;
+        node.style.position = 'absolute';
+
+        const isStageDone = stage.courses.length > 0 && stage.courses.every(c => currentProgress.completed.includes(c.id));
+
+        node.innerHTML = `
+            <i data-lucide="${isStageDone ? 'check-circle' : getStageIcon(index)}" style="color:${isStageDone ? '#7ED957' : stage.color}; width:45px; height:45px;"></i>
+            <span class="stage-label">${stage.name}</span>
+        `;
+
+        node.onclick = () => {
+            SoundManager.pop();
+            selectStage(stage);
+        };
+        map.appendChild(node);
+        positions.push({x, y});
+    });
+
+    let pathD = "";
+    positions.forEach((p, i) => {
+        if (i === 0) pathD += `M ${p.x} ${p.y}`;
+        else {
+            const prev = positions[i-1];
+            const cp1y = prev.y + (p.y - prev.y) / 2;
+            pathD += ` C ${prev.x} ${cp1y}, ${p.x} ${cp1y}, ${p.x} ${p.y}`;
+        }
+    });
+
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", pathD);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "rgba(255,255,255,0.08)");
+    path.setAttribute("stroke-width", "10");
+    path.setAttribute("stroke-dasharray", "20, 15");
+    svg.appendChild(path);
+
+    const char = document.getElementById('character');
+    const currentPos = positions[currentProgress.stage - 1];
+    if (currentPos && char) {
+        updateCharacterVisuals(char);
+        char.classList.add('char-walking');
+        char.style.left = `${currentPos.x - 30}px`;
+        char.style.top = `${currentPos.y - 60}px`;
+        setTimeout(() => char.classList.remove('char-walking'), 1000);
+    }
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    map.style.height = (stages.length * 220 + 300) + 'px';
+}
+
+function getStageIcon(i) {
+    const icons = ['code', 'box', 'zap', 'volume-2', 'cpu', 'shield', 'layers', 'gem', 'star', 'trophy'];
+    return icons[i] || 'book';
+}
+
+function selectStage(stage) {
+    if (stage.id > currentProgress.stage) return;
+    activeStage = stage;
+    document.getElementById('map-view').classList.add('hidden');
+    document.getElementById('stage-detail-view').classList.remove('hidden');
+    document.getElementById('current-stage-name').textContent = stage.name;
+    document.getElementById('current-stage-name').style.color = stage.color;
+    renderSubMap();
+}
+
+function renderSubMap() {
+    const container = document.getElementById('sub-map-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const courses = activeStage.courses;
+    const mapWidth = container.offsetWidth;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "map-svg");
+    svg.style.position = "absolute";
+    svg.style.top = "0"; svg.style.left = "0";
+    svg.style.width = "100%"; svg.style.height = "100%";
+    svg.style.zIndex = "1";
+    container.appendChild(svg);
+
+    const positions = [];
+    courses.forEach((course, index) => {
+        const node = document.createElement('div');
+        node.className = 'stage-node';
+
+        const isDone = currentProgress.completed.includes(course.id);
+        const isNext = !isDone && (index === 0 || currentProgress.completed.includes(courses[index-1].id));
+        const isLocked = !isDone && !isNext;
+
+        if (isLocked) node.classList.add('locked');
+
+        const offset = Math.sin(index * 2) * (mapWidth / 5);
+        const x = (mapWidth / 2) + offset;
+        const y = 50 + (index * 180);
+
+        node.style.left = `${x - 50}px`;
+        node.style.top = `${y - 50}px`;
+        node.style.width = '100px';
+        node.style.height = '100px';
+        node.style.borderColor = isDone ? '#7ED957' : (isNext ? activeStage.color : 'rgba(255,255,255,0.1)');
+        node.style.position = 'absolute';
+
+        node.innerHTML = `
+            <span style="font-weight:900; font-size:2rem; color:${isDone ? '#7ED957' : '#fff'}">${index + 1}</span>
+        `;
+
+        if (!isLocked) node.onclick = () => {
+            SoundManager.pop();
+            startCourse(course);
+        };
+        container.appendChild(node);
+        positions.push({x, y, isDone, isNext});
+    });
+
+    let pathD = "";
+    positions.forEach((p, i) => {
+        if (i === 0) pathD += `M ${p.x} ${p.y}`;
+        else {
+            const prev = positions[i-1];
+            pathD += ` L ${p.x} ${p.y}`;
+        }
+    });
+
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", pathD);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "rgba(255,255,255,0.05)");
+    path.setAttribute("stroke-width", "6");
+    svg.appendChild(path);
+
+    const subChar = document.createElement('div');
+    subChar.id = 'sub-character';
+    subChar.className = 'char-body';
+    subChar.style.width = '40px'; subChar.style.height = '40px';
+    subChar.style.position = 'absolute';
+    subChar.style.zIndex = '10';
+    subChar.innerHTML = '<div class="char-eye" style="width:5px; height:5px;"></div><div class="char-eye" style="width:5px; height:5px;"></div>';
+    updateCharacterVisuals(subChar);
+
+    let charPos = positions[0];
+    for(let i=0; i<positions.length; i++) {
+        if(positions[i].isNext) {
+            charPos = positions[i];
+            break;
+        }
+        if(positions[i].isDone) charPos = positions[i];
+    }
+
+    subChar.classList.add('char-walking');
+    subChar.style.left = `${charPos.x - 20}px`;
+    subChar.style.top = `${charPos.y - 60}px`;
+    container.appendChild(subChar);
+    setTimeout(() => subChar.classList.remove('char-walking'), 1000);
+
+    container.style.height = (courses.length * 180 + 200) + 'px';
+}
+
+/* ==============================
+   Lesson & Mechanics
+============================== */
+function startCourse(course) {
+    activeCourse = course;
+    currentStepIndex = 0;
+    userHealth = 3;
+    updateHealthUI();
+    document.getElementById('stage-detail-view').classList.add('hidden');
+    document.getElementById('lesson-view').classList.remove('hidden');
+    renderStep();
+}
+
+function updateHealthUI() {
+    const hearts = document.querySelectorAll('.heart');
+    hearts.forEach((h, i) => {
+        if (i < userHealth) h.classList.remove('lost');
+        else h.classList.add('lost');
+    });
+}
+
+function renderStep() {
+    const step = activeCourse.steps[currentStepIndex];
+    const isBoss = activeCourse.isBoss;
+    document.getElementById('lesson-title').textContent = activeCourse.title;
+
+    const lessonView = document.getElementById('lesson-view');
+    lessonView.style.background = isBoss ? 'radial-gradient(circle at center, #200, #000)' : '';
+
+    const status = document.getElementById('practice-status');
+    const checkBtn = document.getElementById('check-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const feedback = document.getElementById('feedback-msg');
+    feedback.classList.add('hidden');
+    selectedBlocks = [];
+
+    const bossCont = document.getElementById('boss-container');
+    if (step.type !== 'teoria') {
+        bossCont.classList.remove('hidden');
+        bossCont.style.transform = isBoss ? 'scale(1.2)' : 'scale(0.8)';
+    } else {
+        bossCont.classList.add('hidden');
+    }
+
+    updateCharacterVisuals(document.getElementById('lesson-character'));
+
+    const area = document.getElementById('practice-area');
+    area.innerHTML = '';
+
+    if (step.type === 'teoria') {
+        document.getElementById('lesson-text').textContent = step.content;
+        document.getElementById('lesson-code-wrapper').classList.remove('hidden');
+        document.getElementById('lesson-code').textContent = step.code;
+        status.textContent = 'APRENDIENDO';
+        status.style.background = '#00AAFF';
+        document.getElementById('practice-question').textContent = 'Estudia este concepto y continúa.';
+        checkBtn.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
+    } else {
+        document.getElementById('lesson-text').textContent = '';
+        document.getElementById('lesson-code-wrapper').classList.add('hidden');
+        status.textContent = 'PRÁCTICA';
+        status.style.background = '#FFC300';
+        document.getElementById('practice-question').textContent = step.question;
+        checkBtn.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+
+        if (step.type === 'practica') {
+            area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
+            document.getElementById('answer-input').focus();
+            document.getElementById('answer-input').onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
+        } else if (step.type === 'opcion-multiple') {
+            const grid = document.createElement('div');
+            grid.className = 'options-grid';
+            step.options.forEach((opt, i) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.textContent = opt.text;
+                card.onclick = () => selectOption(card, opt);
+                grid.appendChild(card);
+            });
+            area.appendChild(grid);
+            checkBtn.classList.add('hidden');
+        } else if (step.type === 'completar-codigo') {
+            const template = document.createElement('div');
+            template.className = 'code-template-view';
+            template.innerHTML = step.codeTemplate.replace('[BLOQUE]', '<span class="template-slot" id="target-slot">?</span>');
+            area.appendChild(template);
+
+            const blocks = document.createElement('div');
+            blocks.className = 'block-zone';
+            step.blocks.forEach(b => {
+                const item = document.createElement('div');
+                item.className = 'code-block-item';
+                item.textContent = b;
+                item.onclick = () => {
+                    document.querySelectorAll('.code-block-item').forEach(x => x.classList.remove('selected'));
+                    item.classList.add('selected');
+                    const slot = document.getElementById('target-slot');
+                    slot.textContent = b;
+                    slot.classList.add('filled');
+                    selectedBlocks = [b];
+                };
+                blocks.appendChild(item);
+            });
+            area.appendChild(blocks);
+        } else if (step.type === 'ordenar-bloques') {
+            const template = document.createElement('div');
+            template.className = 'code-template-view';
+            template.id = 'sequence-template';
+            template.innerHTML = '<span style="opacity:0.5; font-size:0.9rem;">Toca los bloques en orden:</span>';
+            area.appendChild(template);
+
+            const blocks = document.createElement('div');
+            blocks.className = 'block-zone';
+            step.blocks.forEach(b => {
+                const item = document.createElement('div');
+                item.className = 'code-block-item';
+                item.textContent = b;
+                item.onclick = () => {
+                    if (item.classList.contains('selected')) return;
+                    item.classList.add('selected');
+                    selectedBlocks.push(b);
+                    const slot = document.createElement('span');
+                    slot.className = 'template-slot filled';
+                    slot.textContent = b;
+                    slot.style.margin = '5px';
+                    document.getElementById('sequence-template').appendChild(slot);
+                };
+                blocks.appendChild(item);
+            });
+            area.appendChild(blocks);
+        } else if (step.type === 'modo-debug') {
+            const container = document.createElement('div');
+            container.style.background = '#000';
+            container.style.padding = '20px';
+            container.style.borderRadius = '15px';
+            container.style.border = '1px solid #333';
+
+            step.codeLines.forEach((line, i) => {
+                const lineEl = document.createElement('div');
+                lineEl.className = 'debug-line buggy-hover';
+                lineEl.textContent = line;
+                lineEl.onclick = () => checkDebug(i);
+                container.appendChild(lineEl);
+            });
+            area.appendChild(container);
+            checkBtn.classList.add('hidden');
+        }
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function selectOption(card, opt) {
+    if (opt.correct) {
+        card.classList.add('correct');
+        checkAnswer(true);
+    } else {
+        card.classList.add('wrong');
+        checkAnswer(false);
+    }
+}
+
+function checkDebug(index) {
+    const step = activeCourse.steps[currentStepIndex];
+    if (index === step.errorLine) {
+        checkAnswer(true);
+    } else {
+        checkAnswer(false);
+    }
+}
+
+function checkAnswer(isCorrectOverride = null) {
+    const step = activeCourse.steps[currentStepIndex];
+    let isCorrect = false;
+
+    if (isCorrectOverride !== null) {
+        isCorrect = isCorrectOverride;
+    } else if (step.type === 'practica') {
+        const val = document.getElementById('answer-input').value.trim();
+        isCorrect = val.toLowerCase() === step.answer.toLowerCase();
+    } else if (step.type === 'completar-codigo') {
+        isCorrect = selectedBlocks[0] === step.answer;
+    } else if (step.type === 'ordenar-bloques') {
+        isCorrect = JSON.stringify(selectedBlocks) === JSON.stringify(step.answer);
+    }
+
+    if (isCorrect) handleSuccess();
+    else handleFailure();
+}
+
+function handleSuccess() {
+    SoundManager.ding();
+    const char = document.getElementById('lesson-character');
+    const boss = document.querySelector('.boss-bug');
+
+    char.classList.add('char-attack');
+    setTimeout(() => {
+        char.classList.remove('char-attack');
+        if (boss) {
+            boss.classList.add('boss-hit');
+            SoundManager.bossHit();
+            setTimeout(() => boss.classList.remove('boss-hit'), 500);
+        }
+    }, 300);
+
+    if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: [skins[currentProgress.activeSkin].color, '#fff'] });
+    }
+    showFeedback(true);
+}
+
+function handleFailure() {
+    userHealth--;
+    if (activeStage && activeStage.id === 11) {
+        examMistakes++;
+    }
+    updateHealthUI();
+    SoundManager.uhoh();
+
+    const char = document.getElementById('lesson-character');
+    const boss = document.querySelector('.boss-bug');
+
+    if (boss) {
+        const originalTransform = boss.style.transform;
+        boss.style.transform = 'translateX(-50px) scale(1.1)';
+        setTimeout(() => {
+            boss.style.transform = originalTransform;
+            char.classList.add('char-hit');
+            setTimeout(() => char.classList.remove('char-hit'), 500);
+        }, 200);
+    } else {
+        char.classList.add('char-hit');
+        setTimeout(() => char.classList.remove('char-hit'), 500);
+    }
+
+    if (userHealth <= 0) {
+        SoundManager.gameOver();
+        alert("¡Has caído en batalla! Recupérate y vuelve a intentarlo.");
+        startCourse(activeCourse);
+        return;
+    }
+
+    let hint = "Revisa bien el código. ¡Tú puedes!";
+    showFeedback(false, hint);
+}
+
+function showFeedback(correct, hint = "") {
+    const card = document.querySelector('.practice-card');
+    const status = document.getElementById('practice-status');
+    const nextBtn = document.getElementById('next-btn');
+    const checkBtn = document.getElementById('check-btn');
+    const feedback = document.getElementById('feedback-msg');
+
+    if (correct) {
+        card.classList.remove('shake');
+        card.classList.add('bounce');
+        setTimeout(() => card.classList.remove('bounce'), 600);
+        status.textContent = '¡EXCELENTE!';
+        status.style.background = '#7ED957';
+        checkBtn.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
+        feedback.classList.add('hidden');
+    } else {
+        card.classList.remove('bounce');
+        card.classList.add('shake');
+        setTimeout(() => card.classList.remove('shake'), 600);
+        status.textContent = '¡GOLPE RECIBIDO!';
+        status.style.background = '#ff4d4d';
+        feedback.innerHTML = hint;
+        feedback.classList.remove('hidden');
+        if (activeCourse.steps[currentStepIndex].type.includes('ordenar')) setTimeout(() => renderStep(), 1000);
+    }
+}
+
+async function nextStep() {
+    if (currentStepIndex < activeCourse.steps.length - 1) {
+        currentStepIndex++;
+        renderStep();
+    } else {
+        const isFirstTime = !currentProgress.completed.includes(activeCourse.id);
+        if (isFirstTime) {
+            currentProgress.completed.push(activeCourse.id);
+            currentProgress.credits += activeCourse.isBoss ? 25 : 10;
+            updateCreditsUI();
+
+            const ids = activeStage.stages ? [] : activeStage.courses.map(c => c.id);
+            if (!activeStage.stages && ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
+                currentProgress.stage++;
+                unlockAchievement(activeStage.name);
+            }
+        }
+
+        // Final Exam Check
+        if (activeStage.id === 11) {
+            const allExamCourses = activeStage.courses;
+            const lastExamCourse = allExamCourses[allExamCourses.length - 1];
+            if (activeCourse.id === lastExamCourse.id) {
+                finishExam();
+                return;
+            }
+        }
+
+        await saveProgress();
+        updateUIProgress();
+
+        const all = window.courseData.stages.flatMap(s => s.courses);
+        const idx = all.findIndex(c => c.id === activeCourse.id);
+        if (idx < all.length - 1) startCourse(all[idx + 1]);
+        else {
+            alert("¡MAESTRÍA ALCANZADA! Por ahora no hay más niveles.");
+            backToMap();
+        }
+    }
+}
+
+function finishExam() {
+    const endTime = Date.now();
+    const totalTimeSeconds = Math.floor((endTime - examStartTime) / 1000);
+
+    // Grading Logic:
+    // Base 100. -4 per mistake. -1 every 15s after 3 minutes.
+    let score = 100;
+    score -= (examMistakes * 4);
+    if (totalTimeSeconds > 180) {
+        score -= Math.floor((totalTimeSeconds - 180) / 15);
+    }
+    score = Math.max(0, score);
+
+    let rank = "S";
+    if (score < 95) rank = "A";
+    if (score < 85) rank = "B";
+    if (score < 70) rank = "C";
+    if (score < 60) rank = "D";
+
+    showCertificatePrompt(score, rank, totalTimeSeconds);
+}
+
+window.generateCertificate = (score, rank, time) => {
+    const nameInput = document.getElementById('cert-name-input');
+    const name = nameInput.value.trim() || "Desarrollador Creative Engine";
+
+    // Update Certificate Template
+    document.getElementById('cert-display-name').textContent = name;
+    document.getElementById('cert-display-score').textContent = score + "%";
+    document.getElementById('cert-display-rank').textContent = rank;
+    document.getElementById('cert-display-date').textContent = new Date().toLocaleDateString();
+
+    // Inject Achievements
+    const achList = document.getElementById('cert-achievements-list');
+    achList.innerHTML = currentProgress.achievements.map(a => `<span>◈ ${a}</span>`).join(' ');
+
+    // Show Success Modal
+    document.getElementById('cert-prompt-modal').classList.add('hidden');
+    document.getElementById('final-success-modal').classList.remove('hidden');
+
+    // Configure Sharing Links
+    const text = `¡Soy oficialmente Desarrollador en Creative Engine! Mi rango: ${rank} (${score}%). Mira mi certificado:`;
+    const url = window.location.href;
+    document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    if (typeof confetti !== 'undefined') confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+};
+
+window.downloadPDF = () => {
+    const element = document.getElementById('certificate-container');
+    const opt = {
+        margin: 0,
+        filename: 'Certificado_Creative_Engine.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'px', format: [800, 600], orientation: 'landscape' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+};
+
+function showCertificatePrompt(score, rank, time) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'cert-prompt-modal';
+    modal.innerHTML = `
+        <div class="course-modal">
+            <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
+            <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
+            <p style="font-size:1.2rem; margin-bottom:10px;">Has demostrado ser un Desarrollador de Creative Engine.</p>
+            <div style="display:flex; justify-content:center; gap:20px; margin: 20px 0;">
+                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                    <div style="font-size:0.8rem; opacity:0.6;">CALIFICACIÓN</div>
+                    <div style="font-size:2rem; font-weight:900; color:var(--primary);">${score}%</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                    <div style="font-size:0.8rem; opacity:0.6;">RANGO</div>
+                    <div style="font-size:2rem; font-weight:900; color:gold;">${rank}</div>
+                </div>
+            </div>
+            <p style="opacity:0.7; margin-bottom:20px;">Ingresa tu nombre profesional para el certificado:</p>
+            <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:25px;">
+            <button class="btn-main" onclick="generateCertificate('${score}', '${rank}', '${time}')">Obtener Certificado Profesional</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+/* ==============================
+   Gamification: Shop & Achievements
+============================== */
+function openShop() {
+    const container = document.getElementById('shop-items-container');
+    container.innerHTML = '';
+
+    Object.entries(skins).forEach(([id, skin]) => {
+        const isOwned = currentProgress.ownedSkins.includes(id);
+        const isActive = currentProgress.activeSkin === id;
+
+        const card = document.createElement('div');
+        card.className = `shop-item ${isOwned ? 'owned' : ''} ${isActive ? 'active' : ''}`;
+        card.innerHTML = `
+            <div class="skin-preview" style="background:${skin.color}; box-shadow: 0 0 15px ${skin.color}66;"></div>
+            <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${skin.name}</div>
+            <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : skin.price + ' Créditos'}</div>
+        `;
+        card.onclick = () => handleShopAction(id, skin);
+        container.appendChild(card);
+    });
+
+    document.getElementById('shop-modal').classList.remove('hidden');
+}
+
+function closeShop() {
+    document.getElementById('shop-modal').classList.add('hidden');
+    renderMap();
+}
+
+async function handleShopAction(id, skin) {
+    if (currentProgress.ownedSkins.includes(id)) {
+        currentProgress.activeSkin = id;
+    } else {
+        if (currentProgress.credits >= skin.price) {
+            currentProgress.credits -= skin.price;
+            currentProgress.ownedSkins.push(id);
+            currentProgress.activeSkin = id;
+            SoundManager.ding();
+            updateCreditsUI();
+        } else {
+            alert("No tienes suficientes créditos.");
+            return;
+        }
+    }
+    await saveProgress();
+    openShop();
+}
+
+function unlockAchievement(stageName) {
+    const name = `Maestro de ${stageName}`;
+    if (currentProgress.achievements.includes(name)) return;
+
+    currentProgress.achievements.push(name);
+    const popup = document.getElementById('achievement-popup');
+    document.getElementById('achievement-name').textContent = name;
+    popup.classList.remove('hidden');
+    SoundManager.achievement();
+
+    setTimeout(() => popup.classList.add('hidden'), 5000);
+}
+
+function updateCharacterVisuals(char) {
+    if (!char) return;
+    const body = char.classList.contains('char-body') ? char : char.querySelector('.char-body');
+    if (!body) return;
+
+    const skin = skins[currentProgress.activeSkin] || skins.default;
+    body.style.background = skin.color;
+    body.style.boxShadow = `0 0 25px ${skin.color}`;
+
+    const existing = char.querySelectorAll('.char-accessory');
+    existing.forEach(e => e.remove());
+    if (currentProgress.stage > 1) {
+        const hat = document.createElement('div');
+        hat.className = 'char-accessory hat-expert';
+        char.appendChild(hat);
+    }
+}
+
+/* ==============================
+   Audio & Utilities
+============================== */
+function toggleMusic() {
+    isMusicOn = !isMusicOn;
+    const btn = document.getElementById('bgm-toggle');
+    btn.style.color = isMusicOn ? 'var(--primary)' : '#fff';
+
+    if (isMusicOn) {
+        // In a real browser we need a user gesture, which this click is.
+        // For static hosting, we use procedural tones to simulate BGM loops
+        startAmbientBGM();
+    } else {
+        stopAmbientBGM();
+    }
+}
+
+function startAmbientBGM() {
+    SoundManager.init();
+    if (bgmSource) return;
+    // Real loops would use Audio files, but let's use some cool oscillator patterns
+    bgmLoop();
+}
+
+function stopAmbientBGM() {
+    bgmSource = false;
+}
+
+function bgmLoop() {
+    if (!isMusicOn) return;
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C Major
+    const note = notes[Math.floor(Math.random() * notes.length)];
+    SoundManager.playTone(note, 'sine', 1.5, 0.02);
+    setTimeout(bgmLoop, 1000);
+}
+
+function backToMap() {
+    document.getElementById('map-view').classList.remove('hidden');
+    document.getElementById('stage-detail-view').classList.add('hidden');
+    document.getElementById('lesson-view').classList.add('hidden');
+    renderMap();
 }
 
 function showLanguageSelection() {
@@ -127,458 +941,15 @@ function showSorryMessage() {
     document.body.appendChild(modal);
 }
 
-function loadProgress() {
-    const saved = localStorage.getItem('ces-course-progress');
-    if (saved) currentProgress = JSON.parse(saved);
-}
-
-function saveProgress() {
-    localStorage.setItem('ces-course-progress', JSON.stringify(currentProgress));
-}
-
-function updateUIProgress() {
-    const total = 100;
-    const completedCount = currentProgress.completed.length;
-    const percent = Math.floor((completedCount / total) * 100);
-    const bar = document.getElementById('main-progress-bar');
-    if (bar) bar.style.width = percent + '%';
-    const stats = document.getElementById('user-stats');
-    if (stats) stats.textContent = percent + '%';
-}
-
-function renderMap() {
-    const map = document.getElementById('map-view');
-    if (!map || map.classList.contains('hidden')) return;
-
-    const stages = window.courseData.stages;
-    const nodes = map.querySelectorAll('.stage-node, .map-svg');
-    nodes.forEach(n => n.remove());
-
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", "map-svg");
-    svg.style.position = "absolute";
-    svg.style.top = "0"; svg.style.left = "0";
-    svg.style.width = "100%"; svg.style.height = "100%";
-    svg.style.zIndex = "1";
-    map.appendChild(svg);
-
-    const positions = [];
-    const mapWidth = map.offsetWidth;
-
-    stages.forEach((stage, index) => {
-        const node = document.createElement('div');
-        node.className = 'stage-node';
-        if (stage.id > currentProgress.stage) node.classList.add('locked');
-
-        // Dynamic zig-zag layout
-        const offset = Math.sin(index * 1.5) * (mapWidth / 4);
-        const x = (mapWidth / 2) + offset;
-        const y = 150 + (index * 220);
-
-        node.style.left = `${x - 60}px`;
-        node.style.top = `${y - 60}px`;
-        node.style.borderColor = stage.color;
-        node.style.boxShadow = `0 0 30px ${stage.color}44`;
-        node.style.position = 'absolute';
-
-        node.innerHTML = `
-            <i data-lucide="${getStageIcon(index)}" style="color:${stage.color}; width:45px; height:45px;"></i>
-            <span class="stage-label">${stage.name}</span>
-        `;
-
-        node.onclick = () => {
-            SoundManager.pop();
-            selectStage(stage);
-        };
-        map.appendChild(node);
-        positions.push({x, y});
-    });
-
-    // Draw connecting path
-    let pathD = "";
-    positions.forEach((p, i) => {
-        if (i === 0) pathD += `M ${p.x} ${p.y}`;
-        else {
-            const prev = positions[i-1];
-            const cp1y = prev.y + (p.y - prev.y) / 2;
-            pathD += ` C ${prev.x} ${cp1y}, ${p.x} ${cp1y}, ${p.x} ${p.y}`;
-        }
-    });
-
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", pathD);
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "rgba(255,255,255,0.08)");
-    path.setAttribute("stroke-width", "10");
-    path.setAttribute("stroke-dasharray", "20, 15");
-    svg.appendChild(path);
-
-    // Place Character with walking animation
-    const char = document.getElementById('character');
-    const currentPos = positions[currentProgress.stage - 1];
-    if (currentPos && char) {
-        updateCharacterAccessories(char);
-        char.classList.add('char-walking');
-        char.style.left = `${currentPos.x - 30}px`;
-        char.style.top = `${currentPos.y - 60}px`;
-        setTimeout(() => char.classList.remove('char-walking'), 1000);
-    }
-
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-    map.style.height = (stages.length * 220 + 300) + 'px';
-}
-
-function getStageIcon(i) {
-    const icons = ['code', 'box', 'zap', 'volume-2', 'cpu', 'shield', 'layers', 'gem', 'star', 'trophy'];
-    return icons[i] || 'book';
-}
-
-function selectStage(stage) {
-    if (stage.id > currentProgress.stage) return;
-    activeStage = stage;
-    document.getElementById('map-view').classList.add('hidden');
-    document.getElementById('stage-detail-view').classList.remove('hidden');
-    document.getElementById('current-stage-name').textContent = stage.name;
-    document.getElementById('current-stage-name').style.color = stage.color;
-
-    renderSubMap();
-}
-
-function renderSubMap() {
-    const container = document.getElementById('sub-map-container');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const courses = activeStage.courses;
-    const mapWidth = container.offsetWidth;
-
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", "map-svg");
-    svg.style.position = "absolute";
-    svg.style.top = "0"; svg.style.left = "0";
-    svg.style.width = "100%"; svg.style.height = "100%";
-    svg.style.zIndex = "1";
-    container.appendChild(svg);
-
-    const positions = [];
-    courses.forEach((course, index) => {
-        const node = document.createElement('div');
-        node.className = 'stage-node';
-
-        const isDone = currentProgress.completed.includes(course.id);
-        const isNext = !isDone && (index === 0 || currentProgress.completed.includes(courses[index-1].id));
-        const isLocked = !isDone && !isNext;
-
-        if (isLocked) node.classList.add('locked');
-
-        // Zig-zag
-        const offset = Math.sin(index * 2) * (mapWidth / 5);
-        const x = (mapWidth / 2) + offset;
-        const y = 50 + (index * 180);
-
-        node.style.left = `${x - 50}px`;
-        node.style.top = `${y - 50}px`;
-        node.style.width = '100px';
-        node.style.height = '100px';
-        node.style.borderColor = isDone ? '#7ED957' : (isNext ? activeStage.color : 'rgba(255,255,255,0.1)');
-        node.style.position = 'absolute';
-
-        node.innerHTML = `
-            <span style="font-weight:900; font-size:2rem; color:${isDone ? '#7ED957' : '#fff'}">${index + 1}</span>
-        `;
-
-        if (!isLocked) node.onclick = () => {
-            SoundManager.pop();
-            startCourse(course);
-        };
-        container.appendChild(node);
-        positions.push({x, y, isDone, isNext});
-    });
-
-    // Sub-path
-    let pathD = "";
-    positions.forEach((p, i) => {
-        if (i === 0) pathD += `M ${p.x} ${p.y}`;
-        else {
-            const prev = positions[i-1];
-            pathD += ` L ${p.x} ${p.y}`;
-        }
-    });
-
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", pathD);
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "rgba(255,255,255,0.05)");
-    path.setAttribute("stroke-width", "6");
-    svg.appendChild(path);
-
-    // Sub-character
-    const subChar = document.createElement('div');
-    subChar.id = 'sub-character';
-    subChar.className = 'char-body';
-    subChar.style.width = '40px'; subChar.style.height = '40px';
-    subChar.style.position = 'absolute';
-    subChar.style.zIndex = '10';
-    subChar.innerHTML = '<div class="char-eye" style="width:5px; height:5px;"></div><div class="char-eye" style="width:5px; height:5px;"></div>';
-    updateCharacterAccessories(subChar);
-
-    // Find where the character should be
-    let charPos = positions[0];
-    for(let i=0; i<positions.length; i++) {
-        if(positions[i].isNext) {
-            charPos = positions[i];
-            break;
-        }
-        if(positions[i].isDone) charPos = positions[i];
-    }
-
-    subChar.classList.add('char-walking');
-    subChar.style.left = `${charPos.x - 20}px`;
-    subChar.style.top = `${charPos.y - 60}px`;
-    container.appendChild(subChar);
-    setTimeout(() => subChar.classList.remove('char-walking'), 1000);
-
-    container.style.height = (courses.length * 180 + 200) + 'px';
-}
-
-function backToMap() {
-    document.getElementById('map-view').classList.remove('hidden');
-    document.getElementById('stage-detail-view').classList.add('hidden');
-    document.getElementById('lesson-view').classList.add('hidden');
-    renderMap();
-}
-
-function startCourse(course) {
-    activeCourse = course;
-    currentStepIndex = 0;
-    document.getElementById('stage-detail-view').classList.add('hidden');
-    document.getElementById('lesson-view').classList.remove('hidden');
-    renderStep();
-}
-
-function renderStep() {
-    const step = activeCourse.steps[currentStepIndex];
-    const isBoss = activeCourse.isBoss;
-    document.getElementById('lesson-title').textContent = activeCourse.title;
-
-    // Boss specific background
-    const lessonView = document.getElementById('lesson-view');
-    if (isBoss) {
-        lessonView.style.background = 'radial-gradient(circle at center, #200, #000)';
-    } else {
-        lessonView.style.background = '';
-    }
-
-    const status = document.getElementById('practice-status');
-    const checkBtn = document.getElementById('check-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const feedback = document.getElementById('feedback-msg');
-    feedback.classList.add('hidden');
-
-    const bossCont = document.getElementById('boss-container');
-    if (isBoss) bossCont.classList.remove('hidden');
-    else bossCont.classList.add('hidden');
-
-    if (step.type === 'teoria') {
-        document.getElementById('lesson-text').textContent = step.content;
-        document.getElementById('lesson-code-wrapper').classList.remove('hidden');
-        document.getElementById('lesson-code').textContent = step.code;
-        status.textContent = 'APRENDIENDO';
-        status.style.background = '#00AAFF';
-        document.getElementById('practice-question').textContent = 'Estudia este concepto y continúa.';
-        document.getElementById('practice-area').innerHTML = '';
-        checkBtn.classList.add('hidden');
-        nextBtn.classList.remove('hidden');
-    } else {
-        document.getElementById('lesson-text').textContent = '';
-        document.getElementById('lesson-code-wrapper').classList.add('hidden');
-        status.textContent = 'PRÁCTICA';
-        status.style.background = '#FFC300';
-        document.getElementById('practice-question').textContent = step.question;
-        const area = document.getElementById('practice-area');
-        area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
-        checkBtn.classList.remove('hidden');
-        nextBtn.classList.add('hidden');
-        const input = document.getElementById('answer-input');
-        input.onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
-        input.focus();
-    }
-}
-
-function checkAnswer() {
-    const step = activeCourse.steps[currentStepIndex];
-    const input = document.getElementById('answer-input');
-    if (!input) return;
-    const val = input.value.trim();
-    const correctVal = step.answer.trim();
-
-    if (val.toLowerCase() === correctVal.toLowerCase()) {
-        if (activeCourse.isBoss) {
-            SoundManager.bossHit();
-            const bug = document.querySelector('.boss-bug');
-            bug.style.transform = 'scale(0.8) rotate(10deg)';
-            setTimeout(() => bug.style.transform = '', 200);
-
-            // Check if it was the last step of the boss
-            if (currentStepIndex === activeCourse.steps.length - 1) {
-                bug.classList.add('boss-defeat');
-            }
-        }
-
-        SoundManager.ding();
-        if (typeof confetti !== 'undefined') {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#7ED957', '#00AAFF', '#ffffff']
-            });
-        }
-        showFeedback(true);
-    } else {
-        SoundManager.uhoh();
-        // Intelligent Analysis
-        let hint = "";
-        const valLower = val.toLowerCase();
-        const correctLower = correctVal.toLowerCase();
-        const dist = getLevenshteinDistance(valLower, correctLower);
-
-        if (val === "") {
-            hint = "No te rindas. Intenta escribir lo que aprendimos arriba.";
-        } else if (correctLower === valLower + ";") {
-            hint = "¡Casi! Te faltó el punto y coma (<b>;</b>) al final. En CES es fundamental.";
-        } else if (dist <= 2) {
-            hint = `¡Muy cerca! Tienes un pequeño error de dedo. La forma correcta es: <code style="background:#000; padding:2px 6px; border-radius:4px;">${correctVal}</code>`;
-        } else {
-            hint = `Esa no es la respuesta correcta. Revisa la teoría: la instrucción que buscamos es <b>${correctVal}</b>.`;
-        }
-
-        showFeedback(false, hint);
-    }
-}
-
-function showFeedback(correct, hint = "") {
-    const card = document.querySelector('.practice-card');
-    const status = document.getElementById('practice-status');
-    const nextBtn = document.getElementById('next-btn');
-    const checkBtn = document.getElementById('check-btn');
-    const feedback = document.getElementById('feedback-msg');
-
-    if (correct) {
-        card.classList.remove('shake');
-        card.classList.add('bounce');
-        setTimeout(() => card.classList.remove('bounce'), 600);
-        status.textContent = '¡MUY BIEN HECHO!';
-        status.style.background = '#7ED957';
-        checkBtn.classList.add('hidden');
-        nextBtn.classList.remove('hidden');
-        feedback.classList.add('hidden');
-    } else {
-        card.classList.remove('bounce');
-        card.classList.add('shake');
-        setTimeout(() => card.classList.remove('shake'), 600);
-        status.textContent = 'ALGO FALLÓ, REVISA TU RESPUESTA';
-        status.style.background = '#ff4d4d';
-
-        feedback.innerHTML = hint;
-        feedback.style.background = 'rgba(255,77,77,0.1)';
-        feedback.style.borderColor = '#ff4d4d';
-        feedback.style.color = '#ffb3b3';
-        feedback.classList.remove('hidden');
-    }
-}
-
-function getLevenshteinDistance(a, b) {
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-
-    for (let i = 1; i <= b.length; i++) {
-        for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j] + 1
-                );
-            }
-        }
-    }
-    return matrix[b.length][a.length];
-}
-
-function nextStep() {
-    if (currentStepIndex < activeCourse.steps.length - 1) {
-        currentStepIndex++;
-        renderStep();
-    } else {
-        if (!currentProgress.completed.includes(activeCourse.id)) {
-            currentProgress.completed.push(activeCourse.id);
-            const ids = activeStage.courses.map(c => c.id);
-            if (ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
-                currentProgress.stage++;
-            }
-        }
-        saveProgress();
-        updateUIProgress();
-
-        const all = window.courseData.stages.flatMap(s => s.courses);
-        const idx = all.findIndex(c => c.id === activeCourse.id);
-        if (idx < all.length - 1) {
-            startCourse(all[idx + 1]);
-        } else {
-            alert("¡FELICIDADES! COMPLETADO.");
-            backToMap();
-        }
-    }
-}
-
 window.speakContent = () => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const step = activeCourse.steps[currentStepIndex];
-    const text = step.type === 'teoria' ? step.content : step.question;
+    const text = step.type === 'teoria' ? step.content : (step.question || "");
     const ut = new SpeechSynthesisUtterance(text);
     ut.lang = 'es-ES';
-
-    const mapChar = document.getElementById('character');
-    const subChar = document.getElementById('sub-character');
     const lessonChar = document.getElementById('lesson-character');
-    if (lessonChar) updateCharacterAccessories(lessonChar);
-
-    ut.onstart = () => {
-        if (mapChar) mapChar.classList.add('char-talking');
-        if (subChar) subChar.classList.add('char-talking');
-        if (lessonChar) lessonChar.classList.add('char-talking');
-        document.getElementById('speak-btn').style.background = '#7ED957';
-        document.getElementById('speak-btn').style.color = '#000';
-    };
-    ut.onend = () => {
-        if (mapChar) mapChar.classList.remove('char-talking');
-        if (subChar) subChar.classList.remove('char-talking');
-        if (lessonChar) lessonChar.classList.remove('char-talking');
-        document.getElementById('speak-btn').style.background = '';
-        document.getElementById('speak-btn').style.color = '';
-    };
+    ut.onstart = () => { if (lessonChar) lessonChar.classList.add('char-talking'); };
+    ut.onend = () => { if (lessonChar) lessonChar.classList.remove('char-talking'); };
     window.speechSynthesis.speak(ut);
 };
-
-function updateCharacterAccessories(char) {
-    const existing = char.querySelectorAll('.char-accessory');
-    existing.forEach(e => e.remove());
-
-    if (currentProgress.stage > 1) {
-        const hat = document.createElement('div');
-        hat.className = 'char-accessory hat-expert';
-        char.appendChild(hat);
-    }
-
-    if (currentProgress.stage > 5) {
-        const crown = document.createElement('div');
-        crown.className = 'char-accessory crown-master';
-        crown.innerHTML = '👑';
-        char.appendChild(crown);
-    }
-}
