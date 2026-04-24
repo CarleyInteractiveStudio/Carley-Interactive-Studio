@@ -1187,3 +1187,275 @@ body::-webkit-scrollbar,
     margin-bottom: 1.5rem;
     line-height: 1.4;
 }
+
+/* --- Curso Scripting Specific Styles --- */
+.stage-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background: rgba(255,255,255,0.03);
+    border: 4px solid var(--glass-border);
+    border-radius: 50%;
+    z-index: 5;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+}
+
+.stage-node:hover:not(.locked) {
+    transform: scale(1.15);
+    background: rgba(255,255,255,0.08);
+}
+
+.stage-node.locked {
+    filter: grayscale(1) brightness(0.5);
+    cursor: not-allowed;
+}
+
+.stage-label {
+    position: absolute;
+    top: 110%;
+    background: rgba(0,0,0,0.8);
+    padding: 4px 12px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+    border: 1px solid var(--glass-border);
+    pointer-events: none;
+}
+
+.map-svg {
+    pointer-events: none;
+}
+
+#character {
+    width: 60px;
+    height: 70px;
+    position: absolute;
+    z-index: 20;
+    transition: all 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.char-body {
+    width: 50px;
+    height: 50px;
+    background: #7ED957;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(126, 217, 87, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.char-eye {
+    width: 8px;
+    height: 8px;
+    background: #111;
+    border-radius: 50%;
+}
+
+.char-feet {
+    display: flex;
+    gap: 15px;
+    margin-top: -5px;
+}
+
+.char-foot {
+    width: 12px;
+    height: 8px;
+    background: #555;
+    border-radius: 4px;
+}
+
+@keyframes char-walk {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.char-walking .char-foot:nth-child(1) { animation: char-walk 0.2s infinite; }
+.char-walking .char-foot:nth-child(2) { animation: char-walk 0.2s infinite 0.1s; }
+
+.lesson-card {
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+}
+
+.practice-tag {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-main.back {
+    background: none;
+    border: 1px solid var(--glass-border);
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.btn-main.back:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+/* --- Enhanced Character Animations --- */
+.char-body {
+    transition: background-color 0.3s ease;
+}
+
+.char-talking .char-body {
+    animation: talk-vibrate 0.15s infinite;
+    background-color: #fff !important;
+}
+
+@keyframes talk-vibrate {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.02); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* --- Map Enhancements --- */
+.map-svg path {
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
+}
+
+/* --- Custom Scrollbar for Course --- */
+.course-container::-webkit-scrollbar {
+    width: 8px;
+}
+.course-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.course-container::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+/* --- Practice Feedback UI --- */
+.practice-card.shake {
+    border-color: #ff4d4d !important;
+    background: rgba(255, 77, 77, 0.05) !important;
+}
+
+.practice-card.bounce {
+    border-color: var(--primary) !important;
+    background: rgba(126, 217, 87, 0.05) !important;
+}
+
+/* --- Gamification & Boss Styles --- */
+.boss-bug {
+    width: 80px;
+    height: 80px;
+    background: #ff4d4d;
+    border-radius: 20% 20% 50% 50%;
+    position: relative;
+    box-shadow: 0 0 30px #ff4d4d;
+    animation: boss-hover 3s ease-in-out infinite;
+}
+
+.boss-bug::before, .boss-bug::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 30px;
+    background: #ff4d4d;
+    top: -15px;
+    border-radius: 50% 50% 0 0;
+}
+
+.boss-bug::before { left: 10px; transform: rotate(-20deg); }
+.boss-bug::after { right: 10px; transform: rotate(20deg); }
+
+.boss-eye {
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+}
+.boss-eye.left { left: 15px; }
+.boss-eye.right { right: 15px; }
+.boss-eye::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+    top: 4px; left: 4px;
+}
+
+@keyframes boss-hover {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.boss-defeat {
+    animation: boss-explode 0.8s forwards !important;
+}
+
+@keyframes boss-explode {
+    0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+    50% { transform: scale(1.5); opacity: 0.8; filter: brightness(3); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+/* Character Evolution Accessories */
+.char-accessory {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.hat-expert {
+    width: 40px;
+    height: 20px;
+    background: #333;
+    border-bottom: 4px solid #00AAFF;
+    border-radius: 5px 5px 0 0;
+}
+
+.crown-master {
+    font-size: 24px;
+    filter: drop-shadow(0 0 5px gold);
+    animation: crown-glow 2s infinite alternate;
+}
+
+@keyframes crown-glow {
+    from { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    to { transform: translateX(-50%) scale(1.2); opacity: 1; }
+}
+
+.xp-badge {
+    background: linear-gradient(135deg, gold, #ffa500);
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    position: absolute;
+    top: -40px;
+    animation: xp-float 1s forwards;
+}
+
+@keyframes xp-float {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+}
