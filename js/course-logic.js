@@ -362,7 +362,14 @@ function renderStep() {
     selectedBlocks = [];
 
     const bossCont = document.getElementById('boss-container');
-    bossCont.className = isBoss ? '' : 'hidden';
+    // Show enemy in all practice steps to fulfill the mini-game requirement
+    if (step.type !== 'teoria') {
+        bossCont.classList.remove('hidden');
+        // If it's a normal lesson, make the enemy slightly smaller/different if needed
+        bossCont.style.transform = isBoss ? 'scale(1.2)' : 'scale(0.8)';
+    } else {
+        bossCont.classList.add('hidden');
+    }
 
     const area = document.getElementById('practice-area');
     area.innerHTML = '';
@@ -493,7 +500,8 @@ function handleSuccess() {
     char.classList.add('char-attack');
     setTimeout(() => {
         char.classList.remove('char-attack');
-        if (activeCourse.isBoss) {
+        // Hit the enemy in all practice steps
+        if (boss) {
             boss.classList.add('boss-hit');
             SoundManager.bossHit();
             setTimeout(() => boss.classList.remove('boss-hit'), 500);
@@ -514,10 +522,12 @@ function handleFailure() {
     const char = document.getElementById('lesson-character');
     const boss = document.querySelector('.boss-bug');
 
-    if (activeCourse.isBoss) {
-        boss.style.transform = 'translateX(-50px) scale(1.2)';
+    // Enemy attacks the character
+    if (boss) {
+        const originalTransform = boss.style.transform;
+        boss.style.transform = 'translateX(-50px) scale(1.1)';
         setTimeout(() => {
-            boss.style.transform = '';
+            boss.style.transform = originalTransform;
             char.classList.add('char-hit');
             setTimeout(() => char.classList.remove('char-hit'), 500);
         }, 200);
