@@ -322,6 +322,8 @@ function renderStep() {
     const status = document.getElementById('practice-status');
     const checkBtn = document.getElementById('check-btn');
     const nextBtn = document.getElementById('next-btn');
+    const feedback = document.getElementById('feedback-msg');
+    feedback.classList.add('hidden');
 
     if (step.type === 'teoria') {
         document.getElementById('lesson-text').textContent = step.content;
@@ -352,20 +354,39 @@ function renderStep() {
 function checkAnswer() {
     const step = activeCourse.steps[currentStepIndex];
     const input = document.getElementById('answer-input');
+    if (!input) return;
     const val = input.value.trim();
+    const correctVal = step.answer.trim();
 
-    if (val.toLowerCase() === step.answer.toLowerCase()) {
+    if (val.toLowerCase() === correctVal.toLowerCase()) {
         showFeedback(true);
     } else {
-        showFeedback(false);
+        // Intelligent Analysis
+        let hint = "";
+        const valLower = val.toLowerCase();
+        const correctLower = correctVal.toLowerCase();
+        const dist = getLevenshteinDistance(valLower, correctLower);
+
+        if (val === "") {
+            hint = "No te rindas. Intenta escribir lo que aprendimos arriba.";
+        } else if (correctLower === valLower + ";") {
+            hint = "¡Casi! Te faltó el punto y coma (<b>;</b>) al final. En CES es fundamental.";
+        } else if (dist <= 2) {
+            hint = `¡Muy cerca! Tienes un pequeño error de dedo. La forma correcta es: <code style="background:#000; padding:2px 6px; border-radius:4px;">${correctVal}</code>`;
+        } else {
+            hint = `Esa no es la respuesta correcta. Revisa la teoría: la instrucción que buscamos es <b>${correctVal}</b>.`;
+        }
+
+        showFeedback(false, hint);
     }
 }
 
-function showFeedback(correct) {
+function showFeedback(correct, hint = "") {
     const card = document.querySelector('.practice-card');
     const status = document.getElementById('practice-status');
     const nextBtn = document.getElementById('next-btn');
     const checkBtn = document.getElementById('check-btn');
+    const feedback = document.getElementById('feedback-msg');
 
     if (correct) {
         card.classList.remove('shake');
@@ -375,13 +396,41 @@ function showFeedback(correct) {
         status.style.background = '#7ED957';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
+        feedback.classList.add('hidden');
     } else {
         card.classList.remove('bounce');
         card.classList.add('shake');
         setTimeout(() => card.classList.remove('shake'), 600);
         status.textContent = 'ALGO FALLÓ, REVISA TU RESPUESTA';
         status.style.background = '#ff4d4d';
+
+        feedback.innerHTML = hint;
+        feedback.style.background = 'rgba(255,77,77,0.1)';
+        feedback.style.borderColor = '#ff4d4d';
+        feedback.style.color = '#ffb3b3';
+        feedback.classList.remove('hidden');
     }
+}
+
+function getLevenshteinDistance(a, b) {
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+    return matrix[b.length][a.length];
 }
 
 function nextStep() {
