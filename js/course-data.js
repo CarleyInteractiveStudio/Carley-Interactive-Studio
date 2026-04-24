@@ -639,7 +639,78 @@ window.courseData = {
         { id: 7, name: "Estructuras de Datos CES", color: "#581845", courses: [] },
         { id: 8, name: "Gráficos Avanzados", color: "#1A5276", courses: [] },
         { id: 9, name: "Redes y Multijugador", color: "#1D8348", courses: [] },
-        { id: 10, name: "Maestría Creativa", color: "#F1C40F", courses: [] }
+        { id: 10, name: "Maestría Creativa", color: "#F1C40F", courses: [] },
+        {
+            id: 11,
+            name: "EXAMEN DE CERTIFICACIÓN",
+            color: "gold",
+            courses: [
+                {
+                    id: 101,
+                    title: "Teoría: El Ecosistema CES",
+                    steps: [
+                        {
+                            type: "opcion-multiple",
+                            question: "Para que un script funcione en Creative Engine, ¿cuál es la primera línea obligatoria?",
+                            options: [
+                                { text: "materia Script;", correct: false },
+                                { text: "ve motor;", correct: true },
+                                { text: "iniciar motor;", correct: false }
+                            ]
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "Si quieres buscar una materia específica en todo el proyecto, usas:",
+                            options: [
+                                { text: "buscar(\"nombre\");", correct: true },
+                                { text: "ley Buscar;", correct: false },
+                                { text: "variable x = \"nombre\";", correct: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 102,
+                    title: "Práctica: Arquitectura y Capas",
+                    steps: [
+                        {
+                            type: "completar-codigo",
+                            question: "Pon una materia en la capa más profunda (detrás de todo):",
+                            codeTemplate: "ley Capa([BLOQUE]);",
+                            blocks: ["-100", "0", "100"],
+                            answer: "-100"
+                        },
+                        {
+                            type: "ordenar-bloques",
+                            question: "Crea una materia 'Hijo' dentro de 'Padre' usando jerarquía:",
+                            blocks: ["materia Padre {", "materia Hijo;", "}"],
+                            answer: ["materia Padre {", "materia Hijo;", "}"]
+                        }
+                    ]
+                },
+                {
+                    id: 103,
+                    title: "Desafío de Física y Sensores",
+                    steps: [
+                        {
+                            type: "modo-debug",
+                            question: "Encuentra el error en la detección de colisión fantasma (Trigger):",
+                            codeLines: ["materia Zona;", "ley Solido;", "alEntrar(otro) { ... }"],
+                            errorLine: 1,
+                            explanation: "Para detectar sin bloquear el paso se debe usar 'ley Trigger', no 'ley Solido'.",
+                            solution: "ley Trigger;"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Aplica un impulso de salto potente (Eje Y negativo):",
+                            codeTemplate: "fisica.impulso(0, [BLOQUE]);",
+                            blocks: ["-1000", "1000", "0"],
+                            answer: "-1000"
+                        }
+                    ]
+                }
+            ]
+        }
     ]
 };
 

@@ -21,6 +21,10 @@ let selectedBlocks = [];
 let bgmSource = null;
 let isMusicOn = false;
 
+// Certification Metrics
+let examStartTime = 0;
+let examMistakes = 0;
+
 const skins = {
     'default': { name: 'Carl Original', color: '#7ED957', price: 0 },
     'ocean': { name: 'Carl Oceánico', color: '#00AAFF', price: 50 },
@@ -577,6 +581,9 @@ function handleSuccess() {
 
 function handleFailure() {
     userHealth--;
+    if (activeStage && activeStage.id === 11) {
+        examMistakes++;
+    }
     updateHealthUI();
     SoundManager.uhoh();
 
@@ -646,12 +653,23 @@ async function nextStep() {
             currentProgress.credits += activeCourse.isBoss ? 25 : 10;
             updateCreditsUI();
 
-            const ids = activeStage.courses.map(c => c.id);
-            if (ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
+            const ids = activeStage.stages ? [] : activeStage.courses.map(c => c.id);
+            if (!activeStage.stages && ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
                 currentProgress.stage++;
                 unlockAchievement(activeStage.name);
             }
         }
+
+        // Final Exam Check
+        if (activeStage.id === 11) {
+            const allExamCourses = activeStage.courses;
+            const lastExamCourse = allExamCourses[allExamCourses.length - 1];
+            if (activeCourse.id === lastExamCourse.id) {
+                finishExam();
+                return;
+            }
+        }
+
         await saveProgress();
         updateUIProgress();
 
@@ -663,6 +681,97 @@ async function nextStep() {
             backToMap();
         }
     }
+}
+
+function finishExam() {
+    const endTime = Date.now();
+    const totalTimeSeconds = Math.floor((endTime - examStartTime) / 1000);
+
+    // Grading Logic:
+    // Base 100. -4 per mistake. -1 every 15s after 3 minutes.
+    let score = 100;
+    score -= (examMistakes * 4);
+    if (totalTimeSeconds > 180) {
+        score -= Math.floor((totalTimeSeconds - 180) / 15);
+    }
+    score = Math.max(0, score);
+
+    let rank = "S";
+    if (score < 95) rank = "A";
+    if (score < 85) rank = "B";
+    if (score < 70) rank = "C";
+    if (score < 60) rank = "D";
+
+    showCertificatePrompt(score, rank, totalTimeSeconds);
+}
+
+window.generateCertificate = (score, rank, time) => {
+    const nameInput = document.getElementById('cert-name-input');
+    const name = nameInput.value.trim() || "Desarrollador Creative Engine";
+
+    // Update Certificate Template
+    document.getElementById('cert-display-name').textContent = name;
+    document.getElementById('cert-display-score').textContent = score + "%";
+    document.getElementById('cert-display-rank').textContent = rank;
+    document.getElementById('cert-display-date').textContent = new Date().toLocaleDateString();
+
+    // Inject Achievements
+    const achList = document.getElementById('cert-achievements-list');
+    achList.innerHTML = currentProgress.achievements.map(a => `<span>◈ ${a}</span>`).join(' ');
+
+    // Show Success Modal
+    document.getElementById('cert-prompt-modal').classList.add('hidden');
+    document.getElementById('final-success-modal').classList.remove('hidden');
+
+    // Configure Sharing Links
+    const text = `¡Soy oficialmente Desarrollador en Creative Engine! Mi rango: ${rank} (${score}%). Mira mi certificado:`;
+    const url = window.location.href;
+    document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    if (typeof confetti !== 'undefined') confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+};
+
+window.downloadPDF = () => {
+    const element = document.getElementById('certificate-container');
+    const opt = {
+        margin: 0,
+        filename: 'Certificado_Creative_Engine.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'px', format: [800, 600], orientation: 'landscape' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+};
+
+function showCertificatePrompt(score, rank, time) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'cert-prompt-modal';
+    modal.innerHTML = `
+        <div class="course-modal">
+            <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
+            <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
+            <p style="font-size:1.2rem; margin-bottom:10px;">Has demostrado ser un Desarrollador de Creative Engine.</p>
+            <div style="display:flex; justify-content:center; gap:20px; margin: 20px 0;">
+                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                    <div style="font-size:0.8rem; opacity:0.6;">CALIFICACIÓN</div>
+                    <div style="font-size:2rem; font-weight:900; color:var(--primary);">${score}%</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                    <div style="font-size:0.8rem; opacity:0.6;">RANGO</div>
+                    <div style="font-size:2rem; font-weight:900; color:gold;">${rank}</div>
+                </div>
+            </div>
+            <p style="opacity:0.7; margin-bottom:20px;">Ingresa tu nombre profesional para el certificado:</p>
+            <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:25px;">
+            <button class="btn-main" onclick="generateCertificate('${score}', '${rank}', '${time}')">Obtener Certificado Profesional</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
 /* ==============================
