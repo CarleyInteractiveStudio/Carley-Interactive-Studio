@@ -1,5 +1,6 @@
 /* ==============================
-   Course Data - The Scripting Path
+   Course Data - The Scripting Path (CES)
+   Updated with Advanced Mechanics & Rich Content
 ============================== */
 
 window.courseData = {
@@ -15,17 +16,22 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "¡Bienvenido al inicio de tu viaje! En Creative Engine, todo script comienza con una conexión. La instrucción 've motor;' no es solo código, es el 'hola mundo' técnico que despierta al motor. Sin esta línea, tu script es como un cuerpo sin alma: no puede escuchar comandos ni interactuar con el mundo del juego. Es la instrucción más fundamental y necesaria en todos los scripts de CES.",
+                            content: "¡Bienvenido al inicio de tu viaje! En Creative Engine, todo script comienza con una conexión. La instrucción 've motor;' no es solo código, es el 'hola mundo' técnico que despierta al motor. Sin esta línea, tu script no puede interactuar con el mundo.",
                             code: "// Iniciando la conexión\nve motor;"
                         },
                         {
-                            type: "teoria",
-                            content: "¿Por qué el punto y coma? En CES, como en muchos lenguajes profesionales, el ';' marca el final de una orden. Es como el punto final en una oración. 've' es un comando de activación y 'motor' es el objetivo global. Juntos, abren el canal de comunicación entre tu lógica y el renderizado en tiempo real.",
-                            code: "ve motor; // Siempre termina con punto y coma"
+                            type: "opcion-multiple",
+                            question: "¿Cuál es la función principal de 've motor;'?",
+                            options: [
+                                { text: "Dibujar un personaje", correct: false },
+                                { text: "Conectar el script con el motor", correct: true },
+                                { text: "Cerrar el juego", correct: false }
+                            ],
+                            feedback: "Exacto. Es el puente entre tu código y el corazón de Creative Engine."
                         },
                         {
                             type: "practica",
-                            question: "Escribe la instrucción obligatoria para conectar con el motor y despertar tu script:",
+                            question: "Escribe la instrucción obligatoria para despertar tu script:",
                             answer: "ve motor;"
                         }
                     ]
@@ -36,18 +42,20 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "En Creative Engine, no hablamos de 'objetos' o 'variables' genéricas. Hablamos de 'materias'. Una materia es cualquier cosa tangible en tu juego: el jugador, una bala, una moneda o un enemigo. Definir una materia es darle un nombre a algo para que el motor sepa a quién nos referimos cuando aplicamos leyes.",
+                            content: "En Creative Engine hablamos de 'materias'. Una materia es cualquier cosa tangible: el jugador, una bala, o una moneda. Definir una materia es darle un nombre a algo.",
                             code: "materia Jugador;"
                         },
                         {
-                            type: "teoria",
-                            content: "Cuando escribes 'materia Nombre;', estás reservando un espacio en la memoria del motor. Es importante que los nombres sean claros. Si vas a crear un enemigo, llámalo 'Enemigo' o 'Boss'. Recuerda que CES distingue entre mayúsculas y minúsculas.",
-                            code: "materia Moneda;\nmateria Enemigo_Rojo;"
+                            type: "completar-codigo",
+                            question: "Completa la definición de la materia para nuestro héroe:",
+                            codeTemplate: "[BLOQUE] Carl;",
+                            blocks: ["materia", "ley", "dato"],
+                            answer: "materia"
                         },
                         {
                             type: "practica",
-                            question: "Crea una materia llamada 'Carl' para nuestro asistente:",
-                            answer: "materia Carl;"
+                            question: "Crea una materia llamada 'Enemigo':",
+                            answer: "materia Enemigo;"
                         }
                     ]
                 },
@@ -57,13 +65,14 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Si las materias son los cuerpos, las 'leyes' son el cerebro. Una ley define qué hace una materia. ¿Se mueve? ¿Salta? ¿Explota al tocar algo? En CES, aplicamos leyes a las materias para darles vida. La estructura básica es: materia -> ley.",
+                            content: "Si las materias son los cuerpos, las 'leyes' son el cerebro. Una ley define qué hace una materia. La estructura básica es: materia -> ley.",
                             code: "materia Bala;\nley MovimientoLineal;"
                         },
                         {
-                            type: "practica",
-                            question: "Si tienes una materia 'Heroe', ¿cómo aplicarías una ley llamada 'Gravedad'? (Escribe: ley Gravedad;)",
-                            answer: "ley Gravedad;"
+                            type: "ordenar-bloques",
+                            question: "Ordena los bloques para aplicar la ley 'Gravedad' a la materia 'Piedra':",
+                            blocks: ["materia Piedra;", "ley Gravedad;"],
+                            answer: ["materia Piedra;", "ley Gravedad;"]
                         }
                     ]
                 },
@@ -73,13 +82,17 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "El aspecto visual es vital. Podemos definir el color base de una materia usando la ley de Color. CES usa nombres de colores estándar o códigos hexadecimales. Esto permite cambiar la apariencia de un objeto dinámicamente durante el juego.",
+                            content: "Podemos definir el color base de una materia usando la ley de Color. CES usa nombres de colores estándar.",
                             code: "materia Pared;\nley Color(Azul);"
                         },
                         {
-                            type: "practica",
-                            question: "Aplica la ley Color con el valor 'Verde' a una materia (Escribe: ley Color(Verde);):",
-                            answer: "ley Color(Verde);"
+                            type: "opcion-multiple",
+                            question: "¿Qué pasa si olvidas el paréntesis en ley Color(Rojo)?",
+                            options: [
+                                { text: "El motor explota", correct: false },
+                                { text: "Dará un error de sintaxis", correct: true },
+                                { text: "Se pone color negro por defecto", correct: false }
+                            ]
                         }
                     ]
                 },
@@ -89,12 +102,14 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Un videojuego es un ciclo infinito que se repite 60 veces por segundo. En CES, usamos el bloque 'ciclo' para código que debe ejecutarse constantemente. Si quieres que un personaje se mueva mientras presionas una tecla, ese código va dentro del ciclo.",
+                            content: "Un videojuego se repite 60 veces por segundo. Usamos 'ciclo' para código constante.",
                             code: "ciclo {\n  // Código constante aquí\n}"
                         },
                         {
-                            type: "practica",
-                            question: "¿Cómo se llama el bloque de código que se repite constantemente en CES?",
+                            type: "completar-codigo",
+                            question: "Selecciona el bloque que inicia el bucle infinito:",
+                            codeTemplate: "[BLOQUE] { ... }",
+                            blocks: ["si", "ciclo", "materia"],
                             answer: "ciclo"
                         }
                     ]
@@ -105,12 +120,12 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "A veces solo quieres que algo pase UNA vez al principio, como colocar al jugador en su posición inicial o cargar su inventario. Para esto usamos 'al_iniciar'. Es el lugar perfecto para configurar tus materias antes de que comience la acción.",
-                            code: "al_iniciar {\n  // Solo una vez al cargar\n}"
+                            content: "Para cosas que solo pasan UNA vez al principio, usamos 'al_iniciar'.",
+                            code: "al_iniciar {\n  // Solo una vez\n}"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el nombre del bloque que se ejecuta solo una vez al arrancar el script:",
+                            question: "Escribe el nombre del bloque que se ejecuta solo una vez al arrancar:",
                             answer: "al_iniciar"
                         }
                     ]
@@ -121,13 +136,17 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Sin colisiones, tu personaje atravesaría las paredes. La ley 'Solido' permite que una materia interactúe físicamente con otras. Es lo que hace que el suelo sea firme y las paredes impenetrables.",
+                            content: "La ley 'Solido' permite que una materia interactúe físicamente con otras.",
                             code: "materia Suelo;\nley Solido;"
                         },
                         {
-                            type: "practica",
-                            question: "¿Qué ley hace que una materia no pueda ser atravesada por otras?",
-                            answer: "ley Solido;"
+                            type: "opcion-multiple",
+                            question: "¿Qué ley evita que atravieses las paredes?",
+                            options: [
+                                { text: "ley Traspasar;", correct: false },
+                                { text: "ley Solido;", correct: true },
+                                { text: "ley Invisible;", correct: false }
+                            ]
                         }
                     ]
                 },
@@ -137,13 +156,15 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Para que un juego sea interactivo, debe responder al jugador. Usamos 'si_tecla' para detectar pulsaciones. Esto permite crear controles personalizados para mover, saltar o atacar.",
+                            content: "Usamos 'si_tecla' para detectar pulsaciones del jugador.",
                             code: "si_tecla(Espacio) {\n  // Saltar\n}"
                         },
                         {
-                            type: "practica",
-                            question: "Detecta si se presiona la tecla 'Enter' (Escribe: si_tecla(Enter)):",
-                            answer: "si_tecla(Enter)"
+                            type: "completar-codigo",
+                            question: "Detecta si se presiona la tecla 'A':",
+                            codeTemplate: "si_tecla([BLOQUE])",
+                            blocks: ["A", "Enter", "Click"],
+                            answer: "A"
                         }
                     ]
                 },
@@ -153,13 +174,14 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Necesitas guardar puntos, vida o munición. En CES usamos 'dato' para crear variables numéricas o de texto. Es la forma de llevar la cuenta de lo que sucede en tu mundo virtual.",
+                            content: "En CES usamos 'dato' para crear variables numéricas o de texto.",
                             code: "dato vida = 100;"
                         },
                         {
-                            type: "practica",
-                            question: "Crea un dato llamado 'puntos' con valor 0:",
-                            answer: "dato puntos = 0;"
+                            type: "ordenar-bloques",
+                            question: "Crea un dato llamado 'oro' con valor 50:",
+                            blocks: ["dato", "oro", "=", "50;"],
+                            answer: ["dato", "oro", "=", "50;"]
                         }
                     ]
                 },
@@ -170,29 +192,240 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "¡CUIDADO! Un Bug Maestro ha aparecido para bloquear tu progreso. Para derrotarlo, debes demostrar que dominas los fundamentos. ¡Prepárate para la batalla!",
+                            content: "¡CUIDADO! Un Bug Maestro ha aparecido. Para derrotarlo, demuestra que dominas los fundamentos.",
                             code: "// MODO BATALLA ACTIVADO"
                         },
                         {
                             type: "practica",
-                            question: "RONDA 1: El Bug intenta desconectarte. ¡Reconecta rápido!",
+                            question: "RONDA 1: Reconecta el motor.",
                             answer: "ve motor;"
                         },
                         {
-                            type: "practica",
-                            question: "RONDA 2: El Bug es intangible. ¡Crea una materia 'Espada' para golpearlo!",
-                            answer: "materia Espada;"
+                            type: "opcion-multiple",
+                            question: "RONDA 2: El Bug se esconde. ¿Cómo definimos su 'cuerpo'?",
+                            options: [
+                                { text: "dato Bug;", correct: false },
+                                { text: "materia Bug;", correct: true }
+                            ]
                         },
                         {
-                            type: "practica",
-                            question: "RONDA 3: ¡El golpe final! Dale físicas a tu espada (ley Solido;)",
-                            answer: "ley Solido;"
+                            type: "completar-codigo",
+                            question: "RONDA 3: ¡El golpe final! Dale físicas para que no escape:",
+                            codeTemplate: "ley [BLOQUE];",
+                            blocks: ["Solido", "Liquido", "Color"],
+                            answer: "Solido"
                         }
                     ]
                 }
             ]
         },
-        { id: 2, name: "Arquitectura de Materias", color: "#00AAFF", courses: [] },
+        {
+            id: 2,
+            name: "Arquitectura de Materias",
+            color: "#00AAFF",
+            courses: [
+                {
+                    id: 11,
+                    title: "Etiquetas: El Poder de Agrupar",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Cuando tienes 100 enemigos, no quieres darles órdenes uno por uno. Usamos etiquetas (Tags). Una etiqueta permite agrupar materias bajo un mismo concepto, como 'Enemigos' o 'Premios'.",
+                            code: "materia Fantasma;\nley Etiqueta(Enemigo);"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Asigna la etiqueta 'Jugador' a nuestra materia:",
+                            codeTemplate: "ley Etiqueta([BLOQUE]);",
+                            blocks: ["Jugador", "Cosa", "Mundo"],
+                            answer: "Jugador"
+                        },
+                        {
+                            type: "practica",
+                            question: "¿Cómo se llama la ley para poner etiquetas?",
+                            answer: "ley Etiqueta"
+                        }
+                    ]
+                },
+                {
+                    id: 12,
+                    title: "Jerarquía: Padre e Hijo",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "En CES, una materia puede estar 'dentro' de otra. Si mueves al Padre, el Hijo se mueve con él. Esto es ideal para armas que el jugador lleva en la mano.",
+                            code: "materia Jugador {\n  materia Espada;\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "Si eliminas a la materia 'Padre', ¿qué pasa con el 'Hijo'?",
+                            options: [
+                                { text: "Se queda flotando solo", correct: false },
+                                { text: "Se elimina también", correct: true },
+                                { text: "Se convierte en el nuevo Padre", correct: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 13,
+                    title: "Capas de Sorteo",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "El orden en que se ven las cosas importa. La ley 'Capa' define qué se dibuja primero (atrás) y qué después (adelante). Las capas con números altos se ven sobre las bajas.",
+                            code: "materia Fondo; ley Capa(0);\nmateria Jugador; ley Capa(10);"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Queremos que el 'Filtro' esté sobre todo. Ponle una capa alta:",
+                            codeTemplate: "ley Capa([BLOQUE]);",
+                            blocks: ["-5", "0", "99"],
+                            answer: "99"
+                        }
+                    ]
+                },
+                {
+                    id: 14,
+                    title: "Prefabs: El Molde",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Un Prefab es un molde. Si diseñas una 'Bala' perfecta con luces y sonidos, la guardas como Prefab para crear mil iguales sin repetir código.",
+                            code: "instanciar(BalaPrefab, posicion);"
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el comando para crear una copia de un Prefab:",
+                            answer: "instanciar"
+                        }
+                    ]
+                },
+                {
+                    id: 15,
+                    title: "Visibilidad y Control",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Puedes ocultar materias sin borrarlas. La ley 'Visible' acepta verdadero o falso. Útil para menús o efectos que aparecen y desaparecen.",
+                            code: "materia Inventario;\nley Visible(falso);"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Cómo harías que un objeto sea invisible?",
+                            options: [
+                                { text: "ley Visible(falso);", correct: true },
+                                { text: "ley Invisible(verdadero);", correct: false },
+                                { text: "borrar materia;", correct: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 16,
+                    title: "Puntos de Anclaje",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "El 'Ancla' es el punto central de una materia. Por defecto está en el medio (0.5, 0.5), pero si es una puerta, quizás quieras el ancla en un borde para que rote correctamente.",
+                            code: "ley Ancla(0, 0.5); // Borde izquierdo"
+                        },
+                        {
+                            type: "practica",
+                            question: "¿Qué ley define el punto de rotación de una materia?",
+                            answer: "ley Ancla"
+                        }
+                    ]
+                },
+                {
+                    id: 17,
+                    title: "Escenas y Carga",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Un juego se divide en escenas. Puedes pasar del Menú al Nivel 1 usando el comando 'ir_a_escena'.",
+                            code: "ir_a_escena(\"Nivel1\");"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Viaja al 'Bosque':",
+                            codeTemplate: "ir_a_escena([BLOQUE]);",
+                            blocks: ["\"Bosque\"", "Bosque", "ir"],
+                            answer: "\"Bosque\""
+                        }
+                    ]
+                },
+                {
+                    id: 18,
+                    title: "Optimización: Pooling",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Crear y destruir materias constantemente (como balas) cansa al motor. El 'Pool' permite reciclar materias. En lugar de borrar, ocultamos y reusamos.",
+                            code: "reciclar(Bala);"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Para qué sirve el Pooling?",
+                            options: [
+                                { text: "Para que el juego sea más bonito", correct: false },
+                                { text: "Para mejorar el rendimiento (FPS)", correct: true },
+                                { text: "Para guardar la partida", correct: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 19,
+                    title: "Nombres y Rutas",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Puedes buscar materias por su nombre único en todo el proyecto usando 'buscar'.",
+                            code: "variable target = buscar(\"Jefe_Final\");"
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el comando para encontrar una materia por su nombre:",
+                            answer: "buscar"
+                        }
+                    ]
+                },
+                {
+                    id: 20,
+                    title: "¡JEFE: El Arquitecto del Caos!",
+                    isBoss: true,
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "El Arquitecto del Caos ha desordenado todas tus materias. ¡Usa la arquitectura para vencerlo!",
+                            code: "// BATALLA DE ARQUITECTURA"
+                        },
+                        {
+                            type: "ordenar-bloques",
+                            question: "RONDA 1: El jefe crea copias falsas. Agrupa a los 'Enemigos' reales:",
+                            blocks: ["materia Real;", "ley Etiqueta(Enemigo);"],
+                            answer: ["materia Real;", "ley Etiqueta(Enemigo);"]
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "RONDA 2: ¡Viene un ataque desde arriba! Pon el 'Escudo' sobre el jugador (capa alta):",
+                            codeTemplate: "ley Capa([BLOQUE]);",
+                            blocks: ["50", "0", "-1"],
+                            answer: "50"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "RONDA 3: ¡El golpe final! Necesitas muchos proyectiles rápido. ¿Qué técnica usas?",
+                            options: [
+                                { text: "Crear y borrar siempre", correct: false },
+                                { text: "Pooling (Reciclaje)", correct: true }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         { id: 3, name: "Leyes Universales", color: "#FFC300", courses: [] },
         { id: 4, name: "Sinfonía de Eventos", color: "#FF5733", courses: [] },
         { id: 5, name: "El Poder de Carl IA", color: "#C70039", courses: [] },
@@ -204,24 +437,24 @@ window.courseData = {
     ]
 };
 
-// Procedural generation for the remaining 90 courses to fulfill the "100 courses" requirement
-for (let i = 0; i < window.courseData.stages.length; i++) {
+// Procedural generation for the remaining 80 courses
+for (let i = 2; i < window.courseData.stages.length; i++) {
     const stage = window.courseData.stages[i];
     if (stage.courses.length === 0) {
         for (let j = 1; j <= 10; j++) {
             const courseId = (i * 10) + j;
             stage.courses.push({
                 id: courseId,
-                title: `Módulo ${courseId}: Avanzando en CES`,
+                title: `Módulo ${courseId}: Avanzando en ${stage.name}`,
                 steps: [
                     {
                         type: "teoria",
-                        content: `Bienvenido al módulo ${courseId}. En esta lección profundizaremos en conceptos avanzados de la etapa ${stage.name}. Prepárate para expandir tus conocimientos técnicos.`,
+                        content: `Bienvenido al módulo ${courseId}. En esta lección profundizaremos en conceptos avanzados de ${stage.name}.`,
                         code: `// Módulo ${courseId} en desarrollo\nve motor;`
                     },
                     {
                         type: "practica",
-                        question: "¿Estás listo para continuar con el aprendizaje avanzado?",
+                        question: "¿Estás listo para continuar?",
                         answer: "si"
                     }
                 ]
