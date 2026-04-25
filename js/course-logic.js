@@ -717,6 +717,7 @@ function showFeedback(correct, hint = "") {
         status.style.background = '#7ED957';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
+        nextBtn.style.display = "inline-flex"; // Force display
         feedback.classList.add('hidden');
     } else {
         card.classList.remove('bounce');
