@@ -437,15 +437,24 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Un Raycast es un rayo invisible que el motor lanza desde una posición hacia una dirección. Si el rayo toca algo, te devuelve información sobre qué tocó. Es fundamental para que los enemigos 'vean' al jugador o para detectar si hay suelo frente a nosotros.",
-                            code: "variable hit = lanzar_rayo(posicion, derecha, 500);\nsi (hit.toco_algo) {\n  // Hacer algo\n}"
+                            content: "Un Raycast es un rayo invisible que el motor lanza en una dirección. Si toca algo, devuelve información (hit). Se usa para 'ver' si hay suelo, detectar enemigos a distancia o interactuar con objetos lejanos.",
+                            code: "variable hit = lanzar_rayo(posicion, derecha, 500);\nsi (hit.toco_algo) {\n  // Hacer algo si detecta algo a 500 unidades\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Qué devuelve la función 'lanzar_rayo'?",
+                            options: [
+                                { text: "El nombre de la materia", correct: false },
+                                { text: "Un objeto con información del impacto (hit)", correct: true },
+                                { text: "Verdadero o Falso directamente", correct: false }
+                            ]
                         },
                         {
                             type: "modo-debug",
                             question: "El script no detecta colisiones porque falta el comando de rayo. Encuentra el error en la lógica de detección:",
                             codeLines: ["variable hit = (posicion, abajo, 100);", "si (hit.toco_suelo) { saltar(); }"],
                             errorLine: 0,
-                            explanation: "Faltó llamar a la función 'lanzar_rayo'. El motor no sabe qué hacer solo con los paréntesis.",
+                            explanation: "Faltó llamar a la función 'lanzar_rayo'. El motor no sabe qué hacer solo con los parámetros entre paréntesis.",
                             solution: "variable hit = lanzar_rayo(posicion, abajo, 100);"
                         }
                     ]
@@ -456,54 +465,73 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Un 'Trigger' es una ley de colisión que detecta cuando algo entra en su área pero no bloquea el movimiento. Se usa para monedas, portales o zonas donde se activa una trampa.",
+                            content: "Un 'Trigger' es una ley de colisión que detecta cuando algo entra en su área pero no bloquea el movimiento. Es el 'sensor' perfecto para monedas, portales o trampas invisibles.",
                             code: "materia Moneda;\nley Trigger;\n\nalEntrar(otro) {\n  destruir(estaMateria);\n}"
                         },
                         {
                             type: "opcion-multiple",
-                            question: "¿Cuál es la diferencia entre un 'Solido' y un 'Trigger'?",
+                            question: "¿Cuál es la diferencia fundamental entre un 'Solido' y un 'Trigger'?",
                             options: [
-                                { text: "El Trigger rebota y el Solido no", correct: false },
-                                { text: "El Solido bloquea el paso, el Trigger solo detecta", correct: true },
-                                { text: "El Solido es solo para paredes", correct: false }
+                                { text: "El Trigger es para enemigos y el Solido para paredes", correct: false },
+                                { text: "El Solido bloquea físicamente, el Trigger solo detecta el paso", correct: true },
+                                { text: "No hay diferencia, son sinónimos", correct: false }
                             ]
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el nombre del evento que se dispara cuando una materia entra en un Trigger:",
+                            answer: "alEntrar"
                         }
                     ]
                 },
                 {
                     id: 23,
-                    title: "Impulsos: ¡A Volar!",
+                    title: "Impulsos: El Arte del Movimiento",
                     steps: [
                         {
                             type: "teoria",
-                            content: "Para mover cosas físicamente usamos impulsos. A diferencia de cambiar la posición directamente, un impulso aplica una fuerza instantánea que respeta la masa y la gravedad.",
-                            code: "ley Fisica;\n// Aplicar fuerza hacia arriba\nfisica.impulso(0, -500);"
+                            content: "Para mover materias con física usamos 'impulso'. A diferencia de cambiar la posición bruscamente, el impulso aplica una fuerza que tiene en cuenta la masa del objeto, creando un movimiento natural.",
+                            code: "ley Fisica;\n// Aplicar fuerza (X, Y)\nfisica.impulso(0, -500); // Salto"
                         },
                         {
                             type: "completar-codigo",
-                            question: "Aplica un impulso hacia la derecha (X=200, Y=0):",
+                            question: "Aplica un impulso hacia la derecha (X=300) sin afectar la vertical:",
                             codeTemplate: "fisica.impulso([BLOQUE]);",
-                            blocks: ["200, 0", "0, -200", "arriba"],
-                            answer: "200, 0"
+                            blocks: ["300, 0", "0, 300", "300, 300"],
+                            answer: "300, 0"
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el comando completo para dar un impulso diagonal hacia arriba-derecha (400, -400):",
+                            answer: "fisica.impulso(400, -400);"
                         }
                     ]
                 },
                 {
                     id: 24,
-                    title: "Gravedad Local",
+                    title: "Gravedad Personalizada",
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cada materia puede tener su propia escala de gravedad. Si quieres un objeto que caiga lento como una pluma o uno que flote, cambias su 'escala_gravedad'.",
-                            code: "materia Pluma;\nley Fisica;\nfisica.escala_gravedad = 0.1;"
+                            content: "En Creative Engine, la gravedad no es igual para todos. Puedes ajustar la 'escala_gravedad' de cada materia. 1.0 es normal, 0.5 es como estar en la Luna, y 0 es flotar en el espacio.",
+                            code: "materia Globo;\nley Fisica;\nfisica.escala_gravedad = 0.2; // Cae muy lento"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Qué sucede si pones 'fisica.escala_gravedad = 0;'?",
+                            options: [
+                                { text: "El objeto cae instantáneamente", correct: false },
+                                { text: "El objeto no cae, se queda flotando", correct: true },
+                                { text: "El objeto sale disparado hacia arriba", correct: false }
+                            ]
                         },
                         {
                             type: "modo-debug",
-                            question: "El objeto cae demasiado rápido. Corrige el valor para que flote un poco:",
-                            codeLines: ["materia Globo;", "fisica.escala_gravedad = 10.0;"],
+                            question: "¡El objeto cae 10 veces más rápido que la realidad! Corrige el error:",
+                            codeLines: ["materia PiedraPesada;", "fisica.escala_gravedad = 10.0;"],
                             errorLine: 1,
-                            explanation: "Un valor de 10.0 hace que caiga 10 veces más rápido que lo normal.",
-                            solution: "fisica.escala_gravedad = 0.2;"
+                            explanation: "Un valor de 10.0 multiplica la gravedad normal por 10.",
+                            solution: "fisica.escala_gravedad = 1.0;"
                         }
                     ]
                 },
@@ -513,86 +541,119 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "La fricción hace que los objetos se detengan al deslizarse, y el rebote (restitución) define qué tanto saltan al chocar. Valores de rebote cercanos a 1 harán que el objeto nunca deje de saltar.",
-                            code: "ley MaterialFisico(friccion: 0.5, rebote: 0.8);"
+                            content: "Las superficies tienen propiedades. La 'fricción' determina cuánto resbala (0 es hielo, 1 es lija). El 'rebote' (restitución) determina cuánto rebota (0 no rebota, 1 rebota infinitamente).",
+                            code: "ley MaterialFisico(friccion: 0.1, rebote: 0.9);"
                         },
                         {
                             type: "ordenar-bloques",
-                            question: "Crea un material muy resbaladizo (fricción 0) y que rebote mucho (rebote 1):",
-                            blocks: ["ley MaterialFisico(", "friccion: 0,", "rebote: 1", ");"],
-                            answer: ["ley MaterialFisico(", "friccion: 0,", "rebote: 1", ");"]
+                            question: "Configura un suelo de hielo (fricción 0) que no rebote nada (rebote 0):",
+                            blocks: ["ley MaterialFisico(", "friccion: 0,", "rebote: 0", ");"],
+                            answer: ["ley MaterialFisico(", "friccion: 0,", "rebote: 0", ");"]
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Queremos una pelota que rebote al máximo:",
+                            codeTemplate: "ley MaterialFisico(friccion: 0.5, rebote: [BLOQUE]);",
+                            blocks: ["1.0", "0.0", "-1.0"],
+                            answer: "1.0"
                         }
                     ]
                 },
                 {
                     id: 26,
-                    title: "Sonido Espacial",
+                    title: "Audio Inmersivo",
                     steps: [
                         {
                             type: "teoria",
-                            content: "En Creative Engine, si aplicas la ley 'Audio' a una materia, el sonido se vuelve espacial. Esto significa que si el objeto está a la izquierda del jugador, el usuario lo escuchará por el auricular izquierdo.",
-                            code: "materia Radio;\nley Audio(\"musica.mp3\");\naudio.reproducir();"
+                            content: "El audio en CES es espacial por defecto si se aplica a una materia. Si la materia está lejos a la derecha, el sonido vendrá de la derecha. Puedes controlar el volumen y si se repite (loop).",
+                            code: "ley Audio(\"fuego.mp3\");\naudio.volumen = 0.5;\naudio.reproducir();"
                         },
                         {
                             type: "completar-codigo",
-                            question: "Haz que la radio empiece a sonar:",
+                            question: "Activa el sonido de la materia:",
                             codeTemplate: "audio.[BLOQUE]();",
-                            blocks: ["reproducir", "parar", "volumen"],
+                            blocks: ["reproducir", "volumen", "pausa"],
                             answer: "reproducir"
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe la línea para bajar el volumen al 20% (0.2):",
+                            answer: "audio.volumen = 0.2;"
                         }
                     ]
                 },
                 {
                     id: 27,
-                    title: "Sistemas de Partículas",
+                    title: "Magia Visual: Partículas",
                     steps: [
                         {
                             type: "teoria",
-                            content: "Las partículas son cientos de pequeños cuadritos o imágenes que se mueven rápido para simular fuego, humo o chispas. Usamos la ley 'Particulas' para configurarlas.",
-                            code: "ley Particulas(tipo: Fuego);\nparticulas.emitir();"
+                            content: "Las partículas dan vida al juego: chispas, explosiones o lluvia. Se definen por un tipo y deben 'emitirse' para que se vean en pantalla.",
+                            code: "ley Particulas(tipo: Humo);\nparticulas.emitir();"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Qué comando hace que las partículas empiecen a salir?",
+                            options: [
+                                { text: "particulas.mostrar();", correct: false },
+                                { text: "particulas.emitir();", correct: true },
+                                { text: "particulas.crear();", correct: false }
+                            ]
                         },
                         {
                             type: "practica",
-                            question: "¿Cómo se llama la ley para crear efectos visuales como humo?",
-                            answer: "ley Particulas"
+                            question: "Escribe la ley para crear partículas de tipo 'Explosion':",
+                            answer: "ley Particulas(tipo: Explosion);"
                         }
                     ]
                 },
                 {
                     id: 28,
-                    title: "Filtros de Pantalla",
+                    title: "Filtros de Atmósfera",
                     steps: [
                         {
                             type: "teoria",
-                            content: "Podemos aplicar leyes a la 'Camara' para cambiar cómo se ve todo el juego. Por ejemplo, un filtro de 'Sepia' para flashbacks o 'Oscuro' para cuevas.",
-                            code: "materia CamaraPrincipal;\nley Filtro(Gris);"
+                            content: "Los filtros cambian la estética global o local. Aplicados a la 'CamaraPrincipal', afectan a todo lo que el jugador ve, creando climas únicos.",
+                            code: "materia CamaraPrincipal;\nley Filtro(Pixelado);"
                         },
                         {
                             type: "opcion-multiple",
-                            question: "Si aplicas un Filtro a una materia normal (no a la Cámara), ¿qué sucede?",
+                            question: "¿Qué pasa si aplicas un Filtro(Rojo) directamente al Jugador?",
                             options: [
-                                { text: "Solo esa materia cambia de color", correct: true },
-                                { text: "Todo el juego se pone de ese color", correct: false },
-                                { text: "El motor se detiene", correct: false }
+                                { text: "Todo el mundo se ve rojo", correct: false },
+                                { text: "Solo el jugador se ve de color rojo", correct: true },
+                                { text: "El juego se detiene por error", correct: false }
                             ]
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Crea un efecto de flashback antiguo en toda la pantalla:",
+                            codeTemplate: "materia CamaraPrincipal;\nley Filtro([BLOQUE]);",
+                            blocks: ["Sepia", "Normal", "Invisible"],
+                            answer: "Sepia"
                         }
                     ]
                 },
                 {
                     id: 29,
-                    title: "Capas de Velocidad (Parallax)",
+                    title: "Profundidad: Parallax",
                     steps: [
                         {
                             type: "teoria",
-                            content: "El Parallax es el efecto donde las montañas del fondo se mueven más lento que el suelo, dando sensación de profundidad. Usamos la ley 'VelocidadCapa'.",
-                            code: "materia Montañas;\nley VelocidadCapa(0.2); // 20% de la velocidad real"
+                            content: "El Parallax simula profundidad haciendo que las capas lejanas se muevan más lento. Un valor de 0.1 significa que se mueve al 10% de la velocidad de la cámara.",
+                            code: "materia Montañas_Lejanas;\nley VelocidadCapa(0.1);"
                         },
                         {
                             type: "completar-codigo",
-                            question: "Haz que las nubes se muevan a la mitad de velocidad que el jugador:",
+                            question: "Haz que una capa se mueva a la misma velocidad exacta que el jugador (100%):",
                             codeTemplate: "ley VelocidadCapa([BLOQUE]);",
-                            blocks: ["0.5", "1.0", "2.0"],
-                            answer: "0.5"
+                            blocks: ["1.0", "0.0", "0.5"],
+                            answer: "1.0"
+                        },
+                        {
+                            type: "practica",
+                            question: "Configura una capa de fondo para que sea casi estática (velocidad 0.05):",
+                            answer: "ley VelocidadCapa(0.05);"
                         }
                     ]
                 },
@@ -603,31 +664,37 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "El Guardián controla las leyes del universo. ¡Usa la física para desestabilizarlo!",
-                            code: "// MODO FÍSICA AVANZADA"
+                            content: "El Guardián manipula las leyes para confundirte. ¡Demuestra que dominas el universo físico!",
+                            code: "// NIVEL DE AMENAZA: MÁXIMO"
                         },
                         {
                             type: "modo-debug",
-                            question: "RONDA 1: El jefe te ha lanzado un rayo pero el script tiene un error de detección. ¡Corrígelo!",
-                            codeLines: ["variable d = rayo(yo, jefe, 100);", "si (d.toco) { morir(); }"],
+                            question: "RONDA 1: El jefe usa un rayo invisible. ¡Detecta su posición correctamente!",
+                            codeLines: ["variable d = rayo(yo, jefe, 100);", "si (d.toco) { esquivar(); }"],
                             errorLine: 0,
-                            explanation: "El comando correcto es 'lanzar_rayo'.",
+                            explanation: "Debes usar 'lanzar_rayo' para que el motor ejecute la acción.",
                             solution: "variable d = lanzar_rayo(yo, jefe, 100);"
                         },
                         {
                             type: "completar-codigo",
-                            question: "RONDA 2: ¡Lánzale un contraataque con mucha fuerza!",
-                            codeTemplate: "fisica.impulso([BLOQUE]);",
-                            blocks: ["0, -1000", "1000, 0", "0, 0"],
-                            answer: "1000, 0"
+                            question: "RONDA 2: El suelo se ha vuelto resbaladizo. ¡Aumenta tu fricción para no caer!",
+                            codeTemplate: "ley MaterialFisico(friccion: [BLOQUE], rebote: 0);",
+                            blocks: ["1.0", "0.0", "0.5"],
+                            answer: "1.0"
                         },
                         {
                             type: "opcion-multiple",
-                            question: "RONDA 3: ¡El jefe es inmune a los golpes! ¿Qué ley usas para que atraviese una trampa sin chocar?",
+                            question: "RONDA 3: ¡El jefe te lanza al espacio! ¿Qué valor de gravedad te mantendrá en el suelo?",
                             options: [
-                                { text: "ley Solido;", correct: false },
-                                { text: "ley Trigger;", correct: true }
+                                { text: "fisica.escala_gravedad = 0;", correct: false },
+                                { text: "fisica.escala_gravedad = 2.0;", correct: true },
+                                { text: "fisica.escala_gravedad = -1.0;", correct: false }
                             ]
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA FINAL: ¡El golpe de gracia! Aplica un impulso de 2000 hacia adelante (X):",
+                            answer: "fisica.impulso(2000, 0);"
                         }
                     ]
                 }
