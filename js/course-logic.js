@@ -11,6 +11,8 @@ window.currentProgress = {
     credits: 0,
     ownedSkins: ['default'],
     activeSkin: 'default',
+    ownedAccessories: [],
+    activeAccessory: null,
     achievements: []
 };
 
@@ -35,6 +37,13 @@ const skins = {
     'lava': { name: 'Carl Volcánico', color: '#FF5733', price: 50 },
     'gold': { name: 'Carl Dorado', color: '#FFD700', price: 150 },
     'void': { name: 'Carl del Vacío', color: '#8A2BE2', price: 200 }
+};
+
+const accessories = {
+    'glasses': { name: 'Gafas de Genio', price: 75, class: 'acc-glasses' },
+    'pirate': { name: 'Sombrero Pirata', price: 100, class: 'acc-pirate' },
+    'fire': { name: 'Aura Ígnea', price: 150, class: 'acc-fire' },
+    'cape': { name: 'Capa de Héroe', price: 200, class: 'acc-cape' }
 };
 
 /* ==============================
@@ -146,6 +155,8 @@ async function loadProgress() {
             currentProgress.credits = data.credits || 0;
             currentProgress.ownedSkins = data.owned_skins || ['default'];
             currentProgress.activeSkin = data.active_skin || 'default';
+            currentProgress.ownedAccessories = data.owned_accessories || [];
+            currentProgress.activeAccessory = data.active_accessory || null;
             currentProgress.achievements = data.achievements || [];
             return;
         }
@@ -175,6 +186,8 @@ async function saveProgress() {
                 credits: currentProgress.credits,
                 owned_skins: currentProgress.ownedSkins,
                 active_skin: currentProgress.activeSkin,
+                owned_accessories: currentProgress.ownedAccessories,
+                active_accessory: currentProgress.activeAccessory,
                 achievements: currentProgress.achievements,
                 updated_at: new Date().toISOString()
             }, { onConflict: 'user_id' });
@@ -249,7 +262,7 @@ window.renderMap = async function() {
 
         const offset = Math.sin(index * 1.5) * (mapWidth / 4);
         const x = (mapWidth / 2) + offset;
-        const y = 150 + (index * 220);
+        const y = 80 + (index * 180);
 
         node.style.left = `${x - 60}px`;
         node.style.top = `${y - 60}px`;
@@ -301,7 +314,8 @@ window.renderMap = async function() {
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
-    map.style.height = (stages.length * 220 + 300) + 'px';
+    map.style.height = (stages.length * 180 + 150) + 'px';
+    setTimeout(() => window.scrollTo(0, 0), 100);
 }
 
 function getStageIcon(i) {
@@ -426,6 +440,16 @@ function renderSubMap() {
 ============================== */
 function startCourse(course) {
     window.activeCourse = course;
+    const lessonChar = document.getElementById('lesson-character');
+    if (lessonChar) {
+        lessonChar.style.transform = 'translateX(-100px)';
+        lessonChar.style.opacity = '0';
+        setTimeout(() => {
+            lessonChar.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            lessonChar.style.transform = 'translateX(0)';
+            lessonChar.style.opacity = '1';
+        }, 10);
+    }
     window.currentStepIndex = 0;
     window.userHealth = 3;
     updateHealthUI();
@@ -449,6 +473,11 @@ function updateHealthUI() {
 
 function renderStep() {
     const step = window.activeCourse.steps[window.currentStepIndex];
+    const lessonChar = document.getElementById('lesson-character');
+    if (lessonChar) {
+        lessonChar.classList.add('char-walking');
+        setTimeout(() => lessonChar.classList.remove('char-walking'), 800);
+    }
     const isBoss = window.activeCourse.isBoss;
     document.getElementById('lesson-title').textContent = window.activeCourse.title;
 
@@ -598,6 +627,25 @@ function checkDebug(index) {
     }
 }
 
+function normalizeCode(code, ignoreImprimirContent = false) {
+    if (!code) return "";
+    let normalized = code.toLowerCase()
+        .replace(/\s+/g, '') // Remove all whitespace
+        .replace(/;/g, '')   // Remove semicolons
+        .replace(/["']/g, "'"); // Standardize quotes
+
+    // Intent detection: Normalize assignment patterns
+    // Convert 'x=x+1' or 'x=1+x' to 'x+=1' style internally for comparison
+    normalized = normalized.replace(/([a-z0-9.]+)=([a-z0-9.]+)\+([0-9.]+)/g, "$1+=$3");
+    normalized = normalized.replace(/([a-z0-9.]+)=([0-9.]+)\+([a-z0-9.]+)/g, "$1+=$2");
+
+    if (ignoreImprimirContent) {
+        // Replace content inside imprimir('...') with a placeholder for comparison
+        normalized = normalized.replace(/imprimir\('.*?'\)/g, "imprimir('placeholder')");
+    }
+    return normalized;
+}
+
 function checkAnswer(isCorrectOverride = null) {
     const step = activeCourse.steps[currentStepIndex];
     let isCorrect = false;
@@ -606,7 +654,8 @@ function checkAnswer(isCorrectOverride = null) {
         isCorrect = isCorrectOverride;
     } else if (step.type === 'practica') {
         const val = document.getElementById('answer-input').value.trim();
-        isCorrect = val.toLowerCase() === step.answer.toLowerCase();
+        const hasImprimir = step.answer.includes('imprimir(');
+        isCorrect = normalizeCode(val, hasImprimir) === normalizeCode(step.answer, hasImprimir);
     } else if (step.type === 'completar-codigo') {
         isCorrect = selectedBlocks[0] === step.answer;
     } else if (step.type === 'ordenar-bloques') {
@@ -640,6 +689,14 @@ function handleSuccess() {
 
 function handleFailure() {
     userHealth--;
+
+    // Intervention logic: if health is 1, Carl intervenes automatically
+    if (userHealth === 1) {
+        setTimeout(() => {
+            CustomModal.show("APOYO DE CARL IA", "Veo que tienes dificultades. ¡No te rindas! Revisa las mayúsculas y asegúrate de que no falte 've motor;' si es necesario.", "🤖");
+        }, 800);
+    }
+
     if (activeStage && activeStage.id === 11) {
         examMistakes++;
     }
@@ -669,8 +726,38 @@ function handleFailure() {
         return;
     }
 
-    let hint = "Revisa bien el código. ¡Tú puedes!";
+    const hint = analyzeError(activeCourse.steps[currentStepIndex]);
     showFeedback(false, hint);
+}
+
+function analyzeError(step) {
+    const val = document.getElementById('answer-input')?.value || "";
+    if (!val) return "Escribe algo para poder ayudarte.";
+
+    // Basic structure check
+    const openBraces = (val.match(/{/g) || []).length;
+    const closeBraces = (val.match(/}/g) || []).length;
+    if (openBraces > closeBraces) return "Te falta cerrar una llave <code>}</code>.";
+    if (closeBraces > openBraces) return "Tienes una llave <code>}</code> de más.";
+
+    const openParens = (val.match(/\(/g) || []).length;
+    const closeParens = (val.match(/\)/g) || []).length;
+    if (openParens > closeParens) return "Te falta cerrar un paréntesis <code>)</code>.";
+    if (closeParens > openParens) return "Tienes un paréntesis <code>)</code> de más.";
+
+    // Logic/Keyword check
+    const keywords = ['alEmpezar', 'alActualizar', 'publico', 'variable', 'si', 'imprimir', 've motor', 'fisica', 'posicion'];
+    for (let kw of keywords) {
+        if (step.answer.includes(kw) && val.toLowerCase().includes(kw.toLowerCase()) && !val.includes(kw)) {
+            return `Recuerda que <b>${kw}</b> debe escribirse exactamente así (ojo con las mayúsculas).`;
+        }
+    }
+
+    if (step.answer.includes('"') && !val.includes('"') && !val.includes("'")) {
+        return "Parece que te faltan las comillas para el texto.";
+    }
+
+    return "Casi lo tienes. Revisa bien el orden y las palabras clave.";
 }
 
 function showFeedback(correct, hint = "") {
@@ -688,6 +775,7 @@ function showFeedback(correct, hint = "") {
         status.style.background = '#7ED957';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
+        nextBtn.style.display = "inline-flex"; // Force display
         feedback.classList.add('hidden');
     } else {
         card.classList.remove('bounce');
@@ -912,6 +1000,15 @@ function openShop() {
     const container = document.getElementById('shop-items-container');
     container.innerHTML = '';
 
+    // Tabs / Section Headers
+    const skinTitle = document.createElement('h3');
+    skinTitle.textContent = "SKINS (COLORES)";
+    skinTitle.style.gridColumn = "1 / -1";
+    skinTitle.style.margin = "20px 0 10px";
+    skinTitle.style.fontSize = "0.9rem";
+    skinTitle.style.opacity = "0.5";
+    container.appendChild(skinTitle);
+
     Object.entries(skins).forEach(([id, skin]) => {
         const isOwned = currentProgress.ownedSkins.includes(id);
         const isActive = currentProgress.activeSkin === id;
@@ -923,7 +1020,32 @@ function openShop() {
             <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${skin.name}</div>
             <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : skin.price + ' Créditos'}</div>
         `;
-        card.onclick = () => handleShopAction(id, skin);
+        card.onclick = () => handleShopAction(id, 'skin');
+        container.appendChild(card);
+    });
+
+    const accTitle = document.createElement('h3');
+    accTitle.textContent = "ACCESORIOS PREMIUM";
+    accTitle.style.gridColumn = "1 / -1";
+    accTitle.style.margin = "30px 0 10px";
+    accTitle.style.fontSize = "0.9rem";
+    accTitle.style.opacity = "0.5";
+    container.appendChild(accTitle);
+
+    Object.entries(accessories).forEach(([id, acc]) => {
+        const isOwned = (currentProgress.ownedAccessories || []).includes(id);
+        const isActive = currentProgress.activeAccessory === id;
+
+        const card = document.createElement('div');
+        card.className = `shop-item ${isOwned ? 'owned' : ''} ${isActive ? 'active' : ''}`;
+        card.innerHTML = `
+            <div class="skin-preview" style="background:#333; display:flex; align-items:center; justify-content:center;">
+                <div class="char-accessory ${acc.class}" style="position:relative; top:0; left:0; transform:none;"></div>
+            </div>
+            <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${acc.name}</div>
+            <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : acc.price + ' Créditos'}</div>
+        `;
+        card.onclick = () => handleShopAction(id, 'accessory');
         container.appendChild(card);
     });
 
@@ -935,19 +1057,39 @@ function closeShop() {
     renderMap();
 }
 
-async function handleShopAction(id, skin) {
-    if (currentProgress.ownedSkins.includes(id)) {
-        currentProgress.activeSkin = id;
-    } else {
-        if (currentProgress.credits >= skin.price) {
-            currentProgress.credits -= skin.price;
-            currentProgress.ownedSkins.push(id);
+async function handleShopAction(id, type) {
+    if (type === 'skin') {
+        if (currentProgress.ownedSkins.includes(id)) {
             currentProgress.activeSkin = id;
-            SoundManager.ding();
-            updateCreditsUI();
         } else {
-            CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para esta skin. ¡Sigue aprendiendo para ganar más!", "💰");
-            return;
+            const skin = skins[id];
+            if (currentProgress.credits >= skin.price) {
+                currentProgress.credits -= skin.price;
+                currentProgress.ownedSkins.push(id);
+                currentProgress.activeSkin = id;
+                SoundManager.ding();
+                updateCreditsUI();
+            } else {
+                CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para esta skin.", "💰");
+                return;
+            }
+        }
+    } else {
+        if (!currentProgress.ownedAccessories) currentProgress.ownedAccessories = [];
+        if (currentProgress.ownedAccessories.includes(id)) {
+            currentProgress.activeAccessory = (currentProgress.activeAccessory === id) ? null : id;
+        } else {
+            const acc = accessories[id];
+            if (currentProgress.credits >= acc.price) {
+                currentProgress.credits -= acc.price;
+                currentProgress.ownedAccessories.push(id);
+                currentProgress.activeAccessory = id;
+                SoundManager.ding();
+                updateCreditsUI();
+            } else {
+                CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para este accesorio.", "💰");
+                return;
+            }
         }
     }
     await saveProgress();
@@ -1199,6 +1341,25 @@ window.clearSignature = () => {
 };
 
 /* ==============================
+   Carl IA - Smart Assistant
+============================== */
+window.askCarlHelp = () => {
+    const step = activeCourse.steps[currentStepIndex];
+    let title = "CONSEJO DE CARL IA";
+    let explanation = "";
+
+    if (step.type === 'teoria') {
+        explanation = "Este concepto es fundamental. Fíjate bien en cómo se estructuran las llaves y el orden de los comandos. ¡Tú puedes!";
+    } else if (step.type === 'practica') {
+        explanation = `Para resolver esto, recuerda que usamos <code>${step.answer.split('(')[0]}</code>. Revisa que no te falten puntos ni comas.`;
+    } else {
+        explanation = "Analiza bien las opciones. A veces la respuesta más sencilla es la correcta.";
+    }
+
+    CustomModal.show(title, explanation, "🤖");
+};
+
+/* ==============================
    Enhanced Character Logic
 ============================== */
 window.updateCharacterVisuals = function(char) {
@@ -1227,10 +1388,20 @@ window.updateCharacterVisuals = function(char) {
     char.appendChild(rShoe);
 
     // Evolution Accessories
-    if (currentProgress.stage > 1) {
+    if (currentProgress.stage > 1 && !currentProgress.activeAccessory) {
         const hat = document.createElement('div');
         hat.className = 'char-accessory hat-expert';
         char.appendChild(hat);
+    }
+
+    // Purchased Accessories
+    if (currentProgress.activeAccessory) {
+        const acc = accessories[currentProgress.activeAccessory];
+        if (acc) {
+            const accEl = document.createElement('div');
+            accEl.className = `char-accessory ${acc.class}`;
+            char.appendChild(accEl);
+        }
     }
 
     if (currentProgress.stage > 5) {
