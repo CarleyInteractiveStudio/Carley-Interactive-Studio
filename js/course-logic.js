@@ -262,7 +262,7 @@ window.renderMap = async function() {
 
         const offset = Math.sin(index * 1.5) * (mapWidth / 4);
         const x = (mapWidth / 2) + offset;
-        const y = 30 + (index * 180);
+        const y = 80 + (index * 180);
 
         node.style.left = `${x - 60}px`;
         node.style.top = `${y - 60}px`;
@@ -634,6 +634,11 @@ function normalizeCode(code, ignoreImprimirContent = false) {
         .replace(/;/g, '')   // Remove semicolons
         .replace(/["']/g, "'"); // Standardize quotes
 
+    // Intent detection: Normalize assignment patterns
+    // Convert 'x=x+1' or 'x=1+x' to 'x+=1' style internally for comparison
+    normalized = normalized.replace(/([a-z0-9.]+)=([a-z0-9.]+)\+([0-9.]+)/g, "$1+=$3");
+    normalized = normalized.replace(/([a-z0-9.]+)=([0-9.]+)\+([a-z0-9.]+)/g, "$1+=$2");
+
     if (ignoreImprimirContent) {
         // Replace content inside imprimir('...') with a placeholder for comparison
         normalized = normalized.replace(/imprimir\('.*?'\)/g, "imprimir('placeholder')");
@@ -684,6 +689,14 @@ function handleSuccess() {
 
 function handleFailure() {
     userHealth--;
+
+    // Intervention logic: if health is 1, Carl intervenes automatically
+    if (userHealth === 1) {
+        setTimeout(() => {
+            CustomModal.show("APOYO DE CARL IA", "Veo que tienes dificultades. ¡No te rindas! Revisa las mayúsculas y asegúrate de que no falte 've motor;' si es necesario.", "🤖");
+        }, 800);
+    }
+
     if (activeStage && activeStage.id === 11) {
         examMistakes++;
     }
@@ -713,8 +726,38 @@ function handleFailure() {
         return;
     }
 
-    let hint = "Revisa bien el código. ¡Tú puedes!";
+    const hint = analyzeError(activeCourse.steps[currentStepIndex]);
     showFeedback(false, hint);
+}
+
+function analyzeError(step) {
+    const val = document.getElementById('answer-input')?.value || "";
+    if (!val) return "Escribe algo para poder ayudarte.";
+
+    // Basic structure check
+    const openBraces = (val.match(/{/g) || []).length;
+    const closeBraces = (val.match(/}/g) || []).length;
+    if (openBraces > closeBraces) return "Te falta cerrar una llave <code>}</code>.";
+    if (closeBraces > openBraces) return "Tienes una llave <code>}</code> de más.";
+
+    const openParens = (val.match(/\(/g) || []).length;
+    const closeParens = (val.match(/\)/g) || []).length;
+    if (openParens > closeParens) return "Te falta cerrar un paréntesis <code>)</code>.";
+    if (closeParens > openParens) return "Tienes un paréntesis <code>)</code> de más.";
+
+    // Logic/Keyword check
+    const keywords = ['alEmpezar', 'alActualizar', 'publico', 'variable', 'si', 'imprimir', 've motor', 'fisica', 'posicion'];
+    for (let kw of keywords) {
+        if (step.answer.includes(kw) && val.toLowerCase().includes(kw.toLowerCase()) && !val.includes(kw)) {
+            return `Recuerda que <b>${kw}</b> debe escribirse exactamente así (ojo con las mayúsculas).`;
+        }
+    }
+
+    if (step.answer.includes('"') && !val.includes('"') && !val.includes("'")) {
+        return "Parece que te faltan las comillas para el texto.";
+    }
+
+    return "Casi lo tienes. Revisa bien el orden y las palabras clave.";
 }
 
 function showFeedback(correct, hint = "") {
@@ -1295,6 +1338,25 @@ window.initSignature = () => {
 
 window.clearSignature = () => {
     sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+};
+
+/* ==============================
+   Carl IA - Smart Assistant
+============================== */
+window.askCarlHelp = () => {
+    const step = activeCourse.steps[currentStepIndex];
+    let title = "CONSEJO DE CARL IA";
+    let explanation = "";
+
+    if (step.type === 'teoria') {
+        explanation = "Este concepto es fundamental. Fíjate bien en cómo se estructuran las llaves y el orden de los comandos. ¡Tú puedes!";
+    } else if (step.type === 'practica') {
+        explanation = `Para resolver esto, recuerda que usamos <code>${step.answer.split('(')[0]}</code>. Revisa que no te falten puntos ni comas.`;
+    } else {
+        explanation = "Analiza bien las opciones. A veces la respuesta más sencilla es la correcta.";
+    }
+
+    CustomModal.show(title, explanation, "🤖");
 };
 
 /* ==============================

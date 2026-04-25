@@ -934,9 +934,14 @@
                         <i data-lucide="heart" class="heart"></i>
                     </div>
                 </div>
-                <button onclick="speakContent()" class="btn-main outline" id="speak-btn">
-                    <i data-lucide="volume-2"></i> Escuchar
-                </button>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="askCarlHelp()" class="btn-main" id="carl-help-btn" style="background:#00AAFF; color:#fff;">
+                        <i data-lucide="bot"></i> Preguntar a Carl
+                    </button>
+                    <button onclick="speakContent()" class="btn-main outline" id="speak-btn">
+                        <i data-lucide="volume-2"></i> Escuchar
+                    </button>
+                </div>
             </div>
 
             <div style="display:flex; flex-direction: column; align-items: center; margin-bottom:30px;">
