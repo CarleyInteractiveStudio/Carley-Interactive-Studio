@@ -1281,11 +1281,18 @@ body::-webkit-scrollbar,
 
 @keyframes char-walk {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-8px); }
 }
 
-.char-walking .char-foot:nth-child(1) { animation: char-walk 0.2s infinite; }
-.char-walking .char-foot:nth-child(2) { animation: char-walk 0.2s infinite 0.1s; }
+@keyframes char-body-bob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-4px) rotate(-2deg); }
+    75% { transform: translateY(-4px) rotate(2deg); }
+}
+
+.char-walking { animation: char-body-bob 0.4s infinite; }
+.char-walking .char-foot:nth-child(1) { animation: char-walk 0.4s infinite; }
+.char-walking .char-foot:nth-child(2) { animation: char-walk 0.4s infinite 0.2s; }
 
 .lesson-card {
     background: rgba(15, 15, 15, 0.95);

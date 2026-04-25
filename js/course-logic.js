@@ -262,7 +262,7 @@ window.renderMap = async function() {
 
         const offset = Math.sin(index * 1.5) * (mapWidth / 4);
         const x = (mapWidth / 2) + offset;
-        const y = 60 + (index * 180);
+        const y = 30 + (index * 180);
 
         node.style.left = `${x - 60}px`;
         node.style.top = `${y - 60}px`;
@@ -315,7 +315,7 @@ window.renderMap = async function() {
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
     map.style.height = (stages.length * 180 + 150) + 'px';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => window.scrollTo(0, 0), 100);
 }
 
 function getStageIcon(i) {
@@ -627,6 +627,20 @@ function checkDebug(index) {
     }
 }
 
+function normalizeCode(code, ignoreImprimirContent = false) {
+    if (!code) return "";
+    let normalized = code.toLowerCase()
+        .replace(/\s+/g, '') // Remove all whitespace
+        .replace(/;/g, '')   // Remove semicolons
+        .replace(/["']/g, "'"); // Standardize quotes
+
+    if (ignoreImprimirContent) {
+        // Replace content inside imprimir('...') with a placeholder for comparison
+        normalized = normalized.replace(/imprimir\('.*?'\)/g, "imprimir('placeholder')");
+    }
+    return normalized;
+}
+
 function checkAnswer(isCorrectOverride = null) {
     const step = activeCourse.steps[currentStepIndex];
     let isCorrect = false;
@@ -635,7 +649,8 @@ function checkAnswer(isCorrectOverride = null) {
         isCorrect = isCorrectOverride;
     } else if (step.type === 'practica') {
         const val = document.getElementById('answer-input').value.trim();
-        isCorrect = val.toLowerCase() === step.answer.toLowerCase();
+        const hasImprimir = step.answer.includes('imprimir(');
+        isCorrect = normalizeCode(val, hasImprimir) === normalizeCode(step.answer, hasImprimir);
     } else if (step.type === 'completar-codigo') {
         isCorrect = selectedBlocks[0] === step.answer;
     } else if (step.type === 'ordenar-bloques') {

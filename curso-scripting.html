@@ -31,7 +31,7 @@
         .course-container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 80px 20px 50px;
+            padding: 70px 20px 50px;
             min-height: 100vh;
             position: relative;
         }
@@ -476,6 +476,8 @@
             flex-direction: column;
             padding: 0;
             overflow: hidden;
+            width: 95%;
+            max-width: 650px;
         }
 
         #shop-items-container {
@@ -801,11 +803,12 @@
 
         <!-- Shop Modal -->
         <div id="shop-modal" class="modal-overlay hidden">
-            <div class="course-modal" style="max-width: 600px;">
-                <div style="display:flex; justify-content: space-between; align-items: center; padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <h2 style="margin:0; font-weight: 900;">TIENDA DE SKINS</h2>
-                    <button onclick="closeShop()" class="btn-main outline" style="padding: 8px 12px; border-radius: 10px;">
-                        <i data-lucide="x"></i>
+            <div class="course-modal">
+                <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                    <h2 style="margin:0; font-weight: 900; letter-spacing: 1px;">TIENDA DE SKINS</h2>
+                    <button onclick="closeShop()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">
+                        <span>Cerrar</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
                 <div class="shop-grid" id="shop-items-container">
