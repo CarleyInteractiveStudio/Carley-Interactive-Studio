@@ -27,17 +27,7 @@ window.examStartTime = 0;
 window.examMistakes = 0;
 
 // Internal aliases for existing code compatibility
-// These variables are shared within this file's scope
-let currentProgress = window.currentProgress;
-let activeStage = window.activeStage;
-let activeCourse = window.activeCourse;
-let currentStepIndex = window.currentStepIndex;
-let userHealth = window.userHealth;
-let selectedBlocks = window.selectedBlocks;
-let bgmSource = window.bgmSource;
-let isMusicOn = window.isMusicOn;
-let examStartTime = window.examStartTime;
-let examMistakes = window.examMistakes;
+let currentProgress = window.currentProgress; // Object reference is shared
 
 const skins = {
     'default': { name: 'Carl Original', color: '#7ED957', price: 0 },
@@ -435,32 +425,32 @@ function renderSubMap() {
    Lesson & Mechanics
 ============================== */
 function startCourse(course) {
-    activeCourse = course;
-    currentStepIndex = 0;
-    userHealth = 3;
+    window.activeCourse = course;
+    window.currentStepIndex = 0;
+    window.userHealth = 3;
     updateHealthUI();
     document.getElementById('stage-detail-view').classList.add('hidden');
     document.getElementById('lesson-view').classList.remove('hidden');
     renderStep();
 
-    if (activeStage && activeStage.id === 11) {
-        examStartTime = Date.now();
-        examMistakes = 0;
+    if (window.activeStage && window.activeStage.id === 11) {
+        window.examStartTime = Date.now();
+        window.examMistakes = 0;
     }
 }
 
 function updateHealthUI() {
     const hearts = document.querySelectorAll('.heart');
     hearts.forEach((h, i) => {
-        if (i < userHealth) h.classList.remove('lost');
+        if (i < window.userHealth) h.classList.remove('lost');
         else h.classList.add('lost');
     });
 }
 
 function renderStep() {
-    const step = activeCourse.steps[currentStepIndex];
-    const isBoss = activeCourse.isBoss;
-    document.getElementById('lesson-title').textContent = activeCourse.title;
+    const step = window.activeCourse.steps[window.currentStepIndex];
+    const isBoss = window.activeCourse.isBoss;
+    document.getElementById('lesson-title').textContent = window.activeCourse.title;
 
     const lessonView = document.getElementById('lesson-view');
     lessonView.style.background = isBoss ? 'radial-gradient(circle at center, #200, #000)' : '';
@@ -470,7 +460,7 @@ function renderStep() {
     const nextBtn = document.getElementById('next-btn');
     const feedback = document.getElementById('feedback-msg');
     feedback.classList.add('hidden');
-    selectedBlocks = [];
+    window.selectedBlocks = [];
 
     const bossCont = document.getElementById('boss-container');
     if (step.type !== 'teoria') {
@@ -772,7 +762,7 @@ window.finishExam = function() {
     if (score < 60) rank = "D";
 
     if (score >= 55) {
-        showCertificatePrompt(score, rank, totalTimeSeconds);
+        window.showCertificatePrompt(score, rank, totalTimeSeconds);
     } else {
         alert(`Has completado el examen con un ${score}%. Necesitas al menos un 55% para certificar.\n¡Sigue practicando y vuelve a intentarlo!`);
         backToMap();
@@ -781,6 +771,18 @@ window.finishExam = function() {
 
 window.generateCertificate = async (score, rank, time) => {
     if (!window.supabaseClient) return;
+
+    // Protection Check: Verify they actually finished Stage 11 courses
+    const examStage = window.courseData.stages.find(s => s.id === 11);
+    const examCourseIds = examStage.courses.map(c => c.id);
+    const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
+
+    if (currentProgress.stage < 11 || !hasFinishedExam) {
+        alert("¡Alto! No puedes generar un certificado sin haber completado el examen final satisfactoriamente.");
+        backToMap();
+        return;
+    }
+
     const { data: { session: certSession } } = await window.supabaseClient.auth.getSession();
 
     if (!certSession) {
@@ -855,7 +857,18 @@ window.downloadPDF = () => {
     html2pdf().set(opt).from(element).save();
 };
 
-async function showCertificatePrompt(score, rank, time) {
+window.showCertificatePrompt = async function(score, rank, time) {
+    // Pre-check for protection
+    const examStage = window.courseData.stages.find(s => s.id === 11);
+    const examCourseIds = examStage.courses.map(c => c.id);
+    const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
+
+    if (currentProgress.stage < 11 || !hasFinishedExam) {
+        alert("Primero debes completar todas las etapas del curso y aprobar el examen.");
+        backToMap();
+        return;
+    }
+
     const { data: { session: promptSession } } = await window.supabaseClient.auth.getSession();
 
     const modal = document.createElement('div');
@@ -1002,17 +1015,17 @@ function toggleMusic() {
 
 function startAmbientBGM() {
     SoundManager.init();
-    if (bgmSource) return;
+    if (window.bgmSource) return;
     // Real loops would use Audio files, but let's use some cool oscillator patterns
     bgmLoop();
 }
 
 function stopAmbientBGM() {
-    bgmSource = false;
+    window.bgmSource = false;
 }
 
 function bgmLoop() {
-    if (!isMusicOn) return;
+    if (!window.isMusicOn) return;
     const notes = [261.63, 329.63, 392.00, 523.25]; // C Major
     const note = notes[Math.floor(Math.random() * notes.length)];
     SoundManager.playTone(note, 'sine', 1.5, 0.02);

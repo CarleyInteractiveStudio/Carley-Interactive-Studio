@@ -341,6 +341,17 @@
                 <!-- Settings BUBBLES -->
                 <div style="text-align: left;">
 
+                    <!-- Mis Certificados Bubble -->
+                    <button class="bubble-btn" onclick="toggleBubble('bubble-certs')">
+                        <span><i data-lucide="file-check" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span data-i18n="acc-my-certs">Mis Certificados</span></span>
+                        <i data-lucide="chevron-down" style="width: 18px;"></i>
+                    </button>
+                    <div id="bubble-certs" class="bubble-content hidden">
+                        <div id="user-certs-list" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                            <p id="no-certs-msg" style="opacity: 0.5; font-size: 0.85rem;">Aún no tienes certificados profesionales.</p>
+                        </div>
+                    </div>
+
                     <!-- Insignias de Curso Bubble -->
                     <button class="bubble-btn" onclick="toggleBubble('bubble-badges')">
                         <span><i data-lucide="award" style="width: 18px; margin-right: 10px; vertical-align: middle;"></i> <span>Logros de Scripting</span></span>
@@ -630,9 +641,10 @@
                     imgEl.classList.add('hidden');
                 }
 
-                // Fetch User Games & Achievements
+                // Fetch User Data
                 fetchUserGames(user.id);
                 fetchUserAchievements(user.id);
+                fetchUserCertificates(user.id);
 
             } else {
                 authCont.classList.remove('hidden');
@@ -761,6 +773,35 @@
                 <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid gold; padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="medal" style="width: 16px; color: gold;"></i>
                     <span style="font-size: 0.85rem; font-weight: 700; color: gold;">${ach}</span>
+                </div>
+            `).join('');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        async function fetchUserCertificates(userId) {
+            const container = document.getElementById('user-certs-list');
+            const msg = document.getElementById('no-certs-msg');
+            if (!container) return;
+
+            const { data: certs, error } = await window.supabaseClient
+                .from('certificates')
+                .select('*')
+                .eq('user_id', userId);
+
+            if (error || !certs || certs.length === 0) return;
+
+            msg.classList.add('hidden');
+            container.innerHTML = certs.map(c => `
+                <div style="background: rgba(126, 217, 87, 0.05); border: 1px solid var(--accent); padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <div>
+                        <div style="font-size: 0.9rem; font-weight: 700; color: #fff;">Certificado de Desarrollador</div>
+                        <div style="font-size: 0.7rem; opacity: 0.6; font-family: monospace; margin-top: 4px;">ID: ${c.id}</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="verificar.html?id=${c.id}" class="icon-btn" style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;" title="Verificar Online">
+                            <i data-lucide="external-link" style="width: 16px;"></i>
+                        </a>
+                    </div>
                 </div>
             `).join('');
             if (typeof lucide !== 'undefined') lucide.createIcons();
