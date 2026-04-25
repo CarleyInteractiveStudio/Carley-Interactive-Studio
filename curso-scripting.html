@@ -536,9 +536,9 @@
             height: 600px;
             background: #fff;
             color: #222;
-            padding: 30px;
+            padding: 20px;
             box-sizing: border-box;
-            border: 15px solid #f8f4e5;
+            border: 2px solid #eee;
             position: fixed;
             left: -10000px; /* Hide offscreen */
             font-family: 'Georgia', serif;
@@ -546,10 +546,17 @@
             overflow: hidden;
         }
 
-        .cert-border {
+        .cert-border-outer {
+            border: 15px solid #f8f4e5;
+            height: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .cert-border-inner {
             border: 2px solid #d4af37;
             height: 100%;
-            padding: 40px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -557,83 +564,99 @@
             background-image: radial-gradient(circle, #fff 0%, #fdfcf0 100%);
             position: relative;
             box-shadow: inset 0 0 50px rgba(212, 175, 55, 0.1);
+            box-sizing: border-box;
         }
 
         .cert-header {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 10px;
+            width: 100%;
+            text-align: center;
         }
 
-        .cert-logo { width: 70px; height: 70px; }
-        .cert-title { font-size: 2.8rem; font-weight: 900; color: #8a6d3b; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
-        .cert-subtitle { font-size: 1.1rem; margin: 5px 0 0; opacity: 0.7; font-style: italic; color: #555; }
+        .cert-logo { width: 60px; height: 60px; margin-bottom: 10px; }
+        .cert-title { font-size: 2.4rem; font-weight: 900; color: #8a6d3b; text-transform: uppercase; margin: 0; letter-spacing: 2px; }
+        .cert-subtitle { font-size: 1rem; margin: 5px 0 0; opacity: 0.7; font-style: italic; color: #555; }
 
         .cert-user-name {
-            font-size: 3.5rem;
-            font-family: 'Brush Script MT', 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            font-family: 'Dancing Script', cursive;
             border-bottom: 1px solid #999;
-            padding: 0 60px;
-            margin: 20px 0;
+            padding: 0 40px;
+            margin: 15px 0;
             color: #1a1a1a;
             display: inline-block;
         }
 
         .cert-stats {
             display: flex;
-            gap: 40px;
-            margin-top: 10px;
+            gap: 30px;
+            margin-top: 5px;
         }
 
         .stat-box { text-align: center; }
-        .stat-val { font-size: 1.5rem; font-weight: bold; color: #a67c00; }
-        .stat-lab { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; }
+        .stat-val { font-size: 1.3rem; font-weight: bold; color: #a67c00; }
+        .stat-lab { font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; }
 
-        .cert-seal {
-            width: 120px;
-            height: 120px;
+        .cert-seal-premium {
+            width: 110px;
+            height: 110px;
             background: #ffd700;
             clip-path: polygon(50% 0%, 61% 12%, 77% 10%, 82% 25%, 98% 28%, 95% 44%, 100% 60%, 88% 72%, 90% 88%, 73% 90%, 64% 100%, 50% 92%, 36% 100%, 27% 90%, 10% 88%, 12% 72%, 0% 60%, 5% 44%, 2% 28%, 18% 25%, 23% 10%, 39% 12%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             border: 2px solid #b8860b;
             color: #8a6d3b;
-            font-weight: 900;
-            font-size: 0.9rem;
-            transform: rotate(-8deg);
+            transform: rotate(-5deg);
             position: absolute;
-            bottom: 25px;
-            left: 30px;
+            top: 20px;
+            right: 20px;
             text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
         }
 
-        .cert-seal::after {
-            content: "";
-            position: absolute;
-            width: 85%;
-            height: 85%;
-            border: 1px dashed rgba(138, 109, 59, 0.4);
-            border-radius: 50%;
-        }
+        .cert-seal-text { font-size: 0.6rem; font-weight: 900; }
+        .cert-seal-id { font-size: 0.5rem; font-family: monospace; font-weight: bold; margin-top: 2px; }
 
-        .cert-footer {
+        .cert-footer-layout {
             width: 100%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: flex-end;
-            margin-top: 20px;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
-        .signature {
-            border-top: 2px solid #444;
-            width: 220px;
-            padding-top: 10px;
-            font-size: 0.85rem;
+        .sig-box {
+            width: 200px;
             text-align: center;
-            color: #444;
+        }
+
+        .sig-line {
+            border-top: 1px solid #555;
+            margin-top: 5px;
+            padding-top: 5px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .sig-font-ceo { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #1a1a1a; margin-bottom: -5px; }
+        .sig-user-canvas { width: 100%; height: 50px; }
+
+        /* Canvas drawing area styles */
+        #signature-canvas-container {
+            background: #fff;
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        #sig-canvas {
+            width: 100%;
+            height: 150px;
+            cursor: crosshair;
+            touch-action: none;
         }
 
         .share-grid {
@@ -692,56 +715,60 @@
 
         <!-- Certificate HTML Template (Offscreen) -->
         <div id="certificate-container">
-            <div class="cert-border">
-                <div class="cert-header">
-                    <img src="carley_foto_web/Logo_C.png" class="cert-logo" alt="Logo">
-                    <div>
+            <div class="cert-border-outer">
+                <div class="cert-border-inner">
+                    <div class="cert-seal-premium">
+                        <span class="cert-seal-text">VERIFICADO</span>
+                        <img src="carley_foto_web/Logo_C.png" style="width: 30px; margin: 4px 0;">
+                        <span class="cert-seal-text">AUTÉNTICO</span>
+                        <span id="cert-seal-id-display" class="cert-seal-id">CE-2026-XXXXX</span>
+                    </div>
+
+                    <div class="cert-header">
+                        <img src="carley_foto_web/Logo_C.png" class="cert-logo" alt="Logo">
                         <h1 class="cert-title">Certificado de Maestría</h1>
                         <p class="cert-subtitle">Otorgado por Carley Interactive Studio</p>
                     </div>
-                </div>
 
-                <div style="margin: 20px 0;">
-                    <p style="font-size: 1.1rem;">Se certifica que el desarrollador</p>
-                    <div class="cert-user-name" id="cert-display-name">Nombre del Usuario</div>
-                    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 600px;">
-                        Ha completado satisfactoriamente el curso avanzado de <b>Creative Engine Scripting (CES)</b>,
-                        demostrando habilidades excepcionales en arquitectura, leyes físicas y lógica de videojuegos.
-                    </p>
-                </div>
-
-                <div class="cert-stats">
-                    <div class="stat-box">
-                        <div class="stat-val" id="cert-display-score">100%</div>
-                        <div class="stat-lab">Calificación</div>
+                    <div style="margin: 10px 0;">
+                        <p style="font-size: 1rem; margin-bottom: 5px;">Se certifica que el desarrollador</p>
+                        <div class="cert-user-name" id="cert-display-name">Nombre del Usuario</div>
+                        <p style="font-size: 0.95rem; line-height: 1.5; max-width: 600px; margin: 10px auto;">
+                            Ha completado satisfactoriamente el curso avanzado de <b>Creative Engine Scripting (CES)</b>,
+                            demostrando habilidades excepcionales en arquitectura, leyes físicas y lógica de videojuegos.
+                        </p>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="cert-display-rank">S</div>
-                        <div class="stat-lab">Rango</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="cert-display-date">00/00/0000</div>
-                        <div class="stat-lab">Fecha</div>
-                    </div>
-                </div>
 
-                <div id="cert-achievements-list" style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:20px; font-size:0.8rem; opacity:0.8; color:#a67c00;">
-                    <!-- Achievements will be injected here -->
-                </div>
-
-                <div id="cert-serial" style="margin-top: 25px; font-family: monospace; font-size: 0.8rem; opacity: 0.5;">
-                    ID: CE-2026-XXXXX
-                </div>
-
-                <div class="cert-footer">
-                    <div style="text-align: left;">
-                        <div class="cert-seal">AUTÉNTICO</div>
+                    <div class="cert-stats">
+                        <div class="stat-box">
+                            <div class="stat-val" id="cert-display-score">100%</div>
+                            <div class="stat-lab">Calificación</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-val" id="cert-display-rank">S</div>
+                            <div class="stat-lab">Rango</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-val" id="cert-display-date">00/00/0000</div>
+                            <div class="stat-lab">Fecha</div>
+                        </div>
                     </div>
-                    <div class="signature" style="font-family: 'Brush Script MT', cursive; font-size: 1.8rem; color: #333;">
-                        Carley Interactive
-                        <div style="font-family: 'Georgia', serif; font-size: 0.8rem; border-top: 1px solid #333; margin-top: 5px; font-weight: normal; color: #666;">
-                            <b>Creative Engine Team</b><br>
-                            Sello de Autenticidad
+
+                    <div id="cert-achievements-list" style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:5px; font-size:0.75rem; opacity:0.8; color:#a67c00;">
+                        <!-- Achievements will be injected here -->
+                    </div>
+
+                    <div class="cert-footer-layout">
+                        <div class="sig-box">
+                            <img id="cert-user-sig-img" src="" style="width: 140px; height: 60px; object-fit: contain;">
+                            <div class="sig-line">Firma del Estudiante</div>
+                        </div>
+                        <div class="sig-box">
+                            <div class="sig-font-ceo">John Carley</div>
+                            <div class="sig-line">
+                                <b>John Carley</b><br>
+                                CEO, Carley Interactive Studio
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -766,6 +793,15 @@
             <div class="course-modal" style="max-width: 550px;">
                 <h2 style="color:gold; font-weight:900;">¡ERES UN DESARROLLADOR!</h2>
 
+                <p style="margin: 15px 0 5px; font-size: 0.9rem; opacity: 0.7;">Ingresa tu nombre para el certificado:</p>
+                <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:15px;">
+
+                <p style="margin: 5px 0 10px; font-size: 0.9rem; opacity: 0.7;">Firma tu certificado para finalizar:</p>
+                <div id="signature-canvas-container">
+                    <canvas id="sig-canvas"></canvas>
+                    <button onclick="clearSignature()" style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); padding:5px; border-radius:5px; font-size:0.7rem; color:#fff;">Limpiar</button>
+                </div>
+
                 <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin: 15px 0; font-size: 0.9rem; text-align: left;">
                     <p style="margin-top:0; font-weight: bold; color: var(--primary);">Configuración de Privacidad:</p>
                     <label style="display:flex; gap:10px; margin-bottom:8px; cursor:pointer;">
@@ -779,8 +815,23 @@
                     </label>
                 </div>
 
-                <div id="cert-preview-img" style="width:100%; height:200px; background:#f0f0f0; border-radius:15px; margin: 15px 0; overflow:hidden; border: 2px solid gold; display:flex; align-items:center; justify-content:center;">
-                    <img src="carley_foto_web/Logo_C.png" style="opacity:0.2; width:80px;">
+                <div style="display:flex; gap:15px;">
+                    <button class="btn-main" onclick="finalizeCertificate()" style="flex:1;">
+                        <i data-lucide="check"></i> Finalizar y Guardar
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cert-ready-modal" class="modal-overlay hidden">
+            <div class="course-modal" style="max-width: 550px;">
+                <h2 style="color:gold; font-weight:900;">¡LISTO PARA DESCARGAR!</h2>
+
+                <div id="cert-preview-img" style="width:100%; height:220px; background:#fdfcf0; border-radius:15px; margin: 20px 0; overflow:hidden; border: 2px solid gold; display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <div style="text-align:center; color:#8a6d3b;">
+                        <div style="font-family:'Dancing Script', cursive; font-size: 1.5rem;">Vista Previa</div>
+                        <div style="font-size:0.7rem; opacity:0.6;">Tu certificado profesional ha sido generado.</div>
+                    </div>
                 </div>
 
                 <div style="display:flex; gap:15px;">
