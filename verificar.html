@@ -41,13 +41,23 @@
 
         .result-card {
             margin-top: 40px;
-            padding: 30px;
-            background: #fff;
+            padding: 40px;
+            background: linear-gradient(145deg, #ffffff, #fdfcf0);
             color: #222;
-            border-radius: 20px;
+            border-radius: 25px;
             text-align: left;
-            animation: fadeIn 0.5s ease-out;
-            border: 5px solid #f8f4e5;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3), inset 0 0 40px rgba(212, 175, 55, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, #d4af37, #fdfcf0, #d4af37);
         }
 
         @keyframes fadeIn {
