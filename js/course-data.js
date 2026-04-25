@@ -707,55 +707,274 @@ window.courseData = {
             courses: [
                 {
                     id: 31,
-                    title: "El Ritmo del Ciclo",
+                    title: "Nacimiento: alEmpezar",
                     steps: [
                         {
                             type: "teoria",
-                            content: "El bloque 'ciclo' es el metrónomo de tu juego. Se ejecuta en cada fotograma (60 veces por segundo). Todo lo que necesite actualización constante, como el movimiento o la detección de teclas, debe ir aquí.",
-                            code: "ciclo {\n  posicion.x += 1;\n}"
+                            content: "Todo en CES tiene un inicio. El evento 'alEmpezar()' se ejecuta una única vez en el momento en que la materia aparece en el mundo. Es el lugar ideal para configurar nombres, vidas iniciales o posiciones fijas.",
+                            code: "alEmpezar() {\n  imprimir(\"¡He nacido!\");\n  vida = 100;\n}"
                         },
                         {
                             type: "opcion-multiple",
-                            question: "¿Cuántas veces se ejecuta el código dentro de 'ciclo' en un segundo normal?",
+                            question: "¿Cuántas veces se ejecuta el código dentro de 'alEmpezar'?",
                             options: [
-                                { text: "1 vez", correct: false },
-                                { text: "60 veces", correct: true },
-                                { text: "Solo cuando el jugador se mueve", correct: false }
+                                { text: "En cada frame (60 veces/seg)", correct: false },
+                                { text: "Una sola vez al inicio", correct: true },
+                                { text: "Cada vez que chocamos", correct: false }
                             ]
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el nombre del evento que ocurre al nacer la materia:",
+                            answer: "alEmpezar"
                         }
                     ]
                 },
                 {
                     id: 32,
-                    title: "Eventos de Colisión: al_chocar",
+                    title: "El Latido: alActualizar",
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cuando dos materias sólidas se tocan, el motor dispara el evento 'al_chocar'. Puedes usarlo para restar vida o rebotar.",
-                            code: "al_chocar(otro) {\n  si (otro.etiqueta == \"Enemigo\") {\n    vida -= 10;\n  }\n}"
+                            content: "Para que un juego se sienta vivo, las cosas deben cambiar constantemente. 'alActualizar(delta)' ocurre en cada frame. El valor 'delta' es el tiempo que pasó desde el último frame, vital para que el movimiento sea fluido.",
+                            code: "alActualizar(delta) {\n  posicion.x += 200 * delta;\n}"
                         },
                         {
                             type: "completar-codigo",
-                            question: "Detecta cuando chocamos con algo:",
-                            codeTemplate: "[BLOQUE](otro) { ... }",
-                            blocks: ["al_chocar", "al_iniciar", "ciclo"],
-                            answer: "al_chocar"
+                            question: "Mueve la materia constantemente en cada frame:",
+                            codeTemplate: "[BLOQUE](delta) { ... }",
+                            blocks: ["alActualizar", "alEmpezar", "alHacerClick"],
+                            answer: "alActualizar"
+                        },
+                        {
+                            type: "modo-debug",
+                            question: "El personaje se mueve a saltos porque no usa el tiempo real (delta). ¡Corrígelo!",
+                            codeLines: ["alActualizar(delta) {", "  posicion.x += 10;", "}"],
+                            errorLine: 1,
+                            explanation: "Debes multiplicar por 'delta' para que el movimiento dependa del tiempo y no de los FPS.",
+                            solution: "posicion.x += 10 * delta;"
                         }
                     ]
                 },
                 {
                     id: 33,
-                    title: "El Fin de la Existencia: al_morir",
+                    title: "Contacto Físico: Colisiones",
                     steps: [
                         {
                             type: "teoria",
-                            content: "El evento 'al_morir' se ejecuta justo antes de que una materia sea destruida del mundo. Es el lugar perfecto para soltar una moneda o crear una explosión.",
-                            code: "al_morir {\n  instanciar(ExplosionPrefab, posicion);\n}"
+                            content: "Cuando dos objetos sólidos chocan, el motor dispara 'alEntrarEnColision(otro)'. El parámetro 'otro' nos da acceso a la materia con la que chocamos para leer sus tags o destruirla.",
+                            code: "alEntrarEnColision(otro) {\n  si (otro.tieneTag(\"Peligro\")) {\n    destruir(materia);\n  }\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Qué representa el parámetro 'otro' en el evento de colisión?",
+                            options: [
+                                { text: "Nuestra propia materia", correct: false },
+                                { text: "La materia contra la que chocamos", correct: true },
+                                { text: "La velocidad del impacto", correct: false }
+                            ]
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Detecta el inicio del choque:",
+                            codeTemplate: "[BLOQUE](otro) { ... }",
+                            blocks: ["alEntrarEnColision", "alSalirDeColision", "alHacerClick"],
+                            answer: "alEntrarEnColision"
+                        }
+                    ]
+                },
+                {
+                    id: 34,
+                    title: "Zonas de Sensor (Trigger)",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "A veces queremos detectar que el jugador pasó por un lugar sin detener su movimiento (como una moneda o una meta). Para eso usamos Triggers y el evento 'alEntrarEnTrigger'.",
+                            code: "alEntrarEnTrigger(otro) {\n  si (otro.tieneTag(\"Jugador\")) {\n    imprimir(\"¡Meta alcanzada!\");\n  }\n}"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el evento que ocurre al ser destruido:",
-                            answer: "al_morir"
+                            question: "¿Cómo se llama el evento para detectar que algo entra en un sensor invisible?",
+                            answer: "alEntrarEnTrigger"
+                        },
+                        {
+                            type: "ordenar-bloques",
+                            question: "Crea la lógica para recoger una moneda al entrar en su sensor:",
+                            blocks: ["alEntrarEnTrigger(otro) {", "destruir(materia);", "}"],
+                            answer: ["alEntrarEnTrigger(otro) {", "destruir(materia);", "}"]
+                        }
+                    ]
+                },
+                {
+                    id: 35,
+                    title: "Interacción: alHacerClick",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "El evento 'alHacerClick()' permite interactuar directamente con los objetos usando el ratón o la pantalla táctil. Es esencial para botones, interruptores o diálogos de NPCs.",
+                            code: "alHacerClick() {\n  renderizadorDeSprite.color = \"Azul\";\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "Si quieres que un cofre se abra al tocarlo, ¿qué evento usarías?",
+                            options: [
+                                { text: "alEntrarEnColision", correct: false },
+                                { text: "alHacerClick", correct: true },
+                                { text: "alActualizar", correct: false }
+                            ]
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el comando para destruir un objeto al clicarlo:",
+                            answer: "alHacerClick() { destruir(materia); }"
+                        }
+                    ]
+                },
+                {
+                    id: 36,
+                    title: "Telepatía: Difundir y Recibir",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Las materias pueden comunicarse a distancia. Con 'difundir' envías un mensaje a todo el juego, y con 'alRecibir' escuchas mensajes específicos para actuar.",
+                            code: "// En el interruptor\ndifundir(\"ABRIR_PUERTA\");\n\n// En la puerta\nalRecibir(\"ABRIR_PUERTA\", () => { destruir(materia); });"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Envía una señal global llamada 'VICTORIA':",
+                            codeTemplate: "[BLOQUE](\"VICTORIA\");",
+                            blocks: ["difundir", "alRecibir", "imprimir"],
+                            answer: "difundir"
+                        },
+                        {
+                            type: "modo-debug",
+                            question: "La puerta no se abre porque el nombre del mensaje no coincide. ¡Corrígelo!",
+                            codeLines: ["// Interruptor envía: \"OPEN\"", "alRecibir(\"ABRIR\", () => { ... });"],
+                            errorLine: 1,
+                            explanation: "El nombre del mensaje en 'alRecibir' debe ser idéntico al enviado por 'difundir'.",
+                            solution: "alRecibir(\"OPEN\", () => { ... });"
+                        }
+                    ]
+                },
+                {
+                    id: 37,
+                    title: "El Maestro del Tiempo: esperar",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "A veces necesitamos que algo no pase de inmediato. El comando 'esperar(segundos)' pausa la ejecución de ese script específico sin detener el resto del juego.",
+                            code: "alHacerClick() {\n  imprimir(\"Bomba activada...\");\n  esperar(3);\n  imprimir(\"¡BOOM!\");\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Qué sucede con el resto del juego mientras un script está en 'esperar'?",
+                            options: [
+                                { text: "Todo se congela", correct: false },
+                                { text: "El resto del juego sigue funcionando normalmente", correct: true },
+                                { text: "Se cierra el juego por error", correct: false }
+                            ]
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe la línea para esperar medio segundo (0.5):",
+                            answer: "esperar(0.5);"
+                        }
+                    ]
+                },
+                {
+                    id: 38,
+                    title: "Ritmo Repetitivo: cada",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Si quieres que algo se repita cada cierto tiempo (como generar un enemigo cada 2 segundos), usamos el bloque 'cada(segundos)'.",
+                            code: "alEmpezar() {\n  cada(2) {\n    crear(EnemigoPrefab);\n  }\n}"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Haz que el jugador pierda vida cada segundo:",
+                            codeTemplate: "[BLOQUE](1) { vida -= 5; }",
+                            blocks: ["cada", "esperar", "alActualizar"],
+                            answer: "cada"
+                        },
+                        {
+                            type: "ordenar-bloques",
+                            question: "Crea un spawner que funcione cada 5 segundos:",
+                            blocks: ["cada(5) {", "crear(Bala);", "}"],
+                            answer: ["cada(5) {", "crear(Bala);", "}"]
+                        }
+                    ]
+                },
+                {
+                    id: 39,
+                    title: "Física Precisa: actualizarFijo",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "A diferencia de 'alActualizar', el evento 'actualizarFijo' ocurre en intervalos constantes de tiempo. Es el lugar perfecto para aplicar fuerzas físicas manuales para que el comportamiento sea siempre igual.",
+                            code: "actualizarFijo(delta) {\n  fisica.applyForce(nuevo Vector2(0, -10));\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Por qué usarías 'actualizarFijo' en lugar de 'alActualizar'?",
+                            options: [
+                                { text: "Para cálculos matemáticos pesados", correct: false },
+                                { text: "Para movimientos físicos que deben ser estables y precisos", correct: true },
+                                { text: "Para detectar clics del ratón", correct: false }
+                            ]
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el nombre del evento para físicas constantes:",
+                            answer: "actualizarFijo"
+                        }
+                    ]
+                },
+                {
+                    id: 40,
+                    title: "¡JEFE: El Sincronizador de Almas!",
+                    isBoss: true,
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "¡El Sincronizador de Almas ha congelado el tiempo! Debes usar todos tus conocimientos sobre eventos para restaurar el ritmo del universo.",
+                            code: "// ALERTA: DESINCRONIZACIÓN DETECTADA"
+                        },
+                        {
+                            type: "modo-debug",
+                            question: "RONDA 1: El jefe es invisible porque falta el evento de inicio. ¡Repáralo!",
+                            codeLines: ["alNacer() {", "  estaActivado = verdadero;", "}"],
+                            errorLine: 0,
+                            explanation: "El evento correcto según el libro es 'alEmpezar'.",
+                            solution: "alEmpezar() {"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "RONDA 2: ¡El jefe lanza un ataque rítmico! Esquiva cada 0.5 segundos:",
+                            codeTemplate: "[BLOQUE](0.5) { esquivar(); }",
+                            blocks: ["cada", "esperar", "ciclo"],
+                            answer: "cada"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "RONDA 3: ¡El golpe final requiere coordinación! ¿Qué evento usarías para que todos los aliados ataquen a la vez?",
+                            options: [
+                                { text: "alHacerClick", correct: false },
+                                { text: "difundir(\"ATAQUE_TOTAL\")", correct: true },
+                                { text: "alActualizar", correct: false }
+                            ]
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 4: Espera 1.2 segundos para encontrar el punto débil del jefe:",
+                            answer: "esperar(1.2);"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "RONDA FINAL: ¡Destrúyelo al tocar su núcleo!",
+                            codeTemplate: "[BLOQUE]() { destruir(otro); }",
+                            blocks: ["alHacerClick", "alEmpezar", "alMorir"],
+                            answer: "alHacerClick"
                         }
                     ]
                 }

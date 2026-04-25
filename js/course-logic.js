@@ -11,6 +11,8 @@ window.currentProgress = {
     credits: 0,
     ownedSkins: ['default'],
     activeSkin: 'default',
+    ownedAccessories: [],
+    activeAccessory: null,
     achievements: []
 };
 
@@ -35,6 +37,13 @@ const skins = {
     'lava': { name: 'Carl Volcánico', color: '#FF5733', price: 50 },
     'gold': { name: 'Carl Dorado', color: '#FFD700', price: 150 },
     'void': { name: 'Carl del Vacío', color: '#8A2BE2', price: 200 }
+};
+
+const accessories = {
+    'glasses': { name: 'Gafas de Genio', price: 75, class: 'acc-glasses' },
+    'pirate': { name: 'Sombrero Pirata', price: 100, class: 'acc-pirate' },
+    'fire': { name: 'Aura Ígnea', price: 150, class: 'acc-fire' },
+    'cape': { name: 'Capa de Héroe', price: 200, class: 'acc-cape' }
 };
 
 /* ==============================
@@ -146,6 +155,8 @@ async function loadProgress() {
             currentProgress.credits = data.credits || 0;
             currentProgress.ownedSkins = data.owned_skins || ['default'];
             currentProgress.activeSkin = data.active_skin || 'default';
+            currentProgress.ownedAccessories = data.owned_accessories || [];
+            currentProgress.activeAccessory = data.active_accessory || null;
             currentProgress.achievements = data.achievements || [];
             return;
         }
@@ -175,6 +186,8 @@ async function saveProgress() {
                 credits: currentProgress.credits,
                 owned_skins: currentProgress.ownedSkins,
                 active_skin: currentProgress.activeSkin,
+                owned_accessories: currentProgress.ownedAccessories,
+                active_accessory: currentProgress.activeAccessory,
                 achievements: currentProgress.achievements,
                 updated_at: new Date().toISOString()
             }, { onConflict: 'user_id' });
@@ -249,7 +262,7 @@ window.renderMap = async function() {
 
         const offset = Math.sin(index * 1.5) * (mapWidth / 4);
         const x = (mapWidth / 2) + offset;
-        const y = 150 + (index * 220);
+        const y = 80 + (index * 220);
 
         node.style.left = `${x - 60}px`;
         node.style.top = `${y - 60}px`;
@@ -912,6 +925,15 @@ function openShop() {
     const container = document.getElementById('shop-items-container');
     container.innerHTML = '';
 
+    // Tabs / Section Headers
+    const skinTitle = document.createElement('h3');
+    skinTitle.textContent = "SKINS (COLORES)";
+    skinTitle.style.gridColumn = "1 / -1";
+    skinTitle.style.margin = "20px 0 10px";
+    skinTitle.style.fontSize = "0.9rem";
+    skinTitle.style.opacity = "0.5";
+    container.appendChild(skinTitle);
+
     Object.entries(skins).forEach(([id, skin]) => {
         const isOwned = currentProgress.ownedSkins.includes(id);
         const isActive = currentProgress.activeSkin === id;
@@ -923,7 +945,32 @@ function openShop() {
             <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${skin.name}</div>
             <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : skin.price + ' Créditos'}</div>
         `;
-        card.onclick = () => handleShopAction(id, skin);
+        card.onclick = () => handleShopAction(id, 'skin');
+        container.appendChild(card);
+    });
+
+    const accTitle = document.createElement('h3');
+    accTitle.textContent = "ACCESORIOS PREMIUM";
+    accTitle.style.gridColumn = "1 / -1";
+    accTitle.style.margin = "30px 0 10px";
+    accTitle.style.fontSize = "0.9rem";
+    accTitle.style.opacity = "0.5";
+    container.appendChild(accTitle);
+
+    Object.entries(accessories).forEach(([id, acc]) => {
+        const isOwned = (currentProgress.ownedAccessories || []).includes(id);
+        const isActive = currentProgress.activeAccessory === id;
+
+        const card = document.createElement('div');
+        card.className = `shop-item ${isOwned ? 'owned' : ''} ${isActive ? 'active' : ''}`;
+        card.innerHTML = `
+            <div class="skin-preview" style="background:#333; display:flex; align-items:center; justify-content:center;">
+                <div class="char-accessory ${acc.class}" style="position:relative; top:0; left:0; transform:none;"></div>
+            </div>
+            <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${acc.name}</div>
+            <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : acc.price + ' Créditos'}</div>
+        `;
+        card.onclick = () => handleShopAction(id, 'accessory');
         container.appendChild(card);
     });
 
@@ -935,19 +982,39 @@ function closeShop() {
     renderMap();
 }
 
-async function handleShopAction(id, skin) {
-    if (currentProgress.ownedSkins.includes(id)) {
-        currentProgress.activeSkin = id;
-    } else {
-        if (currentProgress.credits >= skin.price) {
-            currentProgress.credits -= skin.price;
-            currentProgress.ownedSkins.push(id);
+async function handleShopAction(id, type) {
+    if (type === 'skin') {
+        if (currentProgress.ownedSkins.includes(id)) {
             currentProgress.activeSkin = id;
-            SoundManager.ding();
-            updateCreditsUI();
         } else {
-            CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para esta skin. ¡Sigue aprendiendo para ganar más!", "💰");
-            return;
+            const skin = skins[id];
+            if (currentProgress.credits >= skin.price) {
+                currentProgress.credits -= skin.price;
+                currentProgress.ownedSkins.push(id);
+                currentProgress.activeSkin = id;
+                SoundManager.ding();
+                updateCreditsUI();
+            } else {
+                CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para esta skin.", "💰");
+                return;
+            }
+        }
+    } else {
+        if (!currentProgress.ownedAccessories) currentProgress.ownedAccessories = [];
+        if (currentProgress.ownedAccessories.includes(id)) {
+            currentProgress.activeAccessory = (currentProgress.activeAccessory === id) ? null : id;
+        } else {
+            const acc = accessories[id];
+            if (currentProgress.credits >= acc.price) {
+                currentProgress.credits -= acc.price;
+                currentProgress.ownedAccessories.push(id);
+                currentProgress.activeAccessory = id;
+                SoundManager.ding();
+                updateCreditsUI();
+            } else {
+                CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para este accesorio.", "💰");
+                return;
+            }
         }
     }
     await saveProgress();
@@ -1227,10 +1294,20 @@ window.updateCharacterVisuals = function(char) {
     char.appendChild(rShoe);
 
     // Evolution Accessories
-    if (currentProgress.stage > 1) {
+    if (currentProgress.stage > 1 && !currentProgress.activeAccessory) {
         const hat = document.createElement('div');
         hat.className = 'char-accessory hat-expert';
         char.appendChild(hat);
+    }
+
+    // Purchased Accessories
+    if (currentProgress.activeAccessory) {
+        const acc = accessories[currentProgress.activeAccessory];
+        if (acc) {
+            const accEl = document.createElement('div');
+            accEl.className = `char-accessory ${acc.class}`;
+            char.appendChild(accEl);
+        }
     }
 
     if (currentProgress.stage > 5) {
