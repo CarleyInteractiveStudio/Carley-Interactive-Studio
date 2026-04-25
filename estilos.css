@@ -490,12 +490,15 @@ ul {
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 500px;
+    max-height: 85vh;
     background: rgba(20, 20, 20, 0.8);
     backdrop-filter: var(--glass-blur);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     z-index: 2001;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-header {

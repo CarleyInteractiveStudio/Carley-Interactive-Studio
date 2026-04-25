@@ -262,7 +262,7 @@ window.renderMap = async function() {
 
         const offset = Math.sin(index * 1.5) * (mapWidth / 4);
         const x = (mapWidth / 2) + offset;
-        const y = 80 + (index * 220);
+        const y = 60 + (index * 180);
 
         node.style.left = `${x - 60}px`;
         node.style.top = `${y - 60}px`;
@@ -314,7 +314,8 @@ window.renderMap = async function() {
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
-    map.style.height = (stages.length * 220 + 300) + 'px';
+    map.style.height = (stages.length * 180 + 150) + 'px';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function getStageIcon(i) {
@@ -439,6 +440,16 @@ function renderSubMap() {
 ============================== */
 function startCourse(course) {
     window.activeCourse = course;
+    const lessonChar = document.getElementById('lesson-character');
+    if (lessonChar) {
+        lessonChar.style.transform = 'translateX(-100px)';
+        lessonChar.style.opacity = '0';
+        setTimeout(() => {
+            lessonChar.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            lessonChar.style.transform = 'translateX(0)';
+            lessonChar.style.opacity = '1';
+        }, 10);
+    }
     window.currentStepIndex = 0;
     window.userHealth = 3;
     updateHealthUI();
@@ -462,6 +473,11 @@ function updateHealthUI() {
 
 function renderStep() {
     const step = window.activeCourse.steps[window.currentStepIndex];
+    const lessonChar = document.getElementById('lesson-character');
+    if (lessonChar) {
+        lessonChar.classList.add('char-walking');
+        setTimeout(() => lessonChar.classList.remove('char-walking'), 800);
+    }
     const isBoss = window.activeCourse.isBoss;
     document.getElementById('lesson-title').textContent = window.activeCourse.title;
 
