@@ -633,8 +633,112 @@ window.courseData = {
                 }
             ]
         },
-        { id: 4, name: "Sinfonía de Eventos", color: "#FF5733", courses: [] },
-        { id: 5, name: "El Poder de Carl IA", color: "#C70039", courses: [] },
+        {
+            id: 4,
+            name: "Sinfonía de Eventos",
+            color: "#FF5733",
+            courses: [
+                {
+                    id: 31,
+                    title: "El Ritmo del Ciclo",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "El bloque 'ciclo' es el metrónomo de tu juego. Se ejecuta en cada fotograma (60 veces por segundo). Todo lo que necesite actualización constante, como el movimiento o la detección de teclas, debe ir aquí.",
+                            code: "ciclo {\n  posicion.x += 1;\n}"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Cuántas veces se ejecuta el código dentro de 'ciclo' en un segundo normal?",
+                            options: [
+                                { text: "1 vez", correct: false },
+                                { text: "60 veces", correct: true },
+                                { text: "Solo cuando el jugador se mueve", correct: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 32,
+                    title: "Eventos de Colisión: al_chocar",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Cuando dos materias sólidas se tocan, el motor dispara el evento 'al_chocar'. Puedes usarlo para restar vida o rebotar.",
+                            code: "al_chocar(otro) {\n  si (otro.etiqueta == \"Enemigo\") {\n    vida -= 10;\n  }\n}"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Detecta cuando chocamos con algo:",
+                            codeTemplate: "[BLOQUE](otro) { ... }",
+                            blocks: ["al_chocar", "al_iniciar", "ciclo"],
+                            answer: "al_chocar"
+                        }
+                    ]
+                },
+                {
+                    id: 33,
+                    title: "El Fin de la Existencia: al_morir",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "El evento 'al_morir' se ejecuta justo antes de que una materia sea destruida del mundo. Es el lugar perfecto para soltar una moneda o crear una explosión.",
+                            code: "al_morir {\n  instanciar(ExplosionPrefab, posicion);\n}"
+                        },
+                        {
+                            type: "practica",
+                            question: "Escribe el evento que ocurre al ser destruido:",
+                            answer: "al_morir"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 5,
+            name: "El Poder de Carl IA",
+            color: "#C70039",
+            courses: [
+                {
+                    id: 41,
+                    title: "Despertando a Carl",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Carl IA no es solo un chat, es una herramienta que puede leer tu escena y ayudarte a programar. Para invocar su ayuda desde código, usamos el comando 'carl'.",
+                            code: "carl.ayuda(\"Haz que este objeto salte\");"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Qué puede hacer Carl IA por ti?",
+                            options: [
+                                { text: "Solo responder preguntas", correct: false },
+                                { text: "Crear objetos y escribir scripts por ti", correct: true },
+                                { text: "Jugar el juego por ti", correct: false }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 42,
+                    title: "Análisis de Escena",
+                    steps: [
+                        {
+                            type: "teoria",
+                            content: "Carl puede analizar cuántas materias hay en tu escena y decirte si falta alguna ley importante como 'Fisica'.",
+                            code: "carl.analizar_escena();"
+                        },
+                        {
+                            type: "completar-codigo",
+                            question: "Pide a Carl que analice la escena:",
+                            codeTemplate: "carl.[BLOQUE]();",
+                            blocks: ["analizar_escena", "borrar", "dormir"],
+                            answer: "analizar_escena"
+                        }
+                    ]
+                }
+            ]
+        },
         { id: 6, name: "Seguridad y Optimización", color: "#900C3F", courses: [] },
         { id: 7, name: "Estructuras de Datos CES", color: "#581845", courses: [] },
         { id: 8, name: "Gráficos Avanzados", color: "#1A5276", courses: [] },

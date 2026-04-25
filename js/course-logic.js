@@ -3,7 +3,8 @@
    Updated with Combat, Multi-Mechanics, Shop & Sync
 ============================== */
 
-let currentProgress = {
+// Global State Object for external access and persistence
+window.currentProgress = {
     stage: 1,
     course: 1,
     completed: [],
@@ -13,17 +14,30 @@ let currentProgress = {
     achievements: []
 };
 
-let activeStage = null;
-let activeCourse = null;
-let currentStepIndex = 0;
-let userHealth = 3;
-let selectedBlocks = [];
-let bgmSource = null;
-let isMusicOn = false;
+window.activeStage = null;
+window.activeCourse = null;
+window.currentStepIndex = 0;
+window.userHealth = 3;
+window.selectedBlocks = [];
+window.bgmSource = null;
+window.isMusicOn = false;
 
 // Certification Metrics
-let examStartTime = 0;
-let examMistakes = 0;
+window.examStartTime = 0;
+window.examMistakes = 0;
+
+// Internal aliases for existing code compatibility
+// These variables are shared within this file's scope
+let currentProgress = window.currentProgress;
+let activeStage = window.activeStage;
+let activeCourse = window.activeCourse;
+let currentStepIndex = window.currentStepIndex;
+let userHealth = window.userHealth;
+let selectedBlocks = window.selectedBlocks;
+let bgmSource = window.bgmSource;
+let isMusicOn = window.isMusicOn;
+let examStartTime = window.examStartTime;
+let examMistakes = window.examMistakes;
 
 const skins = {
     'default': { name: 'Carl Original', color: '#7ED957', price: 0 },
@@ -91,14 +105,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function initAuthCheck() {
-    const { data: { session } } = await window.supabaseClient.auth.getSession();
+    const { data: { session: currentSession } } = await window.supabaseClient.auth.getSession();
     const lang = localStorage.getItem('carley-lang') || 'es';
 
-    if (session) {
+    // Update Course UI Auth
+    const guestUI = document.getElementById('course-auth-guest');
+    const userUI = document.getElementById('course-auth-user');
+    if (currentSession) {
+        if (guestUI) guestUI.classList.add('hidden');
+        if (userUI) {
+            userUI.classList.remove('hidden');
+            document.getElementById('course-user-name').textContent = currentSession.user.user_metadata.username || currentSession.user.email.split('@')[0];
+            document.getElementById('course-user-avatar').src = currentSession.user.user_metadata.avatar_url || `https://ui-avatars.com/api/?name=${currentSession.user.email}`;
+        }
+    } else {
+        if (guestUI) guestUI.classList.remove('hidden');
+        if (userUI) userUI.classList.add('hidden');
+    }
+
+    if (currentSession) {
         const { data: profile } = await window.supabaseClient
             .from('profiles')
             .select('language')
-            .eq('id', session.user.id)
+            .eq('id', currentSession.user.id)
             .single();
 
         const userLang = profile?.language || lang;
@@ -113,12 +142,12 @@ async function initAuthCheck() {
 }
 
 async function loadProgress() {
-    const { data: { session } } = await window.supabaseClient.auth.getSession();
-    if (session) {
+    const { data: { session: loadSession } } = await window.supabaseClient.auth.getSession();
+    if (loadSession) {
         const { data, error } = await window.supabaseClient
             .from('course_progress')
             .select('*')
-            .eq('user_id', session.user.id)
+            .eq('user_id', loadSession.user.id)
             .single();
 
         if (data && !error) {
@@ -135,19 +164,22 @@ async function loadProgress() {
     const saved = localStorage.getItem('ces-course-progress');
     if (saved) {
         const parsed = JSON.parse(saved);
-        currentProgress = { ...currentProgress, ...parsed };
+        // Deep copy to window object
+        Object.assign(window.currentProgress, parsed);
+        currentProgress = window.currentProgress;
     }
 }
 
 async function saveProgress() {
     localStorage.setItem('ces-course-progress', JSON.stringify(currentProgress));
 
-    const { data: { session } } = await window.supabaseClient.auth.getSession();
-    if (session) {
+    if (!window.supabaseClient) return;
+    const { data: { session: saveSession } } = await window.supabaseClient.auth.getSession();
+    if (saveSession) {
         await window.supabaseClient
             .from('course_progress')
             .upsert({
-                user_id: session.user.id,
+                user_id: saveSession.user.id,
                 stage: currentProgress.stage,
                 completed_courses: currentProgress.completed,
                 credits: currentProgress.credits,
@@ -177,9 +209,32 @@ function updateCreditsUI() {
 /* ==============================
    Rendering & Map
 ============================== */
-function renderMap() {
+window.renderMap = async function() {
     const map = document.getElementById('map-view');
     if (!map || map.classList.contains('hidden')) return;
+
+    // Guest Banner Logic
+    const sessionResForBanner = await window.supabaseClient?.auth.getSession();
+    const sessionForBanner = sessionResForBanner?.data?.session;
+    const existingBanner = document.getElementById('guest-login-banner');
+    if (!sessionForBanner) {
+        if (!existingBanner) {
+            const banner = document.createElement('div');
+            banner.id = 'guest-login-banner';
+            banner.style = "background: rgba(255,195,0,0.1); border: 1px solid #FFC300; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px;";
+            banner.innerHTML = `
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i data-lucide="alert-circle" style="color:#FFC300"></i>
+                    <span style="font-size:0.9rem; color:#fff;">Estás en modo invitado. <b>Inicia sesión</b> para guardar tu progreso en la nube y obtener certificados.</span>
+                </div>
+                <button class="btn-main" style="padding: 8px 15px; font-size: 0.8rem;" onclick="window.location.href='sso.html'">Iniciar Sesión</button>
+            `;
+            map.prepend(banner);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    } else if (existingBanner) {
+        existingBanner.remove();
+    }
 
     let mapWidth = map.offsetWidth;
     if (mapWidth === 0) mapWidth = Math.min(window.innerWidth, 1000) - 40;
@@ -264,8 +319,17 @@ function getStageIcon(i) {
     return icons[i] || 'book';
 }
 
-function selectStage(stage) {
+async function selectStage(stage) {
     if (stage.id > currentProgress.stage) return;
+
+    if (stage.id === 11) {
+        const { data: { session: examSession } } = await window.supabaseClient.auth.getSession();
+        if (!examSession) {
+            showLoginRequiredModal("Para realizar el Examen Final y obtener tu Certificado Profesional, es obligatorio tener una cuenta.");
+            return;
+        }
+    }
+
     activeStage = stage;
     document.getElementById('map-view').classList.add('hidden');
     document.getElementById('stage-detail-view').classList.remove('hidden');
@@ -378,6 +442,11 @@ function startCourse(course) {
     document.getElementById('stage-detail-view').classList.add('hidden');
     document.getElementById('lesson-view').classList.remove('hidden');
     renderStep();
+
+    if (activeStage && activeStage.id === 11) {
+        examStartTime = Date.now();
+        examMistakes = 0;
+    }
 }
 
 function updateHealthUI() {
@@ -683,7 +752,7 @@ async function nextStep() {
     }
 }
 
-function finishExam() {
+window.finishExam = function() {
     const endTime = Date.now();
     const totalTimeSeconds = Math.floor((endTime - examStartTime) / 1000);
 
@@ -702,22 +771,61 @@ function finishExam() {
     if (score < 70) rank = "C";
     if (score < 60) rank = "D";
 
-    showCertificatePrompt(score, rank, totalTimeSeconds);
+    if (score >= 55) {
+        showCertificatePrompt(score, rank, totalTimeSeconds);
+    } else {
+        alert(`Has completado el examen con un ${score}%. Necesitas al menos un 55% para certificar.\n¡Sigue practicando y vuelve a intentarlo!`);
+        backToMap();
+    }
 }
 
-window.generateCertificate = (score, rank, time) => {
+window.generateCertificate = async (score, rank, time) => {
+    if (!window.supabaseClient) return;
+    const { data: { session: certSession } } = await window.supabaseClient.auth.getSession();
+
+    if (!certSession) {
+        alert("Sesión expirada. Por favor, inicia sesión de nuevo para obtener tu certificado.");
+        window.location.href = 'sso.html';
+        return;
+    }
+
     const nameInput = document.getElementById('cert-name-input');
     const name = nameInput.value.trim() || "Desarrollador Creative Engine";
+
+    const serial = `CE-2026-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
     // Update Certificate Template
     document.getElementById('cert-display-name').textContent = name;
     document.getElementById('cert-display-score').textContent = score + "%";
     document.getElementById('cert-display-rank').textContent = rank;
     document.getElementById('cert-display-date').textContent = new Date().toLocaleDateString();
+    document.getElementById('cert-serial').textContent = `ID: ${serial}`;
 
     // Inject Achievements
     const achList = document.getElementById('cert-achievements-list');
     achList.innerHTML = currentProgress.achievements.map(a => `<span>◈ ${a}</span>`).join(' ');
+
+    // Persistence to Supabase
+    const privacy = {
+        show_score: document.getElementById('privacy-score').checked,
+        show_rank: document.getElementById('privacy-rank').checked,
+        show_achievements: document.getElementById('privacy-achievements').checked
+    };
+
+    const { error } = await window.supabaseClient.from('certificates').insert({
+        id: serial,
+        user_id: certSession.user.id,
+        full_name: name,
+        score: parseInt(score),
+        rank: rank,
+        achievements: currentProgress.achievements,
+        privacy_settings: privacy
+    });
+
+    if (error) {
+        console.error("Error saving certificate:", error);
+        alert("Hubo un error guardando tu certificado en la nube, pero aún puedes descargarlo.");
+    }
 
     // Show Success Modal
     document.getElementById('cert-prompt-modal').classList.add('hidden');
@@ -747,30 +855,51 @@ window.downloadPDF = () => {
     html2pdf().set(opt).from(element).save();
 };
 
-function showCertificatePrompt(score, rank, time) {
+async function showCertificatePrompt(score, rank, time) {
+    const { data: { session: promptSession } } = await window.supabaseClient.auth.getSession();
+
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.id = 'cert-prompt-modal';
-    modal.innerHTML = `
-        <div class="course-modal">
-            <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
-            <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
-            <p style="font-size:1.2rem; margin-bottom:10px;">Has demostrado ser un Desarrollador de Creative Engine.</p>
-            <div style="display:flex; justify-content:center; gap:20px; margin: 20px 0;">
-                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
-                    <div style="font-size:0.8rem; opacity:0.6;">CALIFICACIÓN</div>
-                    <div style="font-size:2rem; font-weight:900; color:var(--primary);">${score}%</div>
+
+    let content = "";
+    if (!promptSession) {
+        content = `
+            <div class="course-modal">
+                <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
+                <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
+                <p style="font-size:1.2rem; margin-bottom:10px;">¡Increíble! Has aprobado con un <b>${score}%</b> (Rango ${rank}).</p>
+                <div style="background:rgba(255,195,0,0.1); border:1px solid gold; padding:15px; border-radius:15px; margin: 20px 0;">
+                    <p style="font-size:0.9rem; margin:0;">Para generar tu certificado oficial y guardarlo en tu perfil de forma permanente, debes iniciar sesión.</p>
                 </div>
-                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
-                    <div style="font-size:0.8rem; opacity:0.6;">RANGO</div>
-                    <div style="font-size:2rem; font-weight:900; color:gold;">${rank}</div>
-                </div>
+                <button class="btn-main" onclick="window.location.href='sso.html'">Iniciar Sesión para Reclamar Certificado</button>
+                <button class="btn-main" style="background:transparent; border:1px solid #444; margin-top:10px;" onclick="backToMap(); this.closest('.modal-overlay').remove();">Ver más tarde</button>
             </div>
-            <p style="opacity:0.7; margin-bottom:20px;">Ingresa tu nombre profesional para el certificado:</p>
-            <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:25px;">
-            <button class="btn-main" onclick="generateCertificate('${score}', '${rank}', '${time}')">Obtener Certificado Profesional</button>
-        </div>
-    `;
+        `;
+    } else {
+        content = `
+            <div class="course-modal">
+                <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
+                <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
+                <p style="font-size:1.2rem; margin-bottom:10px;">Has demostrado ser un Desarrollador de Creative Engine.</p>
+                <div style="display:flex; justify-content:center; gap:20px; margin: 20px 0;">
+                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                        <div style="font-size:0.8rem; opacity:0.6;">CALIFICACIÓN</div>
+                        <div style="font-size:2rem; font-weight:900; color:var(--primary);">${score}%</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                        <div style="font-size:0.8rem; opacity:0.6;">RANGO</div>
+                        <div style="font-size:2rem; font-weight:900; color:gold;">${rank}</div>
+                    </div>
+                </div>
+                <p style="opacity:0.7; margin-bottom:20px;">Ingresa tu nombre profesional para el certificado:</p>
+                <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:25px;">
+                <button class="btn-main" onclick="generateCertificate('${score}', '${rank}', '${time}')">Obtener Certificado Profesional</button>
+            </div>
+        `;
+    }
+
+    modal.innerHTML = content;
     document.body.appendChild(modal);
 }
 
@@ -890,7 +1019,7 @@ function bgmLoop() {
     setTimeout(bgmLoop, 1000);
 }
 
-function backToMap() {
+window.backToMap = function() {
     document.getElementById('map-view').classList.remove('hidden');
     document.getElementById('stage-detail-view').classList.add('hidden');
     document.getElementById('lesson-view').classList.add('hidden');
@@ -912,6 +1041,24 @@ function showLanguageSelection() {
         </div>
     `;
     document.body.appendChild(modal);
+}
+
+function showLoginRequiredModal(msg) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="course-modal">
+            <i data-lucide="lock" style="width:50px; height:50px; color:var(--primary); margin-bottom:20px;"></i>
+            <h2 style="font-weight:900; margin-bottom:15px;">ACCESO RESTRINGIDO</h2>
+            <p style="opacity:0.8; line-height:1.6; margin-bottom:25px;">${msg}</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-main" onclick="window.location.href='sso.html'">Iniciar Sesión / Registrarse</button>
+                <button class="btn-main" style="background:transparent; border:1px solid #444;" onclick="this.closest('.modal-overlay').remove()">Volver</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 window.pickLang = (lang) => {

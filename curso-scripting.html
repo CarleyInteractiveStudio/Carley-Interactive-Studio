@@ -587,19 +587,30 @@
         .stat-lab { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; }
 
         .cert-seal {
-            width: 100px;
-            height: 100px;
-            background: gold;
-            border-radius: 50%;
+            width: 110px;
+            height: 110px;
+            background: #ffd700;
+            clip-path: polygon(50% 0%, 61% 12%, 77% 10%, 82% 25%, 98% 28%, 95% 44%, 100% 60%, 88% 72%, 90% 88%, 73% 90%, 64% 100%, 50% 92%, 36% 100%, 27% 90%, 10% 88%, 12% 72%, 0% 60%, 5% 44%, 2% 28%, 18% 25%, 23% 10%, 39% 12%);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 4px double #a67c00;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid #a67c00;
             color: #a67c00;
             font-weight: 900;
-            font-size: 1.2rem;
-            transform: rotate(-15deg);
+            font-size: 1rem;
+            transform: rotate(-5deg);
+            position: relative;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .cert-seal::after {
+            content: "";
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 1px dashed #a67c00;
+            border-radius: 50%;
         }
 
         .cert-footer {
@@ -641,7 +652,7 @@
 <body>
 
     <div class="top-bar">
-        <a href="index.html" class="icon-btn" style="color:#fff; text-decoration:none;">
+        <a href="index.html" class="icon-btn" style="color:#fff; text-decoration:none;" title="Volver al Inicio">
             <i data-lucide="arrow-left"></i>
         </a>
         <div class="progress-wrapper">
@@ -651,9 +662,22 @@
         <div class="credits-display">
             <i data-lucide="coins"></i> <span id="user-credits">0</span>
         </div>
-        <button class="icon-btn" onclick="openShop()" style="margin-left: 20px;">
+        <button class="icon-btn" onclick="openShop()" style="margin-left: 20px;" title="Tienda de Skins">
             <i data-lucide="shopping-bag"></i>
         </button>
+
+        <!-- Auth State for Course -->
+        <div id="course-auth-state" style="margin-left: 20px; display: flex; align-items: center; gap: 15px;">
+            <div id="course-auth-guest" class="hidden">
+                <button class="btn-main" style="padding: 8px 15px; font-size: 0.8rem; background: var(--secondary);" onclick="window.location.href='sso.html'">
+                    Iniciar Sesión
+                </button>
+            </div>
+            <div id="course-auth-user" class="hidden" style="display: flex; align-items: center; gap: 10px; padding: 5px 12px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                <img id="course-user-avatar" src="" style="width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover;">
+                <span id="course-user-name" style="font-size: 0.8rem; font-weight: 600; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></span>
+            </div>
+        </div>
     </div>
 
     <div class="course-container">
@@ -697,13 +721,20 @@
                     <!-- Achievements will be injected here -->
                 </div>
 
+                <div id="cert-serial" style="margin-top: 25px; font-family: monospace; font-size: 0.8rem; opacity: 0.5;">
+                    ID: CE-2026-XXXXX
+                </div>
+
                 <div class="cert-footer">
                     <div style="text-align: left;">
-                        <div class="cert-seal">OFICIAL</div>
+                        <div class="cert-seal">AUTÉNTICO</div>
                     </div>
-                    <div class="signature">
-                        <b>Creative Engine Team</b><br>
-                        Sello de Autenticidad
+                    <div class="signature" style="font-family: 'Brush Script MT', cursive; font-size: 1.8rem; color: #333;">
+                        Carley Interactive
+                        <div style="font-family: 'Georgia', serif; font-size: 0.8rem; border-top: 1px solid #333; margin-top: 5px; font-weight: normal; color: #666;">
+                            <b>Creative Engine Team</b><br>
+                            Sello de Autenticidad
+                        </div>
                     </div>
                 </div>
             </div>
@@ -726,8 +757,22 @@
         <div id="final-success-modal" class="modal-overlay hidden">
             <div class="course-modal" style="max-width: 550px;">
                 <h2 style="color:gold; font-weight:900;">¡ERES UN DESARROLLADOR!</h2>
-                <div id="cert-preview-img" style="width:100%; height:250px; background:#f0f0f0; border-radius:15px; margin: 20px 0; overflow:hidden; border: 2px solid gold; display:flex; align-items:center; justify-content:center;">
-                    <img src="carley_foto_web/Logo_C.png" style="opacity:0.2; width:100px;">
+
+                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin: 15px 0; font-size: 0.9rem; text-align: left;">
+                    <p style="margin-top:0; font-weight: bold; color: var(--primary);">Configuración de Privacidad:</p>
+                    <label style="display:flex; gap:10px; margin-bottom:8px; cursor:pointer;">
+                        <input type="checkbox" id="privacy-score" checked> Mostrar calificación en verificaciones públicas
+                    </label>
+                    <label style="display:flex; gap:10px; margin-bottom:8px; cursor:pointer;">
+                        <input type="checkbox" id="privacy-rank" checked> Mostrar rango (S, A, B...)
+                    </label>
+                    <label style="display:flex; gap:10px; cursor:pointer;">
+                        <input type="checkbox" id="privacy-achievements" checked> Mostrar lista de logros obtenidos
+                    </label>
+                </div>
+
+                <div id="cert-preview-img" style="width:100%; height:200px; background:#f0f0f0; border-radius:15px; margin: 15px 0; overflow:hidden; border: 2px solid gold; display:flex; align-items:center; justify-content:center;">
+                    <img src="carley_foto_web/Logo_C.png" style="opacity:0.2; width:80px;">
                 </div>
 
                 <div style="display:flex; gap:15px;">
