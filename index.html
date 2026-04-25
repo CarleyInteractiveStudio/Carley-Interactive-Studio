@@ -182,7 +182,52 @@
                 </div>
             </div>
         </section>
+
+        <!-- Verification Portal -->
+        <section id="verification-portal" class="verification-portal-section">
+            <div class="verify-portal-card">
+                <div class="verify-header">
+                    <i data-lucide="shield-check" style="width:50px; height:50px; color:var(--accent); margin-bottom:1rem;"></i>
+                    <h2 data-i18n="verify-home-title" style="font-size:2.5rem; font-weight:900; margin-bottom:1rem;">Portal de Autenticidad</h2>
+                    <p data-i18n="verify-home-desc" style="opacity:0.7; font-size:1.1rem;">Valida la legitimidad de un Certificado Profesional de Creative Engine.</p>
+                </div>
+                <div class="verify-grid-home">
+                    <div style="text-align:left;">
+                        <label data-i18n="field-serial" style="display:block; margin-bottom:0.5rem; font-size:0.8rem; font-weight:bold; opacity:0.6; text-transform:uppercase;">Código de Certificado</label>
+                        <input type="text" id="verify-code-input" placeholder="Ej: CE-2026-XXXXX" class="verify-input-home" style="width:100%; box-sizing:border-box;">
+                    </div>
+                    <div style="text-align:left;">
+                        <label data-i18n="field-cert-date" style="display:block; margin-bottom:0.5rem; font-size:0.8rem; font-weight:bold; opacity:0.6; text-transform:uppercase;">Fecha de Emisión</label>
+                        <input type="date" id="verify-date-input" class="verify-input-home" style="width:100%; box-sizing:border-box;">
+                    </div>
+                    <button class="btn-main verify-btn-home" onclick="redirectVerify()">
+                        <span data-i18n="btn-verify-now">Verificar Certificado</span> <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+                <div class="verify-footer" style="margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(255,255,255,0.05);">
+                    <p data-i18n="verify-footer-note" style="font-size:0.9rem; opacity:0.5;">Los certificados oficiales contienen una firma digital y un sello de seguridad único.</p>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <script>
+        function redirectVerify() {
+            const code = document.getElementById('verify-code-input').value.trim();
+            const date = document.getElementById('verify-date-input').value;
+
+            if (!code) {
+                alert("Por favor ingrese un código de certificado.");
+                return;
+            }
+
+            let url = `verificar.html?id=${encodeURIComponent(code)}`;
+            if (date) {
+                url += `&date=${encodeURIComponent(date)}`;
+            }
+            window.location.href = url;
+        }
+    </script>
 
     <footer class="studio-footer">
         <div class="footer-grid">

@@ -664,7 +664,7 @@ function handleFailure() {
 
     if (userHealth <= 0) {
         SoundManager.gameOver();
-        alert("¡Has caído en batalla! Recupérate y vuelve a intentarlo.");
+        CustomModal.show("BATALLA PERDIDA", "¡Has caído en batalla! Recupérate y vuelve a intentarlo.", "💀");
         startCourse(activeCourse);
         return;
     }
@@ -736,7 +736,7 @@ async function nextStep() {
         const idx = all.findIndex(c => c.id === activeCourse.id);
         if (idx < all.length - 1) startCourse(all[idx + 1]);
         else {
-            alert("¡MAESTRÍA ALCANZADA! Por ahora no hay más niveles.");
+            CustomModal.show("¡MAESTRÍA ALCANZADA!", "Has completado todos los niveles disponibles por ahora. ¡Vuelve pronto!", "🌟");
             backToMap();
         }
     }
@@ -764,7 +764,7 @@ window.finishExam = function() {
     if (score >= 55) {
         window.showCertificatePrompt(score, rank, totalTimeSeconds);
     } else {
-        alert(`Has completado el examen con un ${score}%. Necesitas al menos un 55% para certificar.\n¡Sigue practicando y vuelve a intentarlo!`);
+        CustomModal.show("RESULTADO EXAMEN", `Has completado el examen con un ${score}%. Necesitas al menos un 55% para certificar.\n¡Sigue practicando y vuelve a intentarlo!`, "📝");
         backToMap();
     }
 }
@@ -778,7 +778,7 @@ window.generateCertificate = async (score, rank, time) => {
     const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
 
     if (currentProgress.stage < 11 || !hasFinishedExam) {
-        alert("¡Alto! No puedes generar un certificado sin haber completado el examen final satisfactoriamente.");
+        CustomModal.show("ACCESO DENEGADO", "No puedes generar un certificado sin haber completado el examen final satisfactoriamente.", "🛡️");
         backToMap();
         return;
     }
@@ -786,11 +786,12 @@ window.generateCertificate = async (score, rank, time) => {
     const { data: { session: certSession } } = await window.supabaseClient.auth.getSession();
 
     if (!certSession) {
-        alert("Sesión expirada. Por favor, inicia sesión de nuevo para obtener tu certificado.");
-        window.location.href = 'sso.html';
+        CustomModal.show("SESIÓN EXPIRADA", "Por favor, inicia sesión de nuevo para obtener tu certificado.", "🔑");
+        setTimeout(() => window.location.href = 'sso.html', 2000);
         return;
     }
 
+    const signatureData = sigCanvas.toDataURL();
     const nameInput = document.getElementById('cert-name-input');
     const name = nameInput.value.trim() || "Desarrollador Creative Engine";
 
@@ -801,7 +802,13 @@ window.generateCertificate = async (score, rank, time) => {
     document.getElementById('cert-display-score').textContent = score + "%";
     document.getElementById('cert-display-rank').textContent = rank;
     document.getElementById('cert-display-date').textContent = new Date().toLocaleDateString();
-    document.getElementById('cert-serial').textContent = `ID: ${serial}`;
+    document.getElementById('cert-seal-id-display').textContent = serial;
+
+    const certSigImg = document.getElementById('cert-user-sig-img');
+    if(certSigImg) {
+        certSigImg.src = signatureData;
+        certSigImg.classList.remove('hidden');
+    }
 
     // Inject Achievements
     const achList = document.getElementById('cert-achievements-list');
@@ -821,17 +828,23 @@ window.generateCertificate = async (score, rank, time) => {
         score: parseInt(score),
         rank: rank,
         achievements: currentProgress.achievements,
-        privacy_settings: privacy
+        privacy_settings: privacy,
+        user_signature: signatureData
     });
 
     if (error) {
         console.error("Error saving certificate:", error);
-        alert("Hubo un error guardando tu certificado en la nube, pero aún puedes descargarlo.");
+        CustomModal.show("ERROR DE GUARDADO", "Hubo un error guardando tu certificado en la nube, pero aún puedes descargarlo localmente.", "⚠️");
     }
 
-    // Show Success Modal
-    document.getElementById('cert-prompt-modal').classList.add('hidden');
-    document.getElementById('final-success-modal').classList.remove('hidden');
+    window.generatedSerial = serial; // Store for verification link
+
+    // Show Download Modal
+    const promptModal = document.getElementById('cert-prompt-modal');
+    if (promptModal) promptModal.remove();
+
+    document.getElementById('final-success-modal').classList.add('hidden');
+    document.getElementById('cert-ready-modal').classList.remove('hidden');
 
     // Configure Sharing Links
     const text = `¡Soy oficialmente Desarrollador en Creative Engine! Mi rango: ${rank} (${score}%). Mira mi certificado:`;
@@ -858,63 +871,39 @@ window.downloadPDF = () => {
 };
 
 window.showCertificatePrompt = async function(score, rank, time) {
-    // Pre-check for protection
     const examStage = window.courseData.stages.find(s => s.id === 11);
     const examCourseIds = examStage.courses.map(c => c.id);
     const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
 
     if (currentProgress.stage < 11 || !hasFinishedExam) {
-        alert("Primero debes completar todas las etapas del curso y aprobar el examen.");
+        CustomModal.show("CERTIFICADO BLOQUEADO", "Primero debes completar todas las etapas del curso y aprobar el examen final.", "🛡️");
         backToMap();
         return;
     }
 
     const { data: { session: promptSession } } = await window.supabaseClient.auth.getSession();
-
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.id = 'cert-prompt-modal';
-
-    let content = "";
     if (!promptSession) {
-        content = `
-            <div class="course-modal">
-                <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
-                <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
-                <p style="font-size:1.2rem; margin-bottom:10px;">¡Increíble! Has aprobado con un <b>${score}%</b> (Rango ${rank}).</p>
-                <div style="background:rgba(255,195,0,0.1); border:1px solid gold; padding:15px; border-radius:15px; margin: 20px 0;">
-                    <p style="font-size:0.9rem; margin:0;">Para generar tu certificado oficial y guardarlo en tu perfil de forma permanente, debes iniciar sesión.</p>
-                </div>
-                <button class="btn-main" onclick="window.location.href='sso.html'">Iniciar Sesión para Reclamar Certificado</button>
-                <button class="btn-main" style="background:transparent; border:1px solid #444; margin-top:10px;" onclick="backToMap(); this.closest('.modal-overlay').remove();">Ver más tarde</button>
-            </div>
-        `;
-    } else {
-        content = `
-            <div class="course-modal">
-                <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
-                <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
-                <p style="font-size:1.2rem; margin-bottom:10px;">Has demostrado ser un Desarrollador de Creative Engine.</p>
-                <div style="display:flex; justify-content:center; gap:20px; margin: 20px 0;">
-                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
-                        <div style="font-size:0.8rem; opacity:0.6;">CALIFICACIÓN</div>
-                        <div style="font-size:2rem; font-weight:900; color:var(--primary);">${score}%</div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
-                        <div style="font-size:0.8rem; opacity:0.6;">RANGO</div>
-                        <div style="font-size:2rem; font-weight:900; color:gold;">${rank}</div>
-                    </div>
-                </div>
-                <p style="opacity:0.7; margin-bottom:20px;">Ingresa tu nombre profesional para el certificado:</p>
-                <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:25px;">
-                <button class="btn-main" onclick="generateCertificate('${score}', '${rank}', '${time}')">Obtener Certificado Profesional</button>
-            </div>
-        `;
+        CustomModal.show("¡EXAMEN COMPLETADO!", `Has aprobado con un ${score}% (Rango ${rank}). Inicia sesión para reclamar tu certificado.`, "🏆");
+        setTimeout(() => window.location.href = 'sso.html', 3000);
+        return;
     }
 
-    modal.innerHTML = content;
-    document.body.appendChild(modal);
-}
+    // Use the Success Modal in HTML
+    window.currentExamStats = { score, rank, time };
+    document.getElementById('final-success-modal').classList.remove('hidden');
+    initSignature();
+};
+
+window.finalizeCertificate = async () => {
+    const nameInput = document.getElementById('cert-name-input');
+    if (!nameInput.value.trim()) {
+        CustomModal.show("DATO REQUERIDO", "Por favor ingresa tu nombre para el certificado.", "✍️");
+        return;
+    }
+
+    const { score, rank, time } = window.currentExamStats;
+    generateCertificate(score, rank, time);
+};
 
 /* ==============================
    Gamification: Shop & Achievements
@@ -957,7 +946,7 @@ async function handleShopAction(id, skin) {
             SoundManager.ding();
             updateCreditsUI();
         } else {
-            alert("No tienes suficientes créditos.");
+            CustomModal.show("FONDOS INSUFICIENTES", "No tienes suficientes créditos para esta skin. ¡Sigue aprendiendo para ganar más!", "💰");
             return;
         }
     }
@@ -1113,3 +1102,140 @@ window.speakContent = () => {
     ut.onend = () => { if (lessonChar) lessonChar.classList.remove('char-talking'); };
     window.speechSynthesis.speak(ut);
 };
+
+/* ==============================
+   Premium Modal System Implementation
+============================== */
+window.CustomModal = {
+    show(title, text, icon = '✨') {
+        const overlay = document.createElement('div');
+        overlay.className = 'custom-modal-overlay';
+        overlay.innerHTML = `
+            <div class="custom-modal">
+                <span class="modal-icon-header">${icon}</span>
+                <h2 class="modal-title-premium">${title}</h2>
+                <p class="modal-text-premium">${text}</p>
+                <button class="btn-main" onclick="this.closest('.custom-modal-overlay').remove()">Entendido</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        setTimeout(() => overlay.classList.add('active'), 10);
+    },
+    confirm(title, text, confirmLabel, icon = '❓') {
+        return new Promise((resolve) => {
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-modal-overlay';
+            overlay.innerHTML = `
+                <div class="custom-modal">
+                    <span class="modal-icon-header">${icon}</span>
+                    <h2 class="modal-title-premium">${title}</h2>
+                    <p class="modal-text-premium">${text}</p>
+                    <div style="display:flex; gap:15px;">
+                        <button class="btn-main outline" style="flex:1" id="modal-cancel">Cancelar</button>
+                        <button class="btn-main" style="flex:1" id="modal-confirm">${confirmLabel}</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.classList.add('active'), 10);
+
+            overlay.querySelector('#modal-confirm').onclick = () => {
+                overlay.remove();
+                resolve(true);
+            };
+            overlay.querySelector('#modal-cancel').onclick = () => {
+                overlay.remove();
+                resolve(false);
+            };
+        });
+    }
+};
+
+/* ==============================
+   Signature Logic
+============================== */
+let sigCanvas, sigCtx, isDrawing = false;
+
+window.initSignature = () => {
+    sigCanvas = document.getElementById('sig-canvas');
+    if (!sigCanvas) return;
+    sigCtx = sigCanvas.getContext('2d');
+
+    // Set internal resolution
+    sigCanvas.width = sigCanvas.offsetWidth;
+    sigCanvas.height = sigCanvas.offsetHeight;
+
+    sigCtx.strokeStyle = "#111";
+    sigCtx.lineWidth = 2;
+    sigCtx.lineCap = "round";
+
+    sigCanvas.onmousedown = (e) => { isDrawing = true; sigCtx.beginPath(); sigCtx.moveTo(e.offsetX, e.offsetY); };
+    sigCanvas.onmousemove = (e) => { if (isDrawing) { sigCtx.lineTo(e.offsetX, e.offsetY); sigCtx.stroke(); } };
+    sigCanvas.onmouseup = () => { isDrawing = false; };
+
+    // Touch support
+    sigCanvas.ontouchstart = (e) => {
+        const t = e.touches[0];
+        const rect = sigCanvas.getBoundingClientRect();
+        isDrawing = true;
+        sigCtx.beginPath();
+        sigCtx.moveTo(t.clientX - rect.left, t.clientY - rect.top);
+        e.preventDefault();
+    };
+    sigCanvas.ontouchmove = (e) => {
+        if (isDrawing) {
+            const t = e.touches[0];
+            const rect = sigCanvas.getBoundingClientRect();
+            sigCtx.lineTo(t.clientX - rect.left, t.clientY - rect.top);
+            sigCtx.stroke();
+        }
+        e.preventDefault();
+    };
+    sigCanvas.ontouchend = () => { isDrawing = false; };
+};
+
+window.clearSignature = () => {
+    sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+};
+
+/* ==============================
+   Enhanced Character Logic
+============================== */
+window.updateCharacterVisuals = function(char) {
+    if (!char) return;
+    const body = char.classList.contains('char-body') ? char : char.querySelector('.char-body');
+    if (!body) return;
+
+    const skin = skins[currentProgress.activeSkin] || skins.default;
+    body.style.background = skin.color;
+    body.style.boxShadow = `0 0 25px ${skin.color}`;
+
+    // Clean up
+    const existing = char.querySelectorAll('.char-accessory, .char-hand, .char-shoe');
+    existing.forEach(e => e.remove());
+
+    // Add Hands
+    const lHand = document.createElement('div'); lHand.className = 'char-hand left';
+    const rHand = document.createElement('div'); rHand.className = 'char-hand right';
+    char.appendChild(lHand);
+    char.appendChild(rHand);
+
+    // Add Shoes
+    const lShoe = document.createElement('div'); lShoe.className = 'char-shoe left';
+    const rShoe = document.createElement('div'); rShoe.className = 'char-shoe right';
+    char.appendChild(lShoe);
+    char.appendChild(rShoe);
+
+    // Evolution Accessories
+    if (currentProgress.stage > 1) {
+        const hat = document.createElement('div');
+        hat.className = 'char-accessory hat-expert';
+        char.appendChild(hat);
+    }
+
+    if (currentProgress.stage > 5) {
+        const lGlove = lHand.cloneNode(); lGlove.classList.add('acc-gloves-white');
+        const rGlove = rHand.cloneNode(); rGlove.classList.add('acc-gloves-white');
+        char.appendChild(lGlove); char.appendChild(rGlove);
+    }
+}
