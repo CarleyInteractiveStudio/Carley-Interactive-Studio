@@ -1343,15 +1343,15 @@ function showCodeIndex() {
     overlay.style.zIndex = "3000";
 
     overlay.innerHTML = `
-        <div class="course-modal" style="max-width: 800px; width:95%;">
-            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 style="margin:0; font-weight: 900; color:var(--secondary);"><i data-lucide="list"></i> ÍNDICE DE CÓDIGOS MAESTROS</h2>
-                <button onclick="this.closest('.modal-overlay').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+        <div class="course-modal" style="max-width: 800px; width:95%; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+            <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <h2 style="margin:0; font-weight: 900; color:var(--secondary); font-size: 1.2rem;"><i data-lucide="list"></i> ÍNDICE DE CÓDIGOS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; font-size: 0.9rem;">Cerrar</button>
             </div>
-            <div style="margin-bottom:20px;">
+            <div style="padding: 20px 30px; background: rgba(0,0,0,0.2);">
                 <input type="text" id="index-search" class="code-input" placeholder="Buscar por nombre de código..." oninput="filterCodeIndex()">
             </div>
-            <div id="index-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; max-height:500px; overflow-y:auto; padding-right:10px; text-align:left;">
+            <div id="index-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; flex: 1; overflow-y:auto; padding: 20px 30px; text-align:left; border-top: 1px solid rgba(255,255,255,0.05);">
                 <!-- Codes injected here -->
             </div>
         </div>
@@ -1407,15 +1407,17 @@ function showTrophyModal() {
     }).join('');
 
     overlay.innerHTML = `
-        <div class="course-modal" style="max-width: 700px;">
-            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 style="margin:0; font-weight: 900; color:var(--primary);"><i data-lucide="award"></i> GALERÍA DE TROFEOS</h2>
-                <button onclick="this.closest('.modal-overlay').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+        <div class="course-modal" style="max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+            <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <h2 style="margin:0; font-weight: 900; color:var(--primary); font-size: 1.2rem;"><i data-lucide="award"></i> GALERÍA DE TROFEOS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; font-size: 0.9rem;">Cerrar</button>
             </div>
-            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:15px; max-height:450px; overflow-y:auto; padding:10px;">
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:15px; flex: 1; overflow-y:auto; padding: 30px;">
                 ${trophiesHTML}
             </div>
-            <p style="margin-top:20px; opacity:0.6; font-size:0.8rem;">Completa todas las lecciones de una etapa para ganar su trofeo de maestría.</p>
+            <div style="padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.1);">
+                <p style="margin:0; opacity:0.6; font-size:0.8rem; text-align: center;">Completa todas las lecciones de una etapa para ganar su trofeo de maestría.</p>
+            </div>
         </div>
     `;
     document.body.appendChild(overlay);
@@ -1427,12 +1429,12 @@ async function showRankingModal() {
     overlay.className = 'modal-overlay';
     overlay.style.zIndex = "3000";
     overlay.innerHTML = `
-        <div class="course-modal" style="max-width: 600px;">
-            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 style="margin:0; font-weight: 900; color:gold;"><i data-lucide="trophy"></i> RANKING DE MAESTROS</h2>
-                <button onclick="this.closest('.modal-overlay').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+        <div class="course-modal" style="max-width: 600px; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+            <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <h2 style="margin:0; font-weight: 900; color:gold; font-size: 1.2rem;"><i data-lucide="trophy"></i> RANKING DE MAESTROS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; font-size: 0.9rem;">Cerrar</button>
             </div>
-            <div id="ranking-list" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+            <div id="ranking-list" style="text-align: left; flex: 1; overflow-y: auto; padding: 30px;">
                 <p style="text-align:center; opacity:0.5;">Cargando a los mejores desarrolladores...</p>
             </div>
         </div>
