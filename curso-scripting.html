@@ -198,6 +198,57 @@
             box-shadow: 0 0 15px rgba(126, 217, 87, 0.2);
         }
 
+        /* Mini Code Editor UI */
+        .mini-editor-container {
+            display: flex;
+            background: #050505;
+            border: 2px solid #222;
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            transition: all 0.3s;
+            position: relative;
+            min-height: 120px;
+        }
+
+        .mini-editor-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(126, 217, 87, 0.15);
+        }
+
+        .editor-line-numbers {
+            padding: 18px 10px;
+            background: #0f0f0f;
+            color: #444;
+            text-align: right;
+            user-select: none;
+            font-size: 1rem;
+            border-right: 1px solid #222;
+            min-width: 35px;
+            line-height: 1.5;
+            pointer-events: none;
+        }
+
+        .editor-textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 18px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1.1rem;
+            outline: none;
+            resize: none;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+            tab-size: 4;
+        }
+
+        .editor-textarea::placeholder {
+            color: #333;
+        }
+
         .btn-main {
             background: var(--primary);
             color: #000;

@@ -525,12 +525,41 @@ function renderStep() {
         if (step.type === 'practica') {
             const isLong = step.answer.length > 20 || step.answer.includes('{') || step.answer.includes(';');
             if (isLong) {
-                area.innerHTML = '<textarea class="code-input" id="answer-input" style="height: 120px; resize: none; font-family: monospace;" placeholder="Escribe tu código aquí..."></textarea>';
+                area.innerHTML = `
+                    <div class="mini-editor-container">
+                        <div class="editor-line-numbers" id="line-numbers">1</div>
+                        <textarea class="editor-textarea" id="answer-input" placeholder="Escribe tu código aquí..." spellcheck="false"></textarea>
+                    </div>
+                `;
+                const editor = document.getElementById('answer-input');
+                const lineNumbers = document.getElementById('line-numbers');
+
+                editor.oninput = () => {
+                    const lines = editor.value.split('\n').length;
+                    lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
+                    lineNumbers.scrollTop = editor.scrollTop;
+                };
+
+                editor.onscroll = () => {
+                    lineNumbers.scrollTop = editor.scrollTop;
+                };
+
+                editor.onkeydown = (e) => {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const start = editor.selectionStart;
+                        const end = editor.selectionEnd;
+                        editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
+                        editor.selectionStart = editor.selectionEnd = start + 4;
+                    }
+                };
             } else {
                 area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
             }
-            document.getElementById('answer-input').focus();
-            document.getElementById('answer-input').onkeypress = (e) => {
+
+            const inputEl = document.getElementById('answer-input');
+            inputEl.focus();
+            inputEl.onkeypress = (e) => {
                 if(e.key === 'Enter' && (!isLong || e.ctrlKey)) {
                     checkAnswer();
                 }
@@ -639,20 +668,17 @@ function checkDebug(index) {
 function normalizeCode(code, ignoreImprimirContent = false) {
     if (!code) return "";
     let normalized = code.toLowerCase()
+        .replace(/\/\/.*/g, '') // Remove single line comments
+        .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
         .replace(/\s+/g, '') // Remove all whitespace
         .replace(/;/g, '')   // Remove semicolons
         .replace(/["']/g, "'"); // Standardize quotes
 
-    // Ignore empty parentheses if comparing names vs calls
-    if (normalized.endsWith('()') && !code.includes('(')) {
-        // This is tricky, let's just allow it for common event names
-    }
-
-    // Better approach: remove empty parentheses for comparison
-    // (This helps with alEmpezar vs alEmpezar())
+    // Handle optional empty parentheses for function definitions/calls
+    // This helps with alEmpezar vs alEmpezar()
     normalized = normalized.replace(/\(\)/g, '');
 
-    // Convert 'x=x+1' or 'x=1+x' to 'x+=1' style internally for comparison
+    // Intent detection: Normalize assignment patterns
     normalized = normalized.replace(/([a-z0-9.]+)=([a-z0-9.]+)\+([0-9.]+)/g, "$1+=$3");
     normalized = normalized.replace(/([a-z0-9.]+)=([0-9.]+)\+([a-z0-9.]+)/g, "$1+=$2");
 
