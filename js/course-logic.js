@@ -197,7 +197,7 @@ async function saveProgress() {
 }
 
 function updateUIProgress() {
-    const total = 100;
+    const total = window.courseData.stages.reduce((acc, s) => acc + s.courses.length, 0);
     const completedCount = currentProgress.completed.length;
     const percent = Math.floor((completedCount / total) * 100);
     const bar = document.getElementById('main-progress-bar');
@@ -328,7 +328,7 @@ function getStageIcon(i) {
 async function selectStage(stage) {
     if (stage.id > currentProgress.stage) return;
 
-    if (stage.id === 11) {
+    if (stage.id === 17) {
         const { data: { session: examSession } } = await window.supabaseClient.auth.getSession();
         if (!examSession) {
             showLoginRequiredModal("Para realizar el Examen Final y obtener tu Certificado Profesional, es obligatorio tener una cuenta.");
@@ -445,9 +445,11 @@ function startCourse(course) {
 
     // Initialize Boss Health if it's a boss
     if (course.isBoss) {
-        // Difficulty scales with stage
+        // Difficulty scales with stage multiplier
         const stageId = window.activeStage ? window.activeStage.id : 1;
-        window.bossMaxHealth = course.steps.filter(s => s.type !== 'teoria').length;
+        const baseHealth = course.steps.filter(s => s.type !== 'teoria').length;
+        const stageBonus = Math.floor(stageId / 3); // More skulls in later stages
+        window.bossMaxHealth = baseHealth + stageBonus;
         window.bossHealth = window.bossMaxHealth;
     }
 
@@ -468,7 +470,7 @@ function startCourse(course) {
     document.getElementById('lesson-view').classList.remove('hidden');
     renderStep();
 
-    if (window.activeStage && window.activeStage.id === 11) {
+    if (window.activeStage && window.activeStage.id === 17) {
         window.examStartTime = Date.now();
         window.examMistakes = 0;
     }
@@ -550,7 +552,7 @@ function renderStep() {
         nextBtn.classList.add('hidden');
 
         if (step.type === 'practica') {
-            const isLong = step.answer.length > 20 || step.answer.includes('{') || step.answer.includes(';');
+            const isLong = step.answer.length > 10 || step.answer.includes('{') || step.answer.includes(';') || step.answer.includes('(');
             if (isLong) {
                 area.innerHTML = `
                     <div class="mini-editor-container">
@@ -779,7 +781,7 @@ function handleFailure() {
         }, 800);
     }
 
-    if (activeStage && activeStage.id === 11) {
+    if (activeStage && activeStage.id === 17) {
         examMistakes++;
     }
     updateHealthUI();
@@ -890,7 +892,7 @@ async function nextStep() {
         }
 
         // Final Exam Check
-        if (activeStage.id === 11) {
+        if (activeStage.id === 17) {
             const allExamCourses = activeStage.courses;
             const lastExamCourse = allExamCourses[allExamCourses.length - 1];
             if (activeCourse.id === lastExamCourse.id) {
@@ -942,12 +944,12 @@ window.finishExam = function() {
 window.generateCertificate = async (score, rank, time) => {
     if (!window.supabaseClient) return;
 
-    // Protection Check: Verify they actually finished Stage 11 courses
-    const examStage = window.courseData.stages.find(s => s.id === 11);
+    // Protection Check: Verify they actually finished Stage 17 courses
+    const examStage = window.courseData.stages.find(s => s.id === 17);
     const examCourseIds = examStage.courses.map(c => c.id);
     const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
 
-    if (currentProgress.stage < 11 || !hasFinishedExam) {
+    if (currentProgress.stage < 17 || !hasFinishedExam) {
         CustomModal.show("ACCESO DENEGADO", "No puedes generar un certificado sin haber completado el examen final satisfactoriamente.", "🛡️");
         backToMap();
         return;
@@ -1041,11 +1043,11 @@ window.downloadPDF = () => {
 };
 
 window.showCertificatePrompt = async function(score, rank, time) {
-    const examStage = window.courseData.stages.find(s => s.id === 11);
+    const examStage = window.courseData.stages.find(s => s.id === 17);
     const examCourseIds = examStage.courses.map(c => c.id);
     const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
 
-    if (currentProgress.stage < 11 || !hasFinishedExam) {
+    if (currentProgress.stage < 17 || !hasFinishedExam) {
         CustomModal.show("CERTIFICADO BLOQUEADO", "Primero debes completar todas las etapas del curso y aprobar el examen final.", "🛡️");
         backToMap();
         return;
