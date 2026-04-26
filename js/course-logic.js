@@ -523,9 +523,18 @@ function renderStep() {
         nextBtn.classList.add('hidden');
 
         if (step.type === 'practica') {
-            area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
+            const isLong = step.answer.length > 20 || step.answer.includes('{') || step.answer.includes(';');
+            if (isLong) {
+                area.innerHTML = '<textarea class="code-input" id="answer-input" style="height: 120px; resize: none; font-family: monospace;" placeholder="Escribe tu código aquí..."></textarea>';
+            } else {
+                area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
+            }
             document.getElementById('answer-input').focus();
-            document.getElementById('answer-input').onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
+            document.getElementById('answer-input').onkeypress = (e) => {
+                if(e.key === 'Enter' && (!isLong || e.ctrlKey)) {
+                    checkAnswer();
+                }
+            };
         } else if (step.type === 'opcion-multiple') {
             const grid = document.createElement('div');
             grid.className = 'options-grid';
@@ -634,7 +643,15 @@ function normalizeCode(code, ignoreImprimirContent = false) {
         .replace(/;/g, '')   // Remove semicolons
         .replace(/["']/g, "'"); // Standardize quotes
 
-    // Intent detection: Normalize assignment patterns
+    // Ignore empty parentheses if comparing names vs calls
+    if (normalized.endsWith('()') && !code.includes('(')) {
+        // This is tricky, let's just allow it for common event names
+    }
+
+    // Better approach: remove empty parentheses for comparison
+    // (This helps with alEmpezar vs alEmpezar())
+    normalized = normalized.replace(/\(\)/g, '');
+
     // Convert 'x=x+1' or 'x=1+x' to 'x+=1' style internally for comparison
     normalized = normalized.replace(/([a-z0-9.]+)=([a-z0-9.]+)\+([0-9.]+)/g, "$1+=$3");
     normalized = normalized.replace(/([a-z0-9.]+)=([0-9.]+)\+([a-z0-9.]+)/g, "$1+=$2");
