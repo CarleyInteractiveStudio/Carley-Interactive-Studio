@@ -561,21 +561,73 @@ function renderStep() {
             const isLong = step.answer.length > 10 || step.answer.includes('{') || step.answer.includes(';') || step.answer.includes('(');
             if (isLong) {
                 area.innerHTML = `
+                    <div class="editor-toolbar" id="editor-tools"></div>
                     <div class="mini-editor-container">
                         <div class="editor-line-numbers" id="line-numbers">1</div>
+                        <div class="editor-highlighter" id="highlighter"></div>
                         <textarea class="editor-textarea" id="answer-input" placeholder="Escribe tu código aquí..." spellcheck="false"></textarea>
                     </div>
                 `;
                 const editor = document.getElementById('answer-input');
                 const lineNumbers = document.getElementById('line-numbers');
+                const highlighter = document.getElementById('highlighter');
+                const tools = document.getElementById('editor-tools');
+
+                // Add Shortcuts
+                const chars = ['{', '}', '(', ')', ';', '!', '=', '+', '-', '"', "'"];
+                chars.forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = 'toolbar-btn';
+                    btn.textContent = c;
+                    btn.onclick = () => {
+                        const start = editor.selectionStart;
+                        const end = editor.selectionEnd;
+                        editor.value = editor.value.substring(0, start) + c + editor.value.substring(end);
+                        editor.selectionStart = editor.selectionEnd = start + 1;
+                        editor.focus();
+                        updateHighlighting();
+                    };
+                    tools.appendChild(btn);
+                });
+
+                const updateHighlighting = () => {
+                    let code = editor.value;
+                    const lines = code.split('\n').length;
+                    lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
+
+                    // Simple Regex Highlighting
+                    let html = escapeHTML(code);
+
+                    // Keywords
+                    const keywords = /\b(ve motor|publico|variable|si|sino|mientras|para|retornar|y|o|no|verdadero|falso|nulo|nuevo|materia)\b/g;
+                    html = html.replace(keywords, '<span class="hl-keyword">$1</span>');
+
+                    // Functions
+                    const funcs = /\b(imprimir|buscar|crear|destruir|distancia|difundir|esperar|cada|seno|coseno|atan2|lerp|mirarA|lanzarRayo|tieneTag|alEmpezar|alActualizar|actualizarFijo|alHacerClick|alEntrarEnColision|alEntrarEnTrigger|alRecibir|alSalirDeColision|obtenerPosicionMouse|teclaPresionada|teclaRecienPresionada)\b/g;
+                    html = html.replace(funcs, '<span class="hl-function">$1</span>');
+
+                    // Numbers
+                    html = html.replace(/\b(\d+(\.\d+)?)\b/g, '<span class="hl-number">$1</span>');
+
+                    // Strings
+                    html = html.replace(/('[^']*')/g, '<span class="hl-string">$1</span>');
+                    html = html.replace(/("[^"]*")/g, '<span class="hl-string">$1</span>');
+
+                    // Comments
+                    html = html.replace(/(\/\/.*)/g, '<span class="hl-comment">$1</span>');
+
+                    highlighter.innerHTML = html + "\n"; // Extra newline for scroll sync
+                };
 
                 editor.oninput = () => {
-                    const lines = editor.value.split('\n').length;
-                    lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
-                    lineNumbers.scrollTop = editor.scrollTop;
+                    updateHighlighting();
+                    highlighter.scrollTop = editor.scrollTop;
+                    highlighter.scrollLeft = editor.scrollLeft;
                 };
 
                 editor.onscroll = () => {
+                    highlighter.scrollTop = editor.scrollTop;
+                    highlighter.scrollLeft = editor.scrollLeft;
                     lineNumbers.scrollTop = editor.scrollTop;
                 };
 
@@ -586,8 +638,10 @@ function renderStep() {
                         const end = editor.selectionEnd;
                         editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
                         editor.selectionStart = editor.selectionEnd = start + 4;
+                        updateHighlighting();
                     }
                 };
+                updateHighlighting();
             } else {
                 area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
             }
@@ -1186,6 +1240,54 @@ async function handleShopAction(id, type) {
     }
     await saveProgress();
     openShop();
+}
+
+async function showRankingModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+    overlay.innerHTML = `
+        <div class="course-modal" style="max-width: 600px;">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="margin:0; font-weight: 900; color:gold;"><i data-lucide="trophy"></i> RANKING DE MAESTROS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+            </div>
+            <div id="ranking-list" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                <p style="text-align:center; opacity:0.5;">Cargando a los mejores desarrolladores...</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    if (!window.supabaseClient) return;
+
+    const { data, error } = await window.supabaseClient
+        .from('certificates')
+        .select('full_name, rank, score, created_at')
+        .eq('rank', 'S')
+        .order('score', { ascending: false })
+        .limit(10);
+
+    const list = document.getElementById('ranking-list');
+    if (error || !data || data.length === 0) {
+        list.innerHTML = '<p style="text-align:center; opacity:0.5; padding: 20px;">Aún no hay graduados con Rango S. ¡Sé el primero!</p>';
+        return;
+    }
+
+    list.innerHTML = data.map((entry, idx) => `
+        <div style="display:flex; align-items:center; gap:15px; background: rgba(255,255,255,0.03); padding: 12px 20px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,215,0,0.1);">
+            <span style="font-weight: 900; font-size: 1.2rem; color: gold; width: 30px;">#${idx + 1}</span>
+            <div style="flex:1">
+                <div style="font-weight: 800; color: #fff;">${escapeHTML(entry.full_name)}</div>
+                <div style="font-size: 0.75rem; opacity: 0.5;">Certificado el ${new Date(entry.created_at).toLocaleDateString()}</div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-weight: 900; color: gold; font-size: 1.1rem;">${entry.score}%</div>
+                <div style="font-size: 0.7rem; font-weight: bold; background: gold; color: #000; padding: 2px 6px; border-radius: 4px; display: inline-block;">RANGO ${entry.rank}</div>
+            </div>
+        </div>
+    `).join('');
 }
 
 function unlockAchievement(stageName) {

@@ -234,7 +234,8 @@
             background: transparent;
             border: none;
             padding: 18px;
-            color: #fff;
+            color: transparent;
+            caret-color: #fff;
             font-family: inherit;
             font-size: 1.1rem;
             outline: none;
@@ -243,7 +244,58 @@
             white-space: pre;
             overflow-x: auto;
             tab-size: 4;
+            position: relative;
+            z-index: 2;
         }
+
+        .editor-highlighter {
+            position: absolute;
+            top: 0;
+            left: 55px; /* width of line numbers + margin */
+            right: 0;
+            bottom: 0;
+            padding: 18px;
+            pointer-events: none;
+            font-family: inherit;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            white-space: pre;
+            overflow: hidden;
+            z-index: 1;
+            color: #ccc;
+        }
+
+        .hl-keyword { color: #ff79c6; font-weight: bold; }
+        .hl-string { color: #f1fa8c; }
+        .hl-comment { color: #6272a4; font-style: italic; }
+        .hl-number { color: #bd93f9; }
+        .hl-function { color: #50fa7b; }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+            background: #111;
+            border-bottom: 1px solid #222;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .editor-toolbar::-webkit-scrollbar { display: none; }
+
+        .toolbar-btn {
+            background: #222;
+            border: 1px solid #333;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .toolbar-btn:active { background: var(--primary); color: #000; }
 
         .editor-textarea::placeholder {
             color: #333;
@@ -770,7 +822,10 @@
         <div class="credits-display">
             <i data-lucide="coins"></i> <span id="user-credits">0</span>
         </div>
-        <button class="icon-btn" onclick="openShop()" style="margin-left: 20px;" title="Tienda de Skins">
+        <button class="icon-btn" onclick="showRankingModal()" style="margin-left: 20px;" title="Ranking de Maestros">
+            <i data-lucide="trophy"></i>
+        </button>
+        <button class="icon-btn" onclick="openShop()" style="margin-left: 15px;" title="Tienda de Skins">
             <i data-lucide="shopping-bag"></i>
         </button>
 
