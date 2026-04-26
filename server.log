@@ -1,6 +1,6 @@
-127.0.0.1 - - [26/Apr/2026 01:59:03] "GET /curso-scripting.html HTTP/1.1" 200 -
-127.0.0.1 - - [26/Apr/2026 01:59:03] "GET /estilos.css HTTP/1.1" 200 -
-127.0.0.1 - - [26/Apr/2026 01:59:03] "GET /carley_foto_web/Logo_C.png HTTP/1.1" 200 -
-127.0.0.1 - - [26/Apr/2026 01:59:03] "GET /js/main.js HTTP/1.1" 200 -
-127.0.0.1 - - [26/Apr/2026 01:59:03] "GET /js/course-data.js HTTP/1.1" 200 -
-127.0.0.1 - - [26/Apr/2026 01:59:03] "GET /js/course-logic.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Apr/2026 04:44:20] "GET /curso-scripting.html HTTP/1.1" 200 -
+127.0.0.1 - - [26/Apr/2026 04:44:20] "GET /estilos.css HTTP/1.1" 200 -
+127.0.0.1 - - [26/Apr/2026 04:44:20] "GET /carley_foto_web/Logo_C.png HTTP/1.1" 200 -
+127.0.0.1 - - [26/Apr/2026 04:44:20] "GET /js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Apr/2026 04:44:20] "GET /js/course-data.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Apr/2026 04:44:20] "GET /js/course-logic.js HTTP/1.1" 200 -

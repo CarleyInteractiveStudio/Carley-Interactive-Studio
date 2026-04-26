@@ -530,6 +530,12 @@ function renderStep() {
 
     updateCharacterVisuals(document.getElementById('lesson-character'));
 
+    // Update Step Counter
+    const stepCounter = document.getElementById('step-counter');
+    if (stepCounter) {
+        stepCounter.textContent = `Paso ${window.currentStepIndex + 1} de ${window.activeCourse.steps.length}`;
+    }
+
     const area = document.getElementById('practice-area');
     area.innerHTML = '';
 
@@ -888,6 +894,8 @@ async function nextStep() {
             if (!activeStage.stages && ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
                 currentProgress.stage++;
                 unlockAchievement(activeStage.name);
+                showStageCompleteModal(activeStage);
+                return; // Modal handles progression
             }
         }
 
@@ -1186,11 +1194,35 @@ function unlockAchievement(stageName) {
 
     currentProgress.achievements.push(name);
     const popup = document.getElementById('achievement-popup');
-    document.getElementById('achievement-name').textContent = name;
-    popup.classList.remove('hidden');
-    SoundManager.achievement();
+    if (popup) {
+        document.getElementById('achievement-name').textContent = name;
+        popup.classList.remove('hidden');
+        SoundManager.achievement();
+        setTimeout(() => popup.classList.add('hidden'), 5000);
+    }
+}
 
-    setTimeout(() => popup.classList.add('hidden'), 5000);
+function showStageCompleteModal(stage) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+    overlay.innerHTML = `
+        <div class="course-modal" style="border: 2px solid ${stage.color}; box-shadow: 0 0 50px ${stage.color}44;">
+            <div style="font-size: 5rem; margin-bottom: 20px;">🏆</div>
+            <h2 style="color:${stage.color}; font-weight:900; margin-bottom:10px;">¡ETAPA SUPERADA!</h2>
+            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">${stage.name}</p>
+            <p style="opacity:0.8; line-height:1.6; margin-bottom:30px;">
+                Has demostrado maestría en esta etapa. Has ganado el trofeo y desbloqueado nuevos desafíos.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-main" onclick="location.reload()" style="background:${stage.color}; color:#000;">Continuar al Mapa</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
+    }
 }
 
 function updateCharacterVisuals(char) {
