@@ -1,6 +1,6 @@
 /* ==============================
    Course Data - The Scripting Path (CES)
-   Updated to match "El Gran Libro de Creative Engine"
+   Updated with High-Quality content and Harder Bosses
 ============================== */
 
 window.courseData = {
@@ -1177,13 +1177,22 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "El primer paso de todo programador: mostrar un mensaje al inicio.",
-                            code: "ve motor;\nalEmpezar() {\n  imprimir(\"¡Hola Mundo!\");\n}"
+                            content: "En este nivel aplicaremos todo lo aprendido en scripts reales. Empecemos con un saludo formal.",
+                            code: "ve motor;\nalEmpezar() {\n  imprimir(\"¡Hola Mundo! El sistema está listo.\");\n}"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el código para imprimir 'Hola':",
-                            answer: "imprimir(\"Hola\")"
+                            question: "Escribe el script completo para imprimir 'Iniciando':",
+                            answer: "ve motor; alEmpezar() { imprimir('Iniciando'); }"
+                        },
+                        {
+                            type: "opcion-multiple",
+                            question: "¿Por qué es importante 've motor;'?",
+                            options: [
+                                { text: "Para que el juego se vea mejor", correct: false },
+                                { text: "Para activar el script dentro del motor", correct: true },
+                                { text: "Para borrar el código", correct: false }
+                            ]
                         }
                     ]
                 },
@@ -1193,13 +1202,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Saluda usando un nombre elegido en el editor.",
+                            content: "Usar variables públicas nos permite personalizar el comportamiento desde el editor.",
                             code: "publico texto miNombre = \"Héroe\";\nalEmpezar() {\n  imprimir(\"Bienvenido, \" + miNombre);\n}"
                         },
                         {
                             type: "practica",
-                            question: "Declara una variable pública de texto llamada 'clase':",
-                            answer: "publico texto clase;"
+                            question: "Crea una variable pública de texto llamada 'clase' y saluda con ella:",
+                            answer: "publico texto clase; alEmpezar() { imprimir('Tu clase es: ' + clase); }"
                         }
                     ]
                 },
@@ -1209,15 +1218,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Restar puntos de vida de forma manual.",
+                            content: "La salud es vital. Aprende a manipular variables numéricas.",
                             code: "publico numero vida = 100;\nquitarVida() {\n  vida = vida - 10;\n}"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Resta 20 a la vida:",
-                            codeTemplate: "vida = vida [BLOQUE] 20;",
-                            blocks: ["-", "+", "*"],
-                            answer: "-"
+                            type: "practica",
+                            question: "Define la vida en 100 y crea una función 'sanar' que sume 20:",
+                            answer: "publico numero vida = 100; sanar() { vida = vida + 20; }"
                         }
                     ]
                 },
@@ -1227,13 +1234,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Usar un booleano para encender o apagar algo al clicar.",
+                            content: "Los booleanos permiten crear mecánicas de encendido y apagado.",
                             code: "publico booleano luz = verdadero;\nalHacerClick() {\n  luz = !luz;\n}"
                         },
                         {
                             type: "practica",
-                            question: "¿Qué símbolo se usa para invertir un booleano (NOT)?",
-                            answer: "!"
+                            question: "Invierte el valor de 'encendido' al hacer clic:",
+                            answer: "alHacerClick() { encendido = !encendido; }"
                         }
                     ]
                 },
@@ -1243,13 +1250,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Sumar a la posición X para mover hacia la derecha.",
+                            content: "El movimiento es el alma del juego. Usa 'alActualizar' para mover objetos.",
                             code: "alActualizar(delta) {\n  posicion.x = posicion.x + 2;\n}"
                         },
                         {
                             type: "practica",
-                            question: "Mueve 5 unidades en X cada frame:",
-                            answer: "posicion.x = posicion.x + 5"
+                            question: "Mueve 5 unidades en X en cada frame usando delta:",
+                            answer: "alActualizar(delta) { posicion.x = posicion.x + 5 * delta; }"
                         }
                     ]
                 },
@@ -1259,7 +1266,7 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Poner la posición del objeto donde está el puntero.",
+                            content: "Interacción directa: haz que el objeto siga al puntero.",
                             code: "alActualizar(delta) {\n  variable raton = obtenerPosicionMouse();\n  posicion.x = raton.x;\n  posicion.y = raton.y;\n}"
                         },
                         {
@@ -1275,15 +1282,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cambiar el color del sprite usando valores aleatorios.",
+                            content: "La aleatoriedad da vida a los efectos visuales.",
                             code: "renderizadorDeSprite.color = nuevo Color(azar(0,255), azar(0,255), azar(0,255));"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Obtén un número aleatorio:",
-                            codeTemplate: "[BLOQUE](0, 100)",
-                            blocks: ["azar", "random", "suerte"],
-                            answer: "azar"
+                            type: "practica",
+                            question: "Pon un color al azar al hacer clic:",
+                            answer: "alHacerClick() { renderizadorDeSprite.color = nuevo Color(azar(0,255), azar(0,255), azar(0,255)); }"
                         }
                     ]
                 },
@@ -1293,13 +1298,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Esperar un tiempo antes de continuar la ejecución.",
+                            content: "Controla el tiempo con corrutinas (esperar).",
                             code: "alEmpezar() {\n  imprimir(\"Cargando...\");\n  esperar(3);\n  imprimir(\"Listo\");\n}"
                         },
                         {
                             type: "practica",
-                            question: "Escribe la línea para pausar 2.5 segundos:",
-                            answer: "esperar(2.5);"
+                            question: "Espera 2 segundos y luego destruye la materia:",
+                            answer: "esperar(2); destruir(materia);"
                         }
                     ]
                 },
@@ -1309,13 +1314,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Realizar una acción cada segundo de forma constante.",
+                            content: "Ejecuta acciones periódicas sin saturar el sistema.",
                             code: "alEmpezar() {\n  cada(1) {\n    imprimir(\"Tic\");\n  }\n}"
                         },
                         {
                             type: "practica",
-                            question: "¿Cómo se llama el comando para repetir cada X tiempo?",
-                            answer: "cada"
+                            question: "Crea un bucle que imprima 'BUM' cada 0.5 segundos:",
+                            answer: "cada(0.5) { imprimir('BUM'); }"
                         }
                     ]
                 },
@@ -1326,26 +1331,33 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "¡Demuestra que dominas la base del libro antes de avanzar!",
-                            code: "// FINAL LEVEL 1"
+                            content: "¡RONDA FINAL DEL NIVEL 1! El jefe es un error crítico del sistema. ¡Depúralo!",
+                            code: "// FINAL LEVEL 1 BOSS"
                         },
                         {
                             type: "practica",
-                            question: "RONDA 1: Autodestruye el objeto al clicarlo:",
+                            question: "RONDA 1: Conecta al motor e imprime 'START':",
+                            answer: "ve motor; alEmpezar() { imprimir('START'); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 2: El jefe te ataca cada 1.5 segundos. ¡Esquiva!",
+                            answer: "cada(1.5) { esquivar(); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 3: Autodestruye al jefe al clicarlo:",
                             answer: "alHacerClick() { destruir(materia); }"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "RONDA 2: Inicia un bucle de 1 segundo:",
-                            codeTemplate: "[BLOQUE](1) { ... }",
-                            blocks: ["cada", "si", "para"],
-                            answer: "cada"
+                            type: "practica",
+                            question: "RONDA 4: Crea una variable pública 'poder' y úsala para atacar:",
+                            answer: "publico numero poder; alActualizar(delta) { atacar(poder); }"
                         },
                         {
-                            type: "ordenar-bloques",
-                            question: "RONDA 3: ¡Saluda y espera!",
-                            blocks: ["imprimir(\"Hola\");", "esperar(1);", "imprimir(\"Fin\");"],
-                            answer: ["imprimir(\"Hola\");", "esperar(1);", "imprimir(\"Fin\");"]
+                            type: "practica",
+                            question: "RONDA FINAL: Espera 1 segundo y carga la escena 'Victoria':",
+                            answer: "esperar(1); cargarEscena('Victoria');"
                         }
                     ]
                 }
@@ -1362,13 +1374,21 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Movimiento completo usando las teclas WASD.",
+                            content: "Movimiento completo usando las teclas WASD para juegos Top-Down.",
                             code: "si (teclaPresionada(\"w\")) posicion.y -= vel * delta;"
                         },
                         {
                             type: "practica",
-                            question: "Escribe la condición para detectar la tecla 'd':",
-                            answer: "si (teclaPresionada(\"d\"))"
+                            question: "Escribe el código para mover a la derecha con 'd':",
+                            answer: "si (teclaPresionada('d')) { posicion.x += velocidad * delta; }"
+                        },
+                        {
+                            type: "modo-debug",
+                            question: "¡El personaje no se mueve a la izquierda! Corrígelo:",
+                            codeLines: ["si (teclaPresionada('a')) {", "  posicion.x += 100 * delta;", "}"],
+                            errorLine: 1,
+                            explanation: "Para ir a la izquierda debes restar en X, no sumar.",
+                            solution: "posicion.x -= 100 * delta;"
                         }
                     ]
                 },
@@ -1378,13 +1398,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Crear una copia de un molde y situarla en nuestra posición.",
+                            content: "Crea objetos en tiempo real (instanciación) para disparar.",
                             code: "variable b = crear(bala);\nb.posicion = posicion;"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el comando para generar un Prefab:",
-                            answer: "crear"
+                            question: "Crea un 'proyectil' al presionar 'f':",
+                            answer: "si (teclaRecienPresionada('f')) { crear(proyectil); }"
                         }
                     ]
                 },
@@ -1394,13 +1414,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cambiar la velocidad vertical al chocar para simular un rebote.",
+                            content: "Accede a la velocidad física para crear efectos de rebote.",
                             code: "alEntrarEnColision(otro) {\n  fisica.velocity.y = -10;\n}"
                         },
                         {
                             type: "practica",
-                            question: "Propiedad para cambiar la velocidad en el eje Y:",
-                            answer: "fisica.velocity.y"
+                            question: "Al chocar, pon la velocidad X en 15:",
+                            answer: "alEntrarEnColision(otro) { fisica.velocity.x = 15; }"
                         }
                     ]
                 },
@@ -1410,15 +1430,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Usar 'lerp' para acercarse suavemente a la posición de otro objeto.",
+                            content: "Usa 'lerp' (interpolación lineal) para un movimiento suave de IA.",
                             code: "posicion.x = lerp(posicion.x, jugador.x, 0.05);"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Busca al jugador por su nombre:",
-                            codeTemplate: "jugador = [BLOQUE](\"Jugador\");",
-                            blocks: ["buscar", "crear", "difundir"],
-                            answer: "buscar"
+                            type: "practica",
+                            question: "Busca al 'Heroe' y síguelo en X suavemente (0.1):",
+                            answer: "heroe = buscar('Heroe'); posicion.x = lerp(posicion.x, heroe.x, 0.1);"
                         }
                     ]
                 },
@@ -1428,13 +1446,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Identificar un objeto por su Tag y borrarlo al tocarlo.",
+                            content: "Usa Tags para identificar qué objeto has tocado.",
                             code: "si (otro.tieneTag(\"Moneda\")) destruir(otro);"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el comando para ver si un objeto tiene la etiqueta 'Gema':",
-                            answer: "tieneTag(\"Gema\")"
+                            question: "Si chocas con 'Veneno', resta 50 de vida:",
+                            answer: "si (otro.tieneTag('Veneno')) { vida = vida - 50; }"
                         }
                     ]
                 },
@@ -1444,13 +1462,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Acceder al componente de sonido y ejecutar un clip.",
+                            content: "Dale voz a tu juego con el componente de audio.",
                             code: "fuenteDeAudio.play(sonido);"
                         },
                         {
                             type: "practica",
-                            question: "Escribe la línea para reproducir el audio 'click':",
-                            answer: "fuenteDeAudio.play(click);"
+                            question: "Al chocar con 'Muro', suena 'golpe':",
+                            answer: "alEntrarEnColision(otro) { si (otro.tieneTag('Muro')) { fuenteDeAudio.play(golpe); } }"
                         }
                     ]
                 },
@@ -1460,15 +1478,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cambiar el estado visual del personaje según sus acciones.",
+                            content: "Cambia el estado visual del personaje según sus acciones.",
                             code: "animador.play(\"Caminar\");"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Si está quieto, ejecuta la animación:",
-                            codeTemplate: "animador.[BLOQUE](\"Quieto\");",
-                            blocks: ["play", "stop", "reset"],
-                            answer: "play"
+                            type: "practica",
+                            question: "Si saltas, pon la animación 'Salto':",
+                            answer: "si (saltando) { animador.play('Salto'); }"
                         }
                     ]
                 },
@@ -1478,13 +1494,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Detección sin choque físico para áreas de evento.",
+                            content: "Detección sin choque físico para áreas de evento (monedas, metas).",
                             code: "alEntrarEnTrigger(otro) { ... }"
                         },
                         {
                             type: "practica",
-                            question: "¿Cómo se llama el evento para sensores invisibles?",
-                            answer: "alEntrarEnTrigger"
+                            question: "Si entras en el trigger 'Meta', imprime 'GANASTE':",
+                            answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Meta')) { imprimir('GANASTE'); } }"
                         }
                     ]
                 },
@@ -1494,13 +1510,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Actualizar el texto de la interfaz en tiempo real.",
+                            content: "Actualizar la interfaz de usuario para informar al jugador.",
                             code: "textoUI.text = \"HP: \" + vida;"
                         },
                         {
                             type: "practica",
-                            question: "Escribe la propiedad para cambiar el contenido de un texto UI:",
-                            answer: "text"
+                            question: "Actualiza el textoUI con los 'puntos':",
+                            answer: "textoUI.text = 'Puntos: ' + puntos;"
                         }
                     ]
                 },
@@ -1511,25 +1527,33 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "¡El jefe usa mecánicas combinadas! Prepárate.",
-                            code: "// BOSS FIGHT LVL 2"
+                            content: "¡El jefe ha evolucionado! Ahora requiere lógica combinada para ser derrotado.",
+                            code: "// BOSS FIGHT LVL 2: THE REVENGE"
                         },
                         {
                             type: "practica",
-                            question: "RONDA 1: Salta físicamente al presionar 'Espacio':",
-                            answer: "si (teclaRecienPresionada(\"Space\")) { fisica.applyImpulse(nuevo Vector2(0, -10)); }"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "RONDA 2: El jefe te detecta por sensor:",
-                            codeTemplate: "[BLOQUE](jugador) { jefe.atacar(); }",
-                            blocks: ["alEntrarEnTrigger", "alHacerClick", "alEmpezar"],
-                            answer: "alEntrarEnTrigger"
+                            question: "RONDA 1: Salta al presionar 'Espacio' con un impulso de 15:",
+                            answer: "si (teclaRecienPresionada('Space')) { fisica.applyImpulse(nuevo Vector2(0, -15)); }"
                         },
                         {
                             type: "practica",
-                            question: "RONDA 3: Cambia al nivel 'Victoria' al ganar:",
-                            answer: "cargarEscena(\"Victoria\")"
+                            question: "RONDA 2: Suena 'alarma' si el jefe entra en tu sensor 'Deteccion':",
+                            answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Deteccion')) { fuenteDeAudio.play(alarma); } }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 3: El jefe es vulnerable si 'luzActiva' es falso. ¡Ataca!",
+                            answer: "si (no luzActiva) { atacar(); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 4: Actualiza la vida del jefe en la UI ('JefeHP'):",
+                            answer: "textoUI.text = 'HP: ' + jefeVida;"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA FINAL: Si el jefe muere, carga escena 'Creditos':",
+                            answer: "si (jefeVida <= 0) { cargarEscena('Creditos'); }"
                         }
                     ]
                 }
@@ -1546,13 +1570,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Lanzar un rayo para que los enemigos detecten al jugador.",
+                            content: "Dota a tus enemigos de visión real usando rayos invisibles.",
                             code: "variable hit = lanzarRayo(posicion, dir, 500);"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el comando para lanzar un rayo de detección:",
-                            answer: "lanzarRayo"
+                            question: "Lanza un rayo a la derecha de 200px y ataca si choca con algo:",
+                            answer: "variable h = lanzarRayo(posicion, Vector2.derecha, 200); si (h != nulo) { atacar(); }"
                         }
                     ]
                 },
@@ -1562,13 +1586,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cambiar la iluminación global del juego dinámicamente.",
+                            content: "Usa la luz ambiental para cambiar la atmósfera dinámicamente.",
                             code: "establecerLuzAmbiental(\"#111133\");"
                         },
                         {
                             type: "practica",
-                            question: "Comando para cambiar el color del mundo:",
-                            answer: "establecerLuzAmbiental"
+                            question: "Pon la luz ambiental en negro (#000000) al empezar:",
+                            answer: "alEmpezar() { establecerLuzAmbiental('#000000'); }"
                         }
                     ]
                 },
@@ -1578,15 +1602,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Guardar objetos como paquetes de información (objetos JSON).",
+                            content: "Gestiona listas de objetos complejos (JSON) para inventarios pro.",
                             code: "mochila.empujar({ nombre: \"Espada\", daño: 10 });"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Añade un objeto a la lista:",
-                            codeTemplate: "lista.[BLOQUE](objeto);",
-                            blocks: ["empujar", "sacar", "borrar"],
-                            answer: "empujar"
+                            type: "practica",
+                            question: "Añade un objeto con 'id: 1' a la lista 'inventario':",
+                            answer: "inventario.empujar({ id: 1 });"
                         }
                     ]
                 },
@@ -1596,13 +1618,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Cambiar el comportamiento de la IA según su estado (Patrulla, Ataque).",
+                            content: "Organiza la lógica de IA compleja dividiéndola en estados.",
                             code: "si (estado == \"ATAQUE\") { perseguir(); }"
                         },
                         {
                             type: "practica",
-                            question: "¿Cómo se llama la técnica de estados de IA?",
-                            answer: "Máquina de Estados"
+                            question: "Si el estado es 'QUIETO', pon la animación 'Idle':",
+                            answer: "si (estado == 'QUIETO') { animador.play('Idle'); }"
                         }
                     ]
                 },
@@ -1612,13 +1634,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Generar múltiples chispas aleatorias al explotar.",
+                            content: "Genera explosiones dinámicas instanciando múltiples partículas.",
                             code: "para(i=0; i<10; i++) { crear(chispa); }"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el bucle para repetir algo 5 veces:",
-                            answer: "para (variable i = 0; i < 5; i = i + 1)"
+                            question: "Crea un bucle que genere 20 'fuego':",
+                            answer: "para (variable i = 0; i < 20; i = i + 1) { crear(fuego); }"
                         }
                     ]
                 },
@@ -1628,13 +1650,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Seguimiento de cámara sin tirones usando interpolación.",
+                            content: "El suavizado lerp es el secreto de una cámara profesional.",
                             code: "posicion.x = lerp(posicion.x, obj.x, 0.1);"
                         },
                         {
                             type: "practica",
-                            question: "Escribe la función para suavizado entre dos valores:",
-                            answer: "lerp"
+                            question: "Sigue al 'objetivo' en Y con suavidad de 0.05:",
+                            answer: "posicion.y = lerp(posicion.y, objetivo.y, 0.05);"
                         }
                     ]
                 },
@@ -1644,15 +1666,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Quitar vida cada segundo usando un bucle 'cada'.",
+                            content: "Mecánicas de veneno o lava que quitan vida rítmicamente.",
                             code: "cada(1) { vida -= 5; }"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Quita vida rítmicamente:",
-                            codeTemplate: "[BLOQUE](1) { vida = vida - 2; }",
-                            blocks: ["cada", "esperar", "si"],
-                            answer: "cada"
+                            type: "practica",
+                            question: "Cada 2 segundos, suma 10 de vida si 'vida < 100':",
+                            answer: "cada(2) { si (vida < 100) { vida = vida + 10; } }"
                         }
                     ]
                 },
@@ -1662,13 +1682,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Detectar clics rápidos para aumentar el contador de golpes.",
+                            content: "Usa el tiempo de juego para detectar ataques rápidos seguidos.",
                             code: "si (ahora - ultimo < 0.5) combo++;"
                         },
                         {
                             type: "practica",
-                            question: "Propiedad para obtener el tiempo total transcurrido:",
-                            answer: "tiempoJuego"
+                            question: "Si el tiempo actual menos 'ultimoGolpe' es menor a 0.3, suma combo:",
+                            answer: "si (tiempoJuego - ultimoGolpe < 0.3) { combo = combo + 1; }"
                         }
                     ]
                 },
@@ -1678,13 +1698,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Recorrer una lista de frases al interactuar.",
+                            content: "Sistemas de NPC que hablan por partes usando listas.",
                             code: "textoUI.text = lineas[indice];"
                         },
                         {
                             type: "practica",
-                            question: "¿Cómo se accede al primer elemento de una lista 'items'?",
-                            answer: "items[0]"
+                            question: "Muestra el texto de la lista 'mensajes' en el índice 'p':",
+                            answer: "textoUI.text = mensajes[p];"
                         }
                     ]
                 },
@@ -1695,26 +1715,38 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "¡El jefe usa lógica experta! Usa todo lo aprendido.",
-                            code: "// MASTER BOSS"
+                            content: "¡EL MAESTRO DE LOS SISTEMAS! Esta batalla pondrá a prueba tu lógica más profunda.",
+                            code: "// MASTER BOSS: SYSTEM OVERLOAD"
                         },
                         {
                             type: "practica",
-                            question: "RONDA 1: Detecta al jugador con un rayo de 300px:",
-                            answer: "lanzarRayo(posicion, dir, 300)"
+                            question: "RONDA 1: Detecta al jugador con rayo (500px) y cambia a estado 'CAZA':",
+                            answer: "v = lanzarRayo(posicion, dir, 500); si (v != nulo) { estado = 'CAZA'; }"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "RONDA 2: El jefe entra en fase 2 si su vida es menor de 50:",
-                            codeTemplate: "si (vida [BLOQUE] 50) { estado = \"FURIA\"; }",
-                            blocks: ["<", ">", "=="],
-                            answer: "<"
+                            type: "practica",
+                            question: "RONDA 2: Si el estado es 'CAZA', sigue al jugador con lerp (0.2):",
+                            answer: "si (estado == 'CAZA') { posicion.x = lerp(posicion.x, jugador.x, 0.2); }"
                         },
                         {
-                            type: "ordenar-bloques",
-                            question: "RONDA 3: ¡Explosión de partículas!",
-                            blocks: ["para(i=0; i<10; i++) {", "crear(humo);", "}"],
-                            answer: ["para(i=0; i<10; i++) {", "crear(humo);", "}"]
+                            type: "practica",
+                            question: "RONDA 3: El jefe lanza 10 partículas de 'magia' al ser herido:",
+                            answer: "para (i=0; i<10; i=i+1) { crear(magia); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 4: Pon el mundo en rojo (#FF0000) si el jefe tiene < 10 de vida:",
+                            answer: "si (vida < 10) { establecerLuzAmbiental('#FF0000'); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 5: Si el jefe muere, espera 3 segundos y difunde 'GANASTE':",
+                            answer: "si (vida <= 0) { esperar(3); difundir('GANASTE'); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA FINAL: Destruye al jefe y limpia la consola:",
+                            answer: "destruir(materia); imprimir('Sistema Limpio');"
                         }
                     ]
                 }
@@ -1731,13 +1763,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Empujar al personaje hacia atrás físicamente al disparar.",
+                            content: "Agrega realismo aplicando impulsos contrarios al disparar.",
                             code: "fisica.applyImpulse(nuevo Vector2(-5, 0));"
                         },
                         {
                             type: "practica",
-                            question: "Aplica un impulso a la izquierda:",
-                            answer: "fisica.applyImpulse(nuevo Vector2(-5, 0))"
+                            question: "Al disparar ('f'), aplica un impulso de -10 en X:",
+                            answer: "si (teclaRecienPresionada('f')) { fisica.applyImpulse(nuevo Vector2(-10, 0)); }"
                         }
                     ]
                 },
@@ -1747,13 +1779,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Sanar automáticamente cada cierto tiempo si no estamos al máximo.",
+                            content: "Lógica de sanación automática para juegos de aventura.",
                             code: "cada(2) { si (vida < 100) vida += 2; }"
                         },
                         {
                             type: "practica",
-                            question: "Escribe la condición para ver si la vida es menor que 100:",
-                            answer: "si (vida < 100)"
+                            question: "Suma 5 de vida cada 1 segundo si no has muerto (vida > 0):",
+                            answer: "cada(1) { si (vida > 0) { vida = vida + 5; } }"
                         }
                     ]
                 },
@@ -1763,15 +1795,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Hacer que el enemigo huya si el jugador se acerca demasiado.",
+                            content: "Haz que los enemigos teman al jugador y mantengan su distancia.",
                             code: "si (distancia < 200) huir();"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Huye si el jugador está cerca:",
-                            codeTemplate: "si ([BLOQUE](pos, jug.pos) < 200)",
-                            blocks: ["distancia", "buscar", "difundir"],
-                            answer: "distancia"
+                            type: "practica",
+                            question: "Si la distancia con 'jugador' es menor a 300, corre a la izquierda:",
+                            answer: "si (distancia(posicion, jugador.posicion) < 300) { posicion.x -= 200 * delta; }"
                         }
                     ]
                 },
@@ -1781,13 +1811,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Aumentar el nivel del jugador al llegar a 100 puntos de XP.",
+                            content: "Mecánicas de RPG: gana experiencia y sube de nivel.",
                             code: "si (xp >= 100) { nivel++; xp = 0; }"
                         },
                         {
                             type: "practica",
-                            question: "Escribe el comando para sumar 10 a la variable 'xp':",
-                            answer: "xp = xp + 10"
+                            question: "Si XP llega a 500, nivel = 2 y suena 'subirNivel':",
+                            answer: "si (xp >= 500) { nivel = 2; fuenteDeAudio.play(subirNivel); }"
                         }
                     ]
                 },
@@ -1797,13 +1827,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Guardar la posición actual para reaparecer allí al morir.",
+                            content: "Guarda estados para que el jugador no pierda todo su progreso.",
                             code: "posicionRespawn = otro.posicion;"
                         },
                         {
                             type: "practica",
-                            question: "¿Cómo se llama la técnica de puntos de guardado?",
-                            answer: "Checkpoint"
+                            question: "Al entrar en trigger 'Check', guarda la posición en 'spawn':",
+                            answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Check')) { spawn = otro.posicion; } }"
                         }
                     ]
                 },
@@ -1813,15 +1843,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Desactivar un objeto tras una breve espera al ser pisado.",
+                            content: "Crea retos de parkour desactivando plataformas tras ser pisadas.",
                             code: "esperar(1); estaActivado = falso;"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "Desactiva la materia:",
-                            codeTemplate: "[BLOQUE] = falso;",
-                            blocks: ["estaActivado", "posicion", "fisica"],
-                            answer: "estaActivado"
+                            type: "practica",
+                            question: "Al chocar con 'Trampa', espera 0.5s y desactívate:",
+                            answer: "alEntrarEnColision(otro) { si (otro.tieneTag('Trampa')) { esperar(0.5); estaActivado = falso; } }"
                         }
                     ]
                 },
@@ -1831,13 +1859,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Intercambiar el estado de activación entre dos héroes.",
+                            content: "Sistemas de equipo donde controlas a varios héroes.",
                             code: "héroe1.estaActivado = !héroe1.estaActivado;"
                         },
                         {
                             type: "practica",
-                            question: "Inivierte el estado de 'personaje':",
-                            answer: "personaje.estaActivado = !personaje.estaActivado"
+                            question: "Al pulsar 'tab', alterna activación entre 'p1' y 'p2':",
+                            answer: "si (teclaRecienPresionada('Tab')) { p1.estaActivado = !p1.estaActivado; p2.estaActivado = !p2.estaActivado; }"
                         }
                     ]
                 },
@@ -1847,13 +1875,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Reducir la escala de gravedad para simular flotación.",
+                            content: "Física de fluidos reduciendo la gravedad y aplicando empuje.",
                             code: "otro.fisica.gravityScale = 0.2;"
                         },
                         {
                             type: "practica",
-                            question: "Propiedad para cambiar el peso de la gravedad:",
-                            answer: "gravityScale"
+                            question: "Si entras en trigger 'Agua', pon gravedad en 0.3:",
+                            answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Agua')) { fisica.gravityScale = 0.3; } }"
                         }
                     ]
                 },
@@ -1863,17 +1891,13 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "Desactivar partículas si el rendimiento baja.",
+                            content: "Mantén tu juego a 60 FPS desactivando lo innecesario.",
                             code: "alBajoRendimiento(nivel) { particulas.estaActivado = falso; }"
                         },
                         {
-                            type: "opcion-multiple",
-                            question: "¿Qué evento ayuda a evitar el lag?",
-                            options: [
-                                { text: "alBajoRendimiento", correct: true },
-                                { text: "alActualizar", correct: false },
-                                { text: "alEmpezar", correct: false }
-                            ]
+                            type: "practica",
+                            question: "Si el rendimiento es bajo (nivel 2), desactiva las 'luces':",
+                            answer: "alBajoRendimiento(nivel) { si (nivel == 2) { luces.estaActivado = falso; } }"
                         }
                     ]
                 },
@@ -1884,26 +1908,43 @@ window.courseData = {
                     steps: [
                         {
                             type: "teoria",
-                            content: "¡Has llegado al final del libro! Vence al último jefe para graduarte.",
-                            code: "// END OF THE BOOK"
+                            content: "¡HAS LLEGADO AL FINAL DEL LIBRO! Solo el verdadero Maestro de CES puede superar esta prueba final.",
+                            code: "// THE ULTIMATE CHALLENGE: THE AUTHOR"
                         },
                         {
                             type: "practica",
-                            question: "RONDA 1: Regenera vida del jefe cada 5 segundos:",
-                            answer: "cada(5) { vida = vida + 5; }"
+                            question: "RONDA 1: Conecta al motor, saluda y prepara tu escudo (booleano):",
+                            answer: "ve motor; alEmpezar() { imprimir('LISTO'); escudo = verdadero; }"
                         },
                         {
-                            type: "completar-codigo",
-                            question: "RONDA 2: El jefe huye si estás a menos de 100px:",
-                            codeTemplate: "si (distancia(pos, jug.pos) [BLOQUE] 100) { huir(); }",
-                            blocks: ["<", ">", "=="],
-                            answer: "<"
+                            type: "practica",
+                            question: "RONDA 2: El jefe dispara 'rayos' cada 0.8 segundos. ¡Refleja!",
+                            answer: "cada(0.8) { reflejar(); }"
                         },
                         {
-                            type: "ordenar-bloques",
-                            question: "RONDA FINAL: ¡Grita la victoria y termina el juego!",
-                            blocks: ["difundir(\"JEFE_DERROTADO\");", "esperar(2);", "cargarEscena(\"Creditos\");"],
-                            answer: ["difundir(\"JEFE_DERROTADO\");", "esperar(2);", "cargarEscena(\"Creditos\");"]
+                            type: "practica",
+                            question: "RONDA 3: Si la distancia es < 100, aplica un impulso de escape de 20:",
+                            answer: "si (distancia(posicion, jefe.posicion) < 100) { fisica.applyImpulse(nuevo Vector2(-20, 0)); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 4: Cuando el jefe baje de 50 vida, suena 'fase2' y pon luz roja:",
+                            answer: "si (vida < 50) { fuenteDeAudio.play(fase2); establecerLuzAmbiental('#FF0000'); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 5: Ataca al jefe en cada frame si 'teclaPresionada' es 'z':",
+                            answer: "alActualizar(delta) { si (teclaPresionada('z')) { atacar(); } }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA 6: Genera una explosión de 50 partículas al ganar:",
+                            answer: "para (i=0; i<50; i=i+1) { crear(particula); }"
+                        },
+                        {
+                            type: "practica",
+                            question: "RONDA FINAL: Difunde 'LIBRO_COMPLETADO', espera 5s y carga escena 'Graduacion':",
+                            answer: "difundir('LIBRO_COMPLETADO'); esperar(5); cargarEscena('Graduacion');"
                         }
                     ]
                 }

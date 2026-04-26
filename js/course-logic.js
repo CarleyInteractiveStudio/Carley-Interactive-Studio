@@ -20,6 +20,8 @@ window.activeStage = null;
 window.activeCourse = null;
 window.currentStepIndex = 0;
 window.userHealth = 3;
+window.bossHealth = 3;
+window.bossMaxHealth = 3;
 window.selectedBlocks = [];
 window.bgmSource = null;
 window.isMusicOn = false;
@@ -440,6 +442,15 @@ function renderSubMap() {
 ============================== */
 function startCourse(course) {
     window.activeCourse = course;
+
+    // Initialize Boss Health if it's a boss
+    if (course.isBoss) {
+        // Difficulty scales with stage
+        const stageId = window.activeStage ? window.activeStage.id : 1;
+        window.bossMaxHealth = course.steps.filter(s => s.type !== 'teoria').length;
+        window.bossHealth = window.bossMaxHealth;
+    }
+
     const lessonChar = document.getElementById('lesson-character');
     if (lessonChar) {
         lessonChar.style.transform = 'translateX(-100px)';
@@ -469,6 +480,22 @@ function updateHealthUI() {
         if (i < window.userHealth) h.classList.remove('lost');
         else h.classList.add('lost');
     });
+
+    // Update Boss UI if exists
+    const bossHeartsCont = document.getElementById('boss-hearts');
+    if (bossHeartsCont && window.activeCourse && window.activeCourse.isBoss) {
+        bossHeartsCont.classList.remove('hidden');
+        bossHeartsCont.innerHTML = '';
+        for (let i = 0; i < window.bossMaxHealth; i++) {
+            const h = document.createElement('i');
+            h.setAttribute('data-lucide', 'skull');
+            h.className = 'boss-heart' + (i >= window.bossHealth ? ' lost' : '');
+            bossHeartsCont.appendChild(h);
+        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    } else if (bossHeartsCont) {
+        bossHeartsCont.classList.add('hidden');
+    }
 }
 
 function renderStep() {
@@ -714,6 +741,11 @@ function handleSuccess() {
     const char = document.getElementById('lesson-character');
     const boss = document.querySelector('.boss-bug');
 
+    if (window.activeCourse.isBoss) {
+        window.bossHealth--;
+        updateHealthUI();
+    }
+
     char.classList.add('char-attack');
     setTimeout(() => {
         char.classList.remove('char-attack');
@@ -721,10 +753,17 @@ function handleSuccess() {
             boss.classList.add('boss-hit');
             SoundManager.bossHit();
             setTimeout(() => boss.classList.remove('boss-hit'), 500);
+
+            if (window.activeCourse.isBoss && window.bossHealth <= 0) {
+                boss.classList.add('boss-defeat');
+                if (typeof confetti !== 'undefined') {
+                    confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                }
+            }
         }
     }, 300);
 
-    if (typeof confetti !== 'undefined') {
+    if (typeof confetti !== 'undefined' && !window.activeCourse.isBoss) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: [skins[currentProgress.activeSkin].color, '#fff'] });
     }
     showFeedback(true);
