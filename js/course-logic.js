@@ -29,6 +29,8 @@ window.isMusicOn = false;
 // Certification Metrics
 window.examStartTime = 0;
 window.examMistakes = 0;
+window.hintLevel = 0;
+window.errorHistory = { 'braces': 0, 'parens': 0, 'case': 0, 'semicolon': 0 };
 
 // Utility Helpers
 window.escapeHTML = function(str) {
@@ -531,6 +533,7 @@ function renderStep() {
     feedback.classList.add('hidden');
     window.selectedBlocks = [];
     window.lastErrorLine = -1; // Reset error line highlighting
+    window.hintLevel = 0; // Reset hint level for new course/step
 
     const bossCont = document.getElementById('boss-container');
     if (step.type !== 'teoria') {
@@ -635,10 +638,11 @@ function renderStep() {
                     highlighter.innerHTML = html + "\n"; // Extra newline for scroll sync
                 };
 
-                editor.oninput = () => {
+                editor.oninput = (e) => {
                     window.updateHighlighting();
                     highlighter.scrollTop = editor.scrollTop;
                     highlighter.scrollLeft = editor.scrollLeft;
+                    showAutocompleteSuggestions(editor);
                 };
 
                 editor.onscroll = () => {
@@ -648,6 +652,26 @@ function renderStep() {
                 };
 
                 editor.onkeydown = (e) => {
+                    const box = document.getElementById('autocomplete-box');
+                    if (box && (e.key === 'Enter' || e.key === 'Tab' || e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+                        const active = box.querySelector('.suggestion-item.active');
+                        if (e.key === 'Enter' || e.key === 'Tab') {
+                            e.preventDefault();
+                            if (active) active.click();
+                            return;
+                        }
+                        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            const items = Array.from(box.querySelectorAll('.suggestion-item'));
+                            let idx = items.indexOf(active);
+                            if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
+                            else idx = (idx - 1 + items.length) % items.length;
+                            items.forEach(it => it.classList.remove('active'));
+                            items[idx].classList.add('active');
+                            return;
+                        }
+                    }
+
                     if (e.key === 'Tab') {
                         e.preventDefault();
                         const start = editor.selectionStart;
@@ -906,7 +930,12 @@ function analyzeError(step) {
         if (open === close) {
             if (countOpen % 2 !== 0) return `Te falta cerrar una comilla (<code>${open}</code>).`;
         } else {
-            if (countOpen > countClose) return `Te falta cerrar: <code>${close}</code>.`;
+            if (countOpen > countClose) {
+                if (close === '}') window.errorHistory.braces++;
+                if (close === ')') window.errorHistory.parens++;
+                checkErrorPatterns();
+                return `Te falta cerrar: <code>${close}</code>.`;
+            }
             if (countClose > countOpen) return `Te sobra un: <code>${close}</code>.`;
         }
     }
@@ -943,6 +972,13 @@ function analyzeError(step) {
 
             // Logic mismatch
             if (!uLine.trim()) return `Línea ${i+1}: Parece que falta código aquí.`;
+
+            // Specific logic feedback
+            if (sLine.includes('+') && uLine.includes('-')) return `Línea ${i+1}: Estás restando (<code>-</code>) pero la lógica requiere una suma (<code>+</code>).`;
+            if (sLine.includes('-') && uLine.includes('+')) return `Línea ${i+1}: Estás sumando (<code>+</code>) pero la lógica requiere una resta (<code>-</code>).`;
+            if (sLine.includes('>') && uLine.includes('<')) return `Línea ${i+1}: Estás usando 'menor que' (<code><</code>), pero se requiere 'mayor que' (<code>></code>).`;
+            if (sLine.includes('<') && uLine.includes('>')) return `Línea ${i+1}: Estás usando 'mayor que' (<code>></code>), pero se requiere 'menor que' (<code><</code>).`;
+
             return `Línea ${i+1}: Hay un error de lógica o sintaxis. Se esperaba algo como: <code>${sLine}</code>`;
         }
     }
@@ -1705,15 +1741,100 @@ window.clearSignature = () => {
 /* ==============================
    Carl IA - Smart Assistant
 ============================== */
+const cesKeywords = [
+    've motor', 'publico', 'variable', 'si', 'sino', 'mientras', 'para', 'retornar', 'y', 'o', 'no', 'verdadero', 'falso', 'nulo', 'nuevo', 'materia',
+    'imprimir', 'buscar', 'crear', 'destruir', 'distancia', 'difundir', 'esperar', 'cada', 'seno', 'coseno', 'atan2', 'lerp', 'mirarA', 'lanzarRayo',
+    'tieneTag', 'alEmpezar', 'alActualizar', 'actualizarFijo', 'alHacerClick', 'alEntrarEnColision', 'alEntrarEnTrigger', 'alRecibir', 'alSalirDeColision',
+    'obtenerPosicionMouse', 'teclaPresionada', 'teclaRecienPresionada', 'numero', 'texto', 'booleano', 'Vector2', 'Color', 'Sprite', 'Audio', 'Prefab'
+];
+
+function showAutocompleteSuggestions(editor) {
+    const text = editor.value;
+    const pos = editor.selectionStart;
+    const before = text.substring(0, pos);
+    const match = before.match(/[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$/);
+
+    // Remove existing
+    const existing = document.getElementById('autocomplete-box');
+    if (existing) existing.remove();
+
+    if (!match) return;
+
+    const query = match[0].toLowerCase();
+    const suggestions = cesKeywords.filter(k => k.toLowerCase().startsWith(query) && k.toLowerCase() !== query);
+
+    if (suggestions.length === 0) return;
+
+    const box = document.createElement('div');
+    box.id = 'autocomplete-box';
+    box.className = 'autocomplete-box';
+
+    // Calculate Position (Simulated)
+    const lines = before.split('\n');
+    const lineIdx = lines.length - 1;
+    const colIdx = lines[lineIdx].length;
+
+    // Crude estimation based on font-size 1.1rem (approx 10px per char, 25px per line)
+    box.style.top = (lineIdx * 25 + 50) + 'px';
+    box.style.left = (colIdx * 10 + 60) + 'px';
+
+    suggestions.slice(0, 5).forEach((s, idx) => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        if (idx === 0) item.classList.add('active');
+        item.textContent = s;
+        item.onclick = () => applySuggestion(editor, query, s);
+        box.appendChild(item);
+    });
+
+    editor.parentElement.appendChild(box);
+}
+
+function applySuggestion(editor, query, suggestion) {
+    const pos = editor.selectionStart;
+    const text = editor.value;
+    const before = text.substring(0, pos - query.length);
+    const after = text.substring(pos);
+
+    editor.value = before + suggestion + after;
+    editor.selectionStart = editor.selectionEnd = before.length + suggestion.length;
+    editor.focus();
+
+    const box = document.getElementById('autocomplete-box');
+    if (box) box.remove();
+    if (window.updateHighlighting) window.updateHighlighting();
+}
+
+function checkErrorPatterns() {
+    const h = window.errorHistory;
+    if (h.braces >= 3) {
+        CustomModal.show("CONSEJO DE CARL", "¡Oye! He notado que te cuesta un poco cerrar las llaves <code>{}</code>. Recuerda que cada <code>{</code> que abras debe tener su pareja <code>}</code> para cerrar el bloque.", "🤖");
+        h.braces = 0;
+    } else if (h.parens >= 3) {
+        CustomModal.show("CONSEJO DE CARL", "Veo que olvidas cerrar los paréntesis <code>()</code> a menudo. Son fundamentales para llamar a funciones como <code>imprimir()</code> o <code>crear()</code>.", "🤖");
+        h.parens = 0;
+    }
+}
+
 window.askCarlHelp = () => {
+    window.hintLevel++;
     const step = activeCourse.steps[currentStepIndex];
-    let title = "CONSEJO DE CARL IA";
+    let title = `PISTA DE CARL IA (Nivel ${window.hintLevel})`;
     let explanation = "";
 
     if (step.type === 'teoria') {
-        explanation = "Este concepto es fundamental. Fíjate bien en cómo se estructuran las llaves y el orden de los comandos. ¡Tú puedes!";
-    } else if (step.type === 'practica') {
-        explanation = `Para resolver esto, recuerda que usamos <code>${step.answer.split('(')[0]}</code>. Revisa que no te falten puntos ni comas.`;
+        explanation = "Este concepto es fundamental. Fíjate bien en cómo se estructuran las llaves y el orden de los comandos.";
+    } else if (step.type === 'practica' || step.type === 'completar-codigo') {
+        const sol = step.answer;
+        if (window.hintLevel === 1) {
+            explanation = `<b>Concepto Técnico:</b> Esta tarea requiere usar <code>${sol.split(/[ (={]/)[0]}</code>. Revisa la teoría si tienes dudas.`;
+        } else if (window.hintLevel === 2) {
+            const firstLine = sol.split('\n')[0];
+            explanation = `<b>Pista de línea:</b> Deberías empezar escribiendo algo como: <br><code>${firstLine.substring(0, Math.floor(firstLine.length / 2))}...</code>`;
+        } else {
+            explanation = `<b>Solución Directa:</b> El código correcto es:<br><pre style="background:#000; padding:10px; border-radius:8px; color:var(--primary);">${sol}</pre>`;
+            window.hintLevel = 0; // Reset
+        }
     } else {
         explanation = "Analiza bien las opciones. A veces la respuesta más sencilla es la correcta.";
     }
