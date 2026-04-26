@@ -229,6 +229,12 @@
             pointer-events: none;
         }
 
+        .line-error {
+            background: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
         .editor-textarea {
             flex: 1;
             background: transparent;
@@ -822,7 +828,13 @@
         <div class="credits-display">
             <i data-lucide="coins"></i> <span id="user-credits">0</span>
         </div>
-        <button class="icon-btn" onclick="showRankingModal()" style="margin-left: 20px;" title="Ranking de Maestros">
+        <button class="icon-btn" onclick="showCodeIndex()" style="margin-left: 20px;" title="Índice de Códigos">
+            <i data-lucide="list"></i>
+        </button>
+        <button class="icon-btn" onclick="showTrophyModal()" style="margin-left: 15px;" title="Galería de Trofeos">
+            <i data-lucide="award"></i>
+        </button>
+        <button class="icon-btn" onclick="showRankingModal()" style="margin-left: 15px;" title="Ranking de Maestros">
             <i data-lucide="trophy"></i>
         </button>
         <button class="icon-btn" onclick="openShop()" style="margin-left: 15px;" title="Tienda de Skins">

@@ -30,6 +30,17 @@ window.isMusicOn = false;
 window.examStartTime = 0;
 window.examMistakes = 0;
 
+// Utility Helpers
+window.escapeHTML = function(str) {
+    if (!str) return "";
+    return str.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+};
+
 // Internal aliases for existing code compatibility
 let currentProgress = window.currentProgress; // Object reference is shared
 
@@ -519,6 +530,7 @@ function renderStep() {
     const feedback = document.getElementById('feedback-msg');
     feedback.classList.add('hidden');
     window.selectedBlocks = [];
+    window.lastErrorLine = -1; // Reset error line highlighting
 
     const bossCont = document.getElementById('boss-container');
     if (step.type !== 'teoria') {
@@ -590,10 +602,14 @@ function renderStep() {
                     tools.appendChild(btn);
                 });
 
-                const updateHighlighting = () => {
+                window.updateHighlighting = () => {
                     let code = editor.value;
-                    const lines = code.split('\n').length;
-                    lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
+                    const lines = code.split('\n');
+
+                    lineNumbers.innerHTML = lines.map((_, i) => {
+                        const isErr = window.lastErrorLine === i;
+                        return `<span class="${isErr ? 'line-error' : ''}">${i + 1}</span>`;
+                    }).join('<br>');
 
                     // Simple Regex Highlighting
                     let html = escapeHTML(code);
@@ -620,7 +636,7 @@ function renderStep() {
                 };
 
                 editor.oninput = () => {
-                    updateHighlighting();
+                    window.updateHighlighting();
                     highlighter.scrollTop = editor.scrollTop;
                     highlighter.scrollLeft = editor.scrollLeft;
                 };
@@ -638,10 +654,10 @@ function renderStep() {
                         const end = editor.selectionEnd;
                         editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
                         editor.selectionStart = editor.selectionEnd = start + 4;
-                        updateHighlighting();
+                        window.updateHighlighting();
                     }
                 };
-                updateHighlighting();
+                window.updateHighlighting();
             } else {
                 area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
             }
@@ -878,30 +894,63 @@ function analyzeError(step) {
     const val = document.getElementById('answer-input')?.value || "";
     if (!val) return "Escribe algo para poder ayudarte.";
 
-    // Basic structure check
-    const openBraces = (val.match(/{/g) || []).length;
-    const closeBraces = (val.match(/}/g) || []).length;
-    if (openBraces > closeBraces) return "Te falta cerrar una llave <code>}</code>.";
-    if (closeBraces > openBraces) return "Tienes una llave <code>}</code> de más.";
+    const solution = step.answer;
+    const userLines = val.split('\n');
+    const solLines = solution.split('\n');
 
-    const openParens = (val.match(/\(/g) || []).length;
-    const closeParens = (val.match(/\)/g) || []).length;
-    if (openParens > closeParens) return "Te falta cerrar un paréntesis <code>)</code>.";
-    if (closeParens > openParens) return "Tienes un paréntesis <code>)</code> de más.";
-
-    // Logic/Keyword check
-    const keywords = ['alEmpezar', 'alActualizar', 'publico', 'variable', 'si', 'imprimir', 've motor', 'fisica', 'posicion'];
-    for (let kw of keywords) {
-        if (step.answer.includes(kw) && val.toLowerCase().includes(kw.toLowerCase()) && !val.includes(kw)) {
-            return `Recuerda que <b>${kw}</b> debe escribirse exactamente así (ojo con las mayúsculas).`;
+    // 1. Structural Checks (Global)
+    const pairs = { '{': '}', '(': ')', '[': ']', '"': '"', "'": "'" };
+    for (let [open, close] of Object.entries(pairs)) {
+        const countOpen = (val.match(new RegExp('\\' + open, 'g')) || []).length;
+        const countClose = (val.match(new RegExp('\\' + close, 'g')) || []).length;
+        if (open === close) {
+            if (countOpen % 2 !== 0) return `Te falta cerrar una comilla (<code>${open}</code>).`;
+        } else {
+            if (countOpen > countClose) return `Te falta cerrar: <code>${close}</code>.`;
+            if (countClose > countOpen) return `Te sobra un: <code>${close}</code>.`;
         }
     }
 
-    if (step.answer.includes('"') && !val.includes('"') && !val.includes("'")) {
-        return "Parece que te faltan las comillas para el texto.";
+    // 2. Line-by-line Smart Analysis
+    // We normalize lines to ignore spacing/semicolons for comparison
+    const norm = (s) => s.toLowerCase().replace(/\s+/g, '').replace(/;/g, '').replace(/\(\)/g, '').replace(/["']/g, "'");
+
+    for (let i = 0; i < solLines.length; i++) {
+        const sLine = solLines[i].trim();
+        if (!sLine) continue;
+
+        const uLine = userLines[i] || "";
+        const nS = norm(sLine);
+        const nU = norm(uLine);
+
+        if (nS !== nU) {
+            window.lastErrorLine = i; // Mark the line for the UI
+
+            // Check for common keyword typos
+            const keywords = ['ve motor', 'publico', 'variable', 'si', 'sino', 'mientras', 'para', 'retornar', 'imprimir', 'buscar', 'crear', 'destruir', 'distancia', 'difundir', 'esperar', 'cada', 'lanzarRayo', 'alEmpezar', 'alActualizar', 'actualizarFijo', 'alHacerClick', 'alEntrarEnColision', 'alEntrarEnTrigger', 'alRecibir', 'alSalirDeColision'];
+
+            for (let kw of keywords) {
+                if (sLine.includes(kw)) {
+                    if (uLine.toLowerCase().includes(kw.replace(/\s/g, '')) && !uLine.includes(kw)) {
+                        return `Línea ${i+1}: Revisa <b>${kw}</b>. El motor es estricto con las mayúsculas y espacios.`;
+                    }
+                    if (uLine && !nU.includes(norm(kw)) && kw.length > 3) {
+                        // Typos using simple inclusion check or distance could go here
+                        return `Línea ${i+1}: Parece que intentas usar <b>${kw}</b> pero está mal escrito.`;
+                    }
+                }
+            }
+
+            // Logic mismatch
+            if (!uLine.trim()) return `Línea ${i+1}: Parece que falta código aquí.`;
+            return `Línea ${i+1}: Hay un error de lógica o sintaxis. Se esperaba algo como: <code>${sLine}</code>`;
+        }
     }
 
-    return "Casi lo tienes. Revisa bien el orden y las palabras clave.";
+    // 3. Fallback
+    if (userLines.length > solLines.length) return "Parece que tienes líneas de código adicionales que no son necesarias.";
+
+    return "Casi lo tienes. Revisa los puntos y comas o el orden de los comandos.";
 }
 
 function showFeedback(correct, hint = "") {
@@ -929,6 +978,16 @@ function showFeedback(correct, hint = "") {
         status.style.background = '#ff4d4d';
         feedback.innerHTML = hint;
         feedback.classList.remove('hidden');
+
+    // Trigger re-render of highlighting to show line error
+    const editor = document.getElementById('answer-input');
+    if (editor && typeof window.updateHighlighting === 'function') {
+        window.updateHighlighting();
+    } else if (editor) {
+        // If not in scope, we can simulate an input event
+        editor.dispatchEvent(new Event('input'));
+    }
+
         if (activeCourse.steps[currentStepIndex].type.includes('ordenar')) setTimeout(() => renderStep(), 1000);
     }
 }
@@ -1240,6 +1299,91 @@ async function handleShopAction(id, type) {
     }
     await saveProgress();
     openShop();
+}
+
+function showCodeIndex() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+
+    overlay.innerHTML = `
+        <div class="course-modal" style="max-width: 800px; width:95%;">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="margin:0; font-weight: 900; color:var(--secondary);"><i data-lucide="list"></i> ÍNDICE DE CÓDIGOS MAESTROS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+            </div>
+            <div style="margin-bottom:20px;">
+                <input type="text" id="index-search" class="code-input" placeholder="Buscar por nombre de código..." oninput="filterCodeIndex()">
+            </div>
+            <div id="index-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; max-height:500px; overflow-y:auto; padding-right:10px; text-align:left;">
+                <!-- Codes injected here -->
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    window.filterCodeIndex = () => {
+        const query = document.getElementById('index-search').value.toLowerCase();
+        const list = document.getElementById('index-list');
+        list.innerHTML = '';
+
+        window.courseData.stages.forEach(stage => {
+            stage.courses.forEach(course => {
+                if (course.title.toLowerCase().includes(query)) {
+                    const isDone = currentProgress.completed.includes(course.id);
+                    const item = document.createElement('div');
+                    item.style = `padding: 12px; background: rgba(255,255,255,0.03); border-radius:10px; border-left: 4px solid ${stage.color}; cursor: ${isDone ? 'pointer' : 'not-allowed'}; opacity: ${isDone ? '1' : '0.5'};`;
+                    item.innerHTML = `
+                        <div style="font-weight:bold; font-size:0.9rem;">${course.title}</div>
+                        <div style="font-size:0.7rem; opacity:0.5; text-transform:uppercase;">${stage.name} ${isDone ? '✓' : '🔒'}</div>
+                    `;
+                    if (isDone) {
+                        item.onclick = () => {
+                            overlay.remove();
+                            startCourse(course);
+                        };
+                    }
+                    list.appendChild(item);
+                }
+            });
+        });
+    };
+    window.filterCodeIndex();
+}
+
+function showTrophyModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+
+    const achievements = currentProgress.achievements || [];
+    const stages = window.courseData.stages;
+
+    let trophiesHTML = stages.map((stage, idx) => {
+        const isMaster = achievements.includes(`Maestro de ${stage.name}`);
+        return `
+            <div style="text-align:center; padding:15px; background:rgba(255,255,255,0.02); border-radius:15px; border:1px solid ${isMaster ? stage.color : '#222'}; filter: ${isMaster ? 'none' : 'grayscale(1) opacity(0.3)'};">
+                <div style="font-size:2.5rem; margin-bottom:10px;">${isMaster ? '🏆' : '🔒'}</div>
+                <div style="font-size:0.7rem; font-weight:900; color:${isMaster ? stage.color : '#555'}; text-transform:uppercase;">${stage.name}</div>
+            </div>
+        `;
+    }).join('');
+
+    overlay.innerHTML = `
+        <div class="course-modal" style="max-width: 700px;">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="margin:0; font-weight: 900; color:var(--primary);"><i data-lucide="award"></i> GALERÍA DE TROFEOS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="icon-btn"><i data-lucide="x"></i></button>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:15px; max-height:450px; overflow-y:auto; padding:10px;">
+                ${trophiesHTML}
+            </div>
+            <p style="margin-top:20px; opacity:0.6; font-size:0.8rem;">Completa todas las lecciones de una etapa para ganar su trofeo de maestría.</p>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 async function showRankingModal() {
