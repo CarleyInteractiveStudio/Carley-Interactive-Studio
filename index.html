@@ -1,467 +1,354 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carley Interactive Studio</title>
-  <link rel="stylesheet" href="estilos.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const SUPABASE_URL = 'https://rblftfzbqllnuadqtufb.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJibGZ0ZnpicWxsbnVhZHF0dWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5NjQyMzQsImV4cCI6MjA2ODU0MDIzNH0.cH-KJG2k43dKQaVccQDkw7t6m0sf1zIOLWPADdmKLt8';
-    const supabase     = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carley Interactive Studio</title>
+    <meta name="description" content="Carley Interactive Studio: Convierte tus ideas en realidades con Creative Engine y juega rápido con Creative Game. Herramientas gratuitas para creadores.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carleystudio.com/">
+    <meta property="og:title" content="Carley Interactive Studio">
+    <meta property="og:description" content="Convierte tus ideas en realidades con Creative Engine y juega rápido con Creative Game. Herramientas gratuitas para creadores.">
+    <meta property="og:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carleystudio.com/">
+    <meta property="twitter:title" content="Carley Interactive Studio">
+    <meta property="twitter:description" content="Convierte tus ideas en realidades con Creative Engine y juega rápido con Creative Game. Herramientas gratuitas para creadores.">
+    <meta property="twitter:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <!-- Structured Data for Rich Search Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Carley Interactive Studio",
+      "url": "https://carleystudio.com",
+      "logo": "https://carleystudio.com/carley_foto_web/Logo_C.png",
+      "sameAs": [
+        "https://www.youtube.com/@CarleyInteractiveStudioOficial",
+        "https://www.facebook.com/groups/1264745161495908",
+        "https://www.tiktok.com/@carley.interactiv.studio"
+      ],
+      "description": "Estudio de desarrollo de herramientas creativas y videojuegos. Creadores de Creative Engine y Vid Spri."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Creative Engine",
+          "url": "https://carleystudio.com/creative-engine.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Vid Spri",
+          "url": "https://carleystudio.com/vid-spri.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Creative Games",
+          "url": "https://creativegame.online"
+        }
+      ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9270161527829251" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
 </head>
 <body>
 
-<header>
-  <h1>Carley Interactive Studio</h1>
-  <nav>
-    <a href="#bienvenida">Inicio</a>
-    <a href="#juegos">Juegos</a>
-    <a href="#apoyo">Apóyanos</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
-  <button id="settings-btn" class="gear">⚙️</button>
-  <div id="settings-menu" class="menu-oculto">
-    <button id="back-btn">Atrás</button>
-    <button id="login-btn">Iniciar sesión</button>
-    <button id="register-btn">Crear cuenta</button>
-    <!-- Botón de cerrar sesión se agrega dinámicamente -->
-  </div>
-</header>
+    <header class="glass-header">
+        <div class="header-content">
+            <div class="logo-area" id="logo-trigger">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="logo-c">
+                <div class="logo-name-wrapper">
+                    <span class="logo-name">Carley Interactive Studio</span>
+                </div>
+            </div>
 
-<section id="bienvenida">
-  <h2>Bienvenido</h2>
-  <p>
-    Bienvenido a Carley Interactive Studio, donde la pasión por los videojuegos y la innovación se unen. Sumérgete en la acción con Fire at Will y The Battle of the Capsurers mientras desarrollamos nuestro propio motor: <strong>Creative Engine</strong>.
-  </p>
-  <p>
-    Creative Engine aún está en desarrollo. ¿Quieres aportar tu talento a su creación y ayudarnos a contratar más programadores para acelerar el proyecto? ¡Únete y colabora con nosotros para revolucionar la industria!
-  </p>
-</section>
+            <div class="search-area">
+                <div class="search-input-wrapper">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="main-search" placeholder="Buscar en Carley..." data-i18n-ph="search-ph">
+                    <div id="search-dropdown" class="search-results-dropdown hidden"></div>
+                </div>
+            </div>
 
-<section id="juegos">
-  <h2>Juegos Destacados</h2>
+            <div class="nav-controls">
+                <select id="lang-picker" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="cuenta.html" class="icon-btn">
+                    <i data-lucide="user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
 
-  <!-- Battle of the Capsurers -->
-  <div class="juego">
-    <img src="carley_foto_web/The Battle Of The Capsurers logo.png" alt="The Battle of the Capsurers" class="juego-img" />
-    <h3>The Battle of the Capsurers</h3>
-    <p>Juego FPS multijugador divertido y emocionante. ¿Estás listo?</p>
-    <div class="flex-center">
-      <a href="#" class="boton-juego descargar" data-app="The Battle of the Capsurers">Descargar</a>
-      <button class="boton-juego" onclick="toggleForm('form-battle')">Soporte</button>
+    <main>
+        <section id="hero-engine" class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content-overlay">
+                <p class="welcome-msg" data-i18n="welcome">Bienvenido, nos alegra tenerte aquí</p>
+                <h1 class="hero-title"><a href="creative-engine.html" class="title-link">Creative Engine</a></h1>
+                <p class="hero-description" data-i18n="hero-desc">
+                    ¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine, un motor de videojuego 2D que te facilita todo. No importa que tengas experiencia en la creación de videojuegos o no, Creative Engine está hecho para ti. Cualquier idea que tengas, Creative Engine te ayuda a convertirla en realidad.
+                </p>
+                <div class="hero-actions">
+                    <a href="https://carleyinteractivestudio.github.io/Creative-Engine-Beta/" class="cta-button" target="_blank" data-i18n="hero-cta">Empezar a Crear</a>
+                    <a href="creative-engine.html" class="cta-button outline" data-i18n="hero-more">Saber más</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="creative-games" class="product-reveal">
+            <div class="reveal-container">
+                <div class="reveal-text">
+                    <h2 class="reveal-title"><a href="https://creativegame.online" class="title-link">Creative Games</a></h2>
+                    <p class="reveal-p" data-i18n="creative-games-desc">
+                        Juega sin tener que descargar nada, diviértete en la web. Juega todos los juegos hechos con Creative Engine, ya sea para PC, consola o móviles.
+                    </p>
+                    <a href="https://creativegame.online" class="cta-button" target="_blank" data-i18n="btn-visit">Visitar</a>
+                </div>
+                <div class="reveal-image">
+                    <img src="carley_foto_web/Creative_Games_Logo.png" alt="Creative Games">
+                </div>
+            </div>
+        </section>
+
+        <section id="vid-spri-home" class="product-reveal alt">
+            <div class="reveal-container">
+                <div class="reveal-image">
+                    <img src="carley_foto_web/VidSpri_Logo_New.png" alt="Vid Spri">
+                </div>
+                <div class="reveal-text">
+                    <h2 class="reveal-title"><a href="vid-spri.html" class="title-link">Vid Spri</a></h2>
+                    <p class="reveal-p" data-i18n="vidspri-home-desc">
+                        Crea animaciones a partir de videos para tus juegos. Genera un video en cualquier página y nuestra herramienta te lo convierte en una hoja de sprites para tus videojuegos.
+                    </p>
+                    <a href="vid-spri.html" class="reveal-link"><span data-i18n="learn-more">Saber más</span> <i data-lucide="chevron-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="carley-os-home" class="product-reveal">
+            <div class="reveal-container">
+                <div class="reveal-text">
+                    <h2 class="reveal-title">Carley OS</h2>
+                    <p class="reveal-p" data-i18n="carley-os-desc">
+                        Carley OS es un sistema operativo de alto rendimiento con un kernel personalizado, diseñado específicamente para gaming y desarrollo en laptops modernas. Optimización extrema y fluidez sin precedentes.
+                    </p>
+                    <span class="status-badge" data-i18n="footer-not-available">No Disponible</span>
+                </div>
+                <div class="reveal-image">
+                    <img src="carley_foto_web/fds.png" alt="Carley OS" onerror="this.src='carley_foto_web/Logo_C.png'">
+                </div>
+            </div>
+        </section>
+
+        <section id="app-craft-home" class="product-reveal alt">
+            <div class="reveal-container">
+                <div class="reveal-image">
+                    <img src="carley_foto_web/Logo_3D_App_Craft.png" alt="AppCraft">
+                </div>
+                <div class="reveal-text">
+                    <h2 class="reveal-title"><span class="app-white">App</span><span class="craft-green">Craft</span></h2>
+                    <p class="reveal-p" data-i18n="app-craft-desc">
+                        AppCraft es un motor de aplicaciones que te permitirá crear aplicaciones de forma fácil y sencilla, empezando desde la web. Actualmente se encuentra en desarrollo.
+                    </p>
+                    <span class="status-badge" data-i18n="footer-not-available">No Disponible</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="studio-footer">
+        <div class="footer-grid">
+            <div class="footer-section" id="footer-channels">
+                <h3 class="footer-h" data-i18n="footer-channels">Canales</h3>
+                <ul class="footer-links">
+                    <li><a href="https://www.youtube.com/@CarleyInteractiveStudioOficial"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YouTube</a></li>
+                    <li><a href="https://www.facebook.com/groups/1264745161495908"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a></li>
+                    <li><a href="https://www.tiktok.com/@carley.interactiv.studio?_r=1&_t=ZS-94P0LD49Ig9"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.13-1.47-.13 5.35.14 10.71-1.39 15.91-1.12 3.39-3.83 6.01-7.24 6.74-2.33.53-4.83.25-6.95-.88-3.08-1.55-5.26-5.02-4.66-8.52.3-1.74 1.18-3.37 2.5-4.52 1.83-1.61 4.34-2.27 6.75-1.92V11.2c-1.11-.15-2.28-.1-3.3.4-1.25.61-2.14 1.87-2.29 3.25-.2 1.55.4 3.16 1.6 4.17 1.25 1.08 3.1 1.34 4.54.67 1.34-.63 2.14-2.09 2.15-3.56.03-4.69.01-9.39.02-14.09l.2-.01z"/></svg> TikTok</a></li>
+                    <li><a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> WhatsApp</a></li>
+                </ul>
+            </div>
+            <div class="footer-section" id="donations">
+                <h3 class="footer-h" data-i18n="footer-donations">Donaciones</h3>
+                <ul class="footer-links">
+                    <li><a href="donaciones.html"><i data-lucide="heart"></i> <span data-i18n="footer-donate-paypal">Apoyar el proyecto</span></a></li>
+                    <li><a href="creative-engine.html#donations"><i data-lucide="help-circle"></i> <span data-i18n="footer-donate-info">¿Qué hacemos con sus donaciones?</span></a></li>
+                    <li><a href="donaciones.html"><i data-lucide="users"></i> <span data-i18n="footer-see-donors">Ver donantes</span></a></li>
+                    <li><a href="colaboradores.html"><i data-lucide="award"></i> <span data-i18n="footer-see-collabs">Colaboradores</span></a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-h" data-i18n="footer-info">Información</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="openStudioModal('modal-privacy')" data-i18n="footer-privacy">Política de Privacidad</a></li>
+                    <li><a href="#" onclick="openStudioModal('modal-license')" data-i18n="footer-license">Licencia</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-h" data-i18n="footer-products">Nuestros Productos</h3>
+                <h4 class="footer-sub-h" data-i18n="footer-available">Disponibles</h4>
+                <ul class="footer-links">
+                    <li><a href="creative-engine.html">Creative Engine</a></li>
+                    <li><a href="vid-spri.html">Vid Spri</a></li>
+                    <li><a href="https://creativegame.online">Creative Games</a></li>
+                </ul>
+                <h4 class="footer-sub-h" data-i18n="footer-not-available">No Disponibles</h4>
+                <ul class="footer-links not-available">
+                    <li><a href="#">Carley OS</a></li>
+                    <li><a href="#"><span class="app-white">App</span><span class="craft-green">Craft</span></a></li>
+                    <li><a href="#">Carl IA</a></li>
+                    <li><a href="#">Traspilador</a></li>
+                    <li><a href="#">Asset Store</a></li>
+                    <li><a href="#">Orion</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-legal">
+            <p data-i18n="footer-copyright">&copy; 2026 Carley Interactive Studio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+
+    <div id="modal-account" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 id="acc-modal-title" data-i18n="acc-modal-title">Mi Cuenta</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-account')"><i data-lucide="x"></i></button>
+        </div>
+        <div id="auth-state-logged-in" class="modal-body hidden">
+            <div class="user-profile">
+                <p class="field-label" data-i18n="field-email">Email</p>
+                <p id="user-email-display" class="field-value"></p>
+                <p class="field-label" data-i18n="field-username">Nombre de Usuario</p>
+                <input type="text" id="username-edit" class="modal-input">
+                <button id="save-profile" class="modal-btn primary" data-i18n="btn-update">Actualizar Perfil</button>
+                <button id="logout-action" class="modal-btn danger" data-i18n="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+        <div id="auth-state-logged-out" class="modal-body">
+            <p class="modal-hint" data-i18n="modal-hint">Inicia sesión para gestionar tus proyectos.</p>
+            <div class="auth-options">
+                <button onclick="showAuthForm('login')" class="modal-btn primary" data-i18n="btn-login">Entrar</button>
+                <button onclick="showAuthForm('register')" class="modal-btn outline" data-i18n="btn-register">Crear Cuenta</button>
+            </div>
+        </div>
     </div>
-    <div id="form-battle" class="formulario-soporte">
-      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Gmail | Juego: The Battle of the Capsurers" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
-        <input type="email" name="email" placeholder="Tu correo" required />
-        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-        <button type="submit">Enviar reporte</button>
-      </form>
+
+    <!-- Auth Sub-modals -->
+    <div id="modal-recovery" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="recovery-title">Recuperar Acceso</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-recovery')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-text" data-i18n="recovery-desc">Introduce tu correo para recibir un enlace de recuperación.</p>
+            <input type="email" id="recovery-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <button id="do-recovery" class="modal-btn primary" data-i18n="btn-recovery-action">Enviar Instrucciones</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Fire at Will -->
-  <div class="juego">
-    <img src="carley_foto_web/para fire at will.png" alt="Fire at Will" class="juego-img" />
-    <h3>Fire at Will</h3>
-    <p>Battle Royale con modos intensos de combate. ¡Descárgalo ya!</p>
-    <div class="flex-center">
-      <a href="#" class="boton-juego descargar" data-app="Fire at Will">Descargar</a>
-      <button class="boton-juego" onclick="toggleForm('form-fire')">Soporte</button>
+    <div id="modal-reset-password" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="reset-pass-title">Nueva Contraseña</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-reset-password')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-text" data-i18n="reset-pass-desc">Ingresa tu nueva contraseña para tu cuenta Carley Studio.</p>
+            <input type="password" id="new-password" placeholder="Nueva Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <input type="password" id="confirm-new-password" placeholder="Confirmar Contraseña" class="modal-input" data-i18n-ph="ph-pass-confirm">
+            <button id="do-reset-password" class="modal-btn primary" data-i18n="btn-reset-pass">Cambiar Contraseña</button>
+        </div>
     </div>
-    <div id="form-fire" class="formulario-soporte">
-      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Gmail | Juego: Fire at Will" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
-        <input type="email" name="email" placeholder="Tu correo" required />
-        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-        <button type="submit">Enviar reporte</button>
-      </form>
+
+    <div id="modal-auth-login" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="login-title">Iniciar Sesión</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-auth-login')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="email" id="login-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <input type="password" id="login-pass" placeholder="Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <a href="#" class="recovery-link" onclick="openStudioModal('modal-recovery'); closeStudioModal('modal-auth-login'); return false;" data-i18n="forgot-pass-link">¿Olvidaste tu contraseña?</a>
+            <button id="do-login" class="modal-btn primary" data-i18n="btn-login-action">Entrar</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Creative Engine -->
-  <div class="juego">
-    <img src="imags/Creative Engine.png" alt="Creative Engine" class="juego-img" />
-    <h3>Creative Engine</h3>
-    <p>Motor para crear tus propios videojuegos. ¡Próximamente disponible!</p>
-    <div class="flex-center">
-      <a href="#" class="boton-juego descargar" data-app="Creative Engine">Descargar</a>
-      <button class="boton-juego" onclick="toggleForm('form-creative')">Soporte</button>
+    <div id="modal-auth-register" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="register-title">Crear Cuenta</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-auth-register')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="text" id="reg-username" placeholder="Nombre de Usuario" class="modal-input" data-i18n-ph="ph-reg-user">
+            <input type="email" id="reg-email" placeholder="Email" class="modal-input" data-i18n-ph="ph-email">
+            <input type="password" id="reg-pass" placeholder="Contraseña" class="modal-input" data-i18n-ph="ph-pass">
+            <input type="password" id="reg-pass-confirm" placeholder="Confirmar Contraseña" class="modal-input" data-i18n-ph="ph-pass-confirm">
+            <input type="tel" id="reg-phone" placeholder="Teléfono (opcional)" class="modal-input">
+            <button id="do-register" class="modal-btn primary" data-i18n="btn-register-action">Registrar</button>
+        </div>
     </div>
-    <div id="form-creative" class="formulario-soporte">
-      <form action="https://formsubmit.co/empresariacarley16@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Gmail | Creative Engine" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://carleyinteractivestudio.github.io/Carley-Interactive-Studio/gracias.html" />
-        <input type="email" name="email" placeholder="Tu correo" required />
-        <textarea name="mensaje" placeholder="Describe el problema o tu solicitud" required></textarea>
-        <button type="submit">Enviar reporte</button>
-      </form>
+
+    <div id="modal-donations-info" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="donations-modal-title">¿Qué hacemos con sus donaciones?</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-donations-info')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p data-i18n="donations-modal-desc">Tu apoyo nos permite contratar más talento, mejorar nuestros servidores y acelerar el desarrollo de herramientas gratuitas para la comunidad como Creative Engine. Cada donación se invierte directamente en la mejora de nuestras tecnologías.</p>
+        </div>
     </div>
-  </div>
-</section><section id="apoyo">
-  <h2>Apóyanos ❤️</h2>
-  <p>Tu apoyo nos impulsa a seguir creando experiencias increíbles.</p>
-  <div id="donate-button-container">
-    <div id="donate-button"></div>
-    <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-    <script>
-      PayPal.Donation.Button({
-        env: 'production',
-        hosted_button_id: 'JZ4KM2VUD6AMQ',
-        image: {
-          src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-          alt: 'Donate with PayPal button',
-          title: 'PayPal - The safer, easier way to pay online!'
-        }
-      }).render('#donate-button');
-    </script>
-  </div>
-  <a href="https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20"
-     class="boton-juego" target="_blank">
-    Únete a nuestro canal de WhatsApp
-  </a>
-</section>
 
-<section id="contacto">
-  <h2>Contacto 📧</h2>
-  <p>¿Tienes ideas, preguntas o quieres colaborar? Envíanos un mensaje desde el formulario de soporte técnico.</p>
-</section>
+    <div id="modal-privacy" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="privacy-modal-title">Privacidad</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-privacy')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p data-i18n="privacy-modal-desc">Tus datos están seguros. Solo los utilizamos para mejorar tu experiencia en nuestra plataforma.</p>
+        </div>
+    </div>
 
-<footer>
-  <p>&copy; 2025 Carley Interactive Studio</p>
-</footer>
+    <div id="modal-license" class="studio-modal hidden">
+        <div class="modal-header">
+            <h2 data-i18n="license-modal-title">Licencia</h2>
+            <button class="close-modal" onclick="closeStudioModal('modal-license')"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p data-i18n="license-modal-desc">Todos nuestros productos están protegidos por leyes de propiedad intelectual internacionales.</p>
+        </div>
+    </div>
 
-<!-- Modales de autenticación -->
-<div id="modal-backdrop" class="modal-backdrop oculto"></div>
+    <!-- PayPal Hidden Container for SDK -->
+    <div id="paypal-hidden-container" style="display: none;"></div>
 
-<div id="modal-login" class="modal oculto">
-  <h3>Iniciar sesión</h3>
-  <input id="login-email" type="email" placeholder="Email" required>
-  <input id="login-password" type="password" placeholder="Contraseña" required>
-  <button id="login-submit">Entrar</button>
-  <a id="open-forgot">¿Olvidaste tu contraseña?</a>
-</div>
-
-<div id="modal-register" class="modal oculto">
-  <h3>Crear cuenta</h3>
-  <input id="reg-email"            type="email"    placeholder="Email" required>
-  <input id="reg-password"         type="password" placeholder="Contraseña" required>
-  <input id="reg-confirm-password" type="password" placeholder="Confirmar contraseña" required>
-  <input id="reg-phone"            type="tel"      placeholder="Teléfono (opcional)">
-  <small>Si no agregas teléfono, podrías no recuperar tu cuenta en el futuro.</small>
-  <button id="register-submit">Registrar y entrar</button>
-</div>
-
-<div id="modal-forgot" class="modal oculto">
-  <h3>Recuperar contraseña</h3>
-  <input id="fog-email" type="email" placeholder="Email" required>
-  <input id="fog-phone" type="tel"   placeholder="Teléfono">
-  <button id="fog-request-code">Enviar código</button>
-  <div id="fog-step2" class="oculto">
-    <input id="fog-code" type="text" maxlength="8" placeholder="Código de 8 dígitos">
-    <button id="fog-verify-code">Verificar código</button>
-  </div>
-</div>
-
-<!-- Chat Carley Bot -->
-<div id="chat-widget" class="chat-widget oculto">
-  <div class="chat-header">
-    <img src="imags/Carley Bot.png" alt="Carley Bot" class="bot-avatar">
-    <span class="bot-name">Carley Bot</span>
-    <button id="chat-close-btn" class="chat-close-btn">✖️</button>
-  </div>
-  <div class="chat-body" id="chat-messages"></div>
-  <div class="chat-input">
-    <input id="chat-input-field" type="text" placeholder="Escribe un mensaje..." />
-    <button id="chat-send-btn">Enviar</button>
-  </div>
-</div>
-<button id="chat-open-btn" class="chat-open-btn">💬</button><!-- Scripts finales -->
-<script>
-  // Helpers
-  const settingsBtn  = document.getElementById('settings-btn');
-  const settingsMenu = document.getElementById('settings-menu');
-  const backDrop     = document.getElementById('modal-backdrop');
-  const mLogin       = document.getElementById('modal-login');
-  const mRegister    = document.getElementById('modal-register');
-  const mForgot      = document.getElementById('modal-forgot');
-
-  function toggleModal(modal) {
-    const hidden = modal.classList.contains('oculto');
-    [modal, backDrop].forEach(el =>
-      el.classList.toggle('oculto', !hidden)
-    );
-  }
-
-  // Menú de opciones
-  settingsBtn.onclick = () => {
-    const shown = settingsMenu.style.display === 'flex';
-    settingsMenu.style.display = shown ? 'none' : 'flex';
-  };
-  document.getElementById('back-btn').onclick = () => {
-    settingsMenu.style.display = 'none';
-  };
-  document.getElementById('login-btn').onclick    = () => toggleModal(mLogin);
-  document.getElementById('register-btn').onclick = () => toggleModal(mRegister);
-  backDrop.onclick = () => [mLogin, mRegister, mForgot, backDrop].forEach(el =>
-    el.classList.add('oculto')
-  );
-
-  // Supabase Auth: Registro
-  document.getElementById('register-submit').onclick = async () => {
-    const email    = document.getElementById('reg-email').value;
-    const pass     = document.getElementById('reg-password').value;
-    const confirm  = document.getElementById('reg-confirm-password').value;
-    const phone    = document.getElementById('reg-phone').value || null;
-    if (pass !== confirm) return alert('Las contraseñas no coinciden.');
-
-    const { error } = await supabase.auth.signUp({
-      email, password: pass, options: { data: { phone } }
-    });
-    if (error) return alert(error.message);
-    toggleModal(mRegister);
-    showLogoutOption();
-    alert('Cuenta creada e iniciada con éxito.');
-  };
-
-  // Supabase Auth: Login
-  document.getElementById('login-submit').onclick = async () => {
-    const email = document.getElementById('login-email').value;
-    const pass  = document.getElementById('login-password').value;
-    const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-    if (error) return alert(error.message);
-    toggleModal(mLogin);
-    showLogoutOption();
-    alert('¡Bienvenido de nuevo!');
-  };
-
-  // Supabase Auth: Logout
-  const logoutBtn = document.createElement('button');
-  logoutBtn.textContent = 'Cerrar sesión';
-  logoutBtn.id = 'logout-btn-menu';
-  logoutBtn.style.display = 'none';
-  logoutBtn.classList.add('boton-juego');
-  settingsMenu.appendChild(logoutBtn);
-
-  logoutBtn.onclick = async () => {
-    await supabase.auth.signOut();
-    logoutBtn.style.display = 'none';
-    document.getElementById('login-btn').style.display = 'block';
-    document.getElementById('register-btn').style.display = 'block';
-    alert('Has cerrado sesión.');
-  };
-
-  // Verifica sesión al cargar
-  async function showLogoutOption() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      logoutBtn.style.display = 'inline-block';
-      document.getElementById('login-btn').style.display = 'none';
-      document.getElementById('register-btn').style.display = 'none';
-    }
-  }
-  showLogoutOption();
-
-  // Recuperación de contraseña
-  document.getElementById('open-forgot').onclick = () => {
-    toggleModal(mLogin);
-    toggleModal(mForgot);
-  };
-
-  document.getElementById('fog-request-code').onclick = async () => {
-    const email = document.getElementById('fog-email').value;
-    const phone = document.getElementById('fog-phone').value;
-
-    const { data: user } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('email', email)
-      .eq('phone', phone)
-      .single();
-    if (!user) return alert('Correo o teléfono no coinciden.');
-
-    await fetch('/.netlify/functions/send-reset-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, phone })
-    });
-
-    document.getElementById('fog-step2').classList.remove('oculto');
-    alert('Código enviado. Revisa tu correo/SMS.');
-  };
-
-  document.getElementById('fog-verify-code').onclick = async () => {
-    const email = document.getElementById('fog-email').value;
-    const code  = document.getElementById('fog-code').value;
-
-    const res = await fetch('/.netlify/functions/verify-code', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code })
-    });
-    const { valid } = await res.json();
-    if (!valid) return alert('Código incorrecto.');
-
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: location.origin + '/reset-password.html'
-    });
-    toggleModal(mForgot);
-    alert('Código verificado. Revisa tu correo para cambiar tu contraseña.');
-  };
-
-  // Descarga con alerta
-  document.querySelectorAll('.descargar').forEach(btn => {
-    btn.onclick = e => {
-      e.preventDefault();
-      alert('Este proyecto aún está en desarrollo.\nPróximamente “Creative Engine” para que tú también crees tu mundo.');
-      window.location.href = 'creative-engine.html';
-    };
-  });
-
-  function toggleForm(id) {
-    document.getElementById(id).classList.toggle('mostrar');
-  }
-
-  // Chat: Carley Bot
-  const chatWidget   = document.getElementById('chat-widget');
-  const openBtn      = document.getElementById('chat-open-btn');
-  const closeBtn     = document.getElementById('chat-close-btn');
-  const sendBtn      = document.getElementById('chat-send-btn');
-  const inputField   = document.getElementById('chat-input-field');
-  const messagesEl   = document.getElementById('chat-messages');
-
-  openBtn.onclick  = () => chatWidget.classList.remove('oculto');
-  closeBtn.onclick = () => chatWidget.classList.add('oculto');
-
-  function appendMessage(text, isBot = false) {
-    const msg = document.createElement('div');
-    msg.className = isBot ? 'msg bot' : 'msg user';
-    msg.textContent = text;
-    messagesEl.appendChild(msg);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-
-  function getBotResponse(txt) {
-    const msg = txt.toLowerCase();
-    
-    if (msg.includes('recuper') && msg.includes('cuenta')) {
-      return 'Para recuperar su contrasena dirigese a comfiguracion, si estas con la sesion inisiada presiona serrar sesion, luego iniciarsesion y por ultimo presiona me olvide de mi contrasena, poner los datos y listo se le mandara un codigo con la cual podras cambiar su contrasena, puedo ayudarte en otra cosea?';
-    }
-    if (msg.includes('whatsapp')) {
-      return 'Únete a nuestro canal: https://whatsapp.com/channel/0029Vao9B2OJP21CsSXDHL20';
-    }
-    if (msg.includes('proyecto') || msg.includes('objetivo')) {
-      return 'Desarrollamos juegos como Fire at Will y estamos creando Creative Engine para que tú también diseñes tu propio mundo.';
-    }
-    if (msg.includes('recuperar') && msg.includes('cuenta')) {
-    return 'Pulsa "¿Olvidaste tu contraseña?" y sigue los pasos para recuperar tu cuenta.';
-  }
-
-  if (msg.includes('descargar') && msg.includes('fire at will')) {
-    return 'Fire at Will estará disponible en Android y se lanzará en 2025. ¡Prepárate para la acción!';
-  }
-
-  if (msg.includes('descargar') && msg.includes('the battle')) {
-    return 'The Battle of the Capsurers estará disponible en Android. ¡Explora su mundo multijugador!';
-  }
-
-  if (msg.includes('la república')) {
-    return 'La República está en desarrollo. Pronto habrá noticias sobre su lanzamiento.';
-  }
-
-  if (msg.includes('power force')) {
-    return 'Power Force está en preparación. ¡Mantente atento para conocer más detalles!';
-  }
-
-  if (msg.includes('creative engine') || msg.includes('motor') || msg.includes('engine')) {
-    return 'Creative Engine es nuestro motor con IA para que diseñes tus propios videojuegos. ¡Muy pronto!';
-  }
-
-  if (msg.includes('cuándo') && msg.includes('sale')) {
-    return 'Nuestros juegos principales están planeados para lanzarse en 2025.';
-  }
-
-  if (msg.includes('iniciar sesión') || msg.includes('login') || msg.includes('entrar')) {
-    return 'Presiona el icono ⚙️, luego "Iniciar sesión" e ingresa tu correo y contraseña.';
-  }
-
-  if (msg.includes('crear cuenta') || msg.includes('registro') || msg.includes('registrarme')) {
-    return 'Haz clic en ⚙️ → "Crear cuenta" y completa los campos para registrarte.';
-  }
-
-  if (msg.includes('hola') || msg.includes('buenas') || msg.includes('saludos')) {
-    return '¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte hoy?';
-  }
-
-  if (msg.includes('gracias') || msg.includes('thank you')) {
-    return '¡Gracias a ti! Estoy para ayudarte cuando quieras 😊';
-  }
-
-  if (msg.includes('quién eres') || msg.includes('como te llamas') || msg.includes('cual es tu nombre')) {
-    return 'Soy Carley Bot, el asistente de Carley Interactive Studio. ¡Un gusto conocerte!';
-  }
-
-  if (msg.includes('ayuda') || msg.includes('comandos') || msg.includes('puedes hacer')) {
-    return 'Puedo ayudarte con descargas, inicio de sesión, soporte y responder dudas sobre nuestros juegos.';
-  }
-
-  if (msg.includes('adiós') || msg.includes('nos vemos') || msg.includes('hasta luego')) {
-    return '¡Hasta pronto! Si me necesitas, estaré por aquí 👋';
-  }
-
-  if (msg.includes('redes sociales') || msg.includes('facebook') || msg.includes('youtube')) {
-    return 'Puedes seguirnos en YouTube, Facebook y WhatsApp. Los enlaces están justo aquí abajo 👇';
-  }
-
-  if (msg.includes('términos') || msg.includes('condiciones') || msg.includes('licencia')) {
-    return 'Puedes consultar nuestros Términos de Uso y política de privacidad al final de la página.';
-  }
-
-  if (msg.includes('contacto') || msg.includes('soporte') || msg.includes('problema')) {
-    return 'Envía un mensaje usando el formulario de soporte debajo de cada juego, o escríbenos directamente.';
-  }
-
-  if (msg.includes('creador') || msg.includes('quién te creó') || msg.includes('john')) {
-    return 'Fui creado por John Carley, fundador de Carley Interactive Studio. 🔥';
-  }
-
-  if (msg.includes('chiste') || msg.includes('hazme reír')) {
-    return '¿Por qué los programadores confunden Halloween con Navidad? Porque OCT 31 = DEC 25 🎃➡️🎄';
-  }
-
-  if (msg.includes('facebook') && msg.includes('grupo')) {
-    return 'Únete a nuestro grupo en Facebook para compartir ideas, memes y conocer a otros jugadores: https://facebook.com/groups/carleyJuego';
-  }
-    if (msg.includes('creador') || msg.includes('dueñ')) {
-      return 'Fui creado por John Carley, el genio detras de Carley Interactive Studio';
-    }
-    if (msg.includes('hola') || msg.includes('buen')) {
-      return '¡Hola! Soy Carley Bot. ¿En qué puedo ayudarte?';
-    }
-    return 'Lo siento, su pregunta va mas alla de mi capacidad y conosimiento, puedes contactar a mi creador y hacer su pregunta. Puedo ayudarte con recuperación de cuenta, WhatsApp, proyectos o información general.';
-  }
-
-  sendBtn.onclick = () => {
-    const text = inputField.value.trim();
-    if (!text) return;
-    appendMessage(text, false);
-    inputField.value = '';
-    setTimeout(() => {
-      appendMessage(getBotResponse(text), true);
-    }, 300);
-  };
-
-  inputField.addEventListener('keypress', e => {
-    if (e.key === 'Enter') sendBtn.click();
-  });
-</script>
+    <script src="js/main.js"></script>
 </body>
 </html>
