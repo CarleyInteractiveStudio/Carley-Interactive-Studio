@@ -329,7 +329,15 @@ window.renderMap = async function() {
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
-    map.style.height = (stages.length * 180 + 150) + 'px';
+
+    // Ad logic for map bottom
+    const mapAd = document.getElementById('course-map-ad');
+    if (mapAd) {
+        mapAd.style.top = (stages.length * 180 + 100) + 'px';
+        if (window.safeAdPush) window.safeAdPush();
+    }
+
+    map.style.height = (stages.length * 180 + 400) + 'px'; // Extra space for ad
     setTimeout(() => window.scrollTo(0, 0), 100);
 }
 
@@ -554,6 +562,8 @@ function renderStep() {
     const area = document.getElementById('practice-area');
     area.innerHTML = '';
 
+    const lessonAd = document.getElementById('lesson-ad');
+
     if (step.type === 'teoria') {
         document.getElementById('lesson-text').textContent = step.content;
         document.getElementById('lesson-code-wrapper').classList.remove('hidden');
@@ -563,7 +573,14 @@ function renderStep() {
         document.getElementById('practice-question').textContent = 'Estudia este concepto y continúa.';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
+
+        // Show ad during theory (more time spent here)
+        if (lessonAd) {
+            lessonAd.classList.remove('hidden');
+            if (window.safeAdPush) window.safeAdPush();
+        }
     } else {
+        if (lessonAd) lessonAd.classList.add('hidden'); // Hide during practice for focus
         document.getElementById('lesson-text').textContent = '';
         document.getElementById('lesson-code-wrapper').classList.add('hidden');
         status.textContent = 'PRÁCTICA';
