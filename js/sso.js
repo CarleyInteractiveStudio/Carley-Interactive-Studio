@@ -63,6 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check if user is already logged in
     checkExistingSession();
+
+    // Avatar selection logic
+    const avatarOptions = document.querySelectorAll('.avatar-option');
+    avatarOptions.forEach(opt => {
+        opt.onclick = () => {
+            avatarOptions.forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+        };
+    });
 });
 
 function updateSSOUI(client) {
@@ -147,8 +156,21 @@ if (regBtn) {
         const username = document.getElementById('reg-username').value;
         const email = document.getElementById('reg-email').value;
         const pass = document.getElementById('reg-pass').value;
+        const birthdate = document.getElementById('reg-birthdate').value;
+        const gender = document.getElementById('reg-gender').value;
+        const selectedAvatar = document.querySelector('.avatar-option.selected')?.dataset.avatar || '';
 
+        if (!username || !email || !pass || !birthdate) return alert("Por favor completa todos los campos.");
         if (pass.length < 6) return alert("La contraseña debe tener al menos 6 caracteres.");
+
+        // Calculate Age
+        const birthDateObj = new Date(birthdate);
+        const today = new Date();
+        let age = today.getFullYear() - birthDateObj.getFullYear();
+        const m = today.getMonth() - birthDateObj.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDateObj.getDate())) {
+            age--;
+        }
 
         showLoading(true);
         const { data, error } = await window.supabaseClient.auth.signUp({
@@ -157,7 +179,11 @@ if (regBtn) {
             options: {
                 data: {
                     username: username,
-                    language: localStorage.getItem('carley-lang') || 'es'
+                    language: localStorage.getItem('carley-lang') || 'es',
+                    gender: gender,
+                    age: age,
+                    birthdate: birthdate,
+                    avatar_url: selectedAvatar
                 }
             }
         });
@@ -166,6 +192,17 @@ if (regBtn) {
             showLoading(false);
             alert(error.message);
         } else {
+            // Also update public profile if it exists (Supabase triggers or manual)
+            if (data.user) {
+                await window.supabaseClient.from('profiles').upsert({
+                    id: data.user.id,
+                    username: username,
+                    avatar_url: selectedAvatar,
+                    language: localStorage.getItem('carley-lang') || 'es',
+                    gender: gender,
+                    age: age
+                });
+            }
             handleSSOSuccess(data.session);
         }
     };

@@ -118,6 +118,30 @@
         .sso-btn.primary { background: white; color: black; }
         .sso-btn:active { transform: scale(0.98); }
 
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .avatar-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            object-fit: cover;
+            background: rgba(255,255,255,0.05);
+        }
+        .avatar-option:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .avatar-option.selected {
+            border-color: var(--accent);
+            background: rgba(0, 170, 255, 0.1);
+        }
+
         #sso-loading-overlay {
             position: fixed;
             top:0; left:0; width:100%; height:100%;
@@ -210,6 +234,27 @@
                 <div class="input-group">
                     <label data-i18n="ph-pass">Contraseña</label>
                     <input type="password" id="reg-pass" class="sso-input" placeholder="Mínimo 6 caracteres" data-i18n-ph="ph-pass">
+                </div>
+                <div class="input-group">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" id="reg-birthdate" class="sso-input">
+                </div>
+                <div class="input-group">
+                    <label>Sexo</label>
+                    <select id="reg-gender" class="sso-input">
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Selecciona tu Avatar</label>
+                    <div id="avatar-grid" class="avatar-grid">
+                        <img src="carley_foto_web/ce_mascot.png" class="avatar-option selected" data-avatar="carley_foto_web/ce_mascot.png">
+                        <img src="carley_foto_web/mascot.png" class="avatar-option" data-avatar="carley_foto_web/mascot.png">
+                        <img src="carley_foto_web/vidspri_mascot.png" class="avatar-option" data-avatar="carley_foto_web/vidspri_mascot.png">
+                        <img src="carley_foto_web/Logo_C.png" class="avatar-option" data-avatar="carley_foto_web/Logo_C.png">
+                    </div>
                 </div>
                 <button id="btn-sso-register" class="sso-btn primary" data-i18n="sso-btn-reg-continue">Crear Cuenta y Continuar</button>
             </div>

@@ -71,6 +71,28 @@
 </head>
 <body>
 
+    <!-- Splash Screen Overlay -->
+    <div id="splash-screen" class="splash-overlay">
+        <div class="splash-bg"></div>
+        <div class="splash-content">
+            <h2 class="splash-welcome" id="splash-welcome">Bienvenido</h2>
+            <h1 class="splash-logo-text">Creative Engine</h1>
+            <p class="splash-subtitle">Curso totalmente gratuito de programación</p>
+
+            <div id="splash-lang-selector" class="splash-lang-area hidden">
+                <p class="lang-prompt">Selecciona un idioma para comenzar</p>
+                <div class="splash-lang-grid">
+                    <button onclick="pickInitialLang('es')">🇪🇸 Español</button>
+                    <button onclick="pickInitialLang('en')">🇺🇸 English</button>
+                    <button onclick="pickInitialLang('pt')">🇵🇹 Português</button>
+                    <button onclick="pickInitialLang('fr')">🇫🇷 Français</button>
+                    <button onclick="pickInitialLang('ru')">🇷🇺 Русский</button>
+                    <button onclick="pickInitialLang('zh')">🇨🇳 中文</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header class="glass-header">
         <div class="header-content">
             <div class="logo-area" id="logo-trigger">
@@ -113,6 +135,7 @@
             <div class="hero-content-overlay">
                 <p class="welcome-msg" data-i18n="welcome">Bienvenido, nos alegra tenerte aquí</p>
                 <h1 class="hero-title"><a href="creative-engine.html" class="title-link">Creative Engine</a></h1>
+                <p class="hero-free-course" style="font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px;">Curso totalmente gratuito de programación</p>
                 <p class="hero-description" data-i18n="hero-desc">
                     ¿Alguna vez has pensado en desarrollar tu propio videojuego? Pues hemos diseñado para ti Creative Engine, un motor de videojuego 2D que te facilita todo. No importa que tengas experiencia en la creación de videojuegos o no, Creative Engine está hecho para ti. Cualquier idea que tengas, Creative Engine te ayuda a convertirla en realidad.
                 </p>
@@ -402,5 +425,14 @@
     <div id="paypal-hidden-container" style="display: none;"></div>
 
     <script src="js/main.js"></script>
+    <script>
+        function pickInitialLang(lang) {
+            localStorage.setItem('carley-lang', lang);
+            if (window.translateAll) window.translateAll(lang);
+            const splash = document.getElementById('splash-screen');
+            splash.classList.add('fade-out');
+            setTimeout(() => splash.remove(), 1000);
+        }
+    </script>
 </body>
 </html>

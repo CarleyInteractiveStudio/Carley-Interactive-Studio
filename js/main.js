@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeTranslations();
     initializeDonations();
     initializeAnimations();
+    initializeSplashScreen();
 
     // Global data fetchers
     if (document.getElementById('opinions-feed')) await fetchOpinions();
@@ -3022,6 +3023,30 @@ function initializeTranslations() {
     const cePicker = document.getElementById('lang-picker-ce');
     if (cePicker) {
         cePicker.onchange = (e) => updateTexts(e.target.value);
+    }
+}
+
+/* ==============================
+   Splash Screen System
+============================== */
+function initializeSplashScreen() {
+    const splash = document.getElementById('splash-screen');
+    if (!splash) return;
+
+    const savedLang = localStorage.getItem('carley-lang');
+    const langSelector = document.getElementById('splash-lang-selector');
+
+    if (!savedLang) {
+        // First time: show language selector after animation
+        setTimeout(() => {
+            langSelector.classList.remove('hidden');
+        }, 2000);
+    } else {
+        // Returning user: show animation then fade out
+        setTimeout(() => {
+            splash.classList.add('fade-out');
+            setTimeout(() => splash.remove(), 1000);
+        }, 3000);
     }
 }
 
