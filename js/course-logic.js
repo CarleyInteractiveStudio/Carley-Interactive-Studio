@@ -20,6 +20,8 @@ window.activeStage = null;
 window.activeCourse = null;
 window.currentStepIndex = 0;
 window.userHealth = 3;
+window.bossHealth = 3;
+window.bossMaxHealth = 3;
 window.selectedBlocks = [];
 window.bgmSource = null;
 window.isMusicOn = false;
@@ -27,6 +29,19 @@ window.isMusicOn = false;
 // Certification Metrics
 window.examStartTime = 0;
 window.examMistakes = 0;
+window.hintLevel = 0;
+window.errorHistory = { 'braces': 0, 'parens': 0, 'case': 0, 'semicolon': 0 };
+
+// Utility Helpers
+window.escapeHTML = function(str) {
+    if (!str) return "";
+    return str.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+};
 
 // Internal aliases for existing code compatibility
 let currentProgress = window.currentProgress; // Object reference is shared
@@ -195,7 +210,7 @@ async function saveProgress() {
 }
 
 function updateUIProgress() {
-    const total = 100;
+    const total = window.courseData.stages.reduce((acc, s) => acc + s.courses.length, 0);
     const completedCount = currentProgress.completed.length;
     const percent = Math.floor((completedCount / total) * 100);
     const bar = document.getElementById('main-progress-bar');
@@ -314,7 +329,15 @@ window.renderMap = async function() {
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
-    map.style.height = (stages.length * 180 + 150) + 'px';
+
+    // Ad logic for map bottom
+    const mapAd = document.getElementById('course-map-ad');
+    if (mapAd) {
+        mapAd.style.top = (stages.length * 180 + 100) + 'px';
+        if (window.safeAdPush) window.safeAdPush();
+    }
+
+    map.style.height = (stages.length * 180 + 400) + 'px'; // Extra space for ad
     setTimeout(() => window.scrollTo(0, 0), 100);
 }
 
@@ -326,7 +349,7 @@ function getStageIcon(i) {
 async function selectStage(stage) {
     if (stage.id > currentProgress.stage) return;
 
-    if (stage.id === 11) {
+    if (stage.id === 17) {
         const { data: { session: examSession } } = await window.supabaseClient.auth.getSession();
         if (!examSession) {
             showLoginRequiredModal("Para realizar el Examen Final y obtener tu Certificado Profesional, es obligatorio tener una cuenta.");
@@ -440,6 +463,17 @@ function renderSubMap() {
 ============================== */
 function startCourse(course) {
     window.activeCourse = course;
+
+    // Initialize Boss Health if it's a boss
+    if (course.isBoss) {
+        // Difficulty scales with stage multiplier
+        const stageId = window.activeStage ? window.activeStage.id : 1;
+        const baseHealth = course.steps.filter(s => s.type !== 'teoria').length;
+        const stageBonus = Math.floor(stageId / 3); // More skulls in later stages
+        window.bossMaxHealth = baseHealth + stageBonus;
+        window.bossHealth = window.bossMaxHealth;
+    }
+
     const lessonChar = document.getElementById('lesson-character');
     if (lessonChar) {
         lessonChar.style.transform = 'translateX(-100px)';
@@ -457,7 +491,7 @@ function startCourse(course) {
     document.getElementById('lesson-view').classList.remove('hidden');
     renderStep();
 
-    if (window.activeStage && window.activeStage.id === 11) {
+    if (window.activeStage && window.activeStage.id === 17) {
         window.examStartTime = Date.now();
         window.examMistakes = 0;
     }
@@ -469,6 +503,22 @@ function updateHealthUI() {
         if (i < window.userHealth) h.classList.remove('lost');
         else h.classList.add('lost');
     });
+
+    // Update Boss UI if exists
+    const bossHeartsCont = document.getElementById('boss-hearts');
+    if (bossHeartsCont && window.activeCourse && window.activeCourse.isBoss) {
+        bossHeartsCont.classList.remove('hidden');
+        bossHeartsCont.innerHTML = '';
+        for (let i = 0; i < window.bossMaxHealth; i++) {
+            const h = document.createElement('i');
+            h.setAttribute('data-lucide', 'skull');
+            h.className = 'boss-heart' + (i >= window.bossHealth ? ' lost' : '');
+            bossHeartsCont.appendChild(h);
+        }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    } else if (bossHeartsCont) {
+        bossHeartsCont.classList.add('hidden');
+    }
 }
 
 function renderStep() {
@@ -490,6 +540,8 @@ function renderStep() {
     const feedback = document.getElementById('feedback-msg');
     feedback.classList.add('hidden');
     window.selectedBlocks = [];
+    window.lastErrorLine = -1; // Reset error line highlighting
+    window.hintLevel = 0; // Reset hint level for new course/step
 
     const bossCont = document.getElementById('boss-container');
     if (step.type !== 'teoria') {
@@ -501,8 +553,16 @@ function renderStep() {
 
     updateCharacterVisuals(document.getElementById('lesson-character'));
 
+    // Update Step Counter
+    const stepCounter = document.getElementById('step-counter');
+    if (stepCounter) {
+        stepCounter.textContent = `Paso ${window.currentStepIndex + 1} de ${window.activeCourse.steps.length}`;
+    }
+
     const area = document.getElementById('practice-area');
     area.innerHTML = '';
+
+    const lessonAd = document.getElementById('lesson-ad');
 
     if (step.type === 'teoria') {
         document.getElementById('lesson-text').textContent = step.content;
@@ -513,7 +573,14 @@ function renderStep() {
         document.getElementById('practice-question').textContent = 'Estudia este concepto y continúa.';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
+
+        // Show ad during theory (more time spent here)
+        if (lessonAd) {
+            lessonAd.classList.remove('hidden');
+            if (window.safeAdPush) window.safeAdPush();
+        }
     } else {
+        if (lessonAd) lessonAd.classList.add('hidden'); // Hide during practice for focus
         document.getElementById('lesson-text').textContent = '';
         document.getElementById('lesson-code-wrapper').classList.add('hidden');
         status.textContent = 'PRÁCTICA';
@@ -523,9 +590,126 @@ function renderStep() {
         nextBtn.classList.add('hidden');
 
         if (step.type === 'practica') {
-            area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
-            document.getElementById('answer-input').focus();
-            document.getElementById('answer-input').onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
+            const isLong = step.answer.length > 10 || step.answer.includes('{') || step.answer.includes(';') || step.answer.includes('(');
+            if (isLong) {
+                area.innerHTML = `
+                    <div class="editor-toolbar" id="editor-tools"></div>
+                    <div class="mini-editor-container">
+                        <div class="editor-line-numbers" id="line-numbers">1</div>
+                        <div class="editor-highlighter" id="highlighter"></div>
+                        <textarea class="editor-textarea" id="answer-input" placeholder="Escribe tu código aquí..." spellcheck="false"></textarea>
+                    </div>
+                `;
+                const editor = document.getElementById('answer-input');
+                const lineNumbers = document.getElementById('line-numbers');
+                const highlighter = document.getElementById('highlighter');
+                const tools = document.getElementById('editor-tools');
+
+                // Add Shortcuts
+                const chars = ['{', '}', '(', ')', ';', '!', '=', '+', '-', '"', "'"];
+                chars.forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = 'toolbar-btn';
+                    btn.textContent = c;
+                    btn.onclick = () => {
+                        const start = editor.selectionStart;
+                        const end = editor.selectionEnd;
+                        editor.value = editor.value.substring(0, start) + c + editor.value.substring(end);
+                        editor.selectionStart = editor.selectionEnd = start + 1;
+                        editor.focus();
+                        updateHighlighting();
+                    };
+                    tools.appendChild(btn);
+                });
+
+                window.updateHighlighting = () => {
+                    let code = editor.value;
+                    const lines = code.split('\n');
+
+                    lineNumbers.innerHTML = lines.map((_, i) => {
+                        const isErr = window.lastErrorLine === i;
+                        return `<span class="${isErr ? 'line-error' : ''}">${i + 1}</span>`;
+                    }).join('<br>');
+
+                    // Simple Regex Highlighting
+                    let html = escapeHTML(code);
+
+                    // Keywords
+                    const keywords = /\b(ve motor|publico|variable|si|sino|mientras|para|retornar|y|o|no|verdadero|falso|nulo|nuevo|materia)\b/g;
+                    html = html.replace(keywords, '<span class="hl-keyword">$1</span>');
+
+                    // Functions
+                    const funcs = /\b(imprimir|buscar|crear|destruir|distancia|difundir|esperar|cada|seno|coseno|atan2|lerp|mirarA|lanzarRayo|tieneTag|alEmpezar|alActualizar|actualizarFijo|alHacerClick|alEntrarEnColision|alEntrarEnTrigger|alRecibir|alSalirDeColision|obtenerPosicionMouse|teclaPresionada|teclaRecienPresionada)\b/g;
+                    html = html.replace(funcs, '<span class="hl-function">$1</span>');
+
+                    // Numbers
+                    html = html.replace(/\b(\d+(\.\d+)?)\b/g, '<span class="hl-number">$1</span>');
+
+                    // Strings
+                    html = html.replace(/('[^']*')/g, '<span class="hl-string">$1</span>');
+                    html = html.replace(/("[^"]*")/g, '<span class="hl-string">$1</span>');
+
+                    // Comments
+                    html = html.replace(/(\/\/.*)/g, '<span class="hl-comment">$1</span>');
+
+                    highlighter.innerHTML = html + "\n"; // Extra newline for scroll sync
+                };
+
+                editor.oninput = (e) => {
+                    window.updateHighlighting();
+                    highlighter.scrollTop = editor.scrollTop;
+                    highlighter.scrollLeft = editor.scrollLeft;
+                    showAutocompleteSuggestions(editor);
+                };
+
+                editor.onscroll = () => {
+                    highlighter.scrollTop = editor.scrollTop;
+                    highlighter.scrollLeft = editor.scrollLeft;
+                    lineNumbers.scrollTop = editor.scrollTop;
+                };
+
+                editor.onkeydown = (e) => {
+                    const box = document.getElementById('autocomplete-box');
+                    if (box && (e.key === 'Enter' || e.key === 'Tab' || e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+                        const active = box.querySelector('.suggestion-item.active');
+                        if (e.key === 'Enter' || e.key === 'Tab') {
+                            e.preventDefault();
+                            if (active) active.click();
+                            return;
+                        }
+                        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            const items = Array.from(box.querySelectorAll('.suggestion-item'));
+                            let idx = items.indexOf(active);
+                            if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
+                            else idx = (idx - 1 + items.length) % items.length;
+                            items.forEach(it => it.classList.remove('active'));
+                            items[idx].classList.add('active');
+                            return;
+                        }
+                    }
+
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const start = editor.selectionStart;
+                        const end = editor.selectionEnd;
+                        editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
+                        editor.selectionStart = editor.selectionEnd = start + 4;
+                        window.updateHighlighting();
+                    }
+                };
+                window.updateHighlighting();
+            } else {
+                area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
+            }
+
+            const inputEl = document.getElementById('answer-input');
+            inputEl.focus();
+            inputEl.onkeypress = (e) => {
+                if(e.key === 'Enter' && (!isLong || e.ctrlKey)) {
+                    checkAnswer();
+                }
+            };
         } else if (step.type === 'opcion-multiple') {
             const grid = document.createElement('div');
             grid.className = 'options-grid';
@@ -630,12 +814,17 @@ function checkDebug(index) {
 function normalizeCode(code, ignoreImprimirContent = false) {
     if (!code) return "";
     let normalized = code.toLowerCase()
+        .replace(/\/\/.*/g, '') // Remove single line comments
+        .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
         .replace(/\s+/g, '') // Remove all whitespace
         .replace(/;/g, '')   // Remove semicolons
         .replace(/["']/g, "'"); // Standardize quotes
 
+    // Handle optional empty parentheses for function definitions/calls
+    // This helps with alEmpezar vs alEmpezar()
+    normalized = normalized.replace(/\(\)/g, '');
+
     // Intent detection: Normalize assignment patterns
-    // Convert 'x=x+1' or 'x=1+x' to 'x+=1' style internally for comparison
     normalized = normalized.replace(/([a-z0-9.]+)=([a-z0-9.]+)\+([0-9.]+)/g, "$1+=$3");
     normalized = normalized.replace(/([a-z0-9.]+)=([0-9.]+)\+([a-z0-9.]+)/g, "$1+=$2");
 
@@ -671,6 +860,11 @@ function handleSuccess() {
     const char = document.getElementById('lesson-character');
     const boss = document.querySelector('.boss-bug');
 
+    if (window.activeCourse.isBoss) {
+        window.bossHealth--;
+        updateHealthUI();
+    }
+
     char.classList.add('char-attack');
     setTimeout(() => {
         char.classList.remove('char-attack');
@@ -678,10 +872,17 @@ function handleSuccess() {
             boss.classList.add('boss-hit');
             SoundManager.bossHit();
             setTimeout(() => boss.classList.remove('boss-hit'), 500);
+
+            if (window.activeCourse.isBoss && window.bossHealth <= 0) {
+                boss.classList.add('boss-defeat');
+                if (typeof confetti !== 'undefined') {
+                    confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                }
+            }
         }
     }, 300);
 
-    if (typeof confetti !== 'undefined') {
+    if (typeof confetti !== 'undefined' && !window.activeCourse.isBoss) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: [skins[currentProgress.activeSkin].color, '#fff'] });
     }
     showFeedback(true);
@@ -697,7 +898,7 @@ function handleFailure() {
         }, 800);
     }
 
-    if (activeStage && activeStage.id === 11) {
+    if (activeStage && activeStage.id === 17) {
         examMistakes++;
     }
     updateHealthUI();
@@ -734,30 +935,75 @@ function analyzeError(step) {
     const val = document.getElementById('answer-input')?.value || "";
     if (!val) return "Escribe algo para poder ayudarte.";
 
-    // Basic structure check
-    const openBraces = (val.match(/{/g) || []).length;
-    const closeBraces = (val.match(/}/g) || []).length;
-    if (openBraces > closeBraces) return "Te falta cerrar una llave <code>}</code>.";
-    if (closeBraces > openBraces) return "Tienes una llave <code>}</code> de más.";
+    const solution = step.answer;
+    const userLines = val.split('\n');
+    const solLines = solution.split('\n');
 
-    const openParens = (val.match(/\(/g) || []).length;
-    const closeParens = (val.match(/\)/g) || []).length;
-    if (openParens > closeParens) return "Te falta cerrar un paréntesis <code>)</code>.";
-    if (closeParens > openParens) return "Tienes un paréntesis <code>)</code> de más.";
-
-    // Logic/Keyword check
-    const keywords = ['alEmpezar', 'alActualizar', 'publico', 'variable', 'si', 'imprimir', 've motor', 'fisica', 'posicion'];
-    for (let kw of keywords) {
-        if (step.answer.includes(kw) && val.toLowerCase().includes(kw.toLowerCase()) && !val.includes(kw)) {
-            return `Recuerda que <b>${kw}</b> debe escribirse exactamente así (ojo con las mayúsculas).`;
+    // 1. Structural Checks (Global)
+    const pairs = { '{': '}', '(': ')', '[': ']', '"': '"', "'": "'" };
+    for (let [open, close] of Object.entries(pairs)) {
+        const countOpen = (val.match(new RegExp('\\' + open, 'g')) || []).length;
+        const countClose = (val.match(new RegExp('\\' + close, 'g')) || []).length;
+        if (open === close) {
+            if (countOpen % 2 !== 0) return `Te falta cerrar una comilla (<code>${open}</code>).`;
+        } else {
+            if (countOpen > countClose) {
+                if (close === '}') window.errorHistory.braces++;
+                if (close === ')') window.errorHistory.parens++;
+                checkErrorPatterns();
+                return `Te falta cerrar: <code>${close}</code>.`;
+            }
+            if (countClose > countOpen) return `Te sobra un: <code>${close}</code>.`;
         }
     }
 
-    if (step.answer.includes('"') && !val.includes('"') && !val.includes("'")) {
-        return "Parece que te faltan las comillas para el texto.";
+    // 2. Line-by-line Smart Analysis
+    // We normalize lines to ignore spacing/semicolons for comparison
+    const norm = (s) => s.toLowerCase().replace(/\s+/g, '').replace(/;/g, '').replace(/\(\)/g, '').replace(/["']/g, "'");
+
+    for (let i = 0; i < solLines.length; i++) {
+        const sLine = solLines[i].trim();
+        if (!sLine) continue;
+
+        const uLine = userLines[i] || "";
+        const nS = norm(sLine);
+        const nU = norm(uLine);
+
+        if (nS !== nU) {
+            window.lastErrorLine = i; // Mark the line for the UI
+
+            // Check for common keyword typos
+            const keywords = ['ve motor', 'publico', 'variable', 'si', 'sino', 'mientras', 'para', 'retornar', 'imprimir', 'buscar', 'crear', 'destruir', 'distancia', 'difundir', 'esperar', 'cada', 'lanzarRayo', 'alEmpezar', 'alActualizar', 'actualizarFijo', 'alHacerClick', 'alEntrarEnColision', 'alEntrarEnTrigger', 'alRecibir', 'alSalirDeColision'];
+
+            for (let kw of keywords) {
+                if (sLine.includes(kw)) {
+                    if (uLine.toLowerCase().includes(kw.replace(/\s/g, '')) && !uLine.includes(kw)) {
+                        return `Línea ${i+1}: Revisa <b>${kw}</b>. El motor es estricto con las mayúsculas y espacios.`;
+                    }
+                    if (uLine && !nU.includes(norm(kw)) && kw.length > 3) {
+                        // Typos using simple inclusion check or distance could go here
+                        return `Línea ${i+1}: Parece que intentas usar <b>${kw}</b> pero está mal escrito.`;
+                    }
+                }
+            }
+
+            // Logic mismatch
+            if (!uLine.trim()) return `Línea ${i+1}: Parece que falta código aquí.`;
+
+            // Specific logic feedback
+            if (sLine.includes('+') && uLine.includes('-')) return `Línea ${i+1}: Estás restando (<code>-</code>) pero la lógica requiere una suma (<code>+</code>).`;
+            if (sLine.includes('-') && uLine.includes('+')) return `Línea ${i+1}: Estás sumando (<code>+</code>) pero la lógica requiere una resta (<code>-</code>).`;
+            if (sLine.includes('>') && uLine.includes('<')) return `Línea ${i+1}: Estás usando 'menor que' (<code><</code>), pero se requiere 'mayor que' (<code>></code>).`;
+            if (sLine.includes('<') && uLine.includes('>')) return `Línea ${i+1}: Estás usando 'mayor que' (<code>></code>), pero se requiere 'menor que' (<code><</code>).`;
+
+            return `Línea ${i+1}: Hay un error de lógica o sintaxis. Se esperaba algo como: <code>${sLine}</code>`;
+        }
     }
 
-    return "Casi lo tienes. Revisa bien el orden y las palabras clave.";
+    // 3. Fallback
+    if (userLines.length > solLines.length) return "Parece que tienes líneas de código adicionales que no son necesarias.";
+
+    return "Casi lo tienes. Revisa los puntos y comas o el orden de los comandos.";
 }
 
 function showFeedback(correct, hint = "") {
@@ -785,6 +1031,16 @@ function showFeedback(correct, hint = "") {
         status.style.background = '#ff4d4d';
         feedback.innerHTML = hint;
         feedback.classList.remove('hidden');
+
+    // Trigger re-render of highlighting to show line error
+    const editor = document.getElementById('answer-input');
+    if (editor && typeof window.updateHighlighting === 'function') {
+        window.updateHighlighting();
+    } else if (editor) {
+        // If not in scope, we can simulate an input event
+        editor.dispatchEvent(new Event('input'));
+    }
+
         if (activeCourse.steps[currentStepIndex].type.includes('ordenar')) setTimeout(() => renderStep(), 1000);
     }
 }
@@ -804,11 +1060,13 @@ async function nextStep() {
             if (!activeStage.stages && ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
                 currentProgress.stage++;
                 unlockAchievement(activeStage.name);
+                showStageCompleteModal(activeStage);
+                return; // Modal handles progression
             }
         }
 
         // Final Exam Check
-        if (activeStage.id === 11) {
+        if (activeStage.id === 17) {
             const allExamCourses = activeStage.courses;
             const lastExamCourse = allExamCourses[allExamCourses.length - 1];
             if (activeCourse.id === lastExamCourse.id) {
@@ -860,12 +1118,12 @@ window.finishExam = function() {
 window.generateCertificate = async (score, rank, time) => {
     if (!window.supabaseClient) return;
 
-    // Protection Check: Verify they actually finished Stage 11 courses
-    const examStage = window.courseData.stages.find(s => s.id === 11);
+    // Protection Check: Verify they actually finished Stage 17 courses
+    const examStage = window.courseData.stages.find(s => s.id === 17);
     const examCourseIds = examStage.courses.map(c => c.id);
     const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
 
-    if (currentProgress.stage < 11 || !hasFinishedExam) {
+    if (currentProgress.stage < 17 || !hasFinishedExam) {
         CustomModal.show("ACCESO DENEGADO", "No puedes generar un certificado sin haber completado el examen final satisfactoriamente.", "🛡️");
         backToMap();
         return;
@@ -959,11 +1217,11 @@ window.downloadPDF = () => {
 };
 
 window.showCertificatePrompt = async function(score, rank, time) {
-    const examStage = window.courseData.stages.find(s => s.id === 11);
+    const examStage = window.courseData.stages.find(s => s.id === 17);
     const examCourseIds = examStage.courses.map(c => c.id);
     const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
 
-    if (currentProgress.stage < 11 || !hasFinishedExam) {
+    if (currentProgress.stage < 17 || !hasFinishedExam) {
         CustomModal.show("CERTIFICADO BLOQUEADO", "Primero debes completar todas las etapas del curso y aprobar el examen final.", "🛡️");
         backToMap();
         return;
@@ -1096,17 +1354,176 @@ async function handleShopAction(id, type) {
     openShop();
 }
 
+function showCodeIndex() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+
+    overlay.innerHTML = `
+        <div class="course-modal" style="max-width: 800px; width:95%; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+            <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <h2 style="margin:0; font-weight: 900; color:var(--secondary); font-size: 1.2rem;"><i data-lucide="list"></i> ÍNDICE DE CÓDIGOS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; font-size: 0.9rem;">Cerrar</button>
+            </div>
+            <div style="padding: 20px 30px; background: rgba(0,0,0,0.2);">
+                <input type="text" id="index-search" class="code-input" placeholder="Buscar por nombre de código..." oninput="filterCodeIndex()">
+            </div>
+            <div id="index-list" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; flex: 1; overflow-y:auto; padding: 20px 30px; text-align:left; border-top: 1px solid rgba(255,255,255,0.05);">
+                <!-- Codes injected here -->
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    window.filterCodeIndex = () => {
+        const query = document.getElementById('index-search').value.toLowerCase();
+        const list = document.getElementById('index-list');
+        list.innerHTML = '';
+
+        window.courseData.stages.forEach(stage => {
+            stage.courses.forEach(course => {
+                if (course.title.toLowerCase().includes(query)) {
+                    const isDone = currentProgress.completed.includes(course.id);
+                    const item = document.createElement('div');
+                    item.style = `padding: 12px; background: rgba(255,255,255,0.03); border-radius:10px; border-left: 4px solid ${stage.color}; cursor: ${isDone ? 'pointer' : 'not-allowed'}; opacity: ${isDone ? '1' : '0.5'};`;
+                    item.innerHTML = `
+                        <div style="font-weight:bold; font-size:0.9rem;">${course.title}</div>
+                        <div style="font-size:0.7rem; opacity:0.5; text-transform:uppercase;">${stage.name} ${isDone ? '✓' : '🔒'}</div>
+                    `;
+                    if (isDone) {
+                        item.onclick = () => {
+                            overlay.remove();
+                            startCourse(course);
+                        };
+                    }
+                    list.appendChild(item);
+                }
+            });
+        });
+    };
+    window.filterCodeIndex();
+}
+
+function showTrophyModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+
+    const achievements = currentProgress.achievements || [];
+    const stages = window.courseData.stages;
+
+    let trophiesHTML = stages.map((stage, idx) => {
+        const isMaster = achievements.includes(`Maestro de ${stage.name}`);
+        return `
+            <div style="text-align:center; padding:15px; background:rgba(255,255,255,0.02); border-radius:15px; border:1px solid ${isMaster ? stage.color : '#222'}; filter: ${isMaster ? 'none' : 'grayscale(1) opacity(0.3)'};">
+                <div style="font-size:2.5rem; margin-bottom:10px;">${isMaster ? '🏆' : '🔒'}</div>
+                <div style="font-size:0.7rem; font-weight:900; color:${isMaster ? stage.color : '#555'}; text-transform:uppercase;">${stage.name}</div>
+            </div>
+        `;
+    }).join('');
+
+    overlay.innerHTML = `
+        <div class="course-modal" style="max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+            <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <h2 style="margin:0; font-weight: 900; color:var(--primary); font-size: 1.2rem;"><i data-lucide="award"></i> GALERÍA DE TROFEOS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; font-size: 0.9rem;">Cerrar</button>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap:15px; flex: 1; overflow-y:auto; padding: 30px;">
+                ${trophiesHTML}
+            </div>
+            <div style="padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.1);">
+                <p style="margin:0; opacity:0.6; font-size:0.8rem; text-align: center;">Completa todas las lecciones de una etapa para ganar su trofeo de maestría.</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+async function showRankingModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+    overlay.innerHTML = `
+        <div class="course-modal" style="max-width: 600px; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
+            <div style="display:flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+                <h2 style="margin:0; font-weight: 900; color:gold; font-size: 1.2rem;"><i data-lucide="trophy"></i> RANKING DE MAESTROS</h2>
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn-main outline" style="padding: 10px 20px; border-radius: 12px; font-size: 0.9rem;">Cerrar</button>
+            </div>
+            <div id="ranking-list" style="text-align: left; flex: 1; overflow-y: auto; padding: 30px;">
+                <p style="text-align:center; opacity:0.5;">Cargando a los mejores desarrolladores...</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    if (!window.supabaseClient) return;
+
+    const { data, error } = await window.supabaseClient
+        .from('certificates')
+        .select('full_name, rank, score, created_at')
+        .eq('rank', 'S')
+        .order('score', { ascending: false })
+        .limit(10);
+
+    const list = document.getElementById('ranking-list');
+    if (error || !data || data.length === 0) {
+        list.innerHTML = '<p style="text-align:center; opacity:0.5; padding: 20px;">Aún no hay graduados con Rango S. ¡Sé el primero!</p>';
+        return;
+    }
+
+    list.innerHTML = data.map((entry, idx) => `
+        <div style="display:flex; align-items:center; gap:15px; background: rgba(255,255,255,0.03); padding: 12px 20px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,215,0,0.1);">
+            <span style="font-weight: 900; font-size: 1.2rem; color: gold; width: 30px;">#${idx + 1}</span>
+            <div style="flex:1">
+                <div style="font-weight: 800; color: #fff;">${escapeHTML(entry.full_name)}</div>
+                <div style="font-size: 0.75rem; opacity: 0.5;">Certificado el ${new Date(entry.created_at).toLocaleDateString()}</div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-weight: 900; color: gold; font-size: 1.1rem;">${entry.score}%</div>
+                <div style="font-size: 0.7rem; font-weight: bold; background: gold; color: #000; padding: 2px 6px; border-radius: 4px; display: inline-block;">RANGO ${entry.rank}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
 function unlockAchievement(stageName) {
     const name = `Maestro de ${stageName}`;
     if (currentProgress.achievements.includes(name)) return;
 
     currentProgress.achievements.push(name);
     const popup = document.getElementById('achievement-popup');
-    document.getElementById('achievement-name').textContent = name;
-    popup.classList.remove('hidden');
-    SoundManager.achievement();
+    if (popup) {
+        document.getElementById('achievement-name').textContent = name;
+        popup.classList.remove('hidden');
+        SoundManager.achievement();
+        setTimeout(() => popup.classList.add('hidden'), 5000);
+    }
+}
 
-    setTimeout(() => popup.classList.add('hidden'), 5000);
+function showStageCompleteModal(stage) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = "3000";
+    overlay.innerHTML = `
+        <div class="course-modal" style="border: 2px solid ${stage.color}; box-shadow: 0 0 50px ${stage.color}44;">
+            <div style="font-size: 5rem; margin-bottom: 20px;">🏆</div>
+            <h2 style="color:${stage.color}; font-weight:900; margin-bottom:10px;">¡ETAPA SUPERADA!</h2>
+            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">${stage.name}</p>
+            <p style="opacity:0.8; line-height:1.6; margin-bottom:30px;">
+                Has demostrado maestría en esta etapa. Has ganado el trofeo y desbloqueado nuevos desafíos.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-main" onclick="location.reload()" style="background:${stage.color}; color:#000;">Continuar al Mapa</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
+    }
 }
 
 function updateCharacterVisuals(char) {
@@ -1343,15 +1760,100 @@ window.clearSignature = () => {
 /* ==============================
    Carl IA - Smart Assistant
 ============================== */
+const cesKeywords = [
+    've motor', 'publico', 'variable', 'si', 'sino', 'mientras', 'para', 'retornar', 'y', 'o', 'no', 'verdadero', 'falso', 'nulo', 'nuevo', 'materia',
+    'imprimir', 'buscar', 'crear', 'destruir', 'distancia', 'difundir', 'esperar', 'cada', 'seno', 'coseno', 'atan2', 'lerp', 'mirarA', 'lanzarRayo',
+    'tieneTag', 'alEmpezar', 'alActualizar', 'actualizarFijo', 'alHacerClick', 'alEntrarEnColision', 'alEntrarEnTrigger', 'alRecibir', 'alSalirDeColision',
+    'obtenerPosicionMouse', 'teclaPresionada', 'teclaRecienPresionada', 'numero', 'texto', 'booleano', 'Vector2', 'Color', 'Sprite', 'Audio', 'Prefab'
+];
+
+function showAutocompleteSuggestions(editor) {
+    const text = editor.value;
+    const pos = editor.selectionStart;
+    const before = text.substring(0, pos);
+    const match = before.match(/[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$/);
+
+    // Remove existing
+    const existing = document.getElementById('autocomplete-box');
+    if (existing) existing.remove();
+
+    if (!match) return;
+
+    const query = match[0].toLowerCase();
+    const suggestions = cesKeywords.filter(k => k.toLowerCase().startsWith(query) && k.toLowerCase() !== query);
+
+    if (suggestions.length === 0) return;
+
+    const box = document.createElement('div');
+    box.id = 'autocomplete-box';
+    box.className = 'autocomplete-box';
+
+    // Calculate Position (Simulated)
+    const lines = before.split('\n');
+    const lineIdx = lines.length - 1;
+    const colIdx = lines[lineIdx].length;
+
+    // Crude estimation based on font-size 1.1rem (approx 10px per char, 25px per line)
+    box.style.top = (lineIdx * 25 + 50) + 'px';
+    box.style.left = (colIdx * 10 + 60) + 'px';
+
+    suggestions.slice(0, 5).forEach((s, idx) => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        if (idx === 0) item.classList.add('active');
+        item.textContent = s;
+        item.onclick = () => applySuggestion(editor, query, s);
+        box.appendChild(item);
+    });
+
+    editor.parentElement.appendChild(box);
+}
+
+function applySuggestion(editor, query, suggestion) {
+    const pos = editor.selectionStart;
+    const text = editor.value;
+    const before = text.substring(0, pos - query.length);
+    const after = text.substring(pos);
+
+    editor.value = before + suggestion + after;
+    editor.selectionStart = editor.selectionEnd = before.length + suggestion.length;
+    editor.focus();
+
+    const box = document.getElementById('autocomplete-box');
+    if (box) box.remove();
+    if (window.updateHighlighting) window.updateHighlighting();
+}
+
+function checkErrorPatterns() {
+    const h = window.errorHistory;
+    if (h.braces >= 3) {
+        CustomModal.show("CONSEJO DE CARL", "¡Oye! He notado que te cuesta un poco cerrar las llaves <code>{}</code>. Recuerda que cada <code>{</code> que abras debe tener su pareja <code>}</code> para cerrar el bloque.", "🤖");
+        h.braces = 0;
+    } else if (h.parens >= 3) {
+        CustomModal.show("CONSEJO DE CARL", "Veo que olvidas cerrar los paréntesis <code>()</code> a menudo. Son fundamentales para llamar a funciones como <code>imprimir()</code> o <code>crear()</code>.", "🤖");
+        h.parens = 0;
+    }
+}
+
 window.askCarlHelp = () => {
+    window.hintLevel++;
     const step = activeCourse.steps[currentStepIndex];
-    let title = "CONSEJO DE CARL IA";
+    let title = `PISTA DE CARL IA (Nivel ${window.hintLevel})`;
     let explanation = "";
 
     if (step.type === 'teoria') {
-        explanation = "Este concepto es fundamental. Fíjate bien en cómo se estructuran las llaves y el orden de los comandos. ¡Tú puedes!";
-    } else if (step.type === 'practica') {
-        explanation = `Para resolver esto, recuerda que usamos <code>${step.answer.split('(')[0]}</code>. Revisa que no te falten puntos ni comas.`;
+        explanation = "Este concepto es fundamental. Fíjate bien en cómo se estructuran las llaves y el orden de los comandos.";
+    } else if (step.type === 'practica' || step.type === 'completar-codigo') {
+        const sol = step.answer;
+        if (window.hintLevel === 1) {
+            explanation = `<b>Concepto Técnico:</b> Esta tarea requiere usar <code>${sol.split(/[ (={]/)[0]}</code>. Revisa la teoría si tienes dudas.`;
+        } else if (window.hintLevel === 2) {
+            const firstLine = sol.split('\n')[0];
+            explanation = `<b>Pista de línea:</b> Deberías empezar escribiendo algo como: <br><code>${firstLine.substring(0, Math.floor(firstLine.length / 2))}...</code>`;
+        } else {
+            explanation = `<b>Solución Directa:</b> El código correcto es:<br><pre style="background:#000; padding:10px; border-radius:8px; color:var(--primary);">${sol}</pre>`;
+            window.hintLevel = 0; // Reset
+        }
     } else {
         explanation = "Analiza bien las opciones. A veces la respuesta más sencilla es la correcta.";
     }

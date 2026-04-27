@@ -1,1153 +1,593 @@
 /* ==============================
    Course Data - The Scripting Path (CES)
-   Updated with Advanced Mechanics & Rich Content
+   Full Implementation: 100 Master Codes + 6 Foundation Stages + Certification
+   Every lesson features 3 interactive steps.
 ============================== */
 
 window.courseData = {
     stages: [
         {
             id: 1,
-            name: "Fundamentos del Despertar",
+            name: "Fundamentos y Control",
             color: "#7ED957",
             courses: [
                 {
                     id: 1,
-                    title: "El Despertar: ve motor;",
+                    title: "Activación: ve motor;",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "¡Bienvenido! En Creative Engine, todo script debe comenzar con 've motor;'. Esta instrucción conecta tu código con el corazón del sistema. Sin ella, el motor ignorará tu script por completo.",
-                            code: "// Conexión obligatoria\nve motor;"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Cuál es la primera línea obligatoria de cualquier script CES?",
-                            options: [
-                                { text: "iniciar motor;", correct: false },
-                                { text: "ve motor;", correct: true },
-                                { text: "publico numero vida;", correct: false }
-                            ],
-                            feedback: "Correcto. Es el puente indispensable entre tu código y el motor."
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe la instrucción necesaria para activar tu script:",
-                            answer: "ve motor;"
-                        }
+                        { type: "teoria", content: "Todo script en Creative Engine debe comenzar con 've motor;'. Esta línea es obligatoria para que el motor reconozca y ejecute tu código.", code: "ve motor;" },
+                        { type: "practica", question: "Escribe la línea obligatoria para activar el script:", answer: "ve motor;" },
+                        { type: "opcion-multiple", question: "¿Qué sucede si olvidas poner 've motor;'?", options: [{ text: "El script funciona igual", correct: false }, { text: "El motor ignora el archivo", correct: true }, { text: "El juego explota", correct: false }] }
                     ]
                 },
                 {
                     id: 2,
-                    title: "Declaración: variable",
+                    title: "Visibilidad: publico",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Usamos la palabra clave 'variable' para guardar información que solo este script podrá usar. Es ideal para datos internos que no necesitan ser vistos desde el editor.",
-                            code: "variable secreto = 500;"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Declara una variable interna llamada 'puntos':",
-                            codeTemplate: "[BLOQUE] puntos = 0;",
-                            blocks: ["variable", "publico", "dato"],
-                            answer: "variable"
-                        },
-                        {
-                            type: "practica",
-                            question: "Crea una variable llamada 'energia' con valor 100:",
-                            answer: "variable energia = 100;"
-                        }
+                        { type: "teoria", content: "La palabra clave 'publico' permite que una variable sea visible y editable desde el Inspector del editor.", code: "publico numero velocidad = 10;" },
+                        { type: "completar-codigo", question: "Haz que la variable 'salto' sea visible en el Inspector:", codeTemplate: "[BLOQUE] numero salto = 5;", blocks: ["publico", "variable", "dato"], answer: "publico" },
+                        { type: "modo-debug", question: "Corrige el error para que la variable aparezca en el editor:", codeLines: ["variable fuerza = 10;"], errorLine: 0, explanation: "Usa 'publico' para que el Inspector la reconozca.", solution: "publico numero fuerza = 10;" }
                     ]
                 },
                 {
                     id: 3,
-                    title: "El Inspector: publico",
+                    title: "Datos Internos: variable",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Si quieres que una variable aparezca en el Inspector del editor para cambiar su valor sin tocar el código, usa 'publico' seguido del tipo de dato.",
-                            code: "publico numero vida = 100;"
-                        },
-                        {
-                            type: "ordenar-bloques",
-                            question: "Crea una variable pública numérica para la velocidad:",
-                            blocks: ["publico", "numero", "velocidad", "= 10;"],
-                            answer: ["publico", "numero", "velocidad", "= 10;"]
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Para qué sirve la palabra clave 'publico'?",
-                            options: [
-                                { text: "Para que el código sea más rápido", correct: false },
-                                { text: "Para ver y editar la variable desde el editor", correct: true },
-                                { text: "Para que todos los jugadores la vean", correct: false }
-                            ]
-                        }
+                        { type: "teoria", content: "Usamos 'variable' para definir datos que solo el script actual puede usar.", code: "variable secreto = 123;" },
+                        { type: "practica", question: "Declara una variable interna llamada 'energia' con valor 100:", answer: "variable energia = 100;" },
+                        { type: "opcion-multiple", question: "¿Dónde se ven las 'variables'?", options: [{ text: "En el Inspector", correct: false }, { text: "Solo dentro del código", correct: true }, { text: "En la pantalla del juego", correct: false }] }
                     ]
                 },
                 {
                     id: 4,
-                    title: "Tipos de Datos",
+                    title: "Decisiones: si (condición)",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "CES reconoce varios tipos: 'numero' para cifras, 'texto' para palabras entre comillas, y 'booleano' para verdadero/falso.",
-                            code: "publico texto miNombre = \"Héroe\";\npublico booleano estaVivo = verdadero;"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Define una variable pública para un interruptor:",
-                            codeTemplate: "publico [BLOQUE] luzEncendida = falso;",
-                            blocks: ["booleano", "numero", "texto"],
-                            answer: "booleano"
-                        },
-                        {
-                            type: "practica",
-                            question: "Declara una variable pública de texto llamada 'saludo':",
-                            answer: "publico texto saludo;"
-                        }
+                        { type: "teoria", content: "El bloque 'si' ejecuta el código entre llaves solo si la condición es verdadera.", code: "si (vida <= 0) {\n  imprimir(\"Game Over\");\n}" },
+                        { type: "completar-codigo", question: "Si tenemos la llave, abrimos la puerta:", codeTemplate: "[BLOQUE] (tieneLlave) { abrir(); }", blocks: ["si", "mientras", "para"], answer: "si" },
+                        { type: "practica", question: "Escribe la condición completa para imprimir 'Hola' si 'puntos' es mayor a 10:", answer: "si (puntos > 10) { imprimir('Hola'); }" }
                     ]
                 },
                 {
                     id: 5,
-                    title: "Anatomía del Script",
+                    title: "Alternativas: sino",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Un script se organiza en: 1. Cabecera (ve motor;), 2. Variables (publico/variable) y 3. Eventos (funciones automáticas).",
-                            code: "ve motor;\n\npublico numero velocidad = 5;\n\nalEmpezar() { ... }"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Dónde deben declararse las variables públicas por norma general?",
-                            options: [
-                                { text: "Al final del script", correct: false },
-                                { text: "Antes de los eventos", correct: true },
-                                { text: "Dentro de alEmpezar", correct: false }
-                            ]
-                        }
+                        { type: "teoria", content: "Se usa 'sino' después de un 'si' para ejecutar código cuando la condición inicial no se cumple.", code: "si (puntos > 10) {\n  ganar();\n} sino {\n  intentar();\n}" },
+                        { type: "practica", question: "Escribe la palabra clave para la alternativa de un 'si':", answer: "sino" },
+                        { type: "ordenar-bloques", question: "Ordena la lógica de decisión:", blocks: ["si (vivo) {", "  moverse();", "} sino {", "  morir();", "}"], answer: ["si (vivo) {", "  moverse();", "} sino {", "  morir();", "}"] }
                     ]
                 },
                 {
                     id: 6,
-                    title: "Eventos: alEmpezar",
+                    title: "Bucles: mientras",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "El evento 'alEmpezar()' ocurre una única vez cuando el objeto nace en el juego. Es perfecto para configuraciones iniciales.",
-                            code: "alEmpezar() {\n  imprimir(\"¡Iniciando sistema!\");\n}"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el nombre de la función que corre solo una vez al inicio:",
-                            answer: "alEmpezar"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Lanza un mensaje a la consola al nacer:",
-                            codeTemplate: "alEmpezar() { [BLOQUE](\"Hola\"); }",
-                            blocks: ["imprimir", "ve", "variable"],
-                            answer: "imprimir"
-                        }
+                        { type: "teoria", content: "Repite un bloque de código 'mientras' una condición sea verdadera.", code: "mientras (cargando) {\n  esperar(1);\n}" },
+                        { type: "opcion-multiple", question: "¿Qué hace el comando 'mientras'?", options: [{ text: "Ejecuta una vez", correct: false }, { text: "Repite mientras sea verdad", correct: true }, { text: "Detiene el juego", correct: false }] },
+                        { type: "practica", question: "Escribe un bucle que imprima 'A' mientras 'activo' sea verdadero:", answer: "mientras (activo) { imprimir('A'); }" }
                     ]
                 },
                 {
                     id: 7,
-                    title: "Ciclo Vital: alActualizar",
+                    title: "Contadores: para",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Un juego ocurre a 60 frames por segundo. 'alActualizar(delta)' se ejecuta en cada uno de esos frames para procesar lógica constante.",
-                            code: "alActualizar(delta) {\n  // Lógica constante aquí\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Cuántas veces se ejecuta 'alActualizar' en un segundo?",
-                            options: [
-                                { text: "1 vez", correct: false },
-                                { text: "60 veces aproximadamente", correct: true },
-                                { text: "Solo cuando clicamos", correct: false }
-                            ]
-                        }
+                        { type: "teoria", content: "El bucle 'para' sirve para repetir algo un número exacto de veces usando un contador.", code: "para (variable i = 0; i < 5; i = i + 1) {\n  imprimir(i);\n}" },
+                        { type: "completar-codigo", question: "Inicia un bucle para contar:", codeTemplate: "[BLOQUE] (variable i=0; i<10; i++)", blocks: ["para", "cada", "si"], answer: "para" },
+                        { type: "practica", question: "Crea un bucle que repita 3 veces la función 'atacar()':", answer: "para (variable i=0; i<3; i=i+1) { atacar(); }" }
                     ]
                 },
                 {
                     id: 8,
-                    title: "Lógica: si (condición)",
+                    title: "Salida: retornar",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Para que el juego tome decisiones usamos 'si'. Solo ejecutará lo que hay entre llaves si la condición es verdadera.",
-                            code: "si (vida <= 0) {\n  destruir(materia);\n}"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Si tenemos la llave, abrimos la puerta:",
-                            codeTemplate: "[BLOQUE] (tieneLlave) { abrir(); }",
-                            blocks: ["si", "mientras", "variable"],
-                            answer: "si"
-                        }
+                        { type: "teoria", content: "Usa 'retornar' para salir de una función inmediatamente y, opcionalmente, devolver un valor.", code: "si (error) retornar;" },
+                        { type: "practica", question: "Escribe el comando para salir de una función:", answer: "retornar" },
+                        { type: "modo-debug", question: "Encuentra el error al intentar salir de la función:", codeLines: ["si (fin) {", "  salir();", "}"], errorLine: 1, explanation: "En CES usamos 'retornar' para salir de bloques o funciones.", solution: "  retornar;" }
                     ]
                 },
                 {
                     id: 9,
-                    title: "Comentarios de Código",
+                    title: "Lógica: y / o / no",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Usa '//' para notas de una línea. El motor ignora los comentarios; son solo para que los humanos entiendan el código.",
-                            code: "// Esto es una nota interna\nve motor;"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el símbolo para iniciar un comentario de una línea:",
-                            answer: "//"
-                        }
+                        { type: "teoria", content: "Operadores para combinar condiciones: 'y', 'o', 'no'.", code: "si (tieneLlave y estaCerca) { ... }" },
+                        { type: "practica", question: "Escribe el operador para que DOS condiciones deban ser verdad:", answer: "y" },
+                        { type: "completar-codigo", question: "Si no está activo:", codeTemplate: "si ([BLOQUE] activo) { ... }", blocks: ["no", "y", "o"], answer: "no" }
                     ]
                 },
                 {
                     id: 10,
-                    title: "¡JEFE FINAL: El Bug de Sintaxis!",
+                    title: "¡JEFE: El Bug de Control!",
                     isBoss: true,
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "¡CUIDADO! Un Bug de Sintaxis está bloqueando el compilador. Usa tus fundamentos para depurar el sistema.",
-                            code: "// MODO DEPURACIÓN ACTIVADO"
-                        },
-                        {
-                            type: "practica",
-                            question: "RONDA 1: Conecta el script al motor.",
-                            answer: "ve motor;"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "RONDA 2: Necesitas una variable que el diseñador pueda cambiar desde el editor. ¿Cuál usas?",
-                            options: [
-                                { text: "variable salto = 10;", correct: false },
-                                { text: "publico numero salto = 10;", correct: true }
-                            ]
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "RONDA 3: ¡El golpe final! Haz que el código tome una decisión:",
-                            codeTemplate: "[BLOQUE] (bugDetectado) { borrarBug(); }",
-                            blocks: ["si", "para", "cada"],
-                            answer: "si"
-                        }
+                        { type: "teoria", content: "¡El Bug de Control ha bloqueado el flujo del programa! Usa los fundamentos para restaurarlo.", code: "// DEPURACIÓN REQUERIDA" },
+                        { type: "practica", question: "RONDA 1: Conecta el script al motor.", answer: "ve motor;" },
+                        { type: "completar-codigo", question: "RONDA 2: El jefe solo es vulnerable si tienes energía Y estás cerca:", codeTemplate: "si (tengoEnergia [BLOQUE] cercaDelJefe)", blocks: ["y", "o", "no"], answer: "y" },
+                        { type: "modo-debug", question: "RONDA 3: Corrige la inversión de luz:", codeLines: ["alHacerClick() {", "  luz = verdadero;", "}"], errorLine: 1, explanation: "Para un interruptor, debes usar el operador '!' para invertir.", solution: "  luz = !luz;" },
+                        { type: "practica", question: "RONDA 4: Mueve al jefe en X sumando 10 cada instante:", answer: "alActualizar(delta) { posicion.x = posicion.x + 10; }" },
+                        { type: "ordenar-bloques", question: "RONDA FINAL: Destruye al jefe y manda señal 'FIN':", blocks: ["destruir(materia);", "difundir('FIN');"], answer: ["destruir(materia);", "difundir('FIN');"] }
                     ]
                 }
             ]
         },
         {
             id: 2,
-            name: "Leyes y Materias",
+            name: "El Inspector",
             color: "#00AAFF",
             courses: [
                 {
                     id: 11,
-                    title: "Tags: Clasificación",
+                    title: "Campos Numéricos",
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Los Tags permiten agrupar objetos. En lugar de buscar nombres uno a uno, preguntamos por su etiqueta. Por ejemplo, una bala solo dañará a lo que tenga el tag 'Enemigo'.",
-                            code: "si (otro.tieneTag(\"Enemigo\")) {\n  destruir(otro);\n}"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Verifica si el objeto que tocamos es una moneda:",
-                            codeTemplate: "si (otro.[BLOQUE](\"Moneda\"))",
-                            blocks: ["tieneTag", "nombre", "variable"],
-                            answer: "tieneTag"
-                        },
-                        {
-                            type: "practica",
-                            question: "¿Cómo se llama el sistema para agrupar objetos por su función?",
-                            answer: "Tag"
-                        }
+                        { type: "teoria", content: "Para que el editor muestre un campo de números con deslizador, usa 'publico numero'.", code: "publico numero fuerza = 50;" },
+                        { type: "practica", question: "Crea una variable pública numérica llamada 'salto':", answer: "publico numero salto;" },
+                        { type: "completar-codigo", question: "Define una variable para la vida visible en el Inspector:", codeTemplate: "[BLOQUE] numero salud = 100;", blocks: ["publico", "privado", "variable"], answer: "publico" }
                     ]
                 },
-                {
-                    id: 12,
-                    title: "Jerarquía: Padre e Hijo",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "En Creative Engine, los objetos pueden anidarse. Si mueves al Padre, los Hijos lo siguen automáticamente. Es vital para armas o extremidades del personaje.",
-                            code: "// Concepto de Jerarquía\n// Objeto: Jugador -> Hijo: Espada"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "Si la espada es HIJA del jugador y el jugador gira, ¿qué hace la espada?",
-                            options: [
-                                { text: "Se queda quieta", correct: false },
-                                { text: "Gira junto con el jugador", correct: true },
-                                { text: "Desaparece", correct: false }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 13,
-                    title: "Sorting Layers",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "El orden de dibujo se controla con las Sorting Layers. Un objeto en una capa superior siempre se dibujará por encima de uno en una inferior (ej: Jugador sobre el Fondo).",
-                            code: "// En el Inspector:\n// Layer: Fondo (0)\n// Layer: Personaje (10)"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Si queremos que el enemigo esté detrás de los arbustos:",
-                            codeTemplate: "Enemigo Layer: 0, Arbustos Layer: [BLOQUE]",
-                            blocks: ["5", "0", "-1"],
-                            answer: "5"
-                        }
-                    ]
-                },
-                {
-                    id: 14,
-                    title: "Prefabs: El Poder del Molde",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Un Prefab es una Materia guardada como plantilla. Si diseñas una bala perfecta, la conviertes en Prefab para crear mil iguales sin repetir trabajo.",
-                            code: "// Usamos 'crear' para instanciar plantillas\ncrear(balaPrefab);"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el comando para generar un objeto desde un Prefab:",
-                            answer: "crear"
-                        }
-                    ]
-                },
-                {
-                    id: 15,
-                    title: "Visibilidad y Control",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Puedes apagar objetos totalmente usando 'estaActivado'. Si es falso, el objeto desaparece y sus scripts dejan de funcionar.",
-                            code: "estaActivado = falso; // Desconexión total"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Cómo harías que un cofre desaparezca pero siga existiendo en la escena?",
-                            options: [
-                                { text: "estaActivado = falso;", correct: true },
-                                { text: "destruir(materia);", correct: false },
-                                { text: "borrar script;", correct: false }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 16,
-                    title: "Puntos de Anclaje (Anchors)",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Los Anchors definen el punto central o eje de un objeto. Son fundamentales para que los botones de la UI no se muevan de lugar al cambiar el tamaño de la pantalla.",
-                            code: "// UI -> Anclar a la derecha"
-                        },
-                        {
-                            type: "practica",
-                            question: "¿Cómo se llama el sistema para que la UI sea responsiva?",
-                            answer: "Anchor"
-                        }
-                    ]
-                },
-                {
-                    id: 17,
-                    title: "Cambio de Escena",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Los juegos se dividen en archivos '.ceScene'. Para viajar de una a otra, como pasar del menú al Nivel 1, usamos 'cargarEscena'.",
-                            code: "cargarEscena(\"Mundo1\");"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Sal del menú hacia el juego:",
-                            codeTemplate: "[BLOQUE](\"Nivel1\");",
-                            blocks: ["cargarEscena", "ir", "buscar"],
-                            answer: "cargarEscena"
-                        }
-                    ]
-                },
-                {
-                    id: 18,
-                    title: "Optimización: Pooling",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Crear y destruir objetos constantemente (como balas) consume mucha memoria. El Pooling consiste en ocultar y reutilizar objetos en lugar de borrarlos.",
-                            code: "// Técnica: Desactivar -> Mover -> Reactivar"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Cuál es el objetivo principal del Object Pooling?",
-                            options: [
-                                { text: "Mejorar los gráficos", correct: false },
-                                { text: "Ganar rendimiento y evitar tirones (lag)", correct: true },
-                                { text: "Que el juego sea más difícil", correct: false }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 19,
-                    title: "Localización: buscar()",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Si necesitas encontrar un objeto específico que ya está en la escena por su nombre real, usas la función 'buscar'.",
-                            code: "variable heroe = buscar(\"Carl\");"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el comando para encontrar un objeto llamado 'Tesoro':",
-                            answer: "buscar(\"Tesoro\")"
-                        }
-                    ]
-                },
+                { id: 12, title: "Cajas de Texto", steps: [{ type: "teoria", content: "Usa 'publico texto' para crear una caja donde escribir nombres o diálogos en el editor.", code: "publico texto nombreJugador = \"Carl\";" }, { type: "completar-codigo", question: "Define un campo de texto para diálogos:", codeTemplate: "publico [BLOQUE] saludo = \"Hola\";", blocks: ["texto", "numero", "booleano"], answer: "texto" }, { type: "practica", question: "Crea una variable pública de texto llamada 'id':", answer: "publico texto id;" }] },
+                { id: 13, title: "Interruptores: booleano", steps: [{ type: "teoria", content: "Un 'publico booleano' crea un Checkbox (interruptor) de sí/no en el Inspector.", code: "publico booleano esInmortal = falso;" }, { type: "practica", question: "Crea un interruptor público llamado 'estaActivo':", answer: "publico booleano estaActivo;" }, { type: "opcion-multiple", question: "¿Qué valores acepta un booleano?", options: [{ text: "Solo números", correct: false }, { text: "verdadero o falso", correct: true }, { text: "Cualquier texto", correct: false }] }] },
+                { id: 14, title: "Referencias a Materia", steps: [{ type: "teoria", content: "Puedes arrastrar otros objetos de la escena al Inspector usando 'publico Materia'.", code: "publico Materia objetivo;" }, { type: "opcion-multiple", question: "¿Para qué sirve 'publico Materia'?", options: [{ text: "Para crear un nuevo objeto", correct: false }, { text: "Para referenciar un objeto de la escena", correct: true }, { text: "Para borrar un objeto", correct: false }] }, { type: "practica", question: "Crea un campo para arrastrar al jugador:", answer: "publico Materia jugador;" }] },
+                { id: 15, title: "Moldes: publico Prefab", steps: [{ type: "teoria", content: "Usa 'publico Prefab' para asignar una plantilla (.ceprefab) desde tus archivos al script.", code: "publico Prefab enemigoPrefab;" }, { type: "practica", question: "Declara un campo público para un molde llamado 'bala':", answer: "publico Prefab bala;" }, { type: "completar-codigo", question: "Define el tipo para un molde de objeto:", codeTemplate: "publico [BLOQUE] miMolde;", blocks: ["Prefab", "Materia", "Sprite"], answer: "Prefab" }] },
+                { id: 16, title: "Imágenes: publico Sprite", steps: [{ type: "teoria", content: "Para cambiar imágenes desde el editor, usa 'publico Sprite'.", code: "publico Sprite skinNueva;" }, { type: "completar-codigo", question: "Variable para arrastrar una imagen:", codeTemplate: "publico [BLOQUE] dibujo;", blocks: ["Sprite", "Color", "Audio"], answer: "Sprite" }, { type: "practica", question: "Crea un campo para una imagen de fondo:", answer: "publico Sprite fondo;" }] },
+                { id: 17, title: "Sonidos: publico Audio", steps: [{ type: "teoria", content: "Usa 'publico Audio' para asignar archivos de sonido (.mp3, .wav) al objeto.", code: "publico Audio sonidoExplosion;" }, { type: "practica", question: "Escribe la línea para un campo de audio llamado 'musica':", answer: "publico Audio musica;" }, { type: "opcion-multiple", question: "¿Qué formato acepta 'publico Audio'?", options: [{ text: "Solo .txt", correct: false }, { text: ".mp3, .wav", correct: true }, { text: ".png", correct: false }] }] },
+                { id: 18, title: "Selector de Color", steps: [{ type: "teoria", content: "Usa 'publico Color' para abrir un selector visual en el Inspector.", code: "publico Color tinte = \"#FF0000\";" }, { type: "opcion-multiple", question: "¿Qué aparece en el editor con 'publico Color'?", options: [{ text: "Una caja de texto", correct: false }, { text: "Un selector visual de colores", correct: true }, { text: "Una lista de números", correct: false }] }, { type: "practica", question: "Crea un selector de color para el 'aura':", answer: "publico Color aura;" }] },
+                { id: 19, title: "Resumen de Visibilidad", steps: [{ type: "teoria", content: "Recuerda: 'publico' sale en el Inspector, 'variable' se queda oculto en el código.", code: "publico numero visible = 1;\nvariable oculto = 2;" }, { type: "modo-debug", question: "¡Error! Queremos ver 'fuerza' en el editor, pero está oculta. Corrígelo:", codeLines: ["variable fuerza = 10;"], errorLine: 0, explanation: "Debes usar 'publico' para que aparezca en el Inspector.", solution: "publico numero fuerza = 10;" }, { type: "practica", question: "Crea una variable pública llamada 'danio' y una interna llamada 'id':", answer: "publico numero danio; variable id;" }] },
                 {
                     id: 20,
-                    title: "¡JEFE: El Arquitecto del Caos!",
+                    title: "¡JEFE: El Inspector del Caos!",
                     isBoss: true,
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "El Arquitecto ha desordenado las capas y jerarquías de tu escena. ¡Usa la organización para vencerlo!",
-                            code: "// DESORDEN DETECTADO"
-                        },
-                        {
-                            type: "ordenar-bloques",
-                            question: "RONDA 1: Identifica al enemigo real entre las copias usando su etiqueta:",
-                            blocks: ["si (otro.tieneTag(", "\"Enemigo\"", ")) { atacar(); }"],
-                            answer: ["si (otro.tieneTag(", "\"Enemigo\"", ")) { atacar(); }"]
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "RONDA 2: Crea un refuerzo desde el molde (Prefab):",
-                            codeTemplate: "[BLOQUE](aliadoPrefab);",
-                            blocks: ["crear", "buscar", "cargarEscena"],
-                            answer: "crear"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "RONDA 3: ¡El golpe final! Necesitas viajar a la guarida secreta. ¿Qué usas?",
-                            options: [
-                                { text: "estaActivado = verdadero;", correct: false },
-                                { text: "cargarEscena(\"Guarida\");", correct: true }
-                            ]
-                        }
+                        { type: "teoria", content: "¡El Inspector ha sido saboteado! Define los campos correctos para recuperar el control.", code: "// INSPECTOR BLOQUEADO" },
+                        { type: "practica", question: "RONDA 1: Crea un campo para que el diseñador elija el color del jefe:", answer: "publico Color colorJefe;" },
+                        { type: "completar-codigo", question: "RONDA 2: Asigna el molde del súbdito:", codeTemplate: "publico [BLOQUE] subditoPrefab;", blocks: ["Prefab", "Materia", "Sprite"], answer: "Prefab" },
+                        { type: "practica", question: "RONDA 3: Crea un interruptor para activar el modo difícil:", answer: "publico booleano modoDificil;" },
+                        { type: "ordenar-bloques", question: "RONDA 4: Define las variables finales:", blocks: ["publico numero salud = 100;", "publico texto nombre = 'Boss';", "variable idInterno = 0;"], answer: ["publico numero salud = 100;", "publico texto nombre = 'Boss';", "variable idInterno = 0;"] }
                     ]
                 }
             ]
         },
         {
             id: 3,
-            name: "Componentes Universales",
+            name: "Tipos de Datos",
             color: "#FFC300",
             courses: [
-                {
-                    id: 21,
-                    title: "Raycast: Ojos Invisibles",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Un Raycast es un rayo invisible que el motor lanza en una dirección. Si toca algo, devuelve información (hit). Es la forma en que los enemigos 'ven' al jugador.",
-                            code: "variable hit = lanzarRayo(posicion, Vector2.derecha, 500);\nsi (hit != nulo) {\n  imprimir(\"¡Objetivo detectado!\");\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué devuelve la función 'lanzarRayo' si no toca nada?",
-                            options: [
-                                { text: "falso", correct: false },
-                                { text: "nulo", correct: true },
-                                { text: "0", correct: false }
-                            ]
-                        },
-                        {
-                            type: "modo-debug",
-                            question: "El script tiene un error de nombre de función según el libro. ¡Corrígelo!",
-                            codeLines: ["variable hit = emitir_rayo(posicion, dir, 100);", "si (hit != nulo) { atacar(); }"],
-                            errorLine: 0,
-                            explanation: "La función oficial del libro es 'lanzarRayo'.",
-                            solution: "variable hit = lanzarRayo(posicion, dir, 100);"
-                        }
-                    ]
-                },
-                {
-                    id: 22,
-                    title: "Sensores: Trigger",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Un colisionador con 'Is Trigger' activado permite que los objetos lo atraviesen sin chocar físicamente, pero disparando eventos. Se usa para monedas o zonas de detección.",
-                            code: "alEntrarEnTrigger(otro) {\n  si (otro.tieneTag(\"Jugador\")) {\n    sumarPuntos();\n  }\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué sucede físicamente con un objeto que es un Trigger?",
-                            options: [
-                                { text: "Rebota con mucha fuerza", correct: false },
-                                { text: "Es atravesable como un fantasma", correct: true },
-                                { text: "Es indestructible", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el evento que detecta cuando algo entra en el sensor:",
-                            answer: "alEntrarEnTrigger"
-                        }
-                    ]
-                },
-                {
-                    id: 23,
-                    title: "Física: Impulso",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Para mover un objeto bruscamente usamos impulsos. 'fisica.applyImpulse' aplica una fuerza instantánea perfecta para saltos o explosiones.",
-                            code: "si (teclaRecienPresionada(\"Space\")) {\n  fisica.applyImpulse(nuevo Vector2(0, -15));\n}"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Aplica un impulso hacia arriba:",
-                            codeTemplate: "fisica.[BLOQUE](nuevo Vector2(0, -10));",
-                            blocks: ["applyImpulse", "moverse", "saltar"],
-                            answer: "applyImpulse"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el nombre del componente que maneja la gravedad y fuerzas:",
-                            answer: "fisica"
-                        }
-                    ]
-                },
-                {
-                    id: 24,
-                    title: "Escala de Gravedad",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Puedes cambiar qué tan pesado se siente un objeto. 1.0 es normal, 0 es flotar en el espacio. Se ajusta mediante 'fisica.gravityScale'.",
-                            code: "fisica.gravityScale = 0.5; // Gravedad lunar"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué valor de gravityScale haría que un objeto no caiga?",
-                            options: [
-                                { text: "1.0", correct: false },
-                                { text: "0", correct: true },
-                                { text: "9.8", correct: false }
-                            ]
-                        },
-                        {
-                            type: "modo-debug",
-                            question: "¡El objeto cae demasiado rápido! Ajusta la gravedad a la normalidad (1.0):",
-                            codeLines: ["fisica.gravityScale = 10.0;"],
-                            errorLine: 0,
-                            explanation: "10.0 es 10 veces más fuerte que la gravedad real.",
-                            solution: "fisica.gravityScale = 1.0;"
-                        }
-                    ]
-                },
-                {
-                    id: 25,
-                    title: "Materiales Físicos",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "En el Inspector puedes asignar materiales que definen la fricción y el rebote. La fricción 0 hace que todo resbale como hielo. El rebote 1 hace que nunca pare de saltar.",
-                            code: "// Propiedades del componente Collider2D"
-                        },
-                        {
-                            type: "ordenar-bloques",
-                            question: "Diferencia entre propiedades:",
-                            blocks: ["Fricción: Resbala,", "Rebote: Salta"],
-                            answer: ["Fricción: Resbala,", "Rebote: Salta"]
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Si quieres una pelota que rebote mucho, el valor debe ser cercano a:",
-                            codeTemplate: "Rebote: [BLOQUE]",
-                            blocks: ["1.0", "0.0", "-1.0"],
-                            answer: "1.0"
-                        }
-                    ]
-                },
-                {
-                    id: 26,
-                    title: "Audio Espacial",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "El componente 'fuenteDeAudio' permite emitir sonidos. Si es espacial, el motor ajustará el volumen dependiendo de qué tan cerca esté el jugador de la materia.",
-                            code: "fuenteDeAudio.play(sonidoExplosion);"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Reproduce el archivo de audio:",
-                            codeTemplate: "fuenteDeAudio.[BLOQUE](clip);",
-                            blocks: ["play", "stop", "loop"],
-                            answer: "play"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el nombre del componente de sonido:",
-                            answer: "fuenteDeAudio"
-                        }
-                    ]
-                },
-                {
-                    id: 27,
-                    title: "Partículas Dinámicas",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "El sistema de 'particulas' permite crear efectos como fuego o humo. Deben estar activadas para emitir.",
-                            code: "particulas.estaActivado = verdadero;"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué componente usarías para hacer humo de una chimenea?",
-                            options: [
-                                { text: "SpriteRenderer", correct: false },
-                                { text: "particulas", correct: true },
-                                { text: "Rigidbody2D", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe la propiedad para encender un sistema de partículas:",
-                            answer: "estaActivado = verdadero"
-                        }
-                    ]
-                },
-                {
-                    id: 28,
-                    title: "Cámara y Filtros",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "La 'camara' es el ojo del jugador. Puedes aplicar efectos de post-procesado como Bloom o Viñeta para mejorar la atmósfera visual.",
-                            code: "// Efecto Bloom: Hace que las luces brillen"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué efecto oscurece los bordes de la pantalla?",
-                            options: [
-                                { text: "Bloom", correct: false },
-                                { text: "Viñeta", correct: true },
-                                { text: "Interpolación", correct: false }
-                            ]
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "El componente que ve el mundo se llama:",
-                            codeTemplate: "[BLOQUE]",
-                            blocks: ["camara", "ojo", "monitor"],
-                            answer: "camara"
-                        }
-                    ]
-                },
-                {
-                    id: 29,
-                    title: "Profundidad: Parallax",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "El Parallax crea una ilusión de profundidad haciendo que las capas del fondo se muevan más lento que el frente. Es el secreto de los mejores juegos 2D.",
-                            code: "// Fondo lejano -> Velocidad 0.1\n// Fondo cercano -> Velocidad 0.5"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Para que una montaña parezca estar muy lejos, su velocidad debe ser:",
-                            codeTemplate: "Velocidad: [BLOQUE]",
-                            blocks: ["0.1", "1.0", "5.0"],
-                            answer: "0.1"
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el nombre de la técnica de movimiento de fondos:",
-                            answer: "Parallax"
-                        }
-                    ]
-                },
+                { id: 21, title: "Números (numero)", steps: [{ type: "teoria", content: "El tipo 'numero' guarda cifras con o sin decimales.", code: "numero vida = 100;\nnumero pi = 3.14;" }, { type: "practica", question: "Escribe el tipo de dato para el número 42:", answer: "numero" }, { type: "completar-codigo", question: "Declara una variable numérica:", codeTemplate: "[BLOQUE] cantidad = 10;", blocks: ["numero", "texto", "booleano"], answer: "numero" }] },
+                { id: 22, title: "Texto (texto)", steps: [{ type: "teoria", content: "El tipo 'texto' guarda palabras y letras siempre entre comillas.", code: "texto mensaje = \"Hola Mundo\";" }, { type: "completar-codigo", question: "Define una variable de texto:", codeTemplate: "[BLOQUE] saludo = \"Bienvenido\";", blocks: ["texto", "numero", "frase"], answer: "texto" }, { type: "practica", question: "Declara 'nombre' con el valor 'Carl':", answer: "texto nombre = 'Carl';" }] },
+                { id: 23, title: "Lógica (booleano)", steps: [{ type: "teoria", content: "Un 'booleano' solo puede ser 'verdadero' o 'falso'.", code: "booleano estaVivo = verdadero;" }, { type: "practica", question: "Escribe el tipo de dato que es verdadero o falso:", answer: "booleano" }, { type: "opcion-multiple", question: "¿Cuál es un valor booleano válido?", options: [{ text: "123", correct: false }, { text: "falso", correct: true }, { text: "'si'", correct: false }] }] },
+                { id: 24, title: "Objetos (Materia)", steps: [{ type: "teoria", content: "El tipo 'Materia' representa cualquier objeto físico o lógico dentro de tu juego.", code: "Materia jugador = buscar(\"Carl\");" }, { type: "opcion-multiple", question: "¿Qué representa una 'Materia'?", options: [{ text: "Un archivo de código", correct: false }, { text: "Un objeto en la escena", correct: true }, { text: "Un número decimal", correct: false }] }, { type: "practica", question: "Busca al objeto 'Heroe' y guárdalo en una variable de tipo Materia:", answer: "Materia h = buscar('Heroe');" }] },
+                { id: 25, title: "Coordenadas (Vector2)", steps: [{ type: "teoria", content: "Un 'Vector2' guarda dos números (x, y). Se usa para posiciones, velocidades o tamaños.", code: "variable punto = nuevo Vector2(100, 50);" }, { type: "practica", question: "Escribe el tipo de dato para un punto (x, y):", answer: "Vector2" }, { type: "completar-codigo", question: "Crea una nueva posición:", codeTemplate: "variable p = [BLOQUE] Vector2(0,0);", blocks: ["nuevo", "crear", "hacer"], answer: "nuevo" }] },
+                { id: 26, title: "Colores (Color)", steps: [{ type: "teoria", content: "El tipo 'Color' guarda información cromática.", code: "Color rojo = \"#FF0000\";" }, { type: "completar-codigo", question: "Crea un color verde:", codeTemplate: "[BLOQUE] verde = \"#00FF00\";", blocks: ["Color", "Sprite", "Fisica"], answer: "Color" }, { type: "practica", question: "Escribe el tipo de dato para guardar '#FFFFFF':", answer: "Color" }] },
+                { id: 27, title: "Imágenes (Sprite)", steps: [{ type: "teoria", content: "Un 'Sprite' es una imagen 2D que el motor puede dibujar.", code: "Sprite miDibujo;" }, { type: "practica", question: "Escribe el tipo de dato para una imagen:", answer: "Sprite" }, { type: "opcion-multiple", question: "¿Un Sprite contiene sonido?", options: [{ text: "Sí", correct: false }, { text: "No, solo imagen", correct: true }] }] },
+                { id: 28, title: "Audio", steps: [{ type: "teoria", content: "El tipo 'Audio' guarda un archivo de sonido.", code: "Audio cancion;" }, { type: "practica", question: "Escribe el tipo de dato para un sonido:", answer: "Audio" }, { type: "completar-codigo", question: "Declara un archivo de audio:", codeTemplate: "[BLOQUE] clip;", blocks: ["Audio", "Musica", "Voz"], answer: "Audio" }] },
+                { id: 29, title: "Moldes (Prefab)", steps: [{ type: "teoria", content: "Un 'Prefab' es un objeto guardado como plantilla.", code: "Prefab rocaPrefab;" }, { type: "opcion-multiple", question: "¿Qué es un Prefab?", options: [{ text: "Un error de código", correct: false }, { text: "Una plantilla o molde de objeto", correct: true }, { text: "Un tipo de número", correct: false }] }, { type: "practica", question: "Declara un Prefab llamado 'mina':", answer: "Prefab mina;" }] },
                 {
                     id: 30,
-                    title: "¡JEFE: El Guardián del Componente!",
+                    title: "¡JEFE: La Fuga de Datos!",
                     isBoss: true,
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "El Guardián está manipulando las leyes físicas de la escena. ¡Demuestra que dominas los componentes!",
-                            code: "// ALERTA FÍSICA"
-                        },
-                        {
-                            type: "modo-debug",
-                            question: "RONDA 1: El jefe detecta al jugador con un rayo mal escrito. ¡Corrígelo!",
-                            codeLines: ["variable hit = rayo(pos, dir, 50);", "si (hit != nulo) { capturar(); }"],
-                            errorLine: 0,
-                            explanation: "La función correcta es 'lanzarRayo'.",
-                            solution: "variable hit = lanzarRayo(pos, dir, 50);"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "RONDA 2: ¡El suelo ha perdido gravedad! Restáurala para el jefe:",
-                            codeTemplate: "jefe.fisica.[BLOQUE] = 1.0;",
-                            blocks: ["gravityScale", "peso", "fuerza"],
-                            answer: "gravityScale"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "RONDA 3: ¡El jefe es un fantasma atravesable! ¿Qué propiedad tiene activa?",
-                            options: [
-                                { text: "Is Trigger", correct: true },
-                                { text: "Is Solid", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "RONDA FINAL: ¡Empújalo fuera de la escena! Aplica un impulso de -50 en X:",
-                            answer: "fisica.applyImpulse(nuevo Vector2(-50, 0));"
-                        }
+                        { type: "teoria", content: "¡Los tipos de datos se están mezclando! Clasifica la información para estabilizar el sistema.", code: "// DATOS CORRUPTOS" },
+                        { type: "completar-codigo", question: "RONDA 1: El nombre del jefe es un:", codeTemplate: "[BLOQUE] nombre = \"Zorg\";", blocks: ["texto", "numero", "booleano"], answer: "texto" },
+                        { type: "practica", question: "RONDA 2: El punto de ataque (x, y) es un:", answer: "Vector2" },
+                        { type: "opcion-multiple", question: "RONDA 3: 'jefe.estaVivo = verdadero'. ¿Qué tipo es 'estaVivo'?", options: [{ text: "numero", correct: false }, { text: "booleano", correct: true }, { text: "Sprite", correct: false }] },
+                        { type: "practica", question: "RONDA FINAL: Crea un 'nuevo Vector2' en (10, 20):", answer: "nuevo Vector2(10, 20)" }
                     ]
                 }
             ]
         },
         {
             id: 4,
-            name: "Sinfonía de Eventos",
+            name: "Componentes del Motor",
             color: "#FF5733",
             courses: [
-                {
-                    id: 31,
-                    title: "Nacimiento: alEmpezar",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Todo en CES tiene un inicio. El evento 'alEmpezar()' se ejecuta una única vez en el momento en que el objeto aparece en el mundo. Es el lugar ideal para configurar nombres, vidas iniciales o posiciones fijas.",
-                            code: "alEmpezar() {\n  imprimir(\"¡He nacido!\");\n  vida = 100;\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Cuántas veces se ejecuta el código dentro de 'alEmpezar'?",
-                            options: [
-                                { text: "En cada frame (60 veces/seg)", correct: false },
-                                { text: "Una sola vez al inicio", correct: true },
-                                { text: "Cada vez que chocamos", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el nombre del evento que ocurre al nacer la materia:",
-                            answer: "alEmpezar"
-                        }
-                    ]
-                },
-                {
-                    id: 32,
-                    title: "El Latido: alActualizar",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Para que un juego se sienta vivo, las cosas deben cambiar constantemente. 'alActualizar(delta)' ocurre en cada frame. El valor 'delta' es el tiempo que pasó desde el último frame, vital para que el movimiento sea fluido.",
-                            code: "alActualizar(delta) {\n  posicion.x += 200 * delta;\n}"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Mueve el objeto constantemente en cada frame:",
-                            codeTemplate: "[BLOQUE](delta) { ... }",
-                            blocks: ["alActualizar", "alEmpezar", "alHacerClick"],
-                            answer: "alActualizar"
-                        },
-                        {
-                            type: "modo-debug",
-                            question: "El personaje se mueve a saltos porque no usa el tiempo real (delta). ¡Corrígelo!",
-                            codeLines: ["alActualizar(delta) {", "  posicion.x += 10;", "}"],
-                            errorLine: 1,
-                            explanation: "Debes multiplicar por 'delta' para que el movimiento dependa del tiempo y no de los FPS.",
-                            solution: "posicion.x += 10 * delta;"
-                        }
-                    ]
-                },
-                {
-                    id: 33,
-                    title: "Contacto Físico: Colisiones",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Cuando dos objetos sólidos chocan, el motor dispara 'alEntrarEnColision(otro)'. El parámetro 'otro' nos da acceso al objeto con el que chocamos para leer sus tags o interactuar con él.",
-                            code: "alEntrarEnColision(otro) {\n  si (otro.tieneTag(\"Peligro\")) {\n    destruir(otro);\n  }\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué representa el parámetro 'otro' en el evento de colisión?",
-                            options: [
-                                { text: "Nuestro propio objeto", correct: false },
-                                { text: "El objeto contra el que chocamos", correct: true },
-                                { text: "La velocidad del impacto", correct: false }
-                            ]
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Detecta el inicio del choque:",
-                            codeTemplate: "[BLOQUE](otro) { ... }",
-                            blocks: ["alEntrarEnColision", "alSalirDeColision", "alHacerClick"],
-                            answer: "alEntrarEnColision"
-                        }
-                    ]
-                },
-                {
-                    id: 34,
-                    title: "Zonas de Sensor (Trigger)",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "A veces queremos detectar que el jugador pasó por un lugar sin detener su movimiento (como una moneda o una meta). Para eso usamos Triggers y el evento 'alEntrarEnTrigger'.",
-                            code: "alEntrarEnTrigger(otro) {\n  si (otro.tieneTag(\"Jugador\")) {\n    imprimir(\"¡Meta alcanzada!\");\n  }\n}"
-                        },
-                        {
-                            type: "practica",
-                            question: "¿Cómo se llama el evento para detectar que algo entra en un sensor invisible?",
-                            answer: "alEntrarEnTrigger"
-                        },
-                        {
-                            type: "ordenar-bloques",
-                            question: "Crea la lógica para recoger una moneda al entrar en su sensor:",
-                            blocks: ["alEntrarEnTrigger(otro) {", "destruir(materia);", "}"],
-                            answer: ["alEntrarEnTrigger(otro) {", "destruir(materia);", "}"]
-                        }
-                    ]
-                },
-                {
-                    id: 35,
-                    title: "Interacción: alHacerClick",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "El evento 'alHacerClick()' permite interactuar directamente con los objetos usando el ratón o la pantalla táctil. Es esencial para botones, interruptores o diálogos de NPCs.",
-                            code: "alHacerClick() {\n  renderizadorDeSprite.color = \"Azul\";\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "Si quieres que un cofre se abra al tocarlo, ¿qué evento usarías?",
-                            options: [
-                                { text: "alEntrarEnColision", correct: false },
-                                { text: "alHacerClick", correct: true },
-                                { text: "alActualizar", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el comando para destruir un objeto al clicarlo:",
-                            answer: "alHacerClick() { destruir(materia); }"
-                        }
-                    ]
-                },
-                {
-                    id: 36,
-                    title: "Telepatía: Difundir y Recibir",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Las materias pueden comunicarse a distancia. Con 'difundir' envías un mensaje a todo el juego, y con 'alRecibir' escuchas mensajes específicos para actuar.",
-                            code: "// En el interruptor\ndifundir(\"ABRIR_PUERTA\");\n\n// En la puerta\nalRecibir(\"ABRIR_PUERTA\", () => { destruir(materia); });"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Envía una señal global llamada 'VICTORIA':",
-                            codeTemplate: "[BLOQUE](\"VICTORIA\");",
-                            blocks: ["difundir", "alRecibir", "imprimir"],
-                            answer: "difundir"
-                        },
-                        {
-                            type: "modo-debug",
-                            question: "La puerta no se abre porque el nombre del mensaje no coincide. ¡Corrígelo!",
-                            codeLines: ["// Interruptor envía: \"OPEN\"", "alRecibir(\"ABRIR\", () => { ... });"],
-                            errorLine: 1,
-                            explanation: "El nombre del mensaje en 'alRecibir' debe ser idéntico al enviado por 'difundir'.",
-                            solution: "alRecibir(\"OPEN\", () => { ... });"
-                        }
-                    ]
-                },
-                {
-                    id: 37,
-                    title: "El Maestro del Tiempo: esperar",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "A veces necesitamos que algo no pase de inmediato. El comando 'esperar(segundos)' pausa la ejecución de ese script específico sin detener el resto del juego.",
-                            code: "alHacerClick() {\n  imprimir(\"Bomba activada...\");\n  esperar(3);\n  imprimir(\"¡BOOM!\");\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué sucede con el resto del juego mientras un script está en 'esperar'?",
-                            options: [
-                                { text: "Todo se congela", correct: false },
-                                { text: "El resto del juego sigue funcionando normalmente", correct: true },
-                                { text: "Se cierra el juego por error", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe la línea para esperar medio segundo (0.5):",
-                            answer: "esperar(0.5);"
-                        }
-                    ]
-                },
-                {
-                    id: 38,
-                    title: "Ritmo Repetitivo: cada",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Si quieres que algo se repita cada cierto tiempo (como generar un enemigo cada 2 segundos), usamos el bloque 'cada(segundos)'.",
-                            code: "alEmpezar() {\n  cada(2) {\n    crear(EnemigoPrefab);\n  }\n}"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Haz que el jugador pierda vida cada segundo:",
-                            codeTemplate: "[BLOQUE](1) { vida -= 5; }",
-                            blocks: ["cada", "esperar", "alActualizar"],
-                            answer: "cada"
-                        },
-                        {
-                            type: "ordenar-bloques",
-                            question: "Crea un spawner que funcione cada 5 segundos:",
-                            blocks: ["cada(5) {", "crear(Bala);", "}"],
-                            answer: ["cada(5) {", "crear(Bala);", "}"]
-                        }
-                    ]
-                },
-                {
-                    id: 39,
-                    title: "Física Precisa: actualizarFijo",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "A diferencia de 'alActualizar', el evento 'actualizarFijo' ocurre en intervalos constantes de tiempo. Es el lugar perfecto para aplicar fuerzas físicas manuales para que el comportamiento sea siempre igual.",
-                            code: "actualizarFijo(delta) {\n  fisica.applyForce(nuevo Vector2(0, -10));\n}"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Por qué usarías 'actualizarFijo' en lugar de 'alActualizar'?",
-                            options: [
-                                { text: "Para cálculos matemáticos pesados", correct: false },
-                                { text: "Para movimientos físicos que deben ser estables y precisos", correct: true },
-                                { text: "Para detectar clics del ratón", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "Escribe el nombre del evento para físicas constantes:",
-                            answer: "actualizarFijo"
-                        }
-                    ]
-                },
+                { id: 31, title: "Transform: posición", steps: [{ type: "teoria", content: "El componente 'posicion' controla dónde está el objeto, su rotación y su escala.", code: "posicion.x = 200;\nrotacion = 90;" }, { type: "practica", question: "Escribe el nombre del componente que controla el lugar del objeto:", answer: "posicion" }, { type: "practica", question: "Mueve la posición X a 500:", answer: "posicion.x = 500;" }] },
+                { id: 32, title: "Dibujo: renderizadorDeSprite", steps: [{ type: "teoria", content: "Controla cómo se ve el objeto: su imagen (sprite), color y opacidad.", code: "renderizadorDeSprite.color = \"#FF0000\";" }, { type: "completar-codigo", question: "Cambia la imagen del objeto:", codeTemplate: "[BLOQUE].sprite = nuevaImagen;", blocks: ["renderizadorDeSprite", "posicion", "fisica"], answer: "renderizadorDeSprite" }, { type: "practica", question: "Pon la opacidad en 0.5:", answer: "renderizadorDeSprite.opacity = 0.5;" }] },
+                { id: 33, title: "Físicas: fisica", steps: [{ type: "teoria", content: "Otorga peso, gravedad y permite aplicar fuerzas al objeto.", code: "fisica.gravityScale = 1.0;" }, { type: "practica", question: "Escribe el nombre del componente de físicas:", answer: "fisica" }, { type: "completar-codigo", question: "Desactiva la gravedad:", codeTemplate: "fisica.[BLOQUE] = 0;", blocks: ["gravityScale", "mass", "velocity"], answer: "gravityScale" }] },
+                { id: 34, title: "Movimiento: animador", steps: [{ type: "teoria", content: "Controla los clips de animación.", code: "animador.play(\"Caminar\");" }, { type: "completar-codigo", question: "Ejecuta la animación de 'Salto':", codeTemplate: "animador.[BLOQUE](\"Salto\");", blocks: ["play", "stop", "variable"], answer: "play" }, { type: "practica", question: "Detiene la animación actual:", answer: "animador.stop();" }] },
+                { id: 35, title: "Sonido: fuenteDeAudio", steps: [{ type: "teoria", content: "Permite que el objeto emita sonidos.", code: "fuenteDeAudio.play(miSonido);" }, { type: "practica", question: "Escribe el componente para reproducir audios:", answer: "fuenteDeAudio" }, { type: "completar-codigo", question: "Reproduce el audio 'clip':", codeTemplate: "fuenteDeAudio.[BLOQUE](clip);", blocks: ["play", "emit", "start"], answer: "play" }] },
+                { id: 36, title: "Choques: colisionadorCaja2D", steps: [{ type: "teoria", content: "Define la forma física para que el objeto pueda chocar.", code: "// Componente: colisionadorCaja2D" }, { type: "practica", question: "Escribe el nombre del componente de colisión cuadrada:", answer: "colisionadorCaja2D" }, { type: "opcion-multiple", question: "¿Para qué sirve un colisionador?", options: [{ text: "Para pintar", correct: false }, { text: "Para detectar choques", correct: true }, { text: "Para sonar", correct: false }] }] },
+                { id: 37, title: "Interfaz: textoUI", steps: [{ type: "teoria", content: "Elementos que se dibujan sobre la pantalla.", code: "textoUI.text = \"Puntos: 0\";" }, { type: "completar-codigo", question: "Cambia el texto de la interfaz:", codeTemplate: "[BLOQUE].text = \"Hola\";", blocks: ["textoUI", "posicion", "boton"], answer: "textoUI" }, { type: "practica", question: "Pon 'Puntos' en el texto de la interfaz:", answer: "textoUI.text = 'Puntos';" }] },
+                { id: 38, title: "Cámaras y Luces", steps: [{ type: "teoria", content: "El componente 'camara' es el ojo del jugador.", code: "camara.estaActivado = verdadero;" }, { type: "opcion-multiple", question: "¿Qué componente usarías para que el jugador vea el mundo?", options: [{ text: "camara", correct: true }, { text: "luzPuntual2D", correct: false }, { text: "boton", correct: false }] }, { type: "practica", question: "Escribe el componente para iluminar un área:", answer: "luzPuntual2D" }] },
+                { id: 39, title: "Efectos: particulas", steps: [{ type: "teoria", content: "Crea efectos visuales como explosiones o humo.", code: "particulas.estaActivado = verdadero;" }, { type: "practica", question: "Componente para crear chispas o fuego:", answer: "particulas" }, { type: "completar-codigo", question: "Activa las partículas:", codeTemplate: "particulas.[BLOQUE] = verdadero;", blocks: ["estaActivado", "play", "visible"], answer: "estaActivado" }] },
                 {
                     id: 40,
-                    title: "¡JEFE: El Sincronizador de Almas!",
+                    title: "¡JEFE: El Guardián del Componente!",
                     isBoss: true,
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "¡El Sincronizador de Almas ha congelado el tiempo! Debes usar todos tus conocimientos sobre eventos para restaurar el ritmo del universo.",
-                            code: "// ALERTA: DESINCRONIZACIÓN DETECTADA"
-                        },
-                        {
-                            type: "modo-debug",
-                            question: "RONDA 1: El jefe es invisible porque falta el evento de inicio. ¡Repáralo!",
-                            codeLines: ["alNacer() {", "  estaActivado = verdadero;", "}"],
-                            errorLine: 0,
-                            explanation: "El evento correcto según el libro es 'alEmpezar'.",
-                            solution: "alEmpezar() {"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "RONDA 2: ¡El jefe lanza un ataque rítmico! Esquiva cada 0.5 segundos:",
-                            codeTemplate: "[BLOQUE](0.5) { esquivar(); }",
-                            blocks: ["cada", "esperar", "ciclo"],
-                            answer: "cada"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "RONDA 3: ¡El golpe final requiere coordinación! ¿Qué evento usarías para que todos los aliados ataquen a la vez?",
-                            options: [
-                                { text: "alHacerClick", correct: false },
-                                { text: "difundir(\"ATAQUE_TOTAL\")", correct: true },
-                                { text: "alActualizar", correct: false }
-                            ]
-                        },
-                        {
-                            type: "practica",
-                            question: "RONDA 4: Espera 1.2 segundos para encontrar el punto débil del jefe:",
-                            answer: "esperar(1.2);"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "RONDA FINAL: ¡Destrúyelo al tocar su núcleo!",
-                            codeTemplate: "[BLOQUE]() { destruir(jefe); }",
-                            blocks: ["alHacerClick", "alEmpezar", "alActualizar"],
-                            answer: "alHacerClick"
-                        }
+                        { type: "teoria", content: "¡El Guardián ha desactivado los componentes esenciales! Reinstáuralos para luchar.", code: "// ALERTA: COMPONENTES PERDIDOS" },
+                        { type: "completar-codigo", question: "RONDA 1: Devuelve la masa al jugador:", codeTemplate: "[BLOQUE].gravityScale = 1.0;", blocks: ["fisica", "posicion", "animador"], answer: "fisica" },
+                        { type: "practica", question: "RONDA 2: El jefe es invisible. Activa el componente de dibujo:", answer: "renderizadorDeSprite.estaActivado = verdadero" },
+                        { type: "ordenar-bloques", question: "RONDA 3: ¡Ataque final con sonido!", blocks: ["fuenteDeAudio.play(ataque);", "animador.play(\"Golpe\");"], answer: ["fuenteDeAudio.play(ataque);", "animador.play(\"Golpe\");"] },
+                        { type: "practica", question: "RONDA FINAL: Actualiza el texto UI con 'BOSS DEFEATED':", answer: "textoUI.text = 'BOSS DEFEATED';" }
                     ]
                 }
             ]
         },
         {
             id: 5,
-            name: "El Poder de Carl IA",
+            name: "Eventos de Ciclo de Vida",
             color: "#C70039",
             courses: [
+                { id: 41, title: "Nacimiento: alEmpezar()", steps: [{ type: "teoria", content: "Ocurre una sola vez cuando el objeto nace.", code: "alEmpezar() {\n  imprimir(\"¡He nacido!\");\n}" }, { type: "practica", question: "Escribe el nombre del evento que ocurre al iniciar:", answer: "alEmpezar" }, { type: "practica", question: "Al empezar, pon vida en 100:", answer: "alEmpezar() { vida = 100; }" }] },
+                { id: 42, title: "Ritmo: alActualizar(delta)", steps: [{ type: "teoria", content: "Ocurre en cada frame. 'delta' es el tiempo transcurrido.", code: "alActualizar(delta) {\n  posicion.x += 100 * delta;\n}" }, { type: "completar-codigo", question: "Mueve el objeto en cada instante:", codeTemplate: "[BLOQUE](delta) { ... }", blocks: ["alActualizar", "alEmpezar", "alHacerClick"], answer: "alActualizar" }, { type: "practica", question: "Suma 1 a la rotación cada frame:", answer: "alActualizar(delta) { rotacion = rotacion + 1; }" }] },
+                { id: 43, title: "Física: actualizarFijo(delta)", steps: [{ type: "teoria", content: "Se usa para cálculos físicos estables.", code: "actualizarFijo(delta) {\n  fisica.applyForce(fuerza);\n}" }, { type: "practica", question: "Escribe el evento para físicas constantes:", answer: "actualizarFijo" }, { type: "opcion-multiple", question: "¿Por qué usar actualizarFijo?", options: [{ text: "Es más rápido", correct: false }, { text: "Es estable para físicas", correct: true }, { text: "Suena mejor", correct: false }] }] },
+                { id: 44, title: "Interacción: alHacerClick()", steps: [{ type: "teoria", content: "Se dispara al tocar el objeto.", code: "alHacerClick() {\n  destruir(materia);\n}" }, { type: "opcion-multiple", question: "¿Cuándo se dispara 'alHacerClick'?", options: [{ text: "Al chocar con una pared", correct: false }, { text: "Al tocar el objeto", correct: true }, { text: "Al empezar el nivel", correct: false }] }, { type: "practica", question: "Al clicar, imprime 'PUM':", answer: "alHacerClick() { imprimir('PUM'); }" }] },
+                { id: 45, title: "Choque: alEntrarEnColision(otro)", steps: [{ type: "teoria", content: "Ocurre al chocar físicamente.", code: "alEntrarEnColision(otro) {\n  si (otro.tieneTag(\"Suelo\")) { ... }\n}" }, { type: "practica", question: "Escribe el evento que detecta un choque sólido:", answer: "alEntrarEnColision" }, { type: "modo-debug", question: "Encuentra el error en la colisión:", codeLines: ["alChocar(obj) {", "  morir();", "}"], errorLine: 0, explanation: "El evento correcto es 'alEntrarEnColision'.", solution: "alEntrarEnColision(otro) {" }] },
+                { id: 46, title: "Sensores: alEntrarEnTrigger(otro)", steps: [{ type: "teoria", content: "Se activa al entrar en un sensor invisible.", code: "alEntrarEnTrigger(otro) {\n  imprimir(\"¡Zona alcanzada!\");\n}" }, { type: "completar-codigo", question: "Detecta cuando el jugador entra en la meta:", codeTemplate: "[BLOQUE](otro) { ganar(); }", blocks: ["alEntrarEnTrigger", "alEntrarEnColision", "alHacerClick"], answer: "alEntrarEnTrigger" }, { type: "practica", question: "Al entrar en trigger, destruye el objeto:", answer: "alEntrarEnTrigger(otro) { destruir(materia); }" }] },
+                { id: 47, title: "Mensajería: alRecibir", steps: [{ type: "teoria", content: "Escucha una señal enviada con 'difundir'.", code: "alRecibir(\"ABRIR\", () => { abrirPuerta(); });" }, { type: "practica", question: "Escribe el comando para escuchar un mensaje:", answer: "alRecibir" }, { type: "practica", question: "Escucha 'GO' y llama a 'start()':", answer: "alRecibir('GO', () => { start(); });" }] },
+                { id: 48, title: "Rendimiento: alBajoRendimiento", steps: [{ type: "teoria", content: "Se activa si el juego va lento.", code: "alBajoRendimiento(nivel) {\n  particulas.estaActivado = falso;\n}" }, { type: "opcion-multiple", question: "¿Para qué sirve 'alBajoRendimiento'?", options: [{ text: "Para ganar más puntos", correct: false }, { text: "Para optimizar el juego si hay lag", correct: true }, { text: "Para cerrar el juego", correct: false }] }, { type: "practica", question: "Desactiva 'camara' al haber bajo rendimiento:", answer: "alBajoRendimiento(n) { camara.estaActivado = falso; }" }] },
+                { id: 49, title: "Final de Contacto: alSalirDeColision", steps: [{ type: "teoria", content: "Ocurre al dejar de tocar un objeto.", code: "alSalirDeColision(otro) {\n  enAire = verdadero;\n}" }, { type: "practica", question: "Escribe el evento que detecta cuando dejas de tocar algo:", answer: "alSalirDeColision" }, { type: "completar-codigo", question: "Detecta salida de contacto:", codeTemplate: "[BLOQUE](otro) { saltando = true; }", blocks: ["alSalirDeColision", "alEntrarEnColision", "alEmpezar"], answer: "alSalirDeColision" }] },
                 {
-                    id: 41,
-                    title: "Despertando a Carl",
+                    id: 50,
+                    title: "¡JEFE: El Sincronizador de Almas!",
+                    isBoss: true,
                     steps: [
-                        {
-                            type: "teoria",
-                            content: "Carl IA no es solo un chat, es una herramienta que puede leer tu escena y ayudarte a programar. Para invocar su ayuda desde código, usamos el comando 'carl'.",
-                            code: "carl.ayuda(\"Haz que este objeto salte\");"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "¿Qué puede hacer Carl IA por ti?",
-                            options: [
-                                { text: "Solo responder preguntas", correct: false },
-                                { text: "Crear objetos y escribir scripts por ti", correct: true },
-                                { text: "Jugar el juego por ti", correct: false }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 42,
-                    title: "Análisis de Escena",
-                    steps: [
-                        {
-                            type: "teoria",
-                            content: "Carl puede analizar cuántos objetos hay en tu escena y decirte si falta algún componente importante como 'Fisica'.",
-                            code: "carl.analizar_escena();"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Pide a Carl que analice la escena:",
-                            codeTemplate: "carl.[BLOQUE]();",
-                            blocks: ["analizar_escena", "borrar", "dormir"],
-                            answer: "analizar_escena"
-                        }
+                        { type: "teoria", content: "¡El Sincronizador ha desfasado los eventos! Restaura el ciclo vital.", code: "// ERROR DE SINCRONIZACIÓN" },
+                        { type: "modo-debug", question: "RONDA 1: El jefe no aparece porque el evento está mal escrito:", codeLines: ["alNacer() {", "  estaActivado = verdadero;", "}"], errorLine: 0, explanation: "El evento correcto es 'alEmpezar'.", solution: "alEmpezar() {" },
+                        { type: "practica", question: "RONDA 2: Ataca al jefe en cada instante (frame):", answer: "alActualizar(delta)" },
+                        { type: "completar-codigo", question: "RONDA 3: El jefe detecta tu golpe mediante un choque sólido:", codeTemplate: "[BLOQUE](arma) { jefe.recibirDano(); }", blocks: ["alEntrarEnColision", "alEntrarEnTrigger", "alHacerClick"], answer: "alEntrarEnColision" },
+                        { type: "practica", question: "RONDA FINAL: Al clicar al jefe, destrúyelo.", answer: "alHacerClick() { destruir(materia); }" }
                     ]
                 }
             ]
         },
-        { id: 6, name: "Seguridad y Optimización", color: "#900C3F", courses: [] },
-        { id: 7, name: "Estructuras de Datos CES", color: "#581845", courses: [] },
-        { id: 8, name: "Gráficos Avanzados", color: "#1A5276", courses: [] },
-        { id: 9, name: "Redes y Multijugador", color: "#1D8348", courses: [] },
-        { id: 10, name: "Maestría Creativa", color: "#F1C40F", courses: [] },
+        {
+            id: 6,
+            name: "API del Motor",
+            color: "#900C3F",
+            courses: [
+                { id: 51, title: "Consola: imprimir()", steps: [{ type: "teoria", content: "Muestra mensajes en la consola de ayuda.", code: "imprimir(\"Sistema listo\");" }, { type: "practica", question: "Escribe el comando para mandar un mensaje a la consola:", answer: "imprimir" }, { type: "practica", question: "Imprime 'Hola':", answer: "imprimir('Hola');" }] },
+                { id: 52, title: "Borrar: destruir()", steps: [{ type: "teoria", content: "Elimina una Materia permanentemente.", code: "destruir(materia);" }, { type: "completar-codigo", question: "Elimina al enemigo al morir:", codeTemplate: "[BLOQUE](enemigo);", blocks: ["destruir", "crear", "buscar"], answer: "destruir" }, { type: "practica", question: "Destruye el objeto 'otro':", answer: "destruir(otro);" }] },
+                { id: 53, title: "Generar: crear()", steps: [{ type: "teoria", content: "Genera un objeto a partir de un Prefab.", code: "crear(balaPrefab);" }, { type: "practica", question: "Comando para instanciar un Prefab:", answer: "crear" }, { type: "practica", question: "Crea una 'roca':", answer: "crear(roca);" }] },
+                { id: 54, title: "Localizar: buscar()", steps: [{ type: "teoria", content: "Encuentra un objeto por su nombre exacto.", code: "buscar(\"Jugador\");" }, { type: "practica", question: "Encuentra el objeto llamado 'Tesoro':", answer: "buscar(\"Tesoro\")" }, { type: "opcion-multiple", question: "¿Qué pasa si 'buscar' no encuentra nada?", options: [{ text: "Devuelve nulo", correct: true }, { text: "Cierra el juego", correct: false }, { text: "Crea uno nuevo", correct: false }] }] },
+                { id: 55, title: "Listar: buscarTodosConTag()", steps: [{ type: "teoria", content: "Devuelve todos los objetos con una etiqueta.", code: "buscarTodosConTag(\"Enemigo\");" }, { type: "opcion-multiple", question: "¿Qué devuelve 'buscarTodosConTag'?", options: [{ text: "Un solo objeto", correct: false }, { text: "Una lista de objetos", correct: true }, { text: "Un número", correct: false }] }, { type: "practica", question: "Busca todos los objetos con el tag 'NPC':", answer: "buscarTodosConTag('NPC')" }] },
+                { id: 56, title: "Distancia: distancia()", steps: [{ type: "teoria", content: "Calcula el espacio entre dos puntos.", code: "variable d = distancia(posicion, meta.posicion);" }, { type: "practica", question: "Comando para medir espacio entre objetos:", answer: "distancia" }, { type: "practica", question: "Calcula distancia entre 'p1' y 'p2':", answer: "distancia(p1, p2)" }] },
+                { id: 57, title: "Señales: difundir()", steps: [{ type: "teoria", content: "Envía un mensaje a todos los objetos.", code: "difundir(\"VICTORIA\");" }, { type: "completar-codigo", question: "Envía la señal 'EMPEZAR':", codeTemplate: "[BLOQUE](\"EMPEZAR\");", blocks: ["difundir", "imprimir", "buscar"], answer: "difundir" }, { type: "practica", question: "Envía el mensaje 'ALERTA':", answer: "difundir('ALERTA');" }] },
+                { id: 58, title: "Pausas: esperar()", steps: [{ type: "teoria", content: "Detiene el script durante unos segundos.", code: "esperar(2);" }, { type: "practica", question: "Escribe el comando para esperar 5 segundos:", answer: "esperar(5);" }, { type: "opcion-multiple", question: "¿En qué unidad se mide el tiempo de esperar()?", options: [{ text: "Milisegundos", correct: false }, { text: "Segundos", correct: true }, { text: "Frames", correct: false }] }] },
+                { id: 59, title: "Ritmo: cada()", steps: [{ type: "teoria", content: "Ejecuta un bloque repetidamente.", code: "cada(1) { sumarSegundo(); }" }, { type: "opcion-multiple", question: "¿Diferencia entre esperar() y cada()?", options: [{ text: "esperar() repite, cada() pausa", correct: false }, { text: "esperar() pausa una vez, cada() repite siempre", correct: true }, { text: "Son iguales", correct: false }] }, { type: "practica", question: "Crea un ritmo que imprima 'TICK' cada 2 segundos:", answer: "cada(2) { imprimir('TICK'); }" }] },
+                {
+                    id: 60,
+                    title: "¡JEFE: El Maestro de la API!",
+                    isBoss: true,
+                    steps: [
+                        { type: "teoria", content: "¡El Maestro exige comandos perfectos! Demuestra tu dominio.", code: "// API CHALLENGE" },
+                        { type: "practica", question: "RONDA 1: Encuentra al jefe llamado 'Zorg' en la escena:", answer: "buscar(\"Zorg\")" },
+                        { type: "completar-codigo", question: "RONDA 2: Crea un aliado de refuerzo:", codeTemplate: "[BLOQUE](aliadoPrefab);", blocks: ["crear", "destruir", "imprimir"], answer: "crear" },
+                        { type: "ordenar-bloques", question: "RONDA 3: ¡Finaliza con una pausa y destrucción!", blocks: ["esperar(1);", "destruir(jefe);"], answer: ["esperar(1);", "destruir(jefe);"] },
+                        { type: "practica", question: "RONDA FINAL: Difunde 'WIN' y espera 3 segundos.", answer: "difundir('WIN'); esperar(3);" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 7,
+            name: "Iniciación: Códigos 1-10",
+            color: "#581845",
+            courses: [
+                { id: 61, title: "C1: ¡Hola Mundo!", steps: [{ type: "teoria", content: "El primer paso: mostrar un mensaje al inicio.", code: "ve motor; alEmpezar() { imprimir(\"¡Hola Mundo!\"); }" }, { type: "practica", question: "Escribe el script completo para imprimir 'Iniciando':", answer: "ve motor; alEmpezar() { imprimir('Iniciando'); }" }, { type: "opcion-multiple", question: "¿Qué comando muestra texto en consola?", options: [{ text: "decir()", correct: false }, { text: "imprimir()", correct: true }] }] },
+                { id: 62, title: "C2: Variable Pública", steps: [{ type: "teoria", content: "Crea variables editables desde el Inspector.", code: "publico texto miNombre = \"Héroe\";" }, { type: "practica", question: "Crea una variable pública de texto llamada 'clase':", answer: "publico texto clase;" }, { type: "completar-codigo", question: "Hazla visible en el Inspector:", codeTemplate: "[BLOQUE] numero nivel = 1;", blocks: ["publico", "variable", "dato"], answer: "publico" }] },
+                { id: 63, title: "C3: Contador de Vida", steps: [{ type: "teoria", content: "Manipula números para la salud.", code: "vida = vida - 10;" }, { type: "practica", question: "Define vida en 100 y crea una acción 'quitar' que reste 10:", answer: "publico numero vida = 100; quitar() { vida = vida - 10; }" }, { type: "modo-debug", question: "Encuentra el error al restar vida:", codeLines: ["vida = 10 - vida;"], errorLine: 0, explanation: "Debes restar de la vida actual: 'vida = vida - 10'.", solution: "vida = vida - 10;" }] },
+                { id: 64, title: "C4: Interruptor", steps: [{ type: "teoria", content: "Invierte estados con el operador NOT (!).", code: "luz = !luz;" }, { type: "practica", question: "Al hacer clic, invierte el valor de 'activo':", answer: "alHacerClick() { activo = !activo; }" }, { type: "completar-codigo", question: "Invierte el valor booleano:", codeTemplate: "luz = [BLOQUE]luz;", blocks: ["!", "no", "inv"], answer: "!" }] },
+                { id: 65, title: "C5: Movimiento X", steps: [{ type: "teoria", content: "Suma a la posición X para moverte.", code: "posicion.x = posicion.x + 2;" }, { type: "practica", question: "Mueve 5 unidades en X cada frame:", answer: "alActualizar(delta) { posicion.x = posicion.x + 5; }" }, { type: "practica", question: "Resta 5 unidades en X al frame:", answer: "alActualizar(delta) { posicion.x = posicion.x - 5; }" }] },
+                { id: 66, title: "C6: Seguir Mouse", steps: [{ type: "teoria", content: "Usa obtenerPosicionMouse() para interactuar.", code: "raton = obtenerPosicionMouse();" }, { type: "practica", question: "Pon tu X donde está el mouse:", answer: "alActualizar(delta) { m = obtenerPosicionMouse(); posicion.x = m.x; }" }, { type: "practica", question: "Pon tu Y donde está el mouse:", answer: "alActualizar(delta) { m = obtenerPosicionMouse(); posicion.y = m.y; }" }] },
+                { id: 67, title: "C7: Color al Azar", steps: [{ type: "teoria", content: "Usa azar(0, 255) para colores dinámicos.", code: "nuevo Color(azar(0,255), azar(0,255), azar(0,255))" }, { type: "practica", question: "Cambia el color del sprite a uno aleatorio al clicar:", answer: "alHacerClick() { renderizadorDeSprite.color = nuevo Color(azar(0,255), azar(0,255), azar(0,255)); }" }, { type: "opcion-multiple", question: "¿Qué hace la función azar(0, 10)?", options: [{ text: "Devuelve 0", correct: false }, { text: "Devuelve un número entre 0 y 10", correct: true }] }] },
+                { id: 68, title: "C8: Reloj de Espera", steps: [{ type: "teoria", content: "Usa corrutinas para pausas temporales.", code: "esperar(3);" }, { type: "practica", question: "Espera 2 segundos y carga escena 'Menu':", answer: "esperar(2); cargarEscena('Menu');" }, { type: "completar-codigo", question: "Detén el flujo 1 segundo:", codeTemplate: "[BLOQUE](1);", blocks: ["esperar", "parar", "frenar"], answer: "esperar" }] },
+                { id: 69, title: "C9: Bucle Repetitivo", steps: [{ type: "teoria", content: "Acciones rítmicas constantes.", code: "cada(1) { ... }" }, { type: "practica", question: "Imprime 'LATIDO' cada 0.5 segundos:", answer: "cada(0.5) { imprimir('LATIDO'); }" }, { type: "practica", question: "Resta 1 de vida cada 2 segundos:", answer: "cada(2) { vida = vida - 1; }" }] },
+                {
+                    id: 70,
+                    title: "¡JEFE: Códigos Maestros 1-10!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Conecta al motor e imprime 'GO':", answer: "ve motor; alEmpezar() { imprimir('GO'); }" },
+                        { type: "completar-codigo", question: "RONDA 2: Crea un interruptor público de luz:", codeTemplate: "[BLOQUE] booleano luz;", blocks: ["publico", "variable", "numero"], answer: "publico" },
+                        { type: "modo-debug", question: "RONDA 3: Corrige la inversión de luz:", codeLines: ["alHacerClick() {", "  luz = verdadero;", "}"], errorLine: 1, explanation: "Para un interruptor, debes usar el operador '!' para invertir.", solution: "  luz = !luz;" },
+                        { type: "practica", question: "RONDA 4: Mueve al jefe en X sumando 10 cada instante:", answer: "alActualizar(delta) { posicion.x = posicion.x + 10; }" },
+                        { type: "ordenar-bloques", question: "RONDA FINAL: Destruye al jefe y manda señal 'FIN':", blocks: ["destruir(materia);", "difundir('FIN');"], answer: ["destruir(materia);", "difundir('FIN');"] }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 8,
+            name: "Iniciación: Códigos 11-20",
+            color: "#1A5276",
+            courses: [
+                { id: 71, title: "C11: Efecto Pulso", steps: [{ type: "teoria", content: "Usa seno() para oscilaciones suaves.", code: "escala = 1 + seno(tiempoJuego * 5) * 0.2;" }, { type: "practica", question: "Aplica escala suave en X e Y:", answer: "alActualizar(delta) { s = 1 + seno(tiempoJuego); transform.scale.x = s; transform.scale.y = s; }" }, { type: "opcion-multiple", question: "¿Qué valor devuelve seno()?", options: [{ text: "Entre -1 y 1", correct: true }, { text: "Entre 0 y 100", correct: false }] }] },
+                { id: 72, title: "C12: Rotación Molino", steps: [{ type: "teoria", content: "Giro constante usando delta.", code: "rotacion = rotacion + 100 * delta;" }, { type: "practica", question: "Gira 50 grados por segundo:", answer: "alActualizar(delta) { rotacion = rotacion + 50 * delta; }" }, { type: "practica", question: "Gira a la izquierda restando 100 * delta:", answer: "alActualizar(delta) { rotacion = rotacion - 100 * delta; }" }] },
+                { id: 73, title: "C13: Teletransporte", steps: [{ type: "teoria", content: "Mueve un objeto a coordenadas exactas.", code: "posicion.x = 0; posicion.y = 0;" }, { type: "practica", question: "Al clicar, ve al punto (500, 500):", answer: "alHacerClick() { posicion.x = 500; posicion.y = 500; }" }, { type: "completar-codigo", question: "Ve al origen:", codeTemplate: "posicion = nuevo [BLOQUE](0,0);", blocks: ["Vector2", "Color", "Punto"], answer: "Vector2" }] },
+                { id: 74, title: "C14: Mostrar/Ocultar", steps: [{ type: "teoria", content: "Activa o desactiva objetos totalmente.", code: "estaActivado = !estaActivado;" }, { type: "practica", question: "Crea una acción 'toggle' que invierta la activación:", answer: "toggle() { estaActivado = !estaActivado; }" }, { type: "practica", question: "Desactiva el objeto al nacer:", answer: "alEmpezar() { estaActivado = falso; }" }] },
+                { id: 75, title: "C15: Saludo por Tag", steps: [{ type: "teoria", content: "Filtra colisiones usando etiquetas.", code: "si (otro.tieneTag(\"Jugador\")) { ... }" }, { type: "practica", question: "Si chocas con 'Muro', imprime 'PUM':", answer: "alEntrarEnColision(otro) { si (otro.tieneTag('Muro')) { imprimir('PUM'); } }" }, { type: "completar-codigo", question: "Verifica la etiqueta:", codeTemplate: "si (otro.[BLOQUE]('Bala'))", blocks: ["tieneTag", "es", "tag"], answer: "tieneTag" }] },
+                { id: 76, title: "C16: Variable Privada", steps: [{ type: "teoria", content: "Variables que no salen en el Inspector.", code: "variable secreto = 0;" }, { type: "practica", question: "Declara la variable interna 'puntos' en 0:", answer: "variable puntos = 0;" }, { type: "opcion-multiple", question: "¿'variable' aparece en el Inspector?", options: [{ text: "Sí", correct: false }, { text: "No", correct: true }] }] },
+                { id: 77, title: "C17: Espejo (Volteo)", steps: [{ type: "teoria", content: "Gira visualmente el sprite.", code: "voltearH = verdadero;" }, { type: "practica", question: "Si pulsas 'ArrowLeft', voltea horizontalmente:", answer: "si (teclaPresionada('ArrowLeft')) { voltearH = verdadero; }" }, { type: "practica", question: "Al pulsar 'ArrowRight' quita el volteo:", answer: "si (teclaPresionada('ArrowRight')) { voltearH = falso; }" }] },
+                { id: 78, title: "C18: Consola Limpia", steps: [{ type: "teoria", content: "Usa mensajes de inicio para depurar.", code: "imprimir(\"--- START ---\");" }, { type: "practica", question: "Imprime separadores al empezar:", answer: "alEmpezar() { imprimir('---'); }" }, { type: "practica", question: "Imprime 'LOG: ' + puntos:", answer: "imprimir('LOG: ' + puntos);" }] },
+                { id: 79, title: "C19: Comentarios", steps: [{ type: "teoria", content: "Notas para humanos que el motor ignora.", code: "// Comentario\n/* Bloque */" }, { type: "practica", question: "Escribe un comentario de una línea que diga 'hola':", answer: "// hola" }, { type: "modo-debug", question: "Haz que la línea de código NO se ejecute comentándola:", codeLines: ["morir();"], errorLine: 0, explanation: "Usa // al inicio de la línea.", solution: "// morir();" }] },
+                {
+                    id: 80,
+                    title: "¡JEFE: Códigos Maestros 11-20!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Al nacer, imprime 'INICIO' y voltea el sprite:", answer: "alEmpezar() { imprimir('INICIO'); voltearH = verdadero; }" },
+                        { type: "completar-codigo", question: "RONDA 2: Si chocas con 'Bala', desactívate:", codeTemplate: "alEntrarEnColision(otro) { si (otro.[BLOQUE]('Bala')) { estaActivado = falso; } }", blocks: ["tieneTag", "es", "choca"], answer: "tieneTag" },
+                        { type: "modo-debug", question: "RONDA 3: Corrige la rotación constante:", codeLines: ["rotacion = 200 * delta;"], errorLine: 0, explanation: "Debes sumar a la rotación actual para que gire.", solution: "rotacion = rotacion + 200 * delta;" },
+                        { type: "practica", question: "RONDA 4: Al clicar, ve al origen (0,0) y comenta 'teleport':", answer: "alHacerClick() { posicion.x = 0; posicion.y = 0; // teleport }" },
+                        { type: "ordenar-bloques", question: "RONDA FINAL: Aplica escala seno para pulsar:", blocks: ["alActualizar(delta) {", "  transform.scale.x = seno(tiempoJuego);", "}"], answer: ["alActualizar(delta) {", "  transform.scale.x = seno(tiempoJuego);", "}"] }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 9,
+            name: "Iniciación: Códigos 21-30",
+            color: "#1D8348",
+            courses: [
+                { id: 81, title: "C21: Tecla Única", steps: [{ type: "teoria", content: "Detecta solo el primer instante del pulso.", code: "teclaRecienPresionada(\"Space\")" }, { type: "practica", question: "Si pulsas recién 'Enter', imprime 'OK':", answer: "si (teclaRecienPresionada('Enter')) { imprimir('OK'); }" }, { type: "opcion-multiple", question: "¿Qué diferencia hay con teclaPresionada?", options: [{ text: "Recien solo detecta el primer clic", correct: true }, { text: "No hay diferencia", correct: false }] }] },
+                { id: 82, title: "C22: Opacidad Fantasma", steps: [{ type: "teoria", content: "Vuelve transparente un objeto.", code: "renderizadorDeSprite.opacity = 0.5;" }, { type: "practica", question: "Pon opacidad en 0.2 al empezar:", answer: "alEmpezar() { renderizadorDeSprite.opacity = 0.2; }" }, { type: "practica", question: "Resta 0.1 a la opacidad cada frame:", answer: "alActualizar(d) { renderizadorDeSprite.opacity -= 0.1; }" }] },
+                { id: 83, title: "C23: Distancia Simple", steps: [{ type: "teoria", content: "Mide separación en píxeles.", code: "d = distancia(posicion, obj.posicion);" }, { type: "practica", question: "Si distancia a 'objetivo' es < 100, imprime 'CERCA':", answer: "si (distancia(posicion, objetivo.posicion) < 100) { imprimir('CERCA'); }" }, { type: "completar-codigo", question: "Calcula el espacio:", codeTemplate: "variable d = [BLOQUE](a, b);", blocks: ["distancia", "posicion", "Vector2"], answer: "distancia" }] },
+                { id: 84, title: "C24: Gravedad Falsa", steps: [{ type: "teoria", content: "Crea caídas sin motor físico.", code: "si (posicion.y < 500) posicion.y += 5;" }, { type: "practica", question: "Sube poco a poco en Y cada frame:", answer: "alActualizar(delta) { posicion.y = posicion.y - 2; }" }, { type: "modo-debug", question: "Corrige la gravedad (debe bajar):", codeLines: ["posicion.y -= 10;"], errorLine: 0, explanation: "En 2D, sumar a Y hace que el objeto baje.", solution: "posicion.y += 10;" }] },
+                { id: 85, title: "C25: Nombre Objeto", steps: [{ type: "teoria", content: "Accede al nombre de la jerarquía.", code: "imprimir(\"Soy: \" + nombre);" }, { type: "practica", question: "Imprime tu nombre al nacer:", answer: "alEmpezar() { imprimir(nombre); }" }, { type: "practica", question: "Si el nombre es 'Carl', imprime 'Hola':", answer: "si (nombre == 'Carl') { imprimir('Hola'); }" }] },
+                { id: 86, title: "C26: Control WASD", steps: [{ type: "teoria", content: "Movimiento básico en 4 direcciones.", code: "si (teclaPresionada(\"w\")) posicion.y -= 10;" }, { type: "practica", question: "Mueve abajo con 's':", answer: "si (teclaPresionada('s')) { posicion.y += 10; }" }, { type: "ordenar-bloques", question: "Mueve a la derecha:", blocks: ["si (teclaPresionada('d')) {", "  posicion.x += 10;", "}"], answer: ["si (teclaPresionada('d')) {", "  posicion.x += 10;", "}"] }] },
+                { id: 87, title: "C27: Crear Proyectil", steps: [{ type: "teoria", content: "Usa crear() para instanciar plantillas.", code: "b = crear(prefab); b.posicion = posicion;" }, { type: "practica", question: "Crea 'bala' en tu posición al clicar:", answer: "alHacerClick() { b = crear(bala); b.posicion = posicion; }" }, { type: "practica", question: "Crea una 'explosion' al nacer:", answer: "alEmpezar() { crear(explosion); }" }] },
+                { id: 88, title: "C28: Rebote Físico", steps: [{ type: "teoria", content: "Cambia velocidades instantáneas.", code: "fisica.velocity.y = -10;" }, { type: "practica", question: "Pon velocidad X en -20 al chocar:", answer: "alEntrarEnColision(otro) { fisica.velocity.x = -20; }" }, { type: "practica", question: "Sube la velocidad Y a 30 al clicar:", answer: "alHacerClick() { fisica.velocity.y = 30; }" }] },
+                { id: 89, title: "C29: Seguir Jugador", steps: [{ type: "teoria", content: "Busca y persigue suavemente.", code: "j = buscar(\"Jugador\");" }, { type: "practica", question: "Busca 'Carl' y pon tu X como la suya:", answer: "carl = buscar('Carl'); posicion.x = carl.x;" }, { type: "completar-codigo", question: "Localiza al jugador:", codeTemplate: "variable j = [BLOQUE]('Player');", blocks: ["buscar", "crear", "destruir"], answer: "buscar" }] },
+                {
+                    id: 90,
+                    title: "¡JEFE: Códigos Maestros 21-30!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Si pulsas recién 'f', crea un 'rayo':", answer: "si (teclaRecienPresionada('f')) { crear(rayo); }" },
+                        { type: "completar-codigo", question: "RONDA 2: El jefe se vuelve fantasma:", codeTemplate: "renderizadorDeSprite.[BLOQUE] = 0.3;", blocks: ["opacity", "color", "sprite"], answer: "opacity" },
+                        { type: "modo-debug", question: "RONDA 3: Corrige la detección de distancia:", codeLines: ["si (distancia(posicion, jefe.posicion) > 50) {", "  vida = 0;", "}"], errorLine: 0, explanation: "Debe ser '< 50' para detectar cercanía.", solution: "si (distancia(posicion, jefe.posicion) < 50) {" },
+                        { type: "practica", question: "RONDA 4: Haz que el jefe caiga sumando 2 a su Y cada frame:", answer: "alActualizar(d) { posicion.y = posicion.y + 2; }" },
+                        { type: "ordenar-bloques", question: "RONDA FINAL: Imprime el nombre y destruye al jefe:", blocks: ["imprimir(nombre);", "destruir(materia);"], answer: ["imprimir(nombre);", "destruir(materia);"] }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 10,
+            name: "Desarrollo: Códigos 31-40",
+            color: "#FF5733",
+            courses: [
+                { id: 91, title: "C31: Audio al Tocar", steps: [{ type: "teoria", content: "Sonidos interactivos.", code: "fuenteDeAudio.play(clip);" }, { type: "practica", question: "Al clicar, suena 'beep':", answer: "alHacerClick() { fuenteDeAudio.play(beep); }" }, { type: "completar-codigo", question: "Reproduce sonido:", codeTemplate: "fuenteDeAudio.[BLOQUE](fx);", blocks: ["play", "stop", "loop"], answer: "play" }] },
+                { id: 92, title: "C32: Control Animador", steps: [{ type: "teoria", content: "Cambia animaciones por código.", code: "animador.play(\"Run\");" }, { type: "practica", question: "Si pulsas 'd', pon 'Run', sino 'Idle':", answer: "si (teclaPresionada('d')) { animador.play('Run'); } sino { animador.play('Idle'); }" }, { type: "practica", question: "Para la animación:", answer: "animador.stop();" }] },
+                { id: 93, title: "C33: Área de Daño", steps: [{ type: "teoria", content: "Detección con triggers.", code: "alEntrarEnTrigger(otro)" }, { type: "practica", question: "Si el que entra tiene tag 'Lava', muere:", answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Lava')) { destruir(materia); } }" }, { type: "opcion-multiple", question: "¿Qué pasa en un Trigger?", options: [{ text: "Chocas como una pared", correct: false }, { text: "Atraviesas pero se detecta", correct: true }] }] },
+                { id: 94, title: "C34: Barra Vida UI", steps: [{ type: "teoria", content: "Feedback visual en pantalla.", code: "textoUI.text = \"HP: \" + v;" }, { type: "practica", question: "Actualiza el texto de salud:", answer: "actualizarSalud(v) { textoUI.text = 'Salud: ' + v; }" }, { type: "practica", question: "Pon vida en 0 en la UI:", answer: "textoUI.text = 'Salud: 0';" }] },
+                { id: 95, title: "C35: Portal Escena", steps: [{ type: "teoria", content: "Cambio de niveles.", code: "cargarEscena(\"Boss\");" }, { type: "practica", question: "Si chocas con 'Fin', carga 'Creditos':", answer: "alEntrarEnColision(otro) { si (otro.tieneTag('Fin')) { cargarEscena('Creditos'); } }" }, { type: "completar-codigo", question: "Cambia de nivel:", codeTemplate: "[BLOQUE]('Nivel2');", blocks: ["cargarEscena", "irEscena", "crear"], answer: "cargarEscena" }] },
+                { id: 96, title: "C36: Botón Menú", steps: [{ type: "teoria", content: "Interfaz clicable.", code: "alHacerClick() { abrir(); }" }, { type: "practica", question: "Al clicar el botón, imprime 'START':", answer: "alHacerClick() { imprimir('START'); }" }, { type: "practica", question: "Al clicar carga escena 'Juego':", answer: "alHacerClick() { cargarEscena('Juego'); }" }] },
+                { id: 97, title: "C37: Mirar al Mouse", steps: [{ type: "teoria", content: "Calcula ángulos de rotación.", code: "atan2(m.y - y, m.x - x)" }, { type: "practica", question: "Obtén el mouse y calcula el ángulo:", answer: "m = obtenerPosicionMouse(); angulo = atan2(m.y - posicion.y, m.x - posicion.x);" }, { type: "opcion-multiple", question: "¿Qué devuelve atan2?", options: [{ text: "Un ángulo en radianes", correct: true }, { text: "Una distancia", correct: false }] }] },
+                { id: 98, title: "C38: Inventario Lista", steps: [{ type: "teoria", content: "Listas para guardar objetos.", code: "mochila.empujar(item);" }, { type: "practica", question: "Añade 'espada' a la lista 'objetos':", answer: "objetos.empujar('espada');" }, { type: "practica", question: "Crea la variable 'bolsa' como una lista vacía:", answer: "variable bolsa = [];" }] },
+                { id: 99, title: "C39: Spawner Enemigo", steps: [{ type: "teoria", content: "Generación infinita.", code: "cada(5) { crear(e); }" }, { type: "practica", question: "Crea 'aliado' cada 10 segundos:", answer: "cada(10) { crear(aliado); }" }, { type: "modo-debug", question: "Encuentra el error al crear:", codeLines: ["crear_objeto(enemigo);"], errorLine: 0, explanation: "El comando es simplemente 'crear()'.", solution: "crear(enemigo);" }] },
+                {
+                    id: 100,
+                    title: "¡JEFE: Códigos Maestros 31-40!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Reproduce 'grito' al nacer:", answer: "alEmpezar() { fuenteDeAudio.play(grito); }" },
+                        { type: "completar-codigo", question: "RONDA 2: Si el jefe choca con 'Meta', carga 'Escena2':", codeTemplate: "alEntrarEnColision(otro) { si (otro.[BLOQUE]('Meta')) { cargarEscena('Escena2'); } }", blocks: ["tieneTag", "es", "choca"], answer: "tieneTag" },
+                        { type: "practica", question: "RONDA 3: Actualiza la barra con el nombre del jefe:", answer: "textoUI.text = 'Jefe: ' + nombre;" },
+                        { type: "modo-debug", question: "RONDA 4: Corrige el ángulo (falta convertir a grados):", codeLines: ["angulo = atan2(dy, dx);", "rotacion = angulo;"], errorLine: 1, explanation: "Debes multiplicar por 180 / 3.14 para obtener grados.", solution: "rotacion = angulo * 180 / 3.14;" },
+                        { type: "ordenar-bloques", question: "RONDA 5: Crea un 'refuerzo' cada 2 segundos:", blocks: ["cada(2) {", "  r = crear(refuerzo);", "  lista.empujar(r);", "}"], answer: ["cada(2) {", "  r = crear(refuerzo);", "  lista.empujar(r);", "}"] },
+                        { type: "practica", question: "RONDA FINAL: Ataca si pulsas recién 'z' y el animador está en 'Idle'.", answer: "si (teclaRecienPresionada('z')) { animador.play('Attack'); }" }
+                    ]
+                }
+            ]
+        },
         {
             id: 11,
+            name: "Desarrollo: Códigos 41-50",
+            color: "#C70039",
+            courses: [
+                { id: 101, title: "C41: Difusión Global", steps: [{ type: "teoria", content: "Grita señales a todos.", code: "difundir(\"OPEN\", { key: 1 });" }, { type: "practica", question: "Difunde 'START' con datos vacíos:", answer: "difundir('START', {});" }, { type: "practica", question: "Difunde 'GAME_OVER':", answer: "difundir('GAME_OVER');" }] },
+                { id: 102, title: "C42: Escuchar Mensaje", steps: [{ type: "teoria", content: "Reacciona a señales remotas.", code: "alRecibir(\"OPEN\", (d) => { ... });" }, { type: "practica", question: "Al recibir 'WIN', imprime 'Victoria':", answer: "alRecibir('WIN', () => { imprimir('Victoria'); });" }, { type: "practica", question: "Escucha 'MORIR' y se destruye:", answer: "alRecibir('MORIR', () => { destruir(materia); });" }] },
+                { id: 103, title: "C43: Salto Físico", steps: [{ type: "teoria", content: "Impulsos reales con física.", code: "fisica.applyImpulse(nuevo Vector2(0, -15));" }, { type: "practica", question: "Salta con fuerza 10 en Y negativo:", answer: "fisica.applyImpulse(nuevo Vector2(0, -10));" }, { type: "practica", question: "Aplica impulso horizontal de 5:", answer: "fisica.applyImpulse(nuevo Vector2(5, 0));" }] },
+                { id: 104, title: "C44: Límites Pantalla", steps: [{ type: "teoria", content: "Restringe el movimiento.", code: "si (x > 800) x = 800;" }, { type: "practica", question: "Si X es menor a 0, ponla en 0:", answer: "si (posicion.x < 0) { posicion.x = 0; }" }, { type: "practica", question: "Si Y > 600 pon Y = 600:", answer: "si (posicion.y > 600) { posicion.y = 600; }" }] },
+                { id: 105, title: "C45: Plataforma Móvil", steps: [{ type: "teoria", content: "Patrones de ida y vuelta.", code: "x += 200 * dir * delta;" }, { type: "practica", question: "Si X > 500, cambia dirección a -1:", answer: "si (posicion.x > 500) { direccion = -1; }" }, { type: "practica", question: "Si X < 100 cambia dirección a 1:", answer: "si (posicion.x < 100) { direccion = 1; }" }] },
+                { id: 106, title: "C46: Bala Temporal", steps: [{ type: "teoria", content: "Limpieza automática de memoria.", code: "esperar(2); destruir(materia);" }, { type: "practica", question: "Nace, espera 1s y se destruye:", answer: "alEmpezar() { esperar(1); destruir(materia); }" }, { type: "opcion-multiple", question: "¿Por qué destruir balas?", options: [{ text: "Para ahorrar memoria", correct: true }, { text: "Para que el jugador gane", correct: false }] }] },
+                { id: 107, title: "C47: Velocidad Anim", steps: [{ type: "teoria", content: "Acelera o frena visuales.", code: "animador.speed = 2.0;" }, { type: "practica", question: "Pon velocidad del animador en 0.5:", answer: "animador.speed = 0.5;" }, { type: "practica", question: "Duplica la velocidad (2.0):", answer: "animador.speed = 2.0;" }] },
+                { id: 108, title: "C48: Detectar Suelo", steps: [{ type: "teoria", content: "Estados de contacto sólido.", code: "alEntrarEnColision(otro) { if(otro.tieneTag(\"Suelo\")) enSuelo = true; }" }, { type: "practica", question: "Si dejas de tocar 'Suelo', enSuelo = falso:", answer: "alSalirDeColision(otro) { si (otro.tieneTag('Suelo')) { enSuelo = falso; } }" }, { type: "completar-codigo", question: "Detecta cuando toca suelo:", codeTemplate: "alEntrarEnColision(otro) { si (otro.[BLOQUE]('Suelo')) enSuelo = true; }", blocks: ["tieneTag", "es", "choca"], answer: "tieneTag" }] },
+                { id: 109, title: "C49: Texto Daño", steps: [{ type: "teoria", content: "Efecto de desvanecimiento.", code: "opacity -= 0.5 * delta;" }, { type: "practica", question: "Resta opacidad y sube en Y cada frame:", answer: "alActualizar(delta) { renderizadorDeSprite.opacity -= delta; posicion.y -= 10 * delta; }" }, { type: "modo-debug", question: "Corrige el desvanecimiento:", codeLines: ["opacity = 0;"], errorLine: 0, explanation: "Debe ser gradual usando delta.", solution: "renderizadorDeSprite.opacity -= delta;" }] },
+                {
+                    id: 110,
+                    title: "¡JEFE: Códigos Maestros 41-50!",
+                    isBoss: true,
+                    steps: [
+                        { type: "completar-codigo", question: "RONDA 1: Salta recién al pulsar 'Space' y estar en el suelo:", codeTemplate: "si (teclaRecienPresionada('Space') [BLOQUE] enSuelo)", blocks: ["y", "o", "no"], answer: "y" },
+                        { type: "practica", question: "RONDA 2: Si X llega a 1000, difunde 'META_LOGRADA':", answer: "si (posicion.x >= 1000) { difundir('META_LOGRADA'); }" },
+                        { type: "ordenar-bloques", question: "RONDA 3: Al recibir 'ATAQUE', acelera:", blocks: ["alRecibir('ATAQUE', () => {", "  animador.speed = 3.0;", "});"], answer: ["alRecibir('ATAQUE', () => {", "  animador.speed = 3.0;", "});"] },
+                        { type: "modo-debug", question: "RONDA 4: El jefe debe subir (Y negativo):", codeLines: ["posicion.y += 100;", "esperar(0.5);", "destruir(materia);"], errorLine: 0, explanation: "Para subir debes restar a la posición Y.", solution: "posicion.y -= 100;" },
+                        { type: "practica", question: "RONDA FINAL: Crea una 'explosión' y limita su X a 0.", answer: "crear(explosion); si (posicion.x < 0) { posicion.x = 0; }" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 12,
+            name: "Maestría: Códigos 51-60",
+            color: "#900C3F",
+            courses: [
+                { id: 111, title: "C51: Visión IA", steps: [{ type: "teoria", content: "Detección por Raycast.", code: "hit = lanzarRayo(pos, dir, 500);" }, { type: "practica", question: "Si el rayo choca con 'Heroe', ataca:", answer: "h = lanzarRayo(posicion, Vector2.derecha, 300); si (h != nulo y h.materia.tieneTag('Heroe')) { atacar(); }" }, { type: "opcion-multiple", question: "¿Qué significa que el rayo sea 'nulo'?", options: [{ text: "No chocó con nada", correct: true }, { text: "Chocó con todo", correct: false }] }] },
+                { id: 112, title: "C52: Ciclo Horario", steps: [{ type: "teoria", content: "Control de iluminación global.", code: "establecerLuzAmbiental(\"#113\");" }, { type: "practica", question: "Suma delta a 'hora' y si > 18 pon luz azul:", answer: "hora += delta; si (hora > 18) { establecerLuzAmbiental('#000033'); }" }, { type: "practica", question: "Si hora < 6 pon luz negra:", answer: "si (hora < 6) { establecerLuzAmbiental('#000'); }" }] },
+                { id: 113, title: "C53: Objetos JSON", steps: [{ type: "teoria", content: "Datos estructurados en listas.", code: "mochila.empujar({ id: 1, name: \"Axe\" });" }, { type: "practica", question: "Añade un objeto con 'puntos: 10' a 'lista':", answer: "lista.empujar({ puntos: 10 });" }, { type: "completar-codigo", question: "Define un dato compuesto:", codeTemplate: "variable d = { [BLOQUE]: 1 };", blocks: ["valor", "numero", "Vector2"], answer: "valor" }] },
+                { id: 114, title: "C54: Patrulla IA", steps: [{ type: "teoria", content: "Máquina de estados básica.", code: "si (estado == \"PAT\") x += 2;" }, { type: "practica", question: "Si estado es 'IDLE', no hagas nada, sino muévete:", answer: "si (estado == 'IDLE') { retornar; } sino { posicion.x += 5; }" }, { type: "practica", question: "Si estado es 'DEATH' destruye el objeto:", answer: "si (estado == 'DEATH') { destruir(materia); }" }] },
+                { id: 115, title: "C55: Explosión Partículas", steps: [{ type: "teoria", content: "Generación masiva con bucles.", code: "para(i=0; i<10; i++) crear(p);" }, { type: "practica", question: "Crea 15 'chispas' usando un bucle para:", answer: "para (variable i = 0; i < 15; i = i + 1) { crear(chispas); }" }, { type: "opcion-multiple", question: "¿Qué bucle es mejor para contar?", options: [{ text: "para", correct: true }, { text: "mientras", correct: false }] }] },
+                { id: 116, title: "C56: Guardado Partida", steps: [{ type: "teoria", content: "Persistencia de datos.", code: "// El motor gestiona el guardado" }, { type: "practica", question: "Imprime 'DATOS GUARDADOS':", answer: "imprimir('DATOS GUARDADOS');" }, { type: "practica", question: "Al nacer carga el nivel guardado:", answer: "alEmpezar() { cargarNivel(); }" }] },
+                { id: 117, title: "C57: Cámara Lerp", steps: [{ type: "teoria", content: "Suavizado de seguimiento.", code: "x = lerp(x, target.x, 0.1);" }, { type: "practica", question: "Interpola X hacia 'obj.x' con 0.2:", answer: "posicion.x = lerp(posicion.x, obj.x, 0.2);" }, { type: "practica", question: "Suaviza Y hacia el mouse con 0.1:", answer: "posicion.y = lerp(posicion.y, obtenerPosicionMouse().y, 0.1);" }] },
+                { id: 118, title: "C58: Daño Veneno", steps: [{ type: "teoria", content: "Efectos sobre el tiempo.", code: "cada(1) { vida -= 5; }" }, { type: "practica", question: "Cada segundo resta 5 de vida y si <= 0 muere:", answer: "cada(1) { vida = vida - 5; si (vida <= 0) { destruir(materia); } }" }, { type: "completar-codigo", question: "Efecto periódico:", codeTemplate: "[BLOQUE](3) { curar(); }", blocks: ["cada", "esperar", "alActualizar"], answer: "cada" }] },
+                { id: 119, title: "C59: Sistema Combo", steps: [{ type: "teoria", content: "Contador de ataques rápidos.", code: "si (now - last < 0.5) c++;" }, { type: "practica", question: "Si pulsas 'z', guarda el tiempo en 'u':", answer: "si (teclaRecienPresionada('z')) { u = tiempoJuego; }" }, { type: "practica", question: "Si 'tiempoJuego' - 'u' < 1, combo + 1:", answer: "si (tiempoJuego - u < 1) { combo = combo + 1; }" }] },
+                {
+                    id: 120,
+                    title: "¡JEFE: Códigos Maestros 51-60!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Si un rayo de 200 choca con 'Bala', destrúyela:", answer: "h = lanzarRayo(posicion, dir, 200); si (h != nulo y h.materia.tieneTag('Bala')) { destruir(h.materia); }" },
+                        { type: "completar-codigo", question: "RONDA 2: Crea un ritmo de latido cada 0.1s:", codeTemplate: "[BLOQUE](0.1) { latir(); }", blocks: ["cada", "esperar", "si"], answer: "cada" },
+                        { type: "modo-debug", question: "RONDA 3: Corrige el objeto herido:", codeLines: ["mochila.empujar(hp: 0);"], errorLine: 0, explanation: "Los objetos JSON deben ir entre llaves {}.", solution: "mochila.empujar({ hp: 0 });" },
+                        { type: "practica", question: "RONDA 4: Interpola tu Y hacia la del mouse suavemente:", answer: "m = obtenerPosicionMouse(); posicion.y = lerp(posicion.y, m.y, 0.1);" },
+                        { type: "ordenar-bloques", question: "RONDA FINAL: Crea un ataque de partículas masivo y carga siguiente nivel:", blocks: ["para(i=0; i<50; i++) {", "  crear(p);", "}", "cargarEscena('Nivel3');"], answer: ["para(i=0; i<50; i++) {", "  crear(p);", "}", "cargarEscena('Nivel3');"] }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 13,
+            name: "Maestría: Códigos 61-70",
+            color: "#581845",
+            courses: [
+                { id: 121, title: "C61: Diálogo NPC", steps: [{ type: "teoria", content: "Muestra frases secuenciales.", code: "text = lines[idx]; idx++;" }, { type: "practica", question: "Muestra la frase en 'i' y suma 1 a 'i':", answer: "textoUI.text = frases[i]; i = i + 1;" }, { type: "practica", question: "Si 'i' llega al final (3), pon 'i' en 0:", answer: "si (i == 3) { i = 0; }" }] },
+                { id: 122, title: "C62: Fade Teleport", steps: [{ type: "teoria", content: "Transiciones visuales.", code: "difundir(\"OUT\"); wait(1); x=2000;" }, { type: "practica", question: "Grita 'NEGRO', espera 2s y ve a X=100:", answer: "difundir('NEGRO'); esperar(2); posicion.x = 100;" }, { type: "completar-codigo", question: "Lanza el mensaje:", codeTemplate: "[BLOQUE]('FADE');", blocks: ["difundir", "imprimir", "recibir"], answer: "difundir" }] },
+                { id: 123, title: "C63: Radar Enemigo", steps: [{ type: "teoria", content: "Busca grupos por etiquetas.", code: "list = buscarTodosConTag(\"E\");" }, { type: "practica", question: "Si la longitud de 'buscarTodosConTag' es > 0, avisa:", answer: "enms = buscarTodosConTag('Enemigo'); si (enms.longitud > 0) { imprimir('CUIDADO'); }" }, { type: "opcion-multiple", question: "¿Qué propiedad da el tamaño de la lista?", options: [{ text: "longitud", correct: true }, { text: "tamano", correct: false }] }] },
+                { id: 124, title: "C64: Granada Arco", steps: [{ type: "teoria", content: "Físicas parabólicas.", code: "applyImpulse(nuevo Vector2(10,-15));" }, { type: "practica", question: "Crea 'granada' y dale un impulso (5, -10):", answer: "g = crear(granada); g.fisica.applyImpulse(nuevo Vector2(5, -10));" }, { type: "practica", question: "Aplica impulso de -5 en X:", answer: "fisica.applyImpulse(nuevo Vector2(-5, 0));" }] },
+                { id: 125, title: "C65: Buff Aliado", steps: [{ type: "teoria", content: "Modifica scripts de otros objetos.", code: "otro.obtenerScript(\"Mov\").vel = 600;" }, { type: "practica", question: "Obtén el script 'Vida' de 'otro' y pon vida en 100:", answer: "s = otro.obtenerScript('Vida'); s.vida = 100;" }, { type: "completar-codigo", question: "Consigue el script del otro:", codeTemplate: "variable s = otro.[BLOQUE]('Leyes');", blocks: ["obtenerScript", "verScript", "darScript"], answer: "obtenerScript" }] },
+                { id: 126, title: "C66: Bomba Área", steps: [{ type: "teoria", content: "Borrado masivo por Tag.", code: "para(i...) { destruir(lista[i]); }" }, { type: "practica", question: "Busca todas las 'Basura' y destruye la primera:", answer: "b = buscarTodosConTag('Basura'); destruir(b[0]);" }, { type: "practica", question: "Si la lista está vacía imprime 'LIMPIO':", answer: "si (b.longitud == 0) { imprimir('LIMPIO'); }" }] },
+                { id: 127, title: "C67: LookAt (Mirar)", steps: [{ type: "teoria", content: "Rotación automática hacia un punto.", code: "mirarA(objetivo.posicion);" }, { type: "practica", question: "Mira hacia la posición de 'Carl':", answer: "carl = buscar('Carl'); mirarA(carl.posicion);" }, { type: "practica", question: "Mira hacia el mouse:", answer: "mirarA(obtenerPosicionMouse());" }] },
+                { id: 128, title: "C68: Generar Terreno", steps: [{ type: "teoria", content: "Creación de niveles por código.", code: "para(x=0; x<10; x++) crear(b);" }, { type: "practica", question: "Crea 5 'suelo' separados por 100px en X:", answer: "para (variable i = 0; i < 5; i = i + 1) { s = crear(suelo); s.posicion.x = i * 100; }" }, { type: "opcion-multiple", question: "¿Para qué sirve el bucle en generación?", options: [{ text: "Para repetir la creación", correct: true }, { text: "Para borrar", correct: false }] }] },
+                { id: 129, title: "C69: Bomba Reloj", steps: [{ type: "teoria", content: "Contadores regresivos.", code: "cada(1) { t--; if(t==0) boom(); }" }, { type: "practica", question: "Resta 1 a 'cuenta' cada segundo:", answer: "cada(1) { cuenta = cuenta - 1; }" }, { type: "practica", question: "Si cuenta < 0 destruye el objeto:", answer: "si (cuenta < 0) { destruir(materia); }" }] },
+                {
+                    id: 130,
+                    title: "¡JEFE: Códigos Maestros 61-70!",
+                    isBoss: true,
+                    steps: [
+                        { type: "modo-debug", question: "RONDA 1: Error en la longitud de la lista:", codeLines: ["e = buscarTodosConTag('Enemigo');", "si (e.cantidad > 5) { difundir('HUIR'); }"], errorLine: 1, explanation: "Usa la propiedad '.longitud' para saber el tamaño.", solution: "si (e.longitud > 5) { difundir('HUIR'); }" },
+                        { type: "practica", question: "RONDA 2: Crea un arco parabólico con impulso (10, -20):", answer: "g = crear(bomba); g.fisica.applyImpulse(nuevo Vector2(10, -20));" },
+                        { type: "ordenar-bloques", question: "RONDA 3: Mira al jugador y cárgale el script 'Poder':", blocks: ["j = buscar('Jugador');", "mirarA(j.posicion);", "s = j.obtenerScript('Poder');", "s.valor = 999;"], answer: ["j = buscar('Jugador');", "mirarA(j.posicion);", "s = j.obtenerScript('Poder');", "s.valor = 999;"] },
+                        { type: "practica", question: "RONDA 4: Genera 10 bloques de suelo y espera 3 segundos:", answer: "para(i=0; i<10; i++) { crear(suelo); } esperar(3);" },
+                        { type: "practica", question: "RONDA FINAL: Cuenta atrás de 5s y explota al jefe.", answer: "cada(1) { t = t - 1; si(t <= 0) { destruir(materia); } }" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 14,
+            name: "Maestría: Códigos 71-80",
+            color: "#1A5276",
+            courses: [
+                { id: 131, title: "C71: Checkpoint", steps: [{ type: "teoria", content: "Guarda posiciones de reaparición.", code: "respawn = otro.posicion;" }, { type: "practica", question: "Si chocas con 'Bandera', guarda su posición:", answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Bandera')) { r = otro.posicion; } }" }, { type: "practica", question: "Si caes (Y > 1000) vuelve a la posición guardada:", answer: "si (posicion.y > 1000) { posicion = r; }" }] },
+                { id: 132, title: "C72: Puerta Llave", steps: [{ type: "teoria", content: "Condiciones de inventario.", code: "if(tag==\"Llave\") have=true;" }, { type: "practica", question: "Si chocas con 'Puerta' y tienes 'llave', destrúyela:", answer: "si (otro.tieneTag('Puerta') y llave) { destruir(otro); }" }, { type: "practica", question: "Al chocar con 'Llave', llave = verdadero y destruye otro:", answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Llave')) { llave = verdadero; destruir(otro); } }" }] },
+                { id: 133, title: "C73: Órbita Circular", steps: [{ type: "teoria", content: "Matemáticas de movimiento orbital.", code: "x = centro.x + cos(t) * r;" }, { type: "practica", question: "Usa coseno para X y seno para Y:", answer: "posicion.x = cos(tiempoJuego); posicion.y = seno(tiempoJuego);" }, { type: "opcion-multiple", question: "¿Qué funciones se usan para círculos?", options: [{ text: "tan / atan", correct: false }, { text: "cos / sen", correct: true }] }] },
+                { id: 134, title: "C74: Fase Furia", steps: [{ type: "teoria", content: "Cambio de estado por vida baja.", code: "si (vida < 50) color = \"#F00\";" }, { type: "practica", question: "Si vida < 20, imprime 'AGUR' y pon opacidad 1:", answer: "si (vida < 20) { imprimir('AGUR'); renderizadorDeSprite.opacity = 1; }" }, { type: "practica", question: "Si vida < 50, cambia color a rojo:", answer: "si (vida < 50) { renderizadorDeSprite.color = '#FF0000'; }" }] },
+                { id: 135, title: "C75: Música Combate", steps: [{ type: "teoria", content: "Control de banda sonora.", code: "audio.stop(); audio.play(boss);" }, { type: "practica", question: "Para la música y pon 'fuego' en bucle:", answer: "fuenteDeAudio.stop(); fuenteDeAudio.play(fuego); fuenteDeAudio.loop = verdadero;" }, { type: "practica", question: "Baja el volumen al nacer a 0.5:", answer: "alEmpezar() { fuenteDeAudio.volume = 0.5; }" }] },
+                { id: 136, title: "C76: Retroceso Fuego", steps: [{ type: "teoria", content: "Fuerzas opuestas al disparo.", code: "applyImpulse(nuevo Vector2(-5,0));" }, { type: "practica", question: "Impulso de -2 en X al disparar:", answer: "si (teclaRecienPresionada('f')) { fisica.applyImpulse(nuevo Vector2(-2, 0)); }" }, { type: "practica", question: "Aplica retroceso en Y positivo (hacia abajo):", answer: "si (teclaRecienPresionada('f')) { fisica.applyImpulse(nuevo Vector2(0, 5)); }" }] },
+                { id: 137, title: "C77: Regeneración", steps: [{ type: "teoria", content: "Sanación pasiva gradual.", code: "cada(2) { vida += 2; }" }, { type: "practica", question: "Suma 1 de vida cada segundo:", answer: "cada(1) { vida = vida + 1; }" }, { type: "practica", question: "Si vida > 100, vida = 100:", answer: "si (vida > 100) { vida = 100; }" }] },
+                { id: 138, title: "C78: IA Temerosa", steps: [{ type: "teoria", content: "Huir si el jugador se acerca.", code: "if (dist < 300) x -= 5;" }, { type: "practica", question: "Si distancia < 200, mueve X positivamente:", answer: "si (distancia(posicion, j.posicion) < 200) { posicion.x += 10; }" }, { type: "practica", question: "Si distancia < 100, salta:", answer: "si (distancia(posicion, j.posicion) < 100) { fisica.applyImpulse(nuevo Vector2(0, -10)); }" }] },
+                { id: 139, title: "C79: Sistema XP", steps: [{ type: "teoria", content: "Progreso de niveles RPG.", code: "xp += 10; if(xp>=100) lvl++;" }, { type: "practica", question: "Si 'puntos' >= 50, nivel = 2:", answer: "si (puntos >= 50) { nivel = 2; }" }, { type: "practica", question: "Al subir de nivel imprime 'LVL UP':", answer: "si (nivel > 1) { imprimir('LVL UP'); }" }] },
+                {
+                    id: 140,
+                    title: "¡JEFE: Códigos Maestros 71-80!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Si chocas con 'Pinchos', vuelve a 'checkpoint':", answer: "alEntrarEnColision(otro) { si (otro.tieneTag('Pinchos')) { posicion = checkpoint; } }" },
+                        { type: "completar-codigo", question: "RONDA 2: Orbita con coseno para X:", codeTemplate: "posicion.x = jefe.x + [BLOQUE](tiempo) * 300;", blocks: ["cos", "sen", "tan"], answer: "cos" },
+                        { type: "modo-debug", question: "RONDA 3: La música épica no suena:", codeLines: ["si (vida < 10) {", "  fuenteDeAudio.loop(epica);", "}"], errorLine: 1, explanation: "Usa 'play' para sonar el clip.", solution: "  fuenteDeAudio.play(epica);" },
+                        { type: "ordenar-bloques", question: "RONDA 4: Aplica retroceso al saltar:", blocks: ["si (teclaRecienPresionada('Space')) {", "  fisica.applyImpulse(nuevo Vector2(0, -10));", "}"], answer: ["si (teclaRecienPresionada('Space')) {", "  fisica.applyImpulse(nuevo Vector2(0, -10));", "}"] },
+                        { type: "practica", question: "RONDA FINAL: Si XP llega a 1000, nivel sube y el jefe muere.", answer: "si (xp >= 1000) { nivel = nivel + 1; destruir(jefe); }" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 15,
+            name: "Experto: Códigos 81-90",
+            color: "#F1C40F",
+            courses: [
+                { id: 141, title: "C81: Item Dinámico", steps: [{ type: "teoria", content: "Mensajería para recolección.", code: "alRecibir(\"OBJET\", (d) => ...)" }, { type: "practica", question: "Al recibir 'COGER', añade datos a 'mochila':", answer: "alRecibir('COGER', (datos) => { mochila.empujar(datos); });" }, { type: "practica", question: "Al nacer escucha 'BORRAR' y se autodestruye:", answer: "alEmpezar() { alRecibir('BORRAR', () => { destruir(materia); }); }" }] },
+                { id: 142, title: "C82: Persecución Lerp", steps: [{ type: "teoria", content: "IA fluida y orgánica.", code: "x = lerp(x, target.x, 0.02);" }, { type: "practica", question: "Sigue al jugador en X con lerp 0.05:", answer: "posicion.x = lerp(posicion.x, jugador.x, 0.05);" }, { type: "practica", question: "Sigue al mouse en Y con lerp 0.1:", answer: "posicion.y = lerp(posicion.y, obtenerPosicionMouse().y, 0.1);" }] },
+                { id: 143, title: "C83: Diálogo Páginas", steps: [{ type: "teoria", content: "Gestión de múltiples textos.", code: "text = book[page]; page++;" }, { type: "practica", question: "Si 'pagina' < 5, muestra texto y suma página:", answer: "si (pagina < 5) { textoUI.text = libro[pagina]; pagina = pagina + 1; }" }, { type: "practica", question: "Si pagina es 5, cierra el libro:", answer: "si (pagina == 5) { cerrarLibro(); }" }] },
+                { id: 144, title: "C84: Plataforma Fuga", steps: [{ type: "teoria", content: "Parkour temporal.", code: "wait(1); active = false;" }, { type: "practica", question: "Al chocar, espera 0.5s y desactiva:", answer: "alEntrarEnColision(otro) { esperar(0.5); estaActivado = falso; }" }, { type: "practica", question: "Al cabo de 2s se vuelve a activar:", answer: "esperar(2); estaActivado = verdadero;" }] },
+                { id: 145, title: "C85: Disparo Dirigido", steps: [{ type: "teoria", content: "Orientación de proyectiles.", code: "dir = flip ? -1 : 1; vel = 20 * dir;" }, { type: "practica", question: "Si voltearH, velocidad es -50, sino 50:", answer: "variable v = voltearH ? -50 : 50; b.fisica.velocity.x = v;" }, { type: "modo-debug", question: "Corrige el disparo a la izquierda:", codeLines: ["v = voltearH ? 50 : -50;"], errorLine: 0, explanation: "Si volteas (miras izquierda), la velocidad debe ser negativa.", solution: "v = voltearH ? -50 : 50;" }] },
+                { id: 146, title: "C86: Spawner Tiempo", steps: [{ type: "teoria", content: "Nacimiento aleatorio rítmico.", code: "cada(wait) { crear(enemy); }" }, { type: "practica", question: "Cada 5s crea 'zombi' en X aleatoria:", answer: "cada(5) { z = crear(zombi); z.posicion.x = azar(-100, 100); }" }, { type: "practica", question: "Cada segundo crea 'bala' en Y aleatoria:", answer: "cada(1) { b = crear(bala); b.posicion.y = azar(0, 500); }" }] },
+                { id: 147, title: "C87: Volumen Maestro", steps: [{ type: "teoria", content: "Control dinámico de decibelios.", code: "audio.volume = newVol;" }, { type: "practica", question: "Pon el volumen de audio en 0.8:", answer: "fuenteDeAudio.volume = 0.8;" }, { type: "practica", question: "Mutea el audio (0):", answer: "fuenteDeAudio.volume = 0;" }] },
+                { id: 148, title: "C88: Recibir Golpe", steps: [{ type: "teoria", content: "Combate con retroceso y color.", code: "color = \"#F00\"; applyImpulse(dir);" }, { type: "practica", question: "Resta 10 de vida y pon color rojo:", answer: "vida = vida - 10; renderizadorDeSprite.color = '#FF0000';" }, { type: "practica", question: "Aplica retroceso en X positivo:", answer: "fisica.applyImpulse(nuevo Vector2(5, 0));" }] },
+                { id: 149, title: "C89: Switch Héroe", steps: [{ type: "teoria", content: "Cambio de personajes activos.", code: "p1.active = !p1.active; p2.active = !p2.active;" }, { type: "practica", question: "Al pulsar 'Tab', alterna 'p1' y 'p2':", answer: "si (teclaRecienPresionada('Tab')) { p1.estaActivado = !p1.estaActivado; p2.estaActivado = !p2.estaActivado; }" }, { type: "practica", question: "Si p1 está activo imprime 'Carl':", answer: "si (p1.estaActivado) { imprimir('Carl'); }" }] },
+                {
+                    id: 150,
+                    title: "¡JEFE: Códigos Maestros 81-90!",
+                    isBoss: true,
+                    steps: [
+                        { type: "completar-codigo", question: "RONDA 1: Interpola tu X hacia el jefe:", codeTemplate: "posicion.x = [BLOQUE](posicion.x, jefe.x, 0.1);", blocks: ["lerp", "mover", "suave"], answer: "lerp" },
+                        { type: "practica", question: "RONDA 2: Si el jefe choca contigo, resta 20 vida:", answer: "alEntrarEnColision(otro) { si (otro.tieneTag('Jefe')) { vida = vida - 20; } }" },
+                        { type: "modo-debug", question: "RONDA 3: El disparo condicional falla:", codeLines: ["v = voltearH ? 20 : -20;", "b.fisica.velocity.x = v;"], errorLine: 0, explanation: "Si voltearH es cierto (mira a la izquierda), la velocidad debe ser negativa.", solution: "v = voltearH ? -20 : 20;" },
+                        { type: "ordenar-bloques", question: "RONDA 4: Alterna héroes con 'Tab':", blocks: ["si (teclaRecienPresionada('Tab')) {", "  p1.estaActivado = !p1.estaActivado;", "  p2.estaActivado = !p2.estaActivado;", "}"], answer: ["si (teclaRecienPresionada('Tab')) {", "  p1.estaActivado = !p1.estaActivado;", "  p2.estaActivado = !p2.estaActivado;", "}"] },
+                        { type: "practica", question: "RONDA FINAL: Cada 3s crea un 'súbdito' y pon volumen música en 1.0.", answer: "cada(3) { crear(subdito); } fuenteDeAudio.volume = 1.0;" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 16,
+            name: "Experto: Códigos 91-100",
+            color: "#C70039",
+            courses: [
+                { id: 151, title: "C91: Coche Top-Down", steps: [{ type: "teoria", content: "Uso de APIs especializadas.", code: "vehiculo.acelerar();" }, { type: "practica", question: "Si pulsas 'w' acelera el coche:", answer: "si (teclaPresionada('w')) { controladorVehiculoTopDown.acelerar(); }" }, { type: "practica", question: "Frena con 's':", answer: "si (teclaPresionada('s')) { controladorVehiculoTopDown.frenar(); }" }] },
+                { id: 152, title: "C92: Flotación Agua", steps: [{ type: "teoria", content: "Física de fluidos.", code: "gravityScale = 0.2;" }, { type: "practica", question: "Al entrar en trigger 'Agua', gravedad 0.3:", answer: "alEntrarEnTrigger(otro) { si (otro.tieneTag('Agua')) { fisica.gravityScale = 0.3; } }" }, { type: "practica", question: "Al salir de 'Agua', gravedad 1.0:", answer: "alSalirDeTrigger(otro) { si (otro.tieneTag('Agua')) { fisica.gravityScale = 1; } }" }] },
+                { id: 153, title: "C93: Menú Pausa", steps: [{ type: "teoria", content: "Control de flujo de UI.", code: "menu.active = !menu.active;" }, { type: "practica", question: "Si pulsas 'Escape', alterna 'panel':", answer: "si (teclaRecienPresionada('Escape')) { panel.estaActivado = !panel.estaActivado; }" }, { type: "practica", question: "Si el panel está activo, tiempoEscala = 0:", answer: "si (panel.estaActivado) { tiempoEscala = 0; }" }] },
+                { id: 154, title: "C94: Raycast Avanzado", steps: [{ type: "teoria", content: "Detección direccional precisa.", code: "hit = lanzarRayo(pos, dir, 400);" }, { type: "practica", question: "Lanza rayo de 400px y si choca ataca:", answer: "h = lanzarRayo(posicion, direccion, 400); si (h != nulo) { atacar(); }" }, { type: "practica", question: "Dibuja el rayo para depurar:", answer: "dibujarRayo(posicion, direccion, 400);" }] },
+                { id: 155, title: "C95: Cinemática IK", steps: [{ type: "teoria", content: "Movimiento de huesos y brazos.", code: "gestorIK.target = obj.id;" }, { type: "practica", question: "Pon el target del IK en 'mano.id':", answer: "gestorIK2D.target = mano.id;" }, { type: "opcion-multiple", question: "¿Qué hace el IK?", options: [{ text: "Calcula ángulos de articulaciones", correct: true }, { text: "Cambia el color", correct: false }] }] },
+                { id: 156, title: "C96: Vuelo Helicóptero", steps: [{ type: "teoria", content: "Física de sustentación.", code: "heli.potencia += 10;" }, { type: "practica", question: "Suma 10 a potenciaMotor si pulsas 'w':", answer: "si (teclaPresionada('w')) { controladorDeHelicoptero.potenciaMotor += 10; }" }, { type: "practica", question: "Resta 5 a potenciaMotor con 's':", answer: "si (teclaPresionada('s')) { controladorDeHelicoptero.potenciaMotor -= 5; }" }] },
+                { id: 157, title: "C97: HP Jefe Dinámico", steps: [{ type: "teoria", content: "Vinculación de datos a barras UI.", code: "uiBar.val = boss.hp;" }, { type: "practica", question: "Actualiza 'uiBarra' con la vida del jefe:", answer: "uiBarra.valor = jefe.vida;" }, { type: "practica", question: "Pon el color de la barra en verde:", answer: "uiBarra.color = '#00FF00';" }] },
+                { id: 158, title: "C98: Optimización FPS", steps: [{ type: "teoria", content: "Control de rendimiento.", code: "alBajoRendimiento(nivel) { ... }" }, { type: "practica", question: "Si nivel >= 2 desactiva 'particulas':", answer: "alBajoRendimiento(nivel) { si (nivel >= 2) { particulas.estaActivado = falso; } }" }, { type: "practica", question: "Si nivel == 3 desactiva 'luces':", answer: "si (nivel == 3) { luces.estaActivado = falso; }" }] },
+                { id: 159, title: "C99: Tienda Oro", steps: [{ type: "teoria", content: "Sistemas económicos.", code: "if(oro >= price) { oro -= price; buy(); }" }, { type: "practica", question: "Si oro >= 100, resta 100 y crea 'item':", answer: "si (oro >= 100) { oro = oro - 100; crear(item); }" }, { type: "practica", question: "Al nacer pon oro en 500:", answer: "alEmpezar() { oro = 500; }" }] },
+                {
+                    id: 160,
+                    title: "¡JEFE FINAL: El Maestro del Libro!",
+                    isBoss: true,
+                    steps: [
+                        { type: "practica", question: "RONDA 1: Conecta al motor, saluda y prepara tu escudo (booleano):", answer: "ve motor; alEmpezar() { imprimir('LISTO'); escudo = verdadero; }" },
+                        { type: "completar-codigo", question: "RONDA 2: El jefe dispara cada 0.8s. ¡Refleja!", codeTemplate: "[BLOQUE](0.8) { reflejar(); }", blocks: ["cada", "esperar", "si"], answer: "cada" },
+                        { type: "practica", question: "RONDA 3: Si la distancia es < 100, aplica un impulso de escape de 20:", answer: "si (distancia(posicion, jefe.posicion) < 100) { fisica.applyImpulse(nuevo Vector2(-20, 0)); }" },
+                        { type: "modo-debug", question: "RONDA 4: La música de fase 2 falla:", codeLines: ["si (vida < 50) {", "  fuenteDeAudio.stop(fase2);", "}"], errorLine: 1, explanation: "Debes usar 'play' para sonar, no 'stop'.", solution: "  fuenteDeAudio.play(fase2);" },
+                        { type: "ordenar-bloques", question: "RONDA 5: Ataca al jefe en cada frame con 'z':", blocks: ["alActualizar(delta) {", "  si (teclaPresionada('z')) {", "    atacar();", "  }", "}"], answer: ["alActualizar(delta) {", "  si (teclaPresionada('z')) {", "    atacar();", "  }", "}"] },
+                        { type: "practica", question: "RONDA 6: Genera una explosión de 50 partículas al ganar:", answer: "para (i=0; i<50; i=i+1) { crear(particula); }" },
+                        { type: "practica", question: "RONDA FINAL: Difundir 'LIBRO_COMPLETADO', esperar 5s y cargar 'Graduacion'.", answer: "difundir('LIBRO_COMPLETADO'); esperar(5); cargarEscena('Graduacion');" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: 17,
             name: "EXAMEN DE CERTIFICACIÓN",
             color: "gold",
             courses: [
                 {
-                    id: 101,
-                    title: "Teoría: El Ecosistema CES",
+                    id: 161,
+                    title: "Examen: Parte I (Básico)",
                     steps: [
-                        {
-                            type: "opcion-multiple",
-                            question: "Para que un script funcione en Creative Engine, ¿cuál es la primera línea obligatoria?",
-                            options: [
-                                { text: "variable script;", correct: false },
-                                { text: "ve motor;", correct: true },
-                                { text: "iniciar motor;", correct: false }
-                            ]
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "Si quieres buscar un objeto específico en la escena, usas:",
-                            options: [
-                                { text: "buscar(\"nombre\");", correct: true },
-                                { text: "encontrar(\"nombre\");", correct: false },
-                                { text: "variable x = \"nombre\";", correct: false }
-                            ]
-                        }
+                        { type: "opcion-multiple", question: "1. ¿Qué instrucción conecta el script al motor?", options: [{ text: "engine start;", correct: false }, { text: "ve motor;", correct: true }, { text: "link engine;", correct: false }] },
+                        { type: "opcion-multiple", question: "2. ¿Cómo se define una variable para el Inspector?", options: [{ text: "variable x;", correct: false }, { text: "publico x;", correct: true }, { text: "inspector x;", correct: false }] },
+                        { type: "practica", question: "3. Escribe una variable pública llamada 'salud' con valor 100:", answer: "publico numero salud = 100;" },
+                        { type: "completar-codigo", question: "4. Completa la condición:", codeTemplate: "[BLOQUE] (vida <= 0) { morir(); }", blocks: ["si", "mientras", "para"], answer: "si" },
+                        { type: "practica", question: "5. Imprime el mensaje 'TEST' en consola:", answer: "imprimir('TEST');" }
                     ]
                 },
                 {
-                    id: 102,
-                    title: "Práctica: Arquitectura y Capas",
+                    id: 162,
+                    title: "Examen: Parte II (Intermedio)",
                     steps: [
-                        {
-                            type: "completar-codigo",
-                            question: "Pon un objeto en la Sorting Layer más profunda (fondo):",
-                            codeTemplate: "Sorting Layer: [BLOQUE]",
-                            blocks: ["-100", "0", "100"],
-                            answer: "-100"
-                        },
-                        {
-                            type: "opcion-multiple",
-                            question: "Si movemos a un objeto 'Padre', ¿qué sucede con su 'Hijo'?",
-                            options: [
-                                { text: "Se queda quieto", correct: false },
-                                { text: "Lo sigue automáticamente", correct: true },
-                                { text: "Se destruye", correct: false }
-                            ]
-                        }
+                        { type: "opcion-multiple", question: "6. ¿Qué evento ocurre en cada frame?", options: [{ text: "alEmpezar", correct: false }, { text: "alActualizar", correct: true }, { text: "alChocar", correct: false }] },
+                        { type: "practica", question: "7. Mueve el objeto 10 unidades en Y cada frame:", answer: "alActualizar(delta) { posicion.y = posicion.y + 10; }" },
+                        { type: "practica", question: "8. Detecta si pulsas la tecla 'Space' recién:", answer: "si (teclaRecienPresionada('Space'))" },
+                        { type: "modo-debug", question: "9. Corrige la creación de un objeto:", codeLines: ["hacer_objeto(bala);"], errorLine: 0, explanation: "Usa el comando 'crear()'.", solution: "crear(bala);" },
+                        { type: "ordenar-bloques", question: "10. Ordena el bucle para crear 5 aliados:", blocks: ["para (i=0; i<5; i++) {", "  crear(aliado);", "}"], answer: ["para (i=0; i<5; i++) {", "  crear(aliado);", "}"] }
                     ]
                 },
                 {
-                    id: 103,
-                    title: "Desafío de Física y Sensores",
+                    id: 163,
+                    title: "Examen: Parte III (Avanzado)",
                     steps: [
-                        {
-                            type: "modo-debug",
-                            question: "Encuentra el error en el sistema de detección invisible (Trigger):",
-                            codeLines: ["Rigidbody2D.gravityScale = 0;", "Is Trigger = falso;", "alEntrarEnTrigger(otro) { ... }"],
-                            errorLine: 1,
-                            explanation: "Para que un sensor funcione, 'Is Trigger' debe ser verdadero.",
-                            solution: "Is Trigger = verdadero;"
-                        },
-                        {
-                            type: "completar-codigo",
-                            question: "Aplica un impulso de salto potente usando la API correcta:",
-                            codeTemplate: "fisica.[BLOQUE](nuevo Vector2(0, -15));",
-                            blocks: ["applyImpulse", "salto", "posicion"],
-                            answer: "applyImpulse"
-                        }
+                        { type: "practica", question: "11. Calcula la distancia entre 'materia' y 'objetivo':", answer: "distancia(posicion, objetivo.posicion)" },
+                        { type: "practica", question: "12. Si la distancia es < 100, destruye 'materia':", answer: "si (distancia(posicion, obj.posicion) < 100) { destruir(materia); }" },
+                        { type: "completar-codigo", question: "13. Emite una señal global:", codeTemplate: "[BLOQUE]('GANAR');", blocks: ["difundir", "imprimir", "enviar"], answer: "difundir" },
+                        { type: "practica", question: "14. Escucha el mensaje 'ABRIR' y abre la puerta:", answer: "alRecibir('ABRIR', () => { abrir(); });" },
+                        { type: "practica", question: "15. Aplica un impulso físico hacia arriba (Vector2):", answer: "fisica.applyImpulse(nuevo Vector2(0, -10));" }
+                    ]
+                },
+                {
+                    id: 164,
+                    title: "Examen: Parte IV (Arquitectura)",
+                    steps: [
+                        { type: "modo-debug", question: "16. Encuentra el error de sintaxis:", codeLines: ["alEmpezar() {", "  vida = 100", "}"], errorLine: 1, explanation: "Falta el punto y coma final.", solution: "  vida = 100;" },
+                        { type: "practica", question: "17. Interpola la posición X hacia 500 con suavidad 0.1:", answer: "posicion.x = lerp(posicion.x, 500, 0.1);" },
+                        { type: "practica", question: "18. Crea una 'bomba' y espera 3 segundos para destruirla:", answer: "b = crear(bomba); esperar(3); destruir(b);" },
+                        { type: "practica", question: "19. Script Completo: Conecta motor, variable pública 'fuerza', y al nacer imprime 'OK':", answer: "ve motor; publico numero fuerza = 10; alEmpezar() { imprimir('OK'); }" },
+                        { type: "practica", question: "20. Lógica Final: Si tienes oro >= 10 y pulsas 'b', compra item:", answer: "si (oro >= 10 y teclaRecienPresionada('b')) { oro = oro - 10; crear(item); }" }
                     ]
                 }
             ]
         }
     ]
 };
-
-// Procedural generation for the remaining 70 courses
-for (let i = 3; i < window.courseData.stages.length; i++) {
-    const stage = window.courseData.stages[i];
-    if (stage.courses.length === 0) {
-        for (let j = 1; j <= 10; j++) {
-            const courseId = (i * 10) + j;
-            stage.courses.push({
-                id: courseId,
-                title: `Módulo ${courseId}: Avanzando en ${stage.name}`,
-                steps: [
-                    {
-                        type: "teoria",
-                        content: `Bienvenido al módulo ${courseId}. En esta lección profundizaremos en conceptos avanzados de ${stage.name}.`,
-                        code: `// Módulo ${courseId} en desarrollo\nve motor;`
-                    },
-                    {
-                        type: "practica",
-                        question: "¿Estás listo para continuar?",
-                        answer: "si"
-                    }
-                ]
-            });
-        }
-    }
-}

@@ -198,6 +198,142 @@
             box-shadow: 0 0 15px rgba(126, 217, 87, 0.2);
         }
 
+        /* Mini Code Editor UI */
+        .mini-editor-container {
+            display: flex;
+            background: #050505;
+            border: 2px solid #222;
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            transition: all 0.3s;
+            position: relative;
+            min-height: 120px;
+        }
+
+        .autocomplete-box {
+            position: absolute;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            min-width: 150px;
+        }
+
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #ccc;
+            border-bottom: 1px solid #222;
+            transition: all 0.2s;
+        }
+
+        .suggestion-item:hover, .suggestion-item.active {
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .mini-editor-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(126, 217, 87, 0.15);
+        }
+
+        .editor-line-numbers {
+            padding: 18px 10px;
+            background: #0f0f0f;
+            color: #444;
+            text-align: right;
+            user-select: none;
+            font-size: 1rem;
+            border-right: 1px solid #222;
+            min-width: 35px;
+            line-height: 1.5;
+            pointer-events: none;
+        }
+
+        .line-error {
+            background: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        .editor-textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 18px;
+            color: transparent;
+            caret-color: #fff;
+            font-family: inherit;
+            font-size: 1.1rem;
+            outline: none;
+            resize: none;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+            tab-size: 4;
+            position: relative;
+            z-index: 2;
+        }
+
+        .editor-highlighter {
+            position: absolute;
+            top: 0;
+            left: 55px; /* width of line numbers + margin */
+            right: 0;
+            bottom: 0;
+            padding: 18px;
+            pointer-events: none;
+            font-family: inherit;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            white-space: pre;
+            overflow: hidden;
+            z-index: 1;
+            color: #ccc;
+        }
+
+        .hl-keyword { color: #ff79c6; font-weight: bold; }
+        .hl-string { color: #f1fa8c; }
+        .hl-comment { color: #6272a4; font-style: italic; }
+        .hl-number { color: #bd93f9; }
+        .hl-function { color: #50fa7b; }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+            background: #111;
+            border-bottom: 1px solid #222;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .editor-toolbar::-webkit-scrollbar { display: none; }
+
+        .toolbar-btn {
+            background: #222;
+            border: 1px solid #333;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .toolbar-btn:active { background: var(--primary); color: #000; }
+
+        .editor-textarea::placeholder {
+            color: #333;
+        }
+
         .btn-main {
             background: var(--primary);
             color: #000;
@@ -719,7 +855,16 @@
         <div class="credits-display">
             <i data-lucide="coins"></i> <span id="user-credits">0</span>
         </div>
-        <button class="icon-btn" onclick="openShop()" style="margin-left: 20px;" title="Tienda de Skins">
+        <button class="icon-btn" onclick="showCodeIndex()" style="margin-left: 20px;" title="Índice de Códigos">
+            <i data-lucide="list"></i>
+        </button>
+        <button class="icon-btn" onclick="showTrophyModal()" style="margin-left: 15px;" title="Galería de Trofeos">
+            <i data-lucide="award"></i>
+        </button>
+        <button class="icon-btn" onclick="showRankingModal()" style="margin-left: 15px;" title="Ranking de Maestros">
+            <i data-lucide="trophy"></i>
+        </button>
+        <button class="icon-btn" onclick="openShop()" style="margin-left: 15px;" title="Tienda de Skins">
             <i data-lucide="shopping-bag"></i>
         </button>
 
@@ -897,6 +1042,15 @@
 
         <!-- Map View -->
         <div id="map-view">
+            <!-- Course Ad Unit: Map Bottom -->
+            <div id="course-map-ad" style="margin-top: 100px; text-align: center; position: relative; z-index: 100;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-9270161527829251"
+                     data-ad-slot="6345892107"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
             <div id="character">
                 <div class="char-body">
                     <div class="char-eye"></div>
@@ -928,10 +1082,15 @@
             <div style="display:flex; justify-content: space-between; align-items: flex-start; margin-bottom:40px; gap: 20px;">
                 <div>
                     <h2 id="lesson-title" style="font-size: 2.5rem; margin:0; color:var(--primary); font-weight: 900;"></h2>
-                    <div class="lives-container" id="lives-display">
-                        <i data-lucide="heart" class="heart"></i>
-                        <i data-lucide="heart" class="heart"></i>
-                        <i data-lucide="heart" class="heart"></i>
+                    <div style="display:flex; gap:30px; align-items:center;">
+                        <div class="lives-container" id="lives-display">
+                            <i data-lucide="heart" class="heart"></i>
+                            <i data-lucide="heart" class="heart"></i>
+                            <i data-lucide="heart" class="heart"></i>
+                        </div>
+                        <div id="boss-hearts" class="lives-container hidden" style="background: rgba(255,0,0,0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255,0,0,0.2);">
+                            <!-- Boss skulls injected here -->
+                        </div>
                     </div>
                 </div>
                 <div style="display:flex; gap:10px;">
@@ -964,9 +1123,20 @@
                 <pre id="lesson-code" style="margin:0;"></pre>
             </div>
 
+            <!-- Ad Unit inside Lesson: Below code -->
+            <div id="lesson-ad" class="hidden" style="margin: 2rem 0; text-align: center;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-9270161527829251"
+                     data-ad-slot="6345892107"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
             <div class="practice-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
                     <span id="practice-status" class="practice-tag" style="padding: 6px 18px; border-radius: 30px; font-weight:900; font-size:0.75rem; color: #000; background: var(--secondary);">APRENDIENDO</span>
+                    <span id="step-counter" style="font-weight: 800; font-size: 0.8rem; opacity: 0.9; color: var(--primary); background: rgba(126, 217, 87, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(126, 217, 87, 0.2);">Paso 1 de 3</span>
                 </div>
 
                 <h3 id="practice-question" style="font-size: 1.6rem; margin-bottom:35px; font-weight: 700;"></h3>

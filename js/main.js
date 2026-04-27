@@ -2979,6 +2979,28 @@ function initializeTranslations() {
         policyContent.textContent = translations[savedLang]["privacy-modal-desc"] || translations["es"]["privacy-modal-desc"];
     }
 
+    // Centralized AdSense Logic
+    window.safeAdPush = () => {
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.log("AdSense pending...");
+        }
+    };
+
+    // Auto-init visible ads
+    const initVisibleAds = () => {
+        const ads = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
+        ads.forEach(ad => {
+            const rect = ad.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                window.safeAdPush();
+            }
+        });
+    };
+    window.addEventListener('scroll', initVisibleAds);
+    setTimeout(initVisibleAds, 2000); // Initial check after load
+
     // Ad button logic (Handles both internal pages and index.html)
     const setupAdButton = () => {
         const adBtn = document.getElementById('ce-ad-btn');
@@ -2988,12 +3010,7 @@ function initializeTranslations() {
                 e.preventDefault();
                 if (adContainer.classList.contains('hidden')) {
                     adContainer.classList.remove('hidden');
-                    // Push the ad unit only after it becomes visible to ensure proper size calculation
-                    try {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    } catch (err) {
-                        console.log("AdSense push waiting for site approval...");
-                    }
+                    window.safeAdPush();
                 }
                 adContainer.scrollIntoView({ behavior: 'smooth' });
             };
