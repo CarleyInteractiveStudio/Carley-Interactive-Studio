@@ -5,6 +5,7 @@
 const WHITELISTED_DOMAINS = [
     'carleyengine.com',
     'creativegame.online',
+    'creativegames.online',
     'carleystudio.com',
     'carleyinteractivestudio.github.io',
     'localhost' // For development
@@ -17,6 +18,11 @@ const CLIENT_CONFIGS = {
         msg: 'No tomará mucho tiempo, ingresa tus datos para acceder a Creative Engine.'
     },
     'creativegame.online': {
+        name: 'Creative Games',
+        logo: 'carley_foto_web/Creative_Games_Logo.png',
+        msg: 'Ingresa tus datos para jugar en Creative Games sin límites.'
+    },
+    'creativegames.online': {
         name: 'Creative Games',
         logo: 'carley_foto_web/Creative_Games_Logo.png',
         msg: 'Ingresa tus datos para jugar en Creative Games sin límites.'
@@ -177,14 +183,15 @@ function handleSSOSuccess(session) {
     try {
         const redirectUrl = new URL(returnUrl);
         // Security check: only redirect to whitelisted domains
+        const targetHostname = redirectUrl.hostname.toLowerCase();
         const isWhitelisted = WHITELISTED_DOMAINS.some(domain =>
-            redirectUrl.hostname === domain || redirectUrl.hostname.endsWith('.' + domain)
+            targetHostname === domain.toLowerCase() || targetHostname.endsWith('.' + domain.toLowerCase())
         );
 
         if (!isWhitelisted) {
-            console.error('Redirección bloqueada: Dominio no autorizado', redirectUrl.hostname);
-            showError('Dominio no autorizado para inicio de sesión seguro.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 3000);
+            console.error('Redirección bloqueada: Dominio no autorizado', targetHostname);
+            showError('Dominio no autorizado para inicio de sesión seguro: ' + targetHostname);
+            setTimeout(() => { window.location.href = 'index.html'; }, 5000);
             return;
         }
 
