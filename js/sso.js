@@ -6,6 +6,7 @@ const WHITELISTED_DOMAINS = [
     'carleyengine.com',
     'creativegame.online',
     'carleystudio.com',
+    'carleyinteractivestudio.github.io',
     'localhost' // For development
 ];
 
@@ -24,6 +25,11 @@ const CLIENT_CONFIGS = {
         name: 'Carley Studio',
         logo: 'carley_foto_web/Logo_C.png',
         msg: 'No tomará mucho tiempo, ingresa tus datos aquí.'
+    },
+    'carleyinteractivestudio.github.io': {
+        name: 'VidSpri',
+        logo: 'carley_foto_web/VidSpri_Logo_New.png',
+        msg: 'Inicia sesión para tener acceso a más funciones en VidSpri.'
     },
     'localhost': {
         name: 'Local Dev Site',
