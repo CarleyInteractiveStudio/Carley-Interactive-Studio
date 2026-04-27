@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donaciones - Carley Interactive Studio</title>
+    <meta name="description" content="Apoya a Carley Interactive Studio. Ayúdanos a mantener nuestras herramientas gratuitas para todos.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carleystudio.com/donaciones.html">
+    <meta property="og:title" content="Donaciones - Carley Studio">
+    <meta property="og:description" content="Tu apoyo nos ayuda a seguir creando herramientas gratuitas para la comunidad.">
+    <meta property="og:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carleystudio.com/donaciones.html">
+    <meta property="twitter:title" content="Donaciones - Carley Studio">
+    <meta property="twitter:description" content="Tu apoyo nos ayuda a seguir creando herramientas gratuitas para la comunidad.">
+    <meta property="twitter:image" content="https://carleystudio.com/carley_foto_web/Logo_C.png">
+
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
+    <style>
+        .donate-page {
+            max-width: 1000px;
+            margin: 8rem auto 4rem;
+            padding: 0 2rem;
+        }
+        .donate-hub-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hub-controls {
+            display: flex;
+            gap: 15px;
+        }
+        .hub-select {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+        .hub-select option {
+            background: #111;
+        }
+        .donor-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .donor-card:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .donor-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .donor-pfp {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .donor-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .donor-app {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            display: block;
+        }
+        .donor-amount-area {
+            text-align: right;
+        }
+        .donor-amount {
+            color: #25d366;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: block;
+        }
+        .donor-percentage {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            opacity: 0.5;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+        }
+        .hidden { display: none !important; }
+        .cta-hub {
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="engine-body">
+
+    <header class="glass-header">
+        <div class="header-content">
+            <a href="index.html" class="logo-area">
+                <img src="carley_foto_web/Logo_C.png" alt="C" class="logo-c">
+                <div class="logo-name-wrapper">
+                    <span class="logo-name">Carley Interactive Studio</span>
+                </div>
+            </a>
+            <div class="nav-controls">
+                <select id="lang-picker" class="lang-picker">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="it">🇮🇹 IT</option>
+                    <option value="ja">🇯🇵 JA</option>
+                    <option value="sw">🇹🇿 SW</option>
+                </select>
+                <a href="cuenta.html" class="icon-btn">
+                    <i data-lucide="user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="donate-page">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 1rem;" data-i18n="footer-donations">Donaciones</h1>
+            <p class="ce-text" data-i18n="donate-intro-msg">Estás aportando a que otros puedan usar nuestra app y motor de forma gratuita.</p>
+        </div>
+
+        <div class="donate-hub-header" style="position: sticky; top: 70px; background: var(--bg); z-index: 100; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <h2 class="ce-subtitle" style="margin: 0; font-size: 1.5rem;" data-i18n="list-title">Nuestros Colaboradores</h2>
+
+            <div class="hub-controls">
+                <div class="control-group">
+                    <label style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block;">Filtrar App</label>
+                    <select id="filter-app" class="hub-select">
+                        <option value="all">Todas las Apps</option>
+                        <option value="CE">Creative Engine</option>
+                        <option value="VS">Vid Spri</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label style="font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; display: block;">Ordenar por</label>
+                    <select id="sort-order" class="hub-select">
+                        <option value="desc">Más donó</option>
+                        <option value="asc">Menos donó</option>
+                        <option value="newest">Más reciente</option>
+                        <option value="oldest">Más antiguo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="donors-hub-container">
+            <!-- Donor cards will be rendered here -->
+            <div class="empty-state">Cargando donadores...</div>
+        </div>
+
+        <div style="margin-top: 4rem; text-align: center;">
+            <p class="ce-text small" style="margin-bottom: 2rem;">¿Quieres apoyar uno de nuestros proyectos?</p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <button class="cta-button" onclick="openDonationFlow('CE')">Apoyar Creative Engine</button>
+                <button class="cta-button" onclick="openDonationFlow('VS')">Apoyar Vid Spri</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 4rem; text-align: center;">
+            <a href="index.html" class="cta-button outline" style="text-decoration: none;" data-i18n="btn-back-home">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <!-- Donation Flow Modal (Used when called from project pages via query params or direct triggers) -->
+    <div id="donation-flow-modal" class="modal-overlay hidden">
+        <div class="studio-modal" style="text-align: center; padding: 2rem; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <h2 class="ce-subtitle" style="margin-top: 0;"><span data-i18n="support-action-title">Apoyar</span> <span id="app-target-name"></span></h2>
+            <p class="ce-text small" style="margin-bottom: 1.5rem;">Tu contribución ayuda a mantener esta app 100% gratuita.</p>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; opacity: 0.7;">Monto de donación (USD)</label>
+                <input type="number" id="donation-amount" value="10.00" min="1" step="0.01" class="acc-input" style="text-align: center; max-width: 150px; margin: 0 auto;">
+            </div>
+
+            <div id="paypal-button-container" style="margin-bottom: 2rem;"></div>
+
+            <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 12px; margin-bottom: 2rem;">
+                <label style="display: flex; gap: 10px; font-size: 0.8rem; align-items: center; cursor: pointer;">
+                    <input type="checkbox" id="join-donor-list" checked>
+                    <span>Unirse a la lista pública de donantes</span>
+                </label>
+            </div>
+
+            <button class="modal-btn outline" onclick="closeDonationFlow()">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- PayPal SDK con Client ID de Producción -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AfVIjGK6iO9MzwSlWUfTfE7ghjq-U0lnwPE9qHHXf0WBaqFEz-5xE39MlQKZIMwkjYt37SlnUKiT-mDW&currency=USD"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Check for direct donation trigger from URL
+        window.addEventListener('load', () => {
+            const params = new URLSearchParams(window.location.search);
+            const donateTo = params.get('donate');
+            if (donateTo) {
+                if (typeof openDonationFlow === 'function') openDonationFlow(donateTo);
+            }
+        });
+
+        // Initialize Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>

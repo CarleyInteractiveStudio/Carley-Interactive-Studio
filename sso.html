@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Carley Studio SSO</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon" type="image/png" href="carley_foto_web/Logo_C.png">
+    <style>
+        .sso-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            padding: 2rem;
+        }
+        .sso-card {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+        }
+        .client-logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .client-logo {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+        .sso-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .sso-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-bottom: 2rem;
+        }
+        .sso-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sso-tab {
+            flex: 1;
+            padding: 0.8rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .sso-tab.active {
+            opacity: 1;
+            border-bottom-color: var(--accent);
+        }
+        .form-section { display: none; text-align: left; }
+        .form-section.active { display: block; }
+
+        /* Active session profile */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+        }
+        .sso-pfp {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .profile-info h3 { font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .profile-info p { font-size: 0.8rem; opacity: 0.5; }
+
+        .input-group { margin-bottom: 1.2rem; }
+        .input-group label { display: block; font-size: 0.8rem; opacity: 0.6; margin-bottom: 0.5rem; }
+        .sso-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.9rem 1.2rem;
+            color: white;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .sso-input:focus { border-color: var(--accent); }
+        .sso-btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 1rem;
+        }
+        .sso-btn.primary { background: white; color: black; }
+        .sso-btn:active { transform: scale(0.98); }
+
+        #sso-loading-overlay {
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="sso-loading-overlay" class="hidden">
+        <div class="spinner"></div>
+        <p id="loading-text" data-i18n="sso-loading">Iniciando sesión segura...</p>
+        <div id="manual-redirect-area" class="hidden" style="margin-top: 2rem; color: white; text-align: center;">
+            <p data-i18n="sso-manual-msg">Si no eres redirigido automáticamente, haz clic aquí:</p>
+            <a id="manual-redirect-link" href="#" style="color: var(--accent); text-decoration: underline; font-weight: bold; display: block; margin-top: 1rem;" data-i18n="sso-manual-link">Volver al sitio</a>
+        </div>
+    </div>
+
+    <div class="sso-page">
+        <div class="sso-card">
+            <div class="client-logo-area">
+                <img id="requesting-client-logo" src="carley_foto_web/Logo_C.png" class="client-logo">
+                <h1 class="sso-title" id="requesting-client-name">Carley Studio</h1>
+            </div>
+
+            <p class="sso-subtitle" id="sso-custom-msg">No tomará mucho tiempo, ingresa tus datos aquí.</p>
+
+            <!-- Active Session (Already logged in) -->
+            <div id="section-active-session" class="form-section">
+                <h2 class="sso-title" data-i18n="sso-welcome-back" style="margin-bottom: 1.5rem;">¡Hola de nuevo!</h2>
+                <div class="profile-card">
+                    <img id="active-pfp" src="" class="sso-pfp">
+                    <div class="profile-info">
+                        <h3 id="active-username">Username</h3>
+                        <p id="active-email">email@example.com</p>
+                    </div>
+                </div>
+                <button id="btn-sso-continue" class="sso-btn primary" style="margin-bottom: 1rem;">
+                    <span data-i18n="sso-continue-as">Continuar como</span> <span id="continue-name-hint"></span>
+                </button>
+                <div style="text-align: center;">
+                    <button class="modal-btn outline small" onclick="switchTab('login')" data-i18n="sso-switch-account" style="opacity: 0.6; font-size: 0.8rem;">Cambiar de cuenta</button>
+                </div>
+            </div>
+
+            <div id="auth-forms-container">
+                <div class="sso-tabs">
+                    <div class="sso-tab active" onclick="switchTab('login')" data-i18n="sso-tab-login">Entrar</div>
+                    <div class="sso-tab" onclick="switchTab('register')" data-i18n="sso-tab-register">Crear Cuenta</div>
+                </div>
+
+                <!-- Login -->
+            <div id="section-login" class="form-section active">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="sso-email" class="sso-input" placeholder="correo@ejemplo.com" data-i18n-ph="ph-email">
+                </div>
+                <div class="input-group">
+                    <label data-i18n="ph-pass">Contraseña</label>
+                    <input type="password" id="sso-pass" class="sso-input" placeholder="••••••••" data-i18n-ph="ph-pass">
+                </div>
+                <button id="btn-sso-login" class="sso-btn primary" data-i18n="sso-btn-continue">Continuar</button>
+            </div>
+
+            <!-- Register -->
+            <div id="section-register" class="form-section">
+                <div class="input-group">
+                    <label data-i18n="field-username">Nombre de Usuario</label>
+                    <input type="text" id="reg-username" class="sso-input" placeholder="Tu nombre" data-i18n-ph="ph-reg-user">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" class="sso-input" placeholder="correo@ejemplo.com" data-i18n-ph="ph-email">
+                </div>
+                <div class="input-group">
+                    <label data-i18n="ph-pass">Contraseña</label>
+                    <input type="password" id="reg-pass" class="sso-input" placeholder="Mínimo 6 caracteres" data-i18n-ph="ph-pass">
+                </div>
+                <button id="btn-sso-register" class="sso-btn primary" data-i18n="sso-btn-reg-continue">Crear Cuenta y Continuar</button>
+            </div>
+            </div> <!-- end auth-forms-container -->
+
+            <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.4;" data-i18n="sso-footer">
+                Seguridad proporcionada por Carley Interactive Studio SSO
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/sso.js"></script>
+</body>
+</html>
