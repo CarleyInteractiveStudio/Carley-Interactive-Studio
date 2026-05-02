@@ -75,21 +75,9 @@
     <div id="splash-screen" class="splash-overlay">
         <div class="splash-bg"></div>
         <div class="splash-content">
-            <h2 class="splash-welcome" id="splash-welcome">Bienvenido</h2>
-            <h1 class="splash-logo-text">Creative Engine</h1>
-            <p class="splash-subtitle">Curso totalmente gratuito de programación</p>
-
-            <div id="splash-lang-selector" class="splash-lang-area hidden">
-                <p class="lang-prompt">Selecciona un idioma para comenzar</p>
-                <div class="splash-lang-grid">
-                    <button onclick="pickInitialLang('es')">🇪🇸 Español</button>
-                    <button onclick="pickInitialLang('en')">🇺🇸 English</button>
-                    <button onclick="pickInitialLang('pt')">🇵🇹 Português</button>
-                    <button onclick="pickInitialLang('fr')">🇫🇷 Français</button>
-                    <button onclick="pickInitialLang('ru')">🇷🇺 Русский</button>
-                    <button onclick="pickInitialLang('zh')">🇨🇳 中文</button>
-                </div>
-            </div>
+            <h2 class="splash-welcome">Bienvenido a</h2>
+            <h1 class="splash-logo-text">Carley Interactive Studio</h1>
+            <p class="splash-subtitle" data-i18n="hero-free-course">Curso totalmente gratuito de programación</p>
         </div>
     </div>
 
@@ -425,14 +413,5 @@
     <div id="paypal-hidden-container" style="display: none;"></div>
 
     <script src="js/main.js"></script>
-    <script>
-        function pickInitialLang(lang) {
-            localStorage.setItem('carley-lang', lang);
-            if (window.translateAll) window.translateAll(lang);
-            const splash = document.getElementById('splash-screen');
-            splash.classList.add('fade-out');
-            setTimeout(() => splash.remove(), 1000);
-        }
-    </script>
 </body>
 </html>
