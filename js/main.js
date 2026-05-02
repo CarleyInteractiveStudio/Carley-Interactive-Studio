@@ -279,9 +279,30 @@ function updateAuthStateUI(session) {
         if (loggedOutDiv) loggedOutDiv.classList.add('hidden');
         if (emailDisplay) emailDisplay.textContent = session.user.email;
         if (usernameInput) usernameInput.value = session.user.user_metadata.username || session.user.email.split('@')[0];
+
+        // Specific to redesigned account page
+        const profileCont = document.getElementById('profile-container');
+        const authCont = document.getElementById('auth-container');
+        if (profileCont && authCont) {
+            authCont.classList.add('hidden');
+            profileCont.classList.remove('hidden');
+
+            const usernameEl = document.getElementById('profile-username');
+            const emailEl = document.getElementById('profile-email');
+            if (usernameEl) usernameEl.textContent = session.user.user_metadata.username || session.user.email.split('@')[0];
+            if (emailEl) emailEl.textContent = session.user.email;
+        }
+
     } else {
         if (loggedInDiv) loggedInDiv.classList.add('hidden');
         if (loggedOutDiv) loggedOutDiv.classList.remove('hidden');
+
+        const profileCont = document.getElementById('profile-container');
+        const authCont = document.getElementById('auth-container');
+        if (profileCont && authCont) {
+            authCont.classList.remove('hidden');
+            profileCont.classList.add('hidden');
+        }
     }
 }
 
@@ -2969,7 +2990,13 @@ function initializeTranslations() {
 
 
     // Initial load
-    const savedLang = localStorage.getItem('carley-lang') || 'es';
+    let savedLang = localStorage.getItem('carley-lang');
+    if (!savedLang) {
+        const browserLang = navigator.language.split('-')[0];
+        savedLang = translations[browserLang] ? browserLang : 'es';
+        localStorage.setItem('carley-lang', savedLang);
+    }
+
     if (picker) picker.value = savedLang;
     updateTexts(savedLang); window.translateAll = updateTexts;
 
@@ -3033,21 +3060,11 @@ function initializeSplashScreen() {
     const splash = document.getElementById('splash-screen');
     if (!splash) return;
 
-    const savedLang = localStorage.getItem('carley-lang');
-    const langSelector = document.getElementById('splash-lang-selector');
-
-    if (!savedLang) {
-        // First time: show language selector after animation
-        setTimeout(() => {
-            langSelector.classList.remove('hidden');
-        }, 2000);
-    } else {
-        // Returning user: show animation then fade out
-        setTimeout(() => {
-            splash.classList.add('fade-out');
-            setTimeout(() => splash.remove(), 1000);
-        }, 3000);
-    }
+    // Always show animation then fade out (Auto-detected language)
+    setTimeout(() => {
+        splash.classList.add('fade-out');
+        setTimeout(() => splash.remove(), 1000);
+    }, 3500);
 }
 
 /* ==============================
