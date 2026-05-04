@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeTranslations();
     initializeDonations();
     initializeAnimations();
-    initializeSplashScreen();
 
     // Global data fetchers
     if (document.getElementById('opinions-feed')) await fetchOpinions();
@@ -3051,20 +3050,6 @@ function initializeTranslations() {
     if (cePicker) {
         cePicker.onchange = (e) => updateTexts(e.target.value);
     }
-}
-
-/* ==============================
-   Splash Screen System
-============================== */
-function initializeSplashScreen() {
-    const splash = document.getElementById('splash-screen');
-    if (!splash) return;
-
-    // Always show animation then fade out (Auto-detected language)
-    setTimeout(() => {
-        splash.classList.add('fade-out');
-        setTimeout(() => splash.remove(), 1000);
-    }, 3500);
 }
 
 /* ==============================
