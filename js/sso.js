@@ -5,7 +5,9 @@
 const WHITELISTED_DOMAINS = [
     'carleyengine.com',
     'creativegame.online',
+    'creativegames.online',
     'carleystudio.com',
+    'carleyinteractivestudio.github.io',
     'localhost' // For development
 ];
 
@@ -20,10 +22,20 @@ const CLIENT_CONFIGS = {
         logo: 'carley_foto_web/Creative_Games_Logo.png',
         msg: 'Ingresa tus datos para jugar en Creative Games sin límites.'
     },
+    'creativegames.online': {
+        name: 'Creative Games',
+        logo: 'carley_foto_web/Creative_Games_Logo.png',
+        msg: 'Ingresa tus datos para jugar en Creative Games sin límites.'
+    },
     'carleystudio.com': {
         name: 'Carley Studio',
         logo: 'carley_foto_web/Logo_C.png',
         msg: 'No tomará mucho tiempo, ingresa tus datos aquí.'
+    },
+    'carleyinteractivestudio.github.io': {
+        name: 'VidSpri',
+        logo: 'carley_foto_web/VidSpri_Logo_New.png',
+        msg: 'Inicia sesión para tener acceso a más funciones en VidSpri.'
     },
     'localhost': {
         name: 'Local Dev Site',
@@ -171,14 +183,15 @@ function handleSSOSuccess(session) {
     try {
         const redirectUrl = new URL(returnUrl);
         // Security check: only redirect to whitelisted domains
+        const targetHostname = redirectUrl.hostname.toLowerCase();
         const isWhitelisted = WHITELISTED_DOMAINS.some(domain =>
-            redirectUrl.hostname === domain || redirectUrl.hostname.endsWith('.' + domain)
+            targetHostname === domain.toLowerCase() || targetHostname.endsWith('.' + domain.toLowerCase())
         );
 
         if (!isWhitelisted) {
-            console.error('Redirección bloqueada: Dominio no autorizado', redirectUrl.hostname);
-            showError('Dominio no autorizado para inicio de sesión seguro.');
-            setTimeout(() => { window.location.href = 'index.html'; }, 3000);
+            console.error('Redirección bloqueada: Dominio no autorizado', targetHostname);
+            showError('Dominio no autorizado para inicio de sesión seguro: ' + targetHostname);
+            setTimeout(() => { window.location.href = 'index.html'; }, 5000);
             return;
         }
 
