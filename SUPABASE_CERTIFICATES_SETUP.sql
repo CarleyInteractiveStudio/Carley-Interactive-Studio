@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS public.certificates (
     full_name TEXT NOT NULL,
     score INTEGER NOT NULL,
     rank TEXT NOT NULL,
+    user_signature TEXT, -- Data URL of the drawn signature
     achievements JSONB DEFAULT '[]'::jsonb,
     privacy_settings JSONB DEFAULT '{"show_score": true, "show_rank": true, "show_achievements": true}'::jsonb,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL

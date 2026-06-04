@@ -1459,3 +1459,183 @@ body::-webkit-scrollbar,
     20% { opacity: 1; }
     100% { transform: translateY(-40px); opacity: 0; }
 }
+
+/* ==============================
+   Premium Modal System
+============================== */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.custom-modal-overlay.active {
+    opacity: 1;
+}
+
+.custom-modal {
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(25px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 2.5rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
+    text-align: center;
+}
+
+.custom-modal-overlay.active .custom-modal {
+    transform: scale(1);
+}
+
+.modal-icon-header {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.modal-title-premium {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modal-text-premium {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+}
+
+/* ==============================
+   Advanced Character Parts
+============================== */
+.char-container-advanced {
+    position: relative;
+    width: 80px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.char-hand {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-radius: 50%;
+    top: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    transition: all 0.3s;
+}
+
+.char-hand.left { left: -10px; }
+.char-hand.right { right: -10px; }
+
+.char-shoe {
+    position: absolute;
+    width: 16px;
+    height: 10px;
+    background: #222;
+    bottom: -8px;
+    border-radius: 4px 8px 4px 4px;
+    transition: all 0.3s;
+}
+
+.char-shoe.left { left: 5px; }
+.char-shoe.right { right: 5px; transform: scaleX(-1); }
+
+.char-head-item {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+}
+
+/* Accessory variations */
+.acc-crown { font-size: 24px; filter: drop-shadow(0 0 5px gold); }
+.acc-cap { width: 30px; height: 15px; background: #ff4444; border-radius: 10px 10px 0 0; position: relative; }
+.acc-cap::after { content: ""; position: absolute; width: 15px; height: 4px; background: #ff4444; bottom: 0; right: -10px; border-radius: 0 5px 5px 0; }
+
+.acc-gloves-white { background: #fff !important; border-color: #ddd !important; }
+.acc-boots-red { background: #ff4444 !important; }
+
+/* ==============================
+   Home Page Verification Portal
+============================== */
+.verification-portal-section {
+    padding: 6rem 2rem;
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('carley_foto_web/fds.png') center/cover fixed;
+}
+
+.verify-portal-card {
+    max-width: 700px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.verify-grid-home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+    .verify-grid-home {
+        grid-template-columns: 1fr;
+    }
+}
+
+.verify-input-home {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.verify-input-home:focus {
+    border-color: var(--accent);
+}
+
+.verify-btn-home {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    padding: 1.2rem;
+    border-radius: 16px;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.verify-btn-home:hover {
+    transform: scale(1.02);
+    background: #0099ee;
+}
