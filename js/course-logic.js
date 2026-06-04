@@ -1,16 +1,41 @@
 /* ==============================
    Course Logic System - Professional & Fun
+   Updated with Combat, Multi-Mechanics, Shop & Sync
 ============================== */
 
-let currentProgress = {
+// Global State Object for external access and persistence
+window.currentProgress = {
     stage: 1,
     course: 1,
-    completed: []
+    completed: [],
+    credits: 0,
+    ownedSkins: ['default'],
+    activeSkin: 'default',
+    achievements: []
 };
 
-let activeStage = null;
-let activeCourse = null;
-let currentStepIndex = 0;
+window.activeStage = null;
+window.activeCourse = null;
+window.currentStepIndex = 0;
+window.userHealth = 3;
+window.selectedBlocks = [];
+window.bgmSource = null;
+window.isMusicOn = false;
+
+// Certification Metrics
+window.examStartTime = 0;
+window.examMistakes = 0;
+
+// Internal aliases for existing code compatibility
+let currentProgress = window.currentProgress; // Object reference is shared
+
+const skins = {
+    'default': { name: 'Carl Original', color: '#7ED957', price: 0 },
+    'ocean': { name: 'Carl Oceánico', color: '#00AAFF', price: 50 },
+    'lava': { name: 'Carl Volcánico', color: '#FF5733', price: 50 },
+    'gold': { name: 'Carl Dorado', color: '#FFD700', price: 150 },
+    'void': { name: 'Carl del Vacío', color: '#8A2BE2', price: 200 }
+};
 
 /* ==============================
    Sound Manager (Web Audio API)
@@ -42,18 +67,27 @@ const SoundManager = {
         this.playTone(300, 'triangle', 0.2);
         setTimeout(() => this.playTone(200, 'triangle', 0.3), 150);
     },
-    bossHit() { this.playTone(150, 'square', 0.1, 0.2); }
+    bossHit() { this.playTone(150, 'square', 0.1, 0.2); },
+    gameOver() {
+        this.playTone(200, 'sawtooth', 0.5, 0.2);
+        setTimeout(() => this.playTone(100, 'sawtooth', 0.8, 0.1), 300);
+    },
+    achievement() {
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+            setTimeout(() => this.playTone(f, 'sine', 0.4, 0.1), i * 150);
+        });
+    }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Wait for Supabase (centralized in main.js)
     const checkSupabase = setInterval(async () => {
         if (window.supabaseClient) {
             clearInterval(checkSupabase);
             await initAuthCheck();
-            loadProgress();
+            await loadProgress();
             renderMap();
             updateUIProgress();
+            updateCreditsUI();
         }
     }, 100);
 
@@ -61,15 +95,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function initAuthCheck() {
-    const { data: { session } } = await window.supabaseClient.auth.getSession();
+    const { data: { session: currentSession } } = await window.supabaseClient.auth.getSession();
     const lang = localStorage.getItem('carley-lang') || 'es';
 
-    if (session) {
-        // Fetch profile to ensure language is correct
+    // Update Course UI Auth
+    const guestUI = document.getElementById('course-auth-guest');
+    const userUI = document.getElementById('course-auth-user');
+    if (currentSession) {
+        if (guestUI) guestUI.classList.add('hidden');
+        if (userUI) {
+            userUI.classList.remove('hidden');
+            document.getElementById('course-user-name').textContent = currentSession.user.user_metadata.username || currentSession.user.email.split('@')[0];
+            document.getElementById('course-user-avatar').src = currentSession.user.user_metadata.avatar_url || `https://ui-avatars.com/api/?name=${currentSession.user.email}`;
+        }
+    } else {
+        if (guestUI) guestUI.classList.remove('hidden');
+        if (userUI) userUI.classList.add('hidden');
+    }
+
+    if (currentSession) {
         const { data: profile } = await window.supabaseClient
             .from('profiles')
             .select('language')
-            .eq('id', session.user.id)
+            .eq('id', currentSession.user.id)
             .single();
 
         const userLang = profile?.language || lang;
@@ -83,57 +131,54 @@ async function initAuthCheck() {
     }
 }
 
-function showLanguageSelection() {
-    const modal = document.createElement('div');
-    modal.id = 'lang-selection-modal';
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-        <div class="course-modal">
-            <h2 style="margin-bottom:20px; font-weight:900;">¡Hola! 👋</h2>
-            <p style="opacity:0.7; margin-bottom:25px; line-height:1.6;">El curso técnico de Creative Engine Scripting actualmente solo está disponible en <b>Español</b>.</p>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <button class="btn-main" onclick="pickLang('es')">Español (Empezar ahora)</button>
-                <button class="btn-main" style="background:#222; color:#555; cursor:not-allowed;" disabled>English (Próximamente)</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-}
+async function loadProgress() {
+    const { data: { session: loadSession } } = await window.supabaseClient.auth.getSession();
+    if (loadSession) {
+        const { data, error } = await window.supabaseClient
+            .from('course_progress')
+            .select('*')
+            .eq('user_id', loadSession.user.id)
+            .single();
 
-window.pickLang = (lang) => {
-    localStorage.setItem('carley-lang', lang);
-    localStorage.setItem('course-lang-picked', 'true');
-    window.location.reload();
-};
+        if (data && !error) {
+            currentProgress.stage = data.stage;
+            currentProgress.completed = data.completed_courses || [];
+            currentProgress.credits = data.credits || 0;
+            currentProgress.ownedSkins = data.owned_skins || ['default'];
+            currentProgress.activeSkin = data.active_skin || 'default';
+            currentProgress.achievements = data.achievements || [];
+            return;
+        }
+    }
 
-function showSorryMessage() {
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-        <div class="course-modal" style="border-top: 5px solid #ff4d4d;">
-            <div class="char-body" style="width:70px; height:70px; margin: 0 auto 20px; background:#ff4d4d; box-shadow: 0 0 30px rgba(255,77,77,0.4);">
-                <div class="char-eye" style="height:4px; width:15px; border-radius:2px; transform: rotate(15deg); background:#000;"></div>
-                <div class="char-eye" style="height:4px; width:15px; border-radius:2px; transform: rotate(-15deg); background:#000;"></div>
-            </div>
-            <h2 style="color:#ff4d4d; font-weight:900;">Lo sentimos mucho</h2>
-            <p style="opacity:0.9; margin-top:20px; line-height:1.7; font-size: 1.1rem;">
-                Hola. Lamentamos informarte que no tenemos cursos disponibles en tu idioma seleccionado actualmente.
-                <br><br>
-                Estamos trabajando duro para traducir todo el Gran Libro de CES. ¿Podrías volver luego por favor?
-            </p>
-            <button class="btn-main" style="margin-top:30px; background:#fff; color:#000;" onclick="window.location.href='index.html'">Volver al Inicio</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-}
-
-function loadProgress() {
     const saved = localStorage.getItem('ces-course-progress');
-    if (saved) currentProgress = JSON.parse(saved);
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        // Deep copy to window object
+        Object.assign(window.currentProgress, parsed);
+        currentProgress = window.currentProgress;
+    }
 }
 
-function saveProgress() {
+async function saveProgress() {
     localStorage.setItem('ces-course-progress', JSON.stringify(currentProgress));
+
+    if (!window.supabaseClient) return;
+    const { data: { session: saveSession } } = await window.supabaseClient.auth.getSession();
+    if (saveSession) {
+        await window.supabaseClient
+            .from('course_progress')
+            .upsert({
+                user_id: saveSession.user.id,
+                stage: currentProgress.stage,
+                completed_courses: currentProgress.completed,
+                credits: currentProgress.credits,
+                owned_skins: currentProgress.ownedSkins,
+                active_skin: currentProgress.activeSkin,
+                achievements: currentProgress.achievements,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'user_id' });
+    }
 }
 
 function updateUIProgress() {
@@ -146,9 +191,43 @@ function updateUIProgress() {
     if (stats) stats.textContent = percent + '%';
 }
 
-function renderMap() {
+function updateCreditsUI() {
+    const el = document.getElementById('user-credits');
+    if (el) el.textContent = currentProgress.credits;
+}
+
+/* ==============================
+   Rendering & Map
+============================== */
+window.renderMap = async function() {
     const map = document.getElementById('map-view');
     if (!map || map.classList.contains('hidden')) return;
+
+    // Guest Banner Logic
+    const sessionResForBanner = await window.supabaseClient?.auth.getSession();
+    const sessionForBanner = sessionResForBanner?.data?.session;
+    const existingBanner = document.getElementById('guest-login-banner');
+    if (!sessionForBanner) {
+        if (!existingBanner) {
+            const banner = document.createElement('div');
+            banner.id = 'guest-login-banner';
+            banner.style = "background: rgba(255,195,0,0.1); border: 1px solid #FFC300; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px;";
+            banner.innerHTML = `
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i data-lucide="alert-circle" style="color:#FFC300"></i>
+                    <span style="font-size:0.9rem; color:#fff;">Estás en modo invitado. <b>Inicia sesión</b> para guardar tu progreso en la nube y obtener certificados.</span>
+                </div>
+                <button class="btn-main" style="padding: 8px 15px; font-size: 0.8rem;" onclick="window.location.href='sso.html'">Iniciar Sesión</button>
+            `;
+            map.prepend(banner);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    } else if (existingBanner) {
+        existingBanner.remove();
+    }
+
+    let mapWidth = map.offsetWidth;
+    if (mapWidth === 0) mapWidth = Math.min(window.innerWidth, 1000) - 40;
 
     const stages = window.courseData.stages;
     const nodes = map.querySelectorAll('.stage-node, .map-svg');
@@ -163,14 +242,11 @@ function renderMap() {
     map.appendChild(svg);
 
     const positions = [];
-    const mapWidth = map.offsetWidth;
-
     stages.forEach((stage, index) => {
         const node = document.createElement('div');
         node.className = 'stage-node';
         if (stage.id > currentProgress.stage) node.classList.add('locked');
 
-        // Dynamic zig-zag layout
         const offset = Math.sin(index * 1.5) * (mapWidth / 4);
         const x = (mapWidth / 2) + offset;
         const y = 150 + (index * 220);
@@ -181,8 +257,10 @@ function renderMap() {
         node.style.boxShadow = `0 0 30px ${stage.color}44`;
         node.style.position = 'absolute';
 
+        const isStageDone = stage.courses.length > 0 && stage.courses.every(c => currentProgress.completed.includes(c.id));
+
         node.innerHTML = `
-            <i data-lucide="${getStageIcon(index)}" style="color:${stage.color}; width:45px; height:45px;"></i>
+            <i data-lucide="${isStageDone ? 'check-circle' : getStageIcon(index)}" style="color:${isStageDone ? '#7ED957' : stage.color}; width:45px; height:45px;"></i>
             <span class="stage-label">${stage.name}</span>
         `;
 
@@ -194,7 +272,6 @@ function renderMap() {
         positions.push({x, y});
     });
 
-    // Draw connecting path
     let pathD = "";
     positions.forEach((p, i) => {
         if (i === 0) pathD += `M ${p.x} ${p.y}`;
@@ -213,11 +290,10 @@ function renderMap() {
     path.setAttribute("stroke-dasharray", "20, 15");
     svg.appendChild(path);
 
-    // Place Character with walking animation
     const char = document.getElementById('character');
     const currentPos = positions[currentProgress.stage - 1];
     if (currentPos && char) {
-        updateCharacterAccessories(char);
+        updateCharacterVisuals(char);
         char.classList.add('char-walking');
         char.style.left = `${currentPos.x - 30}px`;
         char.style.top = `${currentPos.y - 60}px`;
@@ -233,14 +309,22 @@ function getStageIcon(i) {
     return icons[i] || 'book';
 }
 
-function selectStage(stage) {
+async function selectStage(stage) {
     if (stage.id > currentProgress.stage) return;
+
+    if (stage.id === 11) {
+        const { data: { session: examSession } } = await window.supabaseClient.auth.getSession();
+        if (!examSession) {
+            showLoginRequiredModal("Para realizar el Examen Final y obtener tu Certificado Profesional, es obligatorio tener una cuenta.");
+            return;
+        }
+    }
+
     activeStage = stage;
     document.getElementById('map-view').classList.add('hidden');
     document.getElementById('stage-detail-view').classList.remove('hidden');
     document.getElementById('current-stage-name').textContent = stage.name;
     document.getElementById('current-stage-name').style.color = stage.color;
-
     renderSubMap();
 }
 
@@ -271,7 +355,6 @@ function renderSubMap() {
 
         if (isLocked) node.classList.add('locked');
 
-        // Zig-zag
         const offset = Math.sin(index * 2) * (mapWidth / 5);
         const x = (mapWidth / 2) + offset;
         const y = 50 + (index * 180);
@@ -295,7 +378,6 @@ function renderSubMap() {
         positions.push({x, y, isDone, isNext});
     });
 
-    // Sub-path
     let pathD = "";
     positions.forEach((p, i) => {
         if (i === 0) pathD += `M ${p.x} ${p.y}`;
@@ -312,7 +394,6 @@ function renderSubMap() {
     path.setAttribute("stroke-width", "6");
     svg.appendChild(path);
 
-    // Sub-character
     const subChar = document.createElement('div');
     subChar.id = 'sub-character';
     subChar.className = 'char-body';
@@ -320,9 +401,8 @@ function renderSubMap() {
     subChar.style.position = 'absolute';
     subChar.style.zIndex = '10';
     subChar.innerHTML = '<div class="char-eye" style="width:5px; height:5px;"></div><div class="char-eye" style="width:5px; height:5px;"></div>';
-    updateCharacterAccessories(subChar);
+    updateCharacterVisuals(subChar);
 
-    // Find where the character should be
     let charPos = positions[0];
     for(let i=0; i<positions.length; i++) {
         if(positions[i].isNext) {
@@ -341,43 +421,59 @@ function renderSubMap() {
     container.style.height = (courses.length * 180 + 200) + 'px';
 }
 
-function backToMap() {
-    document.getElementById('map-view').classList.remove('hidden');
-    document.getElementById('stage-detail-view').classList.add('hidden');
-    document.getElementById('lesson-view').classList.add('hidden');
-    renderMap();
-}
-
+/* ==============================
+   Lesson & Mechanics
+============================== */
 function startCourse(course) {
-    activeCourse = course;
-    currentStepIndex = 0;
+    window.activeCourse = course;
+    window.currentStepIndex = 0;
+    window.userHealth = 3;
+    updateHealthUI();
     document.getElementById('stage-detail-view').classList.add('hidden');
     document.getElementById('lesson-view').classList.remove('hidden');
     renderStep();
+
+    if (window.activeStage && window.activeStage.id === 11) {
+        window.examStartTime = Date.now();
+        window.examMistakes = 0;
+    }
+}
+
+function updateHealthUI() {
+    const hearts = document.querySelectorAll('.heart');
+    hearts.forEach((h, i) => {
+        if (i < window.userHealth) h.classList.remove('lost');
+        else h.classList.add('lost');
+    });
 }
 
 function renderStep() {
-    const step = activeCourse.steps[currentStepIndex];
-    const isBoss = activeCourse.isBoss;
-    document.getElementById('lesson-title').textContent = activeCourse.title;
+    const step = window.activeCourse.steps[window.currentStepIndex];
+    const isBoss = window.activeCourse.isBoss;
+    document.getElementById('lesson-title').textContent = window.activeCourse.title;
 
-    // Boss specific background
     const lessonView = document.getElementById('lesson-view');
-    if (isBoss) {
-        lessonView.style.background = 'radial-gradient(circle at center, #200, #000)';
-    } else {
-        lessonView.style.background = '';
-    }
+    lessonView.style.background = isBoss ? 'radial-gradient(circle at center, #200, #000)' : '';
 
     const status = document.getElementById('practice-status');
     const checkBtn = document.getElementById('check-btn');
     const nextBtn = document.getElementById('next-btn');
     const feedback = document.getElementById('feedback-msg');
     feedback.classList.add('hidden');
+    window.selectedBlocks = [];
 
     const bossCont = document.getElementById('boss-container');
-    if (isBoss) bossCont.classList.remove('hidden');
-    else bossCont.classList.add('hidden');
+    if (step.type !== 'teoria') {
+        bossCont.classList.remove('hidden');
+        bossCont.style.transform = isBoss ? 'scale(1.2)' : 'scale(0.8)';
+    } else {
+        bossCont.classList.add('hidden');
+    }
+
+    updateCharacterVisuals(document.getElementById('lesson-character'));
+
+    const area = document.getElementById('practice-area');
+    area.innerHTML = '';
 
     if (step.type === 'teoria') {
         document.getElementById('lesson-text').textContent = step.content;
@@ -386,7 +482,6 @@ function renderStep() {
         status.textContent = 'APRENDIENDO';
         status.style.background = '#00AAFF';
         document.getElementById('practice-question').textContent = 'Estudia este concepto y continúa.';
-        document.getElementById('practice-area').innerHTML = '';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
     } else {
@@ -395,66 +490,187 @@ function renderStep() {
         status.textContent = 'PRÁCTICA';
         status.style.background = '#FFC300';
         document.getElementById('practice-question').textContent = step.question;
-        const area = document.getElementById('practice-area');
-        area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
         checkBtn.classList.remove('hidden');
         nextBtn.classList.add('hidden');
-        const input = document.getElementById('answer-input');
-        input.onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
-        input.focus();
+
+        if (step.type === 'practica') {
+            area.innerHTML = '<input type="text" class="code-input" id="answer-input" placeholder="Tu respuesta...">';
+            document.getElementById('answer-input').focus();
+            document.getElementById('answer-input').onkeypress = (e) => { if(e.key === 'Enter') checkAnswer(); };
+        } else if (step.type === 'opcion-multiple') {
+            const grid = document.createElement('div');
+            grid.className = 'options-grid';
+            step.options.forEach((opt, i) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.textContent = opt.text;
+                card.onclick = () => selectOption(card, opt);
+                grid.appendChild(card);
+            });
+            area.appendChild(grid);
+            checkBtn.classList.add('hidden');
+        } else if (step.type === 'completar-codigo') {
+            const template = document.createElement('div');
+            template.className = 'code-template-view';
+            template.innerHTML = step.codeTemplate.replace('[BLOQUE]', '<span class="template-slot" id="target-slot">?</span>');
+            area.appendChild(template);
+
+            const blocks = document.createElement('div');
+            blocks.className = 'block-zone';
+            step.blocks.forEach(b => {
+                const item = document.createElement('div');
+                item.className = 'code-block-item';
+                item.textContent = b;
+                item.onclick = () => {
+                    document.querySelectorAll('.code-block-item').forEach(x => x.classList.remove('selected'));
+                    item.classList.add('selected');
+                    const slot = document.getElementById('target-slot');
+                    slot.textContent = b;
+                    slot.classList.add('filled');
+                    selectedBlocks = [b];
+                };
+                blocks.appendChild(item);
+            });
+            area.appendChild(blocks);
+        } else if (step.type === 'ordenar-bloques') {
+            const template = document.createElement('div');
+            template.className = 'code-template-view';
+            template.id = 'sequence-template';
+            template.innerHTML = '<span style="opacity:0.5; font-size:0.9rem;">Toca los bloques en orden:</span>';
+            area.appendChild(template);
+
+            const blocks = document.createElement('div');
+            blocks.className = 'block-zone';
+            step.blocks.forEach(b => {
+                const item = document.createElement('div');
+                item.className = 'code-block-item';
+                item.textContent = b;
+                item.onclick = () => {
+                    if (item.classList.contains('selected')) return;
+                    item.classList.add('selected');
+                    selectedBlocks.push(b);
+                    const slot = document.createElement('span');
+                    slot.className = 'template-slot filled';
+                    slot.textContent = b;
+                    slot.style.margin = '5px';
+                    document.getElementById('sequence-template').appendChild(slot);
+                };
+                blocks.appendChild(item);
+            });
+            area.appendChild(blocks);
+        } else if (step.type === 'modo-debug') {
+            const container = document.createElement('div');
+            container.style.background = '#000';
+            container.style.padding = '20px';
+            container.style.borderRadius = '15px';
+            container.style.border = '1px solid #333';
+
+            step.codeLines.forEach((line, i) => {
+                const lineEl = document.createElement('div');
+                lineEl.className = 'debug-line buggy-hover';
+                lineEl.textContent = line;
+                lineEl.onclick = () => checkDebug(i);
+                container.appendChild(lineEl);
+            });
+            area.appendChild(container);
+            checkBtn.classList.add('hidden');
+        }
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function selectOption(card, opt) {
+    if (opt.correct) {
+        card.classList.add('correct');
+        checkAnswer(true);
+    } else {
+        card.classList.add('wrong');
+        checkAnswer(false);
     }
 }
 
-function checkAnswer() {
+function checkDebug(index) {
     const step = activeCourse.steps[currentStepIndex];
-    const input = document.getElementById('answer-input');
-    if (!input) return;
-    const val = input.value.trim();
-    const correctVal = step.answer.trim();
-
-    if (val.toLowerCase() === correctVal.toLowerCase()) {
-        if (activeCourse.isBoss) {
-            SoundManager.bossHit();
-            const bug = document.querySelector('.boss-bug');
-            bug.style.transform = 'scale(0.8) rotate(10deg)';
-            setTimeout(() => bug.style.transform = '', 200);
-
-            // Check if it was the last step of the boss
-            if (currentStepIndex === activeCourse.steps.length - 1) {
-                bug.classList.add('boss-defeat');
-            }
-        }
-
-        SoundManager.ding();
-        if (typeof confetti !== 'undefined') {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#7ED957', '#00AAFF', '#ffffff']
-            });
-        }
-        showFeedback(true);
+    if (index === step.errorLine) {
+        checkAnswer(true);
     } else {
-        SoundManager.uhoh();
-        // Intelligent Analysis
-        let hint = "";
-        const valLower = val.toLowerCase();
-        const correctLower = correctVal.toLowerCase();
-        const dist = getLevenshteinDistance(valLower, correctLower);
-
-        if (val === "") {
-            hint = "No te rindas. Intenta escribir lo que aprendimos arriba.";
-        } else if (correctLower === valLower + ";") {
-            hint = "¡Casi! Te faltó el punto y coma (<b>;</b>) al final. En CES es fundamental.";
-        } else if (dist <= 2) {
-            hint = `¡Muy cerca! Tienes un pequeño error de dedo. La forma correcta es: <code style="background:#000; padding:2px 6px; border-radius:4px;">${correctVal}</code>`;
-        } else {
-            hint = `Esa no es la respuesta correcta. Revisa la teoría: la instrucción que buscamos es <b>${correctVal}</b>.`;
-        }
-
-        showFeedback(false, hint);
+        checkAnswer(false);
     }
+}
+
+function checkAnswer(isCorrectOverride = null) {
+    const step = activeCourse.steps[currentStepIndex];
+    let isCorrect = false;
+
+    if (isCorrectOverride !== null) {
+        isCorrect = isCorrectOverride;
+    } else if (step.type === 'practica') {
+        const val = document.getElementById('answer-input').value.trim();
+        isCorrect = val.toLowerCase() === step.answer.toLowerCase();
+    } else if (step.type === 'completar-codigo') {
+        isCorrect = selectedBlocks[0] === step.answer;
+    } else if (step.type === 'ordenar-bloques') {
+        isCorrect = JSON.stringify(selectedBlocks) === JSON.stringify(step.answer);
+    }
+
+    if (isCorrect) handleSuccess();
+    else handleFailure();
+}
+
+function handleSuccess() {
+    SoundManager.ding();
+    const char = document.getElementById('lesson-character');
+    const boss = document.querySelector('.boss-bug');
+
+    char.classList.add('char-attack');
+    setTimeout(() => {
+        char.classList.remove('char-attack');
+        if (boss) {
+            boss.classList.add('boss-hit');
+            SoundManager.bossHit();
+            setTimeout(() => boss.classList.remove('boss-hit'), 500);
+        }
+    }, 300);
+
+    if (typeof confetti !== 'undefined') {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: [skins[currentProgress.activeSkin].color, '#fff'] });
+    }
+    showFeedback(true);
+}
+
+function handleFailure() {
+    userHealth--;
+    if (activeStage && activeStage.id === 11) {
+        examMistakes++;
+    }
+    updateHealthUI();
+    SoundManager.uhoh();
+
+    const char = document.getElementById('lesson-character');
+    const boss = document.querySelector('.boss-bug');
+
+    if (boss) {
+        const originalTransform = boss.style.transform;
+        boss.style.transform = 'translateX(-50px) scale(1.1)';
+        setTimeout(() => {
+            boss.style.transform = originalTransform;
+            char.classList.add('char-hit');
+            setTimeout(() => char.classList.remove('char-hit'), 500);
+        }, 200);
+    } else {
+        char.classList.add('char-hit');
+        setTimeout(() => char.classList.remove('char-hit'), 500);
+    }
+
+    if (userHealth <= 0) {
+        SoundManager.gameOver();
+        alert("¡Has caído en batalla! Recupérate y vuelve a intentarlo.");
+        startCourse(activeCourse);
+        return;
+    }
+
+    let hint = "Revisa bien el código. ¡Tú puedes!";
+    showFeedback(false, hint);
 }
 
 function showFeedback(correct, hint = "") {
@@ -468,7 +684,7 @@ function showFeedback(correct, hint = "") {
         card.classList.remove('shake');
         card.classList.add('bounce');
         setTimeout(() => card.classList.remove('bounce'), 600);
-        status.textContent = '¡MUY BIEN HECHO!';
+        status.textContent = '¡EXCELENTE!';
         status.style.background = '#7ED957';
         checkBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
@@ -477,108 +693,423 @@ function showFeedback(correct, hint = "") {
         card.classList.remove('bounce');
         card.classList.add('shake');
         setTimeout(() => card.classList.remove('shake'), 600);
-        status.textContent = 'ALGO FALLÓ, REVISA TU RESPUESTA';
+        status.textContent = '¡GOLPE RECIBIDO!';
         status.style.background = '#ff4d4d';
-
         feedback.innerHTML = hint;
-        feedback.style.background = 'rgba(255,77,77,0.1)';
-        feedback.style.borderColor = '#ff4d4d';
-        feedback.style.color = '#ffb3b3';
         feedback.classList.remove('hidden');
+        if (activeCourse.steps[currentStepIndex].type.includes('ordenar')) setTimeout(() => renderStep(), 1000);
     }
 }
 
-function getLevenshteinDistance(a, b) {
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-
-    for (let i = 1; i <= b.length; i++) {
-        for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j] + 1
-                );
-            }
-        }
-    }
-    return matrix[b.length][a.length];
-}
-
-function nextStep() {
+async function nextStep() {
     if (currentStepIndex < activeCourse.steps.length - 1) {
         currentStepIndex++;
         renderStep();
     } else {
-        if (!currentProgress.completed.includes(activeCourse.id)) {
+        const isFirstTime = !currentProgress.completed.includes(activeCourse.id);
+        if (isFirstTime) {
             currentProgress.completed.push(activeCourse.id);
-            const ids = activeStage.courses.map(c => c.id);
-            if (ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
+            currentProgress.credits += activeCourse.isBoss ? 25 : 10;
+            updateCreditsUI();
+
+            const ids = activeStage.stages ? [] : activeStage.courses.map(c => c.id);
+            if (!activeStage.stages && ids.every(id => currentProgress.completed.includes(id)) && currentProgress.stage === activeStage.id) {
                 currentProgress.stage++;
+                unlockAchievement(activeStage.name);
             }
         }
-        saveProgress();
+
+        // Final Exam Check
+        if (activeStage.id === 11) {
+            const allExamCourses = activeStage.courses;
+            const lastExamCourse = allExamCourses[allExamCourses.length - 1];
+            if (activeCourse.id === lastExamCourse.id) {
+                finishExam();
+                return;
+            }
+        }
+
+        await saveProgress();
         updateUIProgress();
 
         const all = window.courseData.stages.flatMap(s => s.courses);
         const idx = all.findIndex(c => c.id === activeCourse.id);
-        if (idx < all.length - 1) {
-            startCourse(all[idx + 1]);
-        } else {
-            alert("¡FELICIDADES! COMPLETADO.");
+        if (idx < all.length - 1) startCourse(all[idx + 1]);
+        else {
+            alert("¡MAESTRÍA ALCANZADA! Por ahora no hay más niveles.");
             backToMap();
         }
     }
+}
+
+window.finishExam = function() {
+    const endTime = Date.now();
+    const totalTimeSeconds = Math.floor((endTime - examStartTime) / 1000);
+
+    // Grading Logic:
+    // Base 100. -4 per mistake. -1 every 15s after 3 minutes.
+    let score = 100;
+    score -= (examMistakes * 4);
+    if (totalTimeSeconds > 180) {
+        score -= Math.floor((totalTimeSeconds - 180) / 15);
+    }
+    score = Math.max(0, score);
+
+    let rank = "S";
+    if (score < 95) rank = "A";
+    if (score < 85) rank = "B";
+    if (score < 70) rank = "C";
+    if (score < 60) rank = "D";
+
+    if (score >= 55) {
+        window.showCertificatePrompt(score, rank, totalTimeSeconds);
+    } else {
+        alert(`Has completado el examen con un ${score}%. Necesitas al menos un 55% para certificar.\n¡Sigue practicando y vuelve a intentarlo!`);
+        backToMap();
+    }
+}
+
+window.generateCertificate = async (score, rank, time) => {
+    if (!window.supabaseClient) return;
+
+    // Protection Check: Verify they actually finished Stage 11 courses
+    const examStage = window.courseData.stages.find(s => s.id === 11);
+    const examCourseIds = examStage.courses.map(c => c.id);
+    const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
+
+    if (currentProgress.stage < 11 || !hasFinishedExam) {
+        alert("¡Alto! No puedes generar un certificado sin haber completado el examen final satisfactoriamente.");
+        backToMap();
+        return;
+    }
+
+    const { data: { session: certSession } } = await window.supabaseClient.auth.getSession();
+
+    if (!certSession) {
+        alert("Sesión expirada. Por favor, inicia sesión de nuevo para obtener tu certificado.");
+        window.location.href = 'sso.html';
+        return;
+    }
+
+    const nameInput = document.getElementById('cert-name-input');
+    const name = nameInput.value.trim() || "Desarrollador Creative Engine";
+
+    const serial = `CE-2026-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+    // Update Certificate Template
+    document.getElementById('cert-display-name').textContent = name;
+    document.getElementById('cert-display-score').textContent = score + "%";
+    document.getElementById('cert-display-rank').textContent = rank;
+    document.getElementById('cert-display-date').textContent = new Date().toLocaleDateString();
+    document.getElementById('cert-serial').textContent = `ID: ${serial}`;
+
+    // Inject Achievements
+    const achList = document.getElementById('cert-achievements-list');
+    achList.innerHTML = currentProgress.achievements.map(a => `<span>◈ ${a}</span>`).join(' ');
+
+    // Persistence to Supabase
+    const privacy = {
+        show_score: document.getElementById('privacy-score').checked,
+        show_rank: document.getElementById('privacy-rank').checked,
+        show_achievements: document.getElementById('privacy-achievements').checked
+    };
+
+    const { error } = await window.supabaseClient.from('certificates').insert({
+        id: serial,
+        user_id: certSession.user.id,
+        full_name: name,
+        score: parseInt(score),
+        rank: rank,
+        achievements: currentProgress.achievements,
+        privacy_settings: privacy
+    });
+
+    if (error) {
+        console.error("Error saving certificate:", error);
+        alert("Hubo un error guardando tu certificado en la nube, pero aún puedes descargarlo.");
+    }
+
+    // Show Success Modal
+    document.getElementById('cert-prompt-modal').classList.add('hidden');
+    document.getElementById('final-success-modal').classList.remove('hidden');
+
+    // Configure Sharing Links
+    const text = `¡Soy oficialmente Desarrollador en Creative Engine! Mi rango: ${rank} (${score}%). Mira mi certificado:`;
+    const url = window.location.href;
+    document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    if (typeof confetti !== 'undefined') confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+};
+
+window.downloadPDF = () => {
+    const element = document.getElementById('certificate-container');
+    const opt = {
+        margin: 0,
+        filename: 'Certificado_Creative_Engine.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'px', format: [800, 600], orientation: 'landscape' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+};
+
+window.showCertificatePrompt = async function(score, rank, time) {
+    // Pre-check for protection
+    const examStage = window.courseData.stages.find(s => s.id === 11);
+    const examCourseIds = examStage.courses.map(c => c.id);
+    const hasFinishedExam = examCourseIds.every(id => currentProgress.completed.includes(id));
+
+    if (currentProgress.stage < 11 || !hasFinishedExam) {
+        alert("Primero debes completar todas las etapas del curso y aprobar el examen.");
+        backToMap();
+        return;
+    }
+
+    const { data: { session: promptSession } } = await window.supabaseClient.auth.getSession();
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'cert-prompt-modal';
+
+    let content = "";
+    if (!promptSession) {
+        content = `
+            <div class="course-modal">
+                <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
+                <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
+                <p style="font-size:1.2rem; margin-bottom:10px;">¡Increíble! Has aprobado con un <b>${score}%</b> (Rango ${rank}).</p>
+                <div style="background:rgba(255,195,0,0.1); border:1px solid gold; padding:15px; border-radius:15px; margin: 20px 0;">
+                    <p style="font-size:0.9rem; margin:0;">Para generar tu certificado oficial y guardarlo en tu perfil de forma permanente, debes iniciar sesión.</p>
+                </div>
+                <button class="btn-main" onclick="window.location.href='sso.html'">Iniciar Sesión para Reclamar Certificado</button>
+                <button class="btn-main" style="background:transparent; border:1px solid #444; margin-top:10px;" onclick="backToMap(); this.closest('.modal-overlay').remove();">Ver más tarde</button>
+            </div>
+        `;
+    } else {
+        content = `
+            <div class="course-modal">
+                <h2 style="font-weight:900; color:gold;">¡EXAMEN COMPLETADO!</h2>
+                <div style="font-size: 3rem; margin: 20px 0;">🏆</div>
+                <p style="font-size:1.2rem; margin-bottom:10px;">Has demostrado ser un Desarrollador de Creative Engine.</p>
+                <div style="display:flex; justify-content:center; gap:20px; margin: 20px 0;">
+                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                        <div style="font-size:0.8rem; opacity:0.6;">CALIFICACIÓN</div>
+                        <div style="font-size:2rem; font-weight:900; color:var(--primary);">${score}%</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                        <div style="font-size:0.8rem; opacity:0.6;">RANGO</div>
+                        <div style="font-size:2rem; font-weight:900; color:gold;">${rank}</div>
+                    </div>
+                </div>
+                <p style="opacity:0.7; margin-bottom:20px;">Ingresa tu nombre profesional para el certificado:</p>
+                <input type="text" id="cert-name-input" class="code-input" placeholder="Nombre y Apellido" style="text-align:center; margin-bottom:25px;">
+                <button class="btn-main" onclick="generateCertificate('${score}', '${rank}', '${time}')">Obtener Certificado Profesional</button>
+            </div>
+        `;
+    }
+
+    modal.innerHTML = content;
+    document.body.appendChild(modal);
+}
+
+/* ==============================
+   Gamification: Shop & Achievements
+============================== */
+function openShop() {
+    const container = document.getElementById('shop-items-container');
+    container.innerHTML = '';
+
+    Object.entries(skins).forEach(([id, skin]) => {
+        const isOwned = currentProgress.ownedSkins.includes(id);
+        const isActive = currentProgress.activeSkin === id;
+
+        const card = document.createElement('div');
+        card.className = `shop-item ${isOwned ? 'owned' : ''} ${isActive ? 'active' : ''}`;
+        card.innerHTML = `
+            <div class="skin-preview" style="background:${skin.color}; box-shadow: 0 0 15px ${skin.color}66;"></div>
+            <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${skin.name}</div>
+            <div style="font-size:0.8rem; opacity:0.7;">${isOwned ? (isActive ? 'EQUIPADO' : 'OBTENIDO') : skin.price + ' Créditos'}</div>
+        `;
+        card.onclick = () => handleShopAction(id, skin);
+        container.appendChild(card);
+    });
+
+    document.getElementById('shop-modal').classList.remove('hidden');
+}
+
+function closeShop() {
+    document.getElementById('shop-modal').classList.add('hidden');
+    renderMap();
+}
+
+async function handleShopAction(id, skin) {
+    if (currentProgress.ownedSkins.includes(id)) {
+        currentProgress.activeSkin = id;
+    } else {
+        if (currentProgress.credits >= skin.price) {
+            currentProgress.credits -= skin.price;
+            currentProgress.ownedSkins.push(id);
+            currentProgress.activeSkin = id;
+            SoundManager.ding();
+            updateCreditsUI();
+        } else {
+            alert("No tienes suficientes créditos.");
+            return;
+        }
+    }
+    await saveProgress();
+    openShop();
+}
+
+function unlockAchievement(stageName) {
+    const name = `Maestro de ${stageName}`;
+    if (currentProgress.achievements.includes(name)) return;
+
+    currentProgress.achievements.push(name);
+    const popup = document.getElementById('achievement-popup');
+    document.getElementById('achievement-name').textContent = name;
+    popup.classList.remove('hidden');
+    SoundManager.achievement();
+
+    setTimeout(() => popup.classList.add('hidden'), 5000);
+}
+
+function updateCharacterVisuals(char) {
+    if (!char) return;
+    const body = char.classList.contains('char-body') ? char : char.querySelector('.char-body');
+    if (!body) return;
+
+    const skin = skins[currentProgress.activeSkin] || skins.default;
+    body.style.background = skin.color;
+    body.style.boxShadow = `0 0 25px ${skin.color}`;
+
+    const existing = char.querySelectorAll('.char-accessory');
+    existing.forEach(e => e.remove());
+    if (currentProgress.stage > 1) {
+        const hat = document.createElement('div');
+        hat.className = 'char-accessory hat-expert';
+        char.appendChild(hat);
+    }
+}
+
+/* ==============================
+   Audio & Utilities
+============================== */
+function toggleMusic() {
+    isMusicOn = !isMusicOn;
+    const btn = document.getElementById('bgm-toggle');
+    btn.style.color = isMusicOn ? 'var(--primary)' : '#fff';
+
+    if (isMusicOn) {
+        // In a real browser we need a user gesture, which this click is.
+        // For static hosting, we use procedural tones to simulate BGM loops
+        startAmbientBGM();
+    } else {
+        stopAmbientBGM();
+    }
+}
+
+function startAmbientBGM() {
+    SoundManager.init();
+    if (window.bgmSource) return;
+    // Real loops would use Audio files, but let's use some cool oscillator patterns
+    bgmLoop();
+}
+
+function stopAmbientBGM() {
+    window.bgmSource = false;
+}
+
+function bgmLoop() {
+    if (!window.isMusicOn) return;
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C Major
+    const note = notes[Math.floor(Math.random() * notes.length)];
+    SoundManager.playTone(note, 'sine', 1.5, 0.02);
+    setTimeout(bgmLoop, 1000);
+}
+
+window.backToMap = function() {
+    document.getElementById('map-view').classList.remove('hidden');
+    document.getElementById('stage-detail-view').classList.add('hidden');
+    document.getElementById('lesson-view').classList.add('hidden');
+    renderMap();
+}
+
+function showLanguageSelection() {
+    const modal = document.createElement('div');
+    modal.id = 'lang-selection-modal';
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="course-modal">
+            <h2 style="margin-bottom:20px; font-weight:900;">¡Hola! 👋</h2>
+            <p style="opacity:0.7; margin-bottom:25px; line-height:1.6;">El curso técnico de Creative Engine Scripting actualmente solo está disponible en <b>Español</b>.</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-main" onclick="pickLang('es')">Español (Empezar ahora)</button>
+                <button class="btn-main" style="background:#222; color:#555; cursor:not-allowed;" disabled>English (Próximamente)</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function showLoginRequiredModal(msg) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="course-modal">
+            <i data-lucide="lock" style="width:50px; height:50px; color:var(--primary); margin-bottom:20px;"></i>
+            <h2 style="font-weight:900; margin-bottom:15px;">ACCESO RESTRINGIDO</h2>
+            <p style="opacity:0.8; line-height:1.6; margin-bottom:25px;">${msg}</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-main" onclick="window.location.href='sso.html'">Iniciar Sesión / Registrarse</button>
+                <button class="btn-main" style="background:transparent; border:1px solid #444;" onclick="this.closest('.modal-overlay').remove()">Volver</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+window.pickLang = (lang) => {
+    localStorage.setItem('carley-lang', lang);
+    localStorage.setItem('course-lang-picked', 'true');
+    window.location.reload();
+};
+
+function showSorryMessage() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="course-modal" style="border-top: 5px solid #ff4d4d;">
+            <div class="char-body" style="width:70px; height:70px; margin: 0 auto 20px; background:#ff4d4d; box-shadow: 0 0 30px rgba(255,77,77,0.4);">
+                <div class="char-eye" style="height:4px; width:15px; border-radius:2px; transform: rotate(15deg); background:#000;"></div>
+                <div class="char-eye" style="height:4px; width:15px; border-radius:2px; transform: rotate(-15deg); background:#000;"></div>
+            </div>
+            <h2 style="color:#ff4d4d; font-weight:900;">Lo sentimos mucho</h2>
+            <p style="opacity:0.9; margin-top:20px; line-height:1.7; font-size: 1.1rem;">
+                Hola. Lamentamos informarte que no tenemos cursos disponibles en tu idioma seleccionado actualmente.
+                <br><br>
+                Estamos trabajando duro para traducir todo el Gran Libro de CES. ¿Podrías volver luego por favor?
+            </p>
+            <button class="btn-main" style="margin-top:30px; background:#fff; color:#000;" onclick="window.location.href='index.html'">Volver al Inicio</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
 window.speakContent = () => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const step = activeCourse.steps[currentStepIndex];
-    const text = step.type === 'teoria' ? step.content : step.question;
+    const text = step.type === 'teoria' ? step.content : (step.question || "");
     const ut = new SpeechSynthesisUtterance(text);
     ut.lang = 'es-ES';
-
-    const mapChar = document.getElementById('character');
-    const subChar = document.getElementById('sub-character');
     const lessonChar = document.getElementById('lesson-character');
-    if (lessonChar) updateCharacterAccessories(lessonChar);
-
-    ut.onstart = () => {
-        if (mapChar) mapChar.classList.add('char-talking');
-        if (subChar) subChar.classList.add('char-talking');
-        if (lessonChar) lessonChar.classList.add('char-talking');
-        document.getElementById('speak-btn').style.background = '#7ED957';
-        document.getElementById('speak-btn').style.color = '#000';
-    };
-    ut.onend = () => {
-        if (mapChar) mapChar.classList.remove('char-talking');
-        if (subChar) subChar.classList.remove('char-talking');
-        if (lessonChar) lessonChar.classList.remove('char-talking');
-        document.getElementById('speak-btn').style.background = '';
-        document.getElementById('speak-btn').style.color = '';
-    };
+    ut.onstart = () => { if (lessonChar) lessonChar.classList.add('char-talking'); };
+    ut.onend = () => { if (lessonChar) lessonChar.classList.remove('char-talking'); };
     window.speechSynthesis.speak(ut);
 };
-
-function updateCharacterAccessories(char) {
-    const existing = char.querySelectorAll('.char-accessory');
-    existing.forEach(e => e.remove());
-
-    if (currentProgress.stage > 1) {
-        const hat = document.createElement('div');
-        hat.className = 'char-accessory hat-expert';
-        char.appendChild(hat);
-    }
-
-    if (currentProgress.stage > 5) {
-        const crown = document.createElement('div');
-        crown.className = 'char-accessory crown-master';
-        crown.innerHTML = '👑';
-        char.appendChild(crown);
-    }
-}
